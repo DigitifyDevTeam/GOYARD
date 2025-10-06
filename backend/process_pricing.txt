@@ -1,0 +1,102 @@
+🏢 DÉMÉNAGEMENT - TARIFICATION
+==========================================
+Etage
+📋 CONDITIONS DE BASE:
+- RDC (Rez-de-chaussée): Pas de supplément
+- Supplément fixe: 10€ par étage (simple et réaliste)
+
+📊 TARIFICATION DÉTAILLÉE PAR ÉTAGE:
+
+ÉTAGE 0 (RDC) - REZ-DE-CHAUSSÉE:
+- Supplément: 0€
+
+ÉTAGE 1 - 1ER ÉTAGE:
+- Supplément: +10€
+
+
+ÉTAGE 2 - 2ÈME ÉTAGE:
+- Supplément: +10€ to be 20 euro
+
+📊 TARIFICATION DÉTAILLÉE Pour ascenseur:
+
+4 personnes  ou plus : 
+-sans frais
+
+3 personnes:
+Supplément: +10€
+
+2 personne:
+supplément : 10+10 =20€
+
+📊 TARIFICATION DÉTAILLÉE Pour Options:
+
+Monte-meuble:
+si oui  - Supplément: +100€
+
+Cave ou garage:
+si oui  - Supplément: +20€
+
+Cour à traverser:
+si oui - Supplément: +20€
+
+📊 TARIFICATION DÉTAILLÉE Pour travel:
+
+DISTANCE ET TARIFICATION DE VOYAGE:
+
+
+📏 CALCUL DE DISTANCE:
+- Distance calculée en kilomètres (km)
+- Prix de base: 4€ par km
+
+EXEMPLES DE CALCUL VOYAGE:
+
+EXEMPLE 1 - PARIS → LYON (460km):
+- Distance: 460km
+- Prix voyage: 460km × 4€ = 1840€
+
+EXEMPLE 2 - MARSEILLE → TOULOUSE (400km):
+- Distance: 400km
+- Prix voyage: 400km × 4€ = 1600€
+
+
+🔧 FACTEURS ADDITIONNELS VOYAGE:
+================================
+
+PÉAGES ET FRAIS:
+- Autoroutes: +0.50€ par km
+- Péages: +30€ fixe
+- Carburant: Inclus dans le prix
+
+
+
+📊 TARIFICATION DÉTAILLÉE Pour ESCALES (STOPOVERS):
+==================================================
+
+ESCALES - ARRÊTS INTERMÉDIAIRES:
+================================
+- Nombre d'escales: 0 à N (illimité)
+- Prix basé sur la DISTANCE RÉELLE du trajet
+- Temps d'arrêt: 30 minutes par escale
+
+ALGORITHME DE CALCUL DES ESCALES:
+================================
+
+1. CALCULER LA DISTANCE TOTALE:
+   - Distance = Distance(départ → escale1) + Distance(escale1 → escale2) + ... + Distance(escaleN → destination)
+   - Prix voyage = Distance totale × 4€/km
+
+2. CALCULER LE COÛT DE CHAQUE ESCALE:
+   - Prix de voyage
+   - Supplément étage: selon nbr de étage
+   - Supplément ascenseur: selon capacité
+   - Supplément options: selon services
+
+3. EXEMPLES DE ROUTES DIFFÉRENTES:
+
+ROUTE 1 - paris → Marseille → Lyon:
+- Paris → Reims: 145km
+- Reims → Amiens: 150km
+- Distance totale: 295km
+- Prix voyage: 295km × 4€ = 1180€
+- total: 1180€ + étage + ascenseur + options
+-
