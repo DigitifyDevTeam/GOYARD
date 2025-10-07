@@ -17,4 +17,9 @@ urlpatterns = [
     path('rooms/', views.create_manual_selection, name='create_manual_selection'),
     path('selection/manual/<int:selection_id>/', views.get_manual_selection, name='get_manual_selection'),
     path('selections/manual/', views.list_manual_selections, name='list_manual_selections'),
+    
+    # Superficie calculation endpoints
+    path('superficie/', views.create_superficie_calculation, name='create_superficie_calculation'),
+    path('superficie/data/', views.get_superficie_calculations, name='get_superficie_calculations'),
+    path('volume-calculation/', views.get_volume_calculation, name='get_volume_calculation'),
 ]

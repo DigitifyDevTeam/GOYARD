@@ -56,8 +56,9 @@ class ManualSelectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ManualSelection
         fields = [
-            'id', 'client_info', 'room_selections', 'heavy_objects', 'custom_objects',
-            'total_volume', 'total_objects_count', 'status', 
+            'id', 'client_info', 'room_selections', 'heavy_objects', 'custom_objects', 'custom_heavy_objects',
+            'method', 'surface_area', 'calculated_volumes',
+            'total_volume', 'total_objects_count', 'base_price', 'final_price', 'status', 
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'total_volume', 'total_objects_count', 'created_at', 'updated_at']
@@ -127,6 +128,39 @@ class ManualSelectionSerializer(serializers.ModelSerializer):
         """Validate custom objects selection"""
         if not isinstance(value, dict):
             raise serializers.ValidationError("Custom objects must be a dictionary")
+        
+        errors = {}
+        for obj_name, obj_data in value.items():
+            if not isinstance(obj_data, dict):
+                errors[obj_name] = "Object data must be a dictionary with name, quantity, length, width, height"
+                continue
+                
+            # Check required fields
+            required_fields = ['name', 'quantity', 'length', 'width', 'height']
+            obj_errors = {}
+            
+            for field in required_fields:
+                if field not in obj_data:
+                    obj_errors[field] = f"Field '{field}' is required"
+                elif field == 'name':
+                    # Validate name field (string, not empty)
+                    if not isinstance(obj_data[field], str) or not obj_data[field].strip():
+                        obj_errors[field] = f"Field '{field}' must be a non-empty string"
+                elif not isinstance(obj_data[field], (int, float)) or obj_data[field] <= 0:
+                    obj_errors[field] = f"Field '{field}' must be a positive number"
+            
+            if obj_errors:
+                errors[obj_name] = obj_errors
+        
+        if errors:
+            raise serializers.ValidationError(errors)
+        
+        return value
+    
+    def validate_custom_heavy_objects(self, value):
+        """Validate custom heavy objects selection"""
+        if not isinstance(value, dict):
+            raise serializers.ValidationError("Custom heavy objects must be a dictionary")
         
         errors = {}
         for obj_name, obj_data in value.items():

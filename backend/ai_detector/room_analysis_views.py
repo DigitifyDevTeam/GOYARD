@@ -6,13 +6,12 @@ from .views import OBJECT_VOLUMES
 import json
 
 @csrf_exempt
-@login_required
 def get_room_analysis(request):
     """Get room-by-room analysis results for a user"""
     if request.method == 'GET':
         try:
             # Get all room analyses for the user
-            analyses = RoomAnalysis.objects.filter(user=request.user).order_by('-analysis_date')
+            analyses = RoomAnalysis.objects.all().order_by('-analysis_date')
             
             room_results = {}
             
@@ -20,7 +19,7 @@ def get_room_analysis(request):
                 room_name = analysis.room.name
                 objects = {}
                 
-                for room_obj in analysis.objects.all():
+                for room_obj in analysis.room_objects.all():
                     objects[room_obj.object_name] = {
                         'quantity': room_obj.quantity,
                         'volume_per_unit': room_obj.volume_per_unit,
@@ -54,7 +53,6 @@ def get_room_analysis(request):
     })
 
 @csrf_exempt
-@login_required
 def update_object_quantity(request):
     """Update the quantity of an object in a room analysis"""
     if request.method == 'POST':
@@ -72,8 +70,8 @@ def update_object_quantity(request):
             
             # Find the room analysis
             try:
-                room = Room.objects.get(name=room_name, user=request.user)
-                analysis = RoomAnalysis.objects.filter(room=room, user=request.user).order_by('-analysis_date').first()
+                room = Room.objects.get(name=room_name)
+                analysis = RoomAnalysis.objects.filter(room=room).order_by('-analysis_date').first()
                 
                 if not analysis:
                     return JsonResponse({
@@ -97,8 +95,8 @@ def update_object_quantity(request):
                     room_obj.save()
                 
                 # Update analysis totals
-                analysis.total_objects = sum(obj.quantity for obj in analysis.objects.all())
-                analysis.total_volume = sum(obj.total_volume for obj in analysis.objects.all())
+                analysis.total_objects = sum(obj.quantity for obj in analysis.room_objects.all())
+                analysis.total_volume = sum(obj.total_volume for obj in analysis.room_objects.all())
                 analysis.save()
                 
                 return JsonResponse({
@@ -133,7 +131,6 @@ def update_object_quantity(request):
     })
 
 @csrf_exempt
-@login_required
 def add_object_to_room(request):
     """Add a new object to a room analysis"""
     if request.method == 'POST':
@@ -151,14 +148,14 @@ def add_object_to_room(request):
             
             # Find the room analysis
             try:
-                room = Room.objects.get(name=room_name, user=request.user)
-                analysis = RoomAnalysis.objects.filter(room=room, user=request.user).order_by('-analysis_date').first()
+                room = Room.objects.get(name=room_name)
+                analysis = RoomAnalysis.objects.filter(room=room).order_by('-analysis_date').first()
                 
                 if not analysis:
                     # Create new analysis if none exists
                     analysis = RoomAnalysis.objects.create(
                         room=room,
-                        user=request.user
+                        user=None
                     )
                 
                 # Create the room object
@@ -171,8 +168,8 @@ def add_object_to_room(request):
                 )
                 
                 # Update analysis totals
-                analysis.total_objects = sum(obj.quantity for obj in analysis.objects.all())
-                analysis.total_volume = sum(obj.total_volume for obj in analysis.objects.all())
+                analysis.total_objects = sum(obj.quantity for obj in analysis.room_objects.all())
+                analysis.total_volume = sum(obj.total_volume for obj in analysis.room_objects.all())
                 analysis.save()
                 
                 return JsonResponse({
@@ -207,7 +204,6 @@ def add_object_to_room(request):
     })
 
 @csrf_exempt
-@login_required
 def remove_object_from_room(request):
     """Remove an object from a room analysis"""
     if request.method == 'POST':
@@ -224,8 +220,8 @@ def remove_object_from_room(request):
             
             # Find the room analysis
             try:
-                room = Room.objects.get(name=room_name, user=request.user)
-                analysis = RoomAnalysis.objects.filter(room=room, user=request.user).order_by('-analysis_date').first()
+                room = Room.objects.get(name=room_name)
+                analysis = RoomAnalysis.objects.filter(room=room).order_by('-analysis_date').first()
                 
                 if not analysis:
                     return JsonResponse({
@@ -242,8 +238,8 @@ def remove_object_from_room(request):
                     room_obj.delete()
                     
                     # Update analysis totals
-                    analysis.total_objects = sum(obj.quantity for obj in analysis.objects.all())
-                    analysis.total_volume = sum(obj.total_volume for obj in analysis.objects.all())
+                    analysis.total_objects = sum(obj.quantity for obj in analysis.room_objects.all())
+                    analysis.total_volume = sum(obj.total_volume for obj in analysis.room_objects.all())
                     analysis.save()
                     
                     return JsonResponse({

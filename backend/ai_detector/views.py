@@ -298,7 +298,6 @@ def calculate_quote(volume_calculation):
         }
     }
 
-@login_required
 def upload_photos(request):
     """Handle photo upload and room creation"""
     if request.method == 'POST':
@@ -317,14 +316,14 @@ def upload_photos(request):
             if room_type == 'custom':
                 # For custom rooms, use the provided name
                 room = Room.objects.create(
-                    user=request.user,
+                    user=None,
                     room_type='other',  # Map custom to 'other' type
                     name=room_name
                 )
             else:
                 # For predefined room types
                 room = Room.objects.create(
-                    user=request.user,
+                    user=None,
                     room_type=room_type,
                     name=room_name
                 )
@@ -337,7 +336,7 @@ def upload_photos(request):
                 # Check for duplicates
                 from .image_utils import check_duplicate_image, calculate_image_hash
                 
-                duplicate_check = check_duplicate_image(request.user, photo_file, room.id)
+                duplicate_check = check_duplicate_image(None, photo_file, room.id)
                 
                 if duplicate_check['is_duplicate']:
                     duplicate_photos.append({
@@ -404,7 +403,6 @@ def upload_photos(request):
         'room_types': room_types
     })
 
-@login_required
 def analyze_photos(request):
     """Analyze photos with AI"""
     if request.method == 'POST':
@@ -430,7 +428,7 @@ def analyze_photos(request):
             
             for photo_id in photo_ids:
                 try:
-                    photo = Photo.objects.get(id=photo_id, room__user=request.user)
+                    photo = Photo.objects.get(id=photo_id)
                     
                     # Update status to analyzing
                     photo.status = 'analyzing'
@@ -1091,7 +1089,6 @@ def calculate_manual_quote(request):
         'error': 'Invalid request method'
     })
 
-@login_required
 def generate_quote(request):
     """Generate moving quote based on analyzed photos"""
     if request.method == 'POST':
@@ -1109,7 +1106,6 @@ def generate_quote(request):
             # Get all detected objects from selected rooms
             all_objects = DetectedObject.objects.filter(
                 photo__room__id__in=room_ids,
-                photo__room__user=request.user,
                 photo__status='analyzed'
             )
             
@@ -1159,7 +1155,7 @@ def generate_quote(request):
             
             # Save quote to database
             quote = Quote.objects.create(
-                user=request.user,
+                user=None,
                 total_volume=quote_data['total_volume'],
                 total_weight=quote_data['total_weight'],
                 base_price=quote_data['base_price'],
@@ -1187,21 +1183,18 @@ def generate_quote(request):
             })
     
     # GET request - show quote generation form
-    user_rooms = Room.objects.filter(user=request.user).prefetch_related('photos')
+    user_rooms = Room.objects.all().prefetch_related('photos')
     return render(request, 'ai_model/generate_quote.html', {
         'rooms': user_rooms
     })
 
-@login_required
 def quote_detail(request, quote_id):
     """Show detailed quote information"""
     try:
-        quote = Quote.objects.get(id=quote_id, user=request.user)
+        quote = Quote.objects.get(id=quote_id)
         
         # Get detected objects for this quote
-        detected_objects = DetectedObject.objects.filter(
-            photo__room__user=request.user
-        ).select_related('photo', 'photo__room')
+        detected_objects = DetectedObject.objects.all().select_related('photo', 'photo__room')
         
         # Group by room
         rooms_data = {}
@@ -1231,19 +1224,17 @@ def quote_detail(request, quote_id):
             'error': 'Quote not found'
         })
 
-@login_required
 def user_quotes(request):
     """Show all quotes for the current user"""
-    quotes = Quote.objects.filter(user=request.user).order_by('-created_at')
+    quotes = Quote.objects.all().order_by('-created_at')
     
     return render(request, 'ai_model/user_quotes.html', {
         'quotes': quotes
     })
 
-@login_required
 def room_list(request):
     """Show all rooms for the current user"""
-    rooms = Room.objects.filter(user=request.user).prefetch_related('photos')
+    rooms = Room.objects.all().prefetch_related('photos')
     
     return render(request, 'ai_model/room_list.html', {
         'rooms': rooms
@@ -3077,6 +3068,202 @@ def calculate_manual_quote(request):
                 'success': False,
                 'error': 'Invalid JSON data'
             })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    })
+@csrf_exempt
+def get_furniture_with_heavy_objects(request):
+    """Get furniture options for a specific room type including heavy objects"""
+    if request.method == 'GET':
+        try:
+            room_type = request.GET.get('room_type')
+            
+            if not room_type:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Room type is required'
+                })
+            
+            if room_type not in ROOM_OBJECTS:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Invalid room type. Available types: {list(ROOM_OBJECTS.keys())}'
+                })
+            
+            # Get furniture for the room type with their volumes
+            furniture_list = []
+            for object_name in ROOM_OBJECTS[room_type]:
+                volume = OBJECT_VOLUMES.get(object_name, 0.0)
+                furniture_list.append({
+                    'name': object_name,
+                    'volume': volume,
+                    'display_name': object_name.replace('(-80KG)', '').replace('(<80 kg)', '').strip(),
+                    'is_heavy': False
+                })
+            
+            # Get heavy objects (objects with weight restrictions)
+            heavy_objects = []
+            for object_name, volume in OBJECT_VOLUMES.items():
+                if 'max' in object_name.lower() and 'kg' in object_name.lower():
+                    heavy_objects.append({
+                        'name': object_name,
+                        'volume': volume,
+                        'display_name': object_name,
+                        'is_heavy': True
+                    })
+            
+            return JsonResponse({
+                'success': True,
+                'room_type': room_type,
+                'furniture': furniture_list,
+                'heavy_objects': heavy_objects,
+                'total_items': len(furniture_list),
+                'total_heavy_items': len(heavy_objects)
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    })
+
+@csrf_exempt
+def get_all_rooms_with_heavy_objects(request):
+    """Get all room types with their furniture options including heavy objects"""
+    if request.method == 'GET':
+        try:
+            rooms_data = {}
+            
+            for room_type, furniture_list in ROOM_OBJECTS.items():
+                furniture_with_volumes = []
+                for object_name in furniture_list:
+                    volume = OBJECT_VOLUMES.get(object_name, 0.0)
+                    furniture_with_volumes.append({
+                        'name': object_name,
+                        'volume': volume,
+                        'display_name': object_name.replace('(-80KG)', '').replace('(<80 kg)', '').strip(),
+                        'is_heavy': False
+                    })
+                
+                # Get heavy objects for this room type
+                heavy_objects = []
+                for object_name, volume in OBJECT_VOLUMES.items():
+                    if 'max' in object_name.lower() and 'kg' in object_name.lower():
+                        heavy_objects.append({
+                            'name': object_name,
+                            'volume': volume,
+                            'display_name': object_name,
+                            'is_heavy': True
+                        })
+                
+                rooms_data[room_type] = {
+                    'furniture': furniture_with_volumes,
+                    'heavy_objects': heavy_objects,
+                    'total_items': len(furniture_with_volumes),
+                    'total_heavy_items': len(heavy_objects)
+                }
+            
+            return JsonResponse({
+                'success': True,
+                'rooms': rooms_data,
+                'available_room_types': list(ROOM_OBJECTS.keys())
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    })
+
+@csrf_exempt
+def get_ai_detection_results(request):
+    """Get AI detection results from photos - shows actual detected objects"""
+    if request.method == 'GET':
+        try:
+            # Get all rooms with photos
+            rooms = Room.objects.all().prefetch_related('photos__detected_objects')
+            
+            results = []
+            
+            for room in rooms:
+                room_data = {
+                    'room_id': room.id,
+                    'room_name': room.name,
+                    'room_type': room.room_type,
+                    'room_type_display': room.get_room_type_display(),
+                    'created_at': room.created_at.isoformat(),
+                    'photos': []
+                }
+                
+                total_objects = 0
+                all_detected_objects = {}
+                
+                for photo in room.photos.all():
+                    photo_objects = []
+                    
+                    for detected_obj in photo.detected_objects.all():
+                        obj_data = {
+                            'object_class': detected_obj.object_class,
+                            'confidence': detected_obj.confidence,
+                            'estimated_volume': detected_obj.estimated_volume,
+                            'estimated_weight': detected_obj.estimated_weight,
+                            'bbox': {
+                                'x': detected_obj.bbox_x,
+                                'y': detected_obj.bbox_y,
+                                'width': detected_obj.bbox_width,
+                                'height': detected_obj.bbox_height
+                            },
+                            'detected_at': detected_obj.detected_at.isoformat()
+                        }
+                        photo_objects.append(obj_data)
+                        total_objects += 1
+                        
+                        # Count objects for summary
+                        if detected_obj.object_class in all_detected_objects:
+                            all_detected_objects[detected_obj.object_class] += 1
+                        else:
+                            all_detected_objects[detected_obj.object_class] = 1
+                    
+                    if photo_objects:  # Only include photos with detected objects
+                        room_data['photos'].append({
+                            'photo_id': photo.id,
+                            'filename': photo.filename,
+                            'status': photo.status,
+                            'uploaded_at': photo.uploaded_at.isoformat(),
+                            'detected_objects': photo_objects,
+                            'object_count': len(photo_objects)
+                        })
+                
+                room_data['total_objects_detected'] = total_objects
+                room_data['object_summary'] = all_detected_objects
+                
+                # Only include rooms that have detected objects
+                if total_objects > 0:
+                    results.append(room_data)
+            
+            return JsonResponse({
+                'success': True,
+                'total_rooms': len(results),
+                'rooms': results
+            })
+            
         except Exception as e:
             return JsonResponse({
                 'success': False,

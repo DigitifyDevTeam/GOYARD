@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from .image_utils import check_duplicate_image
 
 @csrf_exempt
-@login_required
 def check_duplicate_images(request):
     """Check for duplicate images before upload"""
     if request.method == 'POST':

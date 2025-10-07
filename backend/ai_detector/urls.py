@@ -32,6 +32,10 @@ urlpatterns = [
     path('furniture/all/', views.get_all_rooms_furniture, name='get_all_rooms_furniture'),
     path('furniture/calculate/', views.calculate_manual_quote, name='calculate_manual_quote'),
     
+    # Furniture with heavy objects
+    path('furniture/room-with-heavy/', views.get_furniture_with_heavy_objects, name='get_furniture_with_heavy_objects'),
+    path('furniture/all-with-heavy/', views.get_all_rooms_with_heavy_objects, name='get_all_rooms_with_heavy_objects'),
+    
     # Room-by-room analysis and object management
     path('room-analysis/', room_analysis_views.get_room_analysis, name='get_room_analysis'),
     path('update-object-quantity/', room_analysis_views.update_object_quantity, name='update_object_quantity'),
@@ -40,5 +44,8 @@ urlpatterns = [
     
     # Duplicate detection
     path('check-duplicates/', duplicate_detection.check_duplicate_images, name='check_duplicate_images'),
+    
+    # AI Detection Results
+    path('ai-results/', views.get_ai_detection_results, name='get_ai_detection_results'),
     
 ]

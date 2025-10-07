@@ -178,6 +178,7 @@ function AppContent() {
   const [isAddingRoom, setIsAddingRoom] = useState(false);
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
   const [showAddPieceForm, setShowAddPieceForm] = useState(false);
+  const [showAddHeavyObjectForm, setShowAddHeavyObjectForm] = useState(false);
   const [pieceForm, setPieceForm] = useState({
     nature: "",
     quantite: "",
@@ -185,6 +186,49 @@ function AppContent() {
     largeur: "",
     hauteur: ""
   });
+  const [heavyObjectForm, setHeavyObjectForm] = useState({
+    nature: "",
+    quantite: "",
+    longueur: "",
+    largeur: "",
+    hauteur: ""
+  });
+  
+  // Store custom object details (dimensions, etc.)
+  const [customObjectDetails, setCustomObjectDetails] = useState<Record<string, {
+    name: string;
+    quantity: number;
+    length: number;
+    width: number;
+    height: number;
+  }>>({});
+  
+  // Store custom heavy object details (dimensions, etc.)
+  const [customHeavyObjectDetails, setCustomHeavyObjectDetails] = useState<Record<string, {
+    name: string;
+    quantity: number;
+    length: number;
+    width: number;
+    height: number;
+  }>>({});
+  
+  // Store AI method custom heavy object details (dimensions, etc.)
+  const [aiCustomHeavyObjectDetails, setAiCustomHeavyObjectDetails] = useState<Record<string, {
+    name: string;
+    quantity: number;
+    length: number;
+    width: number;
+    height: number;
+  }>>({});
+  
+  // Store superficie method custom heavy object details (dimensions, etc.)
+  const [superficieCustomHeavyObjectDetails, setSuperficieCustomHeavyObjectDetails] = useState<Record<string, {
+    name: string;
+    quantity: number;
+    length: number;
+    width: number;
+    height: number;
+  }>>({});
 
   const [addressData, setAddressData] = useState({
     departure: {
@@ -357,8 +401,90 @@ function AppContent() {
     }
   };
 
-  const handleContinueFromSurface = () => {
-    navigate("/tunnel/adresses");
+  const handleContinueFromSurface = async () => {
+    try {
+      // Calculate volumes using the formulas
+      const area = parseFloat(surfaceArea);
+      const vhouse = area * 2.5; // vhouse = x * 2.5
+      const vfurniture = 40; // vfurniture = 500 * 0.08 = 40 m³
+      const totalVolume = vhouse + vfurniture;
+      
+      console.log('Superficie calculation:', {
+        area: area,
+        vhouse: vhouse,
+        vfurniture: vfurniture,
+        totalVolume: totalVolume
+      });
+
+      // Prepare API payload for superficie method
+      const payload = {
+        client_info: clientId,
+        method: "superficie",
+        surface_area: area,
+        calculated_volumes: {
+          vhouse: vhouse,
+          vfurniture: vfurniture,
+          total_volume: totalVolume
+        },
+        heavy_objects: {},
+        custom_heavy_objects: {},
+        special_objects_selected: hasSpecialObjects,
+        special_object_quantities: specialObjectQuantities
+      };
+
+      // Add heavy objects if selected
+      if (hasSpecialObjects) {
+        const heavyObjects: Record<string, number> = {};
+        const customHeavyObjectsData: Record<string, any> = {};
+        
+        Object.entries(specialObjectQuantities).forEach(([object, quantity]) => {
+          if (quantity > 0) {
+            const isCustomHeavyObject = superficieCustomHeavyObjects.includes(object);
+            
+            if (isCustomHeavyObject) {
+              const customHeavyDetails = superficieCustomHeavyObjectDetails[object];
+              customHeavyObjectsData[object] = {
+                name: object,
+                quantity: quantity,
+                length: customHeavyDetails?.length || 100,
+                width: customHeavyDetails?.width || 50,
+                height: customHeavyDetails?.height || 30
+              };
+            } else {
+              heavyObjects[object] = quantity;
+            }
+          }
+        });
+        
+        payload.heavy_objects = heavyObjects;
+        payload.custom_heavy_objects = customHeavyObjectsData;
+      }
+
+      console.log('Submitting superficie calculation:', payload);
+
+      // Call API to save superficie calculation
+      const response = await fetch('http://127.0.0.1:8000/api/demenagement/superficie/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Superficie calculation result:', result);
+
+      // Navigate to next step
+      navigate("/tunnel/adresses");
+      
+    } catch (error) {
+      console.error('Error in superficie calculation:', error);
+      alert('Erreur lors du calcul de la superficie. Veuillez réessayer.');
+    }
   };
 
   const handleBackFromSurface = () => {
@@ -621,12 +747,33 @@ function AppContent() {
         }
       });
 
-      // Prepare heavy objects data
+      // Prepare heavy objects data (predefined objects only)
       const heavyObjects: Record<string, number> = {};
+      const customHeavyObjectsData: Record<string, any> = {};
+      
       if (hasSpecialObjects) {
         Object.entries(specialObjectQuantities).forEach(([object, quantity]) => {
           if (quantity > 0) {
-            heavyObjects[object] = quantity;
+            // Check if this is a custom heavy object
+            const isCustomHeavyObject = customHeavyObjects.includes(object);
+            const isAiCustomHeavyObject = aiCustomHeavyObjects.includes(object);
+            const isSuperficieCustomHeavyObject = superficieCustomHeavyObjects.includes(object);
+            
+            if (isCustomHeavyObject || isAiCustomHeavyObject || isSuperficieCustomHeavyObject) {
+              // Handle custom heavy objects like custom objects
+              // Use stored custom heavy object details if available, otherwise use defaults
+              const customHeavyDetails = customHeavyObjectDetails[object] || aiCustomHeavyObjectDetails[object] || superficieCustomHeavyObjectDetails[object];
+              customHeavyObjectsData[object] = {
+                name: object,
+                quantity: quantity,
+                length: customHeavyDetails?.length || 100,
+                width: customHeavyDetails?.width || 50,
+                height: customHeavyDetails?.height || 30
+              };
+            } else {
+              // Handle predefined heavy objects
+              heavyObjects[object] = quantity;
+            }
           }
         });
       }
@@ -634,7 +781,8 @@ function AppContent() {
       console.log('Heavy objects debug:', {
         hasSpecialObjects,
         specialObjectQuantities,
-        heavyObjects
+        heavyObjects,
+        customHeavyObjectsData
       });
 
       // Prepare custom objects data from room-specific quantities
@@ -645,12 +793,14 @@ function AppContent() {
             // Check if this is a custom object (not in predefined objects)
             const isCustomObject = !Object.values(ROOM_OBJECTS).flat().includes(item);
             if (isCustomObject) {
+              // Use stored custom object details if available, otherwise use defaults
+              const customDetails = customObjectDetails[item];
               customObjects[item] = {
-                name: item, // Add the name/nature field
+                name: item,
                 quantity: quantity,
-                length: 100, // Default dimensions - you might want to get these from form
-                width: 50,
-                height: 30
+                length: customDetails?.length || 100,
+                width: customDetails?.width || 50,
+                height: customDetails?.height || 30
               };
             }
           }
@@ -662,7 +812,8 @@ function AppContent() {
         client_info: clientId,
         room_selections: roomSelections,
         heavy_objects: heavyObjects,
-        custom_objects: customObjects
+        custom_objects: customObjects,
+        custom_heavy_objects: customHeavyObjectsData
       };
 
       console.log('Submitting manual selection:', payload);
@@ -893,6 +1044,24 @@ function AppContent() {
         delete newQuantities[objectName];
         return newQuantities;
       });
+      
+      // Also remove from roomObjectQuantities for all rooms
+      setRoomObjectQuantities(prev => {
+        const newQuantities = { ...prev };
+        Object.keys(newQuantities).forEach(room => {
+          if (newQuantities[room] && newQuantities[room][objectName]) {
+            delete newQuantities[room][objectName];
+          }
+        });
+        return newQuantities;
+      });
+      
+      // Also remove from custom object details
+      setCustomObjectDetails(prev => {
+        const newDetails = { ...prev };
+        delete newDetails[objectName];
+        return newDetails;
+      });
     }
   };
 
@@ -1031,8 +1200,8 @@ function AppContent() {
     return roomIcons[room] || <Package className="w-6 h-6" />;
   };
 
-  // Special objects over 80kg (from backend)
-  const specialObjects = [
+  // Predefined special objects over 80kg (from backend)
+  const predefinedSpecialObjects = [
     "Piano droit (max 200kgs)",
     "Piano à queue (max 300kgs)",
     "Armoire forte (max 200kgs)",
@@ -1043,11 +1212,37 @@ function AppContent() {
     "Banc de musculation (max 150kgs)"
   ];
 
+  // Custom heavy objects added by user (for manual method)
+  const [customHeavyObjects, setCustomHeavyObjects] = useState<string[]>([]);
+  
+  // Custom heavy objects added by user (for AI method)
+  const [aiCustomHeavyObjects, setAiCustomHeavyObjects] = useState<string[]>([]);
+  
+  // Custom heavy objects added by user (for superficie method)
+  const [superficieCustomHeavyObjects, setSuperficieCustomHeavyObjects] = useState<string[]>([]);
+
+  // Combined list: predefined + custom (custom objects always at the end)
+  const specialObjects = [...predefinedSpecialObjects, ...customHeavyObjects];
+  
+  // AI method special objects (separate from manual method)
+  const aiSpecialObjects = [...predefinedSpecialObjects, ...aiCustomHeavyObjects];
+  
+  // Superficie method special objects (separate from manual and AI methods)
+  const superficieSpecialObjects = [...predefinedSpecialObjects, ...superficieCustomHeavyObjects];
+
   const updateSpecialObjectQuantity = (object: string, change: number) => {
     setSpecialObjectQuantities(prev => ({
       ...prev,
       [object]: Math.max(0, (prev[object] || 0) + change),
     }));
+  };
+
+  const handleSpecialObjectsToggle = () => {
+    if (hasSpecialObjects) {
+      // If turning off, reset all quantities to 0
+      setSpecialObjectQuantities({});
+    }
+    setHasSpecialObjects(!hasSpecialObjects);
   };
 
   const handleAddCustomRoom = () => {
@@ -1114,6 +1309,33 @@ function AppContent() {
           [objectName]: (prev[objectName] || 0) + quantity
         }));
         
+        // Also add to roomObjectQuantities for the current room (like heavy objects)
+        if (selectedRoom) {
+          setRoomObjectQuantities(prev => ({
+            ...prev,
+            [selectedRoom]: {
+              ...prev[selectedRoom],
+              [objectName]: quantity
+            }
+          }));
+        }
+        
+        // Store custom object details with form dimensions
+        const length = parseFloat(pieceForm.longueur) || 100;
+        const width = parseFloat(pieceForm.largeur) || 50;
+        const height = parseFloat(pieceForm.hauteur) || 30;
+        
+        setCustomObjectDetails(prev => ({
+          ...prev,
+          [objectName]: {
+            name: objectName,
+            quantity: quantity,
+            length: length,
+            width: width,
+            height: height
+          }
+        }));
+        
         // Show success message
         alert(`Objet "${objectName}" ajouté avec succès!`);
       }
@@ -1128,6 +1350,199 @@ function AppContent() {
       });
       setShowAddPieceForm(false);
     }
+  };
+
+  const handleAddHeavyObject = () => {
+    if (heavyObjectForm.nature.trim() && heavyObjectForm.quantite.trim()) {
+      // Add to custom heavy objects list if not already present
+      const newHeavyObject = heavyObjectForm.nature.trim();
+      if (!customHeavyObjects.includes(newHeavyObject) && !predefinedSpecialObjects.includes(newHeavyObject)) {
+        // Add to the end of custom objects list
+        setCustomHeavyObjects(prev => [...prev, newHeavyObject]);
+      }
+      
+      // Set the quantity
+      const quantity = parseInt(heavyObjectForm.quantite) || 1;
+      setSpecialObjectQuantities(prev => ({
+        ...prev,
+        [newHeavyObject]: quantity
+      }));
+      
+      // Store custom heavy object details with form dimensions
+      const length = parseFloat(heavyObjectForm.longueur) || 100;
+      const width = parseFloat(heavyObjectForm.largeur) || 50;
+      const height = parseFloat(heavyObjectForm.hauteur) || 30;
+      
+      setCustomHeavyObjectDetails(prev => ({
+        ...prev,
+        [newHeavyObject]: {
+          name: newHeavyObject,
+          quantity: quantity,
+          length: length,
+          width: width,
+          height: height
+        }
+      }));
+      
+      // Show success message
+      alert(`Objet lourd "${newHeavyObject}" ajouté avec succès!`);
+      
+      // Reset form
+      setHeavyObjectForm({
+        nature: "",
+        quantite: "",
+        longueur: "",
+        largeur: "",
+        hauteur: ""
+      });
+      setShowAddHeavyObjectForm(false);
+    }
+  };
+
+  const removeCustomHeavyObject = (objectName: string) => {
+    // Remove from custom heavy objects list
+    setCustomHeavyObjects(prev => prev.filter(obj => obj !== objectName));
+    
+    // Remove from quantities
+    setSpecialObjectQuantities(prev => {
+      const newQuantities = { ...prev };
+      delete newQuantities[objectName];
+      return newQuantities;
+    });
+    
+    // Also remove from custom heavy object details
+    setCustomHeavyObjectDetails(prev => {
+      const newDetails = { ...prev };
+      delete newDetails[objectName];
+      return newDetails;
+    });
+  };
+
+  // AI method heavy object handlers
+  const handleAddAiHeavyObject = () => {
+    if (heavyObjectForm.nature.trim() && heavyObjectForm.quantite.trim()) {
+      // Add to AI custom heavy objects list if not already present
+      const newHeavyObject = heavyObjectForm.nature.trim();
+      if (!aiCustomHeavyObjects.includes(newHeavyObject) && !predefinedSpecialObjects.includes(newHeavyObject)) {
+        // Add to the end of AI custom objects list
+        setAiCustomHeavyObjects(prev => [...prev, newHeavyObject]);
+      }
+      
+      // Set the quantity
+      const quantity = parseInt(heavyObjectForm.quantite) || 1;
+      setSpecialObjectQuantities(prev => ({
+        ...prev,
+        [newHeavyObject]: quantity
+      }));
+      
+      // Store AI custom heavy object details with form dimensions
+      const length = parseFloat(heavyObjectForm.longueur) || 100;
+      const width = parseFloat(heavyObjectForm.largeur) || 50;
+      const height = parseFloat(heavyObjectForm.hauteur) || 30;
+      
+      setAiCustomHeavyObjectDetails(prev => ({
+        ...prev,
+        [newHeavyObject]: {
+          name: newHeavyObject,
+          quantity: quantity,
+          length: length,
+          width: width,
+          height: height
+        }
+      }));
+      
+      // Show success message
+      alert(`Objet lourd "${newHeavyObject}" ajouté avec succès!`);
+      
+      // Reset form
+      setHeavyObjectForm({
+        nature: "",
+        quantite: "",
+        longueur: "",
+        largeur: "",
+        hauteur: ""
+      });
+      setShowAddHeavyObjectForm(false);
+    }
+  };
+
+  const removeAiCustomHeavyObject = (objectName: string) => {
+    // Remove from AI custom heavy objects list
+    setAiCustomHeavyObjects(prev => prev.filter(obj => obj !== objectName));
+    
+    // Remove from quantities
+    setSpecialObjectQuantities(prev => {
+      const newQuantities = { ...prev };
+      delete newQuantities[objectName];
+      return newQuantities;
+    });
+    
+    // Also remove from AI custom heavy object details
+    setAiCustomHeavyObjectDetails(prev => {
+      const newDetails = { ...prev };
+      delete newDetails[objectName];
+      return newDetails;
+    });
+  };
+
+  // Superficie method custom heavy object handlers
+  const handleAddSuperficieHeavyObject = () => {
+    if (heavyObjectForm.nature.trim() && heavyObjectForm.quantite.trim()) {
+      // Add to superficie custom heavy objects list if not already present
+      const newHeavyObject = heavyObjectForm.nature.trim();
+      if (!superficieCustomHeavyObjects.includes(newHeavyObject) && !predefinedSpecialObjects.includes(newHeavyObject)) {
+        // Add to the end of superficie custom objects list
+        setSuperficieCustomHeavyObjects(prev => [...prev, newHeavyObject]);
+      }
+      
+      // Store the custom heavy object details
+      const quantity = parseInt(heavyObjectForm.quantite) || 1;
+      const length = parseFloat(heavyObjectForm.longueur) || 100;
+      const width = parseFloat(heavyObjectForm.largeur) || 50;
+      const height = parseFloat(heavyObjectForm.hauteur) || 30;
+      
+      setSuperficieCustomHeavyObjectDetails(prev => ({
+        ...prev,
+        [newHeavyObject]: {
+          name: newHeavyObject,
+          quantity: quantity,
+          length: length,
+          width: width,
+          height: height
+        }
+      }));
+      
+      // Set the quantity in the main quantities state
+      setSpecialObjectQuantities(prev => ({
+        ...prev,
+        [newHeavyObject]: quantity
+      }));
+      
+      alert(`Objet lourd "${newHeavyObject}" ajouté avec succès!`);
+      setHeavyObjectForm({
+        nature: "",
+        quantite: "",
+        longueur: "",
+        largeur: "",
+        hauteur: ""
+      });
+      setShowAddHeavyObjectForm(false);
+    }
+  };
+
+  const removeSuperficieCustomHeavyObject = (objectName: string) => {
+    setSuperficieCustomHeavyObjects(prev => prev.filter(obj => obj !== objectName));
+    setSpecialObjectQuantities(prev => {
+      const newQuantities = { ...prev };
+      delete newQuantities[objectName];
+      return newQuantities;
+    });
+    // Also remove from custom heavy object details
+    setSuperficieCustomHeavyObjectDetails(prev => {
+      const newDetails = { ...prev };
+      delete newDetails[objectName];
+      return newDetails;
+    });
   };
 
   // Check if user has either uploaded images or added special objects
@@ -2475,9 +2890,10 @@ function AppContent() {
                           key={item.name}
                           className={`rounded-lg p-4 text-center relative transition-colors ${
                             hasQuantity 
-                              ? 'bg-gradient-to-br from-yellow-100 to-orange-100 border-2 border-yellow-300 shadow-md' 
+                              ? 'bg-slate-50 border-2 shadow-md' 
                               : 'bg-slate-50'
                           }`}
+                          style={hasQuantity ? { borderColor: '#1c3957' } : {}}
                         >
                         {/* Delete icon for custom objects */}
                         {isCustomObject(item.name) && (
@@ -2658,7 +3074,7 @@ function AppContent() {
                             Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
                           </h3>
                           <button
-                            onClick={() => setHasSpecialObjects(!hasSpecialObjects)}
+                            onClick={handleSpecialObjectsToggle}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
                               hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
                             }`}
@@ -2681,20 +3097,38 @@ function AppContent() {
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                             {specialObjects.map((object) => {
                               const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
+                              // Check if this is a custom object
+                              const isCustomObject = customHeavyObjects.includes(object);
+                              
                               return (
                                 <div
                                   key={object}
-                                  className={`rounded-lg p-4 text-center transition-colors ${
+                                  className={`rounded-lg p-4 text-center transition-colors relative ${
                                     hasQuantity 
-                                      ? 'bg-gradient-to-br from-yellow-100 to-orange-100 border-2 border-yellow-300 shadow-md' 
+                                      ? 'bg-slate-50 border-2 shadow-md' 
                                       : 'bg-slate-50'
                                   }`}
+                                  style={hasQuantity ? { borderColor: '#1c3957' } : {}}
                                 >
+                                  {/* Trash icon for custom objects */}
+                                  {isCustomObject && (
+                                    <button
+                                      onClick={() => removeCustomHeavyObject(object)}
+                                      className="absolute top-2 right-2 p-1 hover:bg-blue-100 rounded-full transition-colors"
+                                      title="Supprimer cet objet personnalisé"
+                                    >
+                                      <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
+                                    </button>
+                                  )}
+                                  
                                   <div className="flex justify-center mb-2">
                                     <BoxIcon />
                                   </div>
                                   <h3 className="text-sm font-medium text-slate-900 mb-3">
                                     {object}
+                                    {isCustomObject && (
+                                      <span className="text-xs ml-1" style={{ color: '#CC922F' }}>(Personnalisé)</span>
+                                    )}
                                   </h3>
                                   <div className="flex items-center justify-center gap-3">
                                     <Button
@@ -2721,12 +3155,137 @@ function AppContent() {
                                 </div>
                               );
                             })}
+                            
+                            {/* Add Custom Heavy Object */}
+                            <div className="bg-slate-50 rounded-lg p-4 text-center">
+                              <div className="flex items-center justify-center mx-auto mb-2">
+                                <Plus className="w-10 h-10 font-bold" style={{ color: '#CC922F' }} />
+                              </div>
+                              <h3 className="text-sm font-medium text-slate-900 mb-3">
+                                Ajouter un objet lourd
+                              </h3>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="text-xs"
+                                onClick={() => setShowAddHeavyObjectForm(!showAddHeavyObjectForm)}
+                              >
+                                Ajouter
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
 
+                  {/* Add Heavy Object Form */}
+                  {showAddHeavyObjectForm && (
+                    <div className="max-w-4xl mx-auto mb-8">
+                      <div className="bg-white border border-slate-200 rounded-lg p-6">
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-semibold text-slate-900">Ajouter un objet lourd</h3>
+                          <Button
+                            size="sm"
+                            onClick={() => setShowAddHeavyObjectForm(false)}
+                            className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+                          >
+                            Fermer
+                          </Button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {/* Nature de l'objet and Quantité */}
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-nature" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Tag className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Nature de l'objet
+                            </Label>
+                            <Input
+                              id="heavy-nature"
+                              type="text"
+                              placeholder="Ex: Piano à queue, Coffre fort..."
+                              value={heavyObjectForm.nature}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, nature: e.target.value }))}
+                              className="w-full"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-quantite" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Hash className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Quantité
+                            </Label>
+                            <Input
+                              id="heavy-quantite"
+                              type="number"
+                              placeholder="Ex: 1"
+                              value={heavyObjectForm.quantite}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, quantite: e.target.value }))}
+                              className="w-full"
+                              min="1"
+                            />
+                          </div>
+                          
+                          {/* Dimensions */}
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-longueur" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Ruler className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Longueur (cm)
+                            </Label>
+                            <Input
+                              id="heavy-longueur"
+                              type="number"
+                              placeholder="Ex: 200"
+                              value={heavyObjectForm.longueur}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, longueur: e.target.value }))}
+                              className="w-full"
+                              min="0"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-largeur" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Ruler className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Largeur (cm)
+                            </Label>
+                            <Input
+                              id="heavy-largeur"
+                              type="number"
+                              placeholder="Ex: 150"
+                              value={heavyObjectForm.largeur}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, largeur: e.target.value }))}
+                              className="w-full"
+                              min="0"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-hauteur" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Ruler className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Hauteur (cm)
+                            </Label>
+                            <Input
+                              id="heavy-hauteur"
+                              type="number"
+                              placeholder="Ex: 100"
+                              value={heavyObjectForm.hauteur}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, hauteur: e.target.value }))}
+                              className="w-full"
+                              min="0"
+                            />
+                          </div>
+                          
+                          {/* Ajouter Button */}
+                          <div className="flex items-end">
+                            <Button
+                              onClick={handleAddHeavyObject}
+                              className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+                              disabled={!heavyObjectForm.nature.trim() || !heavyObjectForm.quantite.trim()}
+                            >
+                              Ajouter
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="flex gap-4">
@@ -2806,7 +3365,7 @@ function AppContent() {
                               Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
                             </h3>
                             <button
-                              onClick={() => setHasSpecialObjects(!hasSpecialObjects)}
+                              onClick={handleSpecialObjectsToggle}
                               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
                                 hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
                               }`}
@@ -2827,42 +3386,177 @@ function AppContent() {
                         {hasSpecialObjects && (
                           <div className="mt-6">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                              {specialObjects.map((object) => (
-                                <div
-                                  key={object}
-                                  className="bg-slate-50 rounded-lg p-4 text-center"
-                                >
-                                  <div className="flex justify-center mb-2">
-                                    <BoxIcon />
+                              {superficieSpecialObjects.map((object) => {
+                                const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
+                                // Check if this is a custom object
+                                const isCustomObject = superficieCustomHeavyObjects.includes(object);
+                                
+                                return (
+                                  <div
+                                    key={object}
+                                    className={`rounded-lg p-4 text-center transition-colors relative ${
+                                      hasQuantity
+                                        ? 'bg-slate-50 border-2 shadow-md'
+                                        : 'bg-slate-50'
+                                    }`}
+                                    style={hasQuantity ? { borderColor: '#1c3957' } : {}}
+                                  >
+                                    {/* Trash icon for custom objects */}
+                                    {isCustomObject && (
+                                      <button
+                                        onClick={() => removeSuperficieCustomHeavyObject(object)}
+                                        className="absolute top-2 right-2 p-1 hover:bg-blue-100 rounded-full transition-colors"
+                                        title="Supprimer cet objet personnalisé"
+                                      >
+                                        <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
+                                      </button>
+                                    )}
+                                    
+                                    <div className="flex justify-center mb-2">
+                                      <BoxIcon />
+                                    </div>
+                                    <h3 className="text-sm font-medium text-slate-900 mb-1">
+                                      {object}
+                                    </h3>
+                                    {isCustomObject && (
+                                      <p className="text-xs mb-2" style={{ color: '#CC922F' }}>
+                                        (Personnalisé)
+                                      </p>
+                                    )}
+                                    <div className="flex items-center justify-center gap-3">
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => updateSpecialObjectQuantity(object, -1)}
+                                        disabled={!specialObjectQuantities[object]}
+                                        className="w-8 h-8 p-0"
+                                      >
+                                        <Minus className="w-4 h-4" />
+                                      </Button>
+                                      <span className="text-lg font-semibold min-w-[2rem] text-center">
+                                        {specialObjectQuantities[object] || 0}
+                                      </span>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => updateSpecialObjectQuantity(object, 1)}
+                                        className="w-8 h-8 p-0"
+                                      >
+                                        <Plus className="w-4 h-4" />
+                                      </Button>
+                                    </div>
                                   </div>
-                                  <h3 className="text-sm font-medium text-slate-900 mb-3">
-                                    {object}
-                                  </h3>
-                                  <div className="flex items-center justify-center gap-3">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => updateSpecialObjectQuantity(object, -1)}
-                                      disabled={!specialObjectQuantities[object]}
-                                      className="w-8 h-8 p-0"
-                                    >
-                                      <Minus className="w-4 h-4" />
-                                    </Button>
-                                    <span className="text-lg font-semibold min-w-[2rem] text-center">
-                                      {specialObjectQuantities[object] || 0}
-                                    </span>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => updateSpecialObjectQuantity(object, 1)}
-                                      className="w-8 h-8 p-0"
-                                    >
-                                      <Plus className="w-4 h-4" />
-                                    </Button>
+                                );
+                              })}
+                              
+                              {/* Add Custom Heavy Object */}
+                              <div className="bg-slate-50 rounded-lg p-4 text-center">
+                                <div className="flex items-center justify-center mx-auto mb-2">
+                                  <Plus className="w-10 h-10 font-bold" style={{ color: '#CC922F' }} />
+                                </div>
+                                <h3 className="text-sm font-medium text-slate-900 mb-3">
+                                  Ajouter un objet lourd
+                                </h3>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="text-xs"
+                                  onClick={() => setShowAddHeavyObjectForm(!showAddHeavyObjectForm)}
+                                >
+                                  Ajouter
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            {/* Add Custom Heavy Object Form */}
+                            {showAddHeavyObjectForm && (
+                              <div className="mt-6 p-6 bg-slate-50 rounded-lg border-2 border-dashed border-slate-300">
+                                <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                                  Ajouter un objet lourd personnalisé
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div>
+                                    <Label htmlFor="heavy-nature" className="text-slate-700 font-medium">
+                                      Nature de l'objet
+                                    </Label>
+                                    <Input
+                                      id="heavy-nature"
+                                      placeholder="Ex: Piano à queue"
+                                      value={heavyObjectForm.nature}
+                                      onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, nature: e.target.value }))}
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="heavy-quantite" className="text-slate-700 font-medium">
+                                      Quantité
+                                    </Label>
+                                    <Input
+                                      id="heavy-quantite"
+                                      type="number"
+                                      placeholder="Ex: 1"
+                                      value={heavyObjectForm.quantite}
+                                      onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, quantite: e.target.value }))}
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="heavy-longueur" className="text-slate-700 font-medium">
+                                      Longueur (cm)
+                                    </Label>
+                                    <Input
+                                      id="heavy-longueur"
+                                      type="number"
+                                      placeholder="Ex: 150"
+                                      value={heavyObjectForm.longueur}
+                                      onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, longueur: e.target.value }))}
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="heavy-largeur" className="text-slate-700 font-medium">
+                                      Largeur (cm)
+                                    </Label>
+                                    <Input
+                                      id="heavy-largeur"
+                                      type="number"
+                                      placeholder="Ex: 100"
+                                      value={heavyObjectForm.largeur}
+                                      onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, largeur: e.target.value }))}
+                                      className="mt-1"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="heavy-hauteur" className="text-slate-700 font-medium">
+                                      Hauteur (cm)
+                                    </Label>
+                                    <Input
+                                      id="heavy-hauteur"
+                                      type="number"
+                                      placeholder="Ex: 80"
+                                      value={heavyObjectForm.hauteur}
+                                      onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, hauteur: e.target.value }))}
+                                      className="mt-1"
+                                    />
                                   </div>
                                 </div>
-                              ))}
-                            </div>
+                                <div className="flex gap-3 mt-4">
+                                  <Button
+                                    onClick={handleAddSuperficieHeavyObject}
+                                    className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+                                    disabled={!heavyObjectForm.nature.trim() || !heavyObjectForm.quantite.trim()}
+                                  >
+                                    Ajouter l'objet
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => setShowAddHeavyObjectForm(false)}
+                                  >
+                                    Annuler
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -3202,6 +3896,234 @@ function AppContent() {
                     </div>
                   )}
 
+                  {/* Special Objects Section */}
+                  {!isAnalyzing && !analysisResults && (
+                    <>
+                      {/* Special Objects Question */}
+                      <div className="max-w-4xl mx-auto mb-8">
+                      <div className="bg-slate-50 rounded-lg p-6">
+                        <div className="mb-4">
+                          <div className="flex items-center mb-2">
+                            <h3 className="text-lg font-semibold text-slate-900">
+                              Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
+                            </h3>
+                            <button
+                              onClick={handleSpecialObjectsToggle}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
+                                hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
+                              }`}
+                            >
+                              <span
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                  hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
+                                }`}
+                              />
+                            </button>
+                          </div>
+                          <p className="text-sm text-slate-600">
+                            Sélectionnez les objets lourds qui nécessitent une attention particulière
+                          </p>
+                        </div>
+
+                        {/* Special Objects Grid */}
+                        {hasSpecialObjects && (
+                          <div className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              {aiSpecialObjects.map((object) => {
+                                const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
+                                // Check if this is a custom object
+                                const isCustomObject = aiCustomHeavyObjects.includes(object);
+                                
+                                return (
+                                  <div
+                                    key={object}
+                                    className={`rounded-lg p-4 text-center transition-colors relative ${
+                                      hasQuantity 
+                                        ? 'bg-slate-50 border-2 shadow-md' 
+                                        : 'bg-slate-50'
+                                    }`}
+                                    style={hasQuantity ? { borderColor: '#1c3957' } : {}}
+                                  >
+                                    {/* Trash icon for custom objects */}
+                                    {isCustomObject && (
+                                      <button
+                                        onClick={() => removeAiCustomHeavyObject(object)}
+                                        className="absolute top-2 right-2 p-1 hover:bg-blue-100 rounded-full transition-colors"
+                                        title="Supprimer cet objet personnalisé"
+                                      >
+                                        <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
+                                      </button>
+                                    )}
+                                    
+                                    <div className="flex justify-center mb-2">
+                                      <BoxIcon />
+                                    </div>
+                                    <h3 className="text-sm font-medium text-slate-900 mb-3">
+                                      {object}
+                                      {isCustomObject && (
+                                        <span className="text-xs ml-1" style={{ color: '#CC922F' }}>(Personnalisé)</span>
+                                      )}
+                                    </h3>
+                                    <div className="flex items-center justify-center gap-3">
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => updateSpecialObjectQuantity(object, -1)}
+                                        disabled={!specialObjectQuantities[object]}
+                                        className="w-8 h-8 p-0"
+                                      >
+                                        <Minus className="w-4 h-4" />
+                                      </Button>
+                                      <span className="text-lg font-semibold min-w-[2rem] text-center">
+                                        {specialObjectQuantities[object] || 0}
+                                      </span>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => updateSpecialObjectQuantity(object, 1)}
+                                        className="w-8 h-8 p-0"
+                                      >
+                                        <Plus className="w-4 h-4" />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                              
+                              {/* Add Custom Heavy Object */}
+                              <div className="bg-slate-50 rounded-lg p-4 text-center">
+                                <div className="flex items-center justify-center mx-auto mb-2">
+                                  <Plus className="w-10 h-10 font-bold" style={{ color: '#CC922F' }} />
+                                </div>
+                                <h3 className="text-sm font-medium text-slate-900 mb-3">
+                                  Ajouter un objet lourd
+                                </h3>
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="text-xs"
+                                  onClick={() => setShowAddHeavyObjectForm(!showAddHeavyObjectForm)}
+                                >
+                                  Ajouter
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    </>
+                  )}
+
+                  {/* Add Heavy Object Form */}
+                  {showAddHeavyObjectForm && (
+                    <div className="max-w-4xl mx-auto mb-8">
+                      <div className="bg-white border border-slate-200 rounded-lg p-6">
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-semibold text-slate-900">Ajouter un objet lourd</h3>
+                          <Button
+                            size="sm"
+                            onClick={() => setShowAddHeavyObjectForm(false)}
+                            className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+                          >
+                            Fermer
+                          </Button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {/* Nature de l'objet and Quantité */}
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-nature-ai" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Tag className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Nature de l'objet
+                            </Label>
+                            <Input
+                              id="heavy-nature-ai"
+                              type="text"
+                              placeholder="Ex: Piano à queue, Coffre fort..."
+                              value={heavyObjectForm.nature}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, nature: e.target.value }))}
+                              className="w-full"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-quantite-ai" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Hash className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Quantité
+                            </Label>
+                            <Input
+                              id="heavy-quantite-ai"
+                              type="number"
+                              placeholder="Ex: 1"
+                              value={heavyObjectForm.quantite}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, quantite: e.target.value }))}
+                              className="w-full"
+                              min="1"
+                            />
+                          </div>
+                          
+                          {/* Dimensions */}
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-longueur-ai" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Ruler className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Longueur (cm)
+                            </Label>
+                            <Input
+                              id="heavy-longueur-ai"
+                              type="number"
+                              placeholder="Ex: 200"
+                              value={heavyObjectForm.longueur}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, longueur: e.target.value }))}
+                              className="w-full"
+                              min="0"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-largeur-ai" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Ruler className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Largeur (cm)
+                            </Label>
+                            <Input
+                              id="heavy-largeur-ai"
+                              type="number"
+                              placeholder="Ex: 150"
+                              value={heavyObjectForm.largeur}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, largeur: e.target.value }))}
+                              className="w-full"
+                              min="0"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="heavy-hauteur-ai" className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                              <Ruler className="w-4 h-4" style={{ color: '#CC922F' }} />
+                              Hauteur (cm)
+                            </Label>
+                            <Input
+                              id="heavy-hauteur-ai"
+                              type="number"
+                              placeholder="Ex: 100"
+                              value={heavyObjectForm.hauteur}
+                              onChange={(e) => setHeavyObjectForm(prev => ({ ...prev, hauteur: e.target.value }))}
+                              className="w-full"
+                              min="0"
+                            />
+                          </div>
+                          
+                          {/* Ajouter Button */}
+                          <div className="flex items-end">
+                            <Button
+                              onClick={handleAddAiHeavyObject}
+                              className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+                              disabled={!heavyObjectForm.nature.trim() || !heavyObjectForm.quantite.trim()}
+                            >
+                              Ajouter
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Action Buttons - Always visible */}
                   <div className="flex gap-4 mt-8">
                     <Button
@@ -3225,83 +4147,6 @@ function AppContent() {
                       CONTINUER →
                     </Button>
                   </div>
-
-                  {/* Special Objects Section */}
-                  {(selectedRoom || uploadedImages.length > 0) && !isAnalyzing && !analysisResults && (
-                    <>
-                      {/* Special Objects Question */}
-                      <div className="max-w-4xl mx-auto mb-8">
-                      <div className="bg-slate-50 rounded-lg p-6">
-                        <div className="mb-4">
-                          <div className="flex items-center mb-2">
-                            <h3 className="text-lg font-semibold text-slate-900">
-                              Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
-                            </h3>
-                            <button
-                              onClick={() => setHasSpecialObjects(!hasSpecialObjects)}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
-                                hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
-                              }`}
-                            >
-                              <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
-                                }`}
-                              />
-                            </button>
-                          </div>
-                          <p className="text-sm text-slate-600">
-                            Sélectionnez les objets lourds qui nécessitent une attention particulière
-                          </p>
-                        </div>
-
-                        {/* Special Objects Grid */}
-                        {hasSpecialObjects && (
-                          <div className="mt-6">
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                              {specialObjects.map((object) => (
-                                <div
-                                  key={object}
-                                  className="bg-slate-50 rounded-lg p-4 text-center"
-                                >
-                                  <div className="flex justify-center mb-2">
-                                    <BoxIcon />
-                                  </div>
-                                  <h3 className="text-sm font-medium text-slate-900 mb-3">
-                                    {object}
-                                  </h3>
-                                  <div className="flex items-center justify-center gap-3">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => updateSpecialObjectQuantity(object, -1)}
-                                      disabled={!specialObjectQuantities[object]}
-                                      className="w-8 h-8 p-0"
-                                    >
-                                      <Minus className="w-4 h-4" />
-                                    </Button>
-                                    <span className="text-lg font-semibold min-w-[2rem] text-center">
-                                      {specialObjectQuantities[object] || 0}
-                                    </span>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => updateSpecialObjectQuantity(object, 1)}
-                                      className="w-8 h-8 p-0"
-                                    >
-                                      <Plus className="w-4 h-4" />
-                                    </Button>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    </>
-                  )}
                 </>
               )}
 
@@ -3619,83 +4464,6 @@ function AppContent() {
                     </div>
                   )}
 
-                  {/* Special Objects Question */}
-                  <div className="max-w-4xl mx-auto mb-8">
-                    <div className="bg-slate-50 rounded-lg p-6">
-                      <div className="mb-4">
-                        <div className="flex items-center mb-2">
-                          <h3 className="text-lg font-semibold text-slate-900">
-                            Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
-                          </h3>
-                          <button
-                            onClick={() => setHasSpecialObjects(!hasSpecialObjects)}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
-                              hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
-                            }`}
-                          >
-                            <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
-                              }`}
-                            />
-                          </button>
-                        </div>
-                        <p className="text-sm text-slate-600">
-                          Sélectionnez les objets lourds qui nécessitent une attention particulière
-                        </p>
-                      </div>
-
-                      {/* Special Objects Grid */}
-                      {hasSpecialObjects && (
-                        <div className="mt-6">
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {specialObjects.map((object) => {
-                              const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
-                              return (
-                                <div
-                                  key={object}
-                                  className={`rounded-lg p-4 text-center transition-colors ${
-                                    hasQuantity 
-                                      ? 'bg-gradient-to-br from-yellow-100 to-orange-100 border-2 border-yellow-300 shadow-md' 
-                                      : 'bg-slate-50'
-                                  }`}
-                                >
-                                <div className="flex justify-center mb-2">
-                                  <BoxIcon />
-                                </div>
-                                <h3 className="text-sm font-medium text-slate-900 mb-3">
-                                  {object}
-                                </h3>
-                                <div className="flex items-center justify-center gap-3">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => updateSpecialObjectQuantity(object, -1)}
-                                    disabled={!specialObjectQuantities[object]}
-                                    className="w-8 h-8 p-0"
-                                  >
-                                    <Minus className="w-4 h-4" />
-                                  </Button>
-                                  <span className="text-lg font-semibold min-w-[2rem] text-center">
-                                    {specialObjectQuantities[object] || 0}
-                                  </span>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => updateSpecialObjectQuantity(object, 1)}
-                                    className="w-8 h-8 p-0"
-                                  >
-                                    <Plus className="w-4 h-4" />
-                                  </Button>
-                                </div>
-                              </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
 
                   {/* Action Buttons */}
                   <div className="flex gap-4">

@@ -61,6 +61,42 @@ class ManualSelection(models.Model):
         help_text="Objets ajoutés manuellement par l'utilisateur avec dimensions"
     )
     
+    # Custom heavy objects added by user (JSON format)
+    # Example: {"Piano personnalisé": {"quantity": 1, "length": 150, "width": 60, "height": 100}}
+    custom_heavy_objects = models.JSONField(
+        default=dict,
+        verbose_name="Objets lourds personnalisés",
+        help_text="Objets lourds ajoutés manuellement par l'utilisateur avec dimensions"
+    )
+    
+    # Method used for calculation
+    METHOD_CHOICES = [
+        ('manual', 'Sélection manuelle'),
+        ('ai', 'Analyse IA'),
+        ('superficie', 'Calcul superficie'),
+    ]
+    
+    method = models.CharField(
+        max_length=20,
+        choices=METHOD_CHOICES,
+        default='manual',
+        verbose_name="Méthode de calcul"
+    )
+    
+    # Superficie calculation fields
+    surface_area = models.FloatField(
+        null=True,
+        blank=True,
+        verbose_name="Surface (m²)",
+        help_text="Surface du logement en mètres carrés"
+    )
+    
+    calculated_volumes = models.JSONField(
+        default=dict,
+        verbose_name="Volumes calculés",
+        help_text="Volumes calculés selon les formules (vhouse, vfurniture, total_volume)"
+    )
+    
     # Calculated totals
     total_volume = models.FloatField(
         default=0.0,
@@ -72,6 +108,19 @@ class ManualSelection(models.Model):
         default=0,
         verbose_name="Nombre total d'objets",
         help_text="Nombre total d'objets sélectionnés"
+    )
+    
+    # Price fields
+    base_price = models.FloatField(
+        default=0.0,
+        verbose_name="Prix de base (€)",
+        help_text="Prix calculé avant ajustements"
+    )
+    
+    final_price = models.FloatField(
+        default=0.0,
+        verbose_name="Prix final (€)",
+        help_text="Prix final après tous les ajustements"
     )
     
     # Status tracking
@@ -144,6 +193,26 @@ class ManualSelection(models.Model):
                     all_objects[obj_name] += count
                 else:
                     all_objects[obj_name] = count
+
+        # Add custom objects
+        for obj_name, obj_data in self.custom_objects.items():
+            if isinstance(obj_data, dict) and 'quantity' in obj_data:
+                count = obj_data['quantity']
+                if count > 0:
+                    if obj_name in all_objects:
+                        all_objects[obj_name] += count
+                    else:
+                        all_objects[obj_name] = count
+        
+        # Add custom heavy objects
+        for obj_name, obj_data in self.custom_heavy_objects.items():
+            if isinstance(obj_data, dict) and 'quantity' in obj_data:
+                count = obj_data['quantity']
+                if count > 0:
+                    if obj_name in all_objects:
+                        all_objects[obj_name] += count
+                    else:
+                        all_objects[obj_name] = count
         
         # Calculate totals
         volume_calc = calculate_total_volume(all_objects)

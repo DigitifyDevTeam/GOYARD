@@ -88,7 +88,7 @@ class RoomAnalysis(models.Model):
 
 class RoomObject(models.Model):
     """Stores individual objects detected/added in a room analysis"""
-    room_analysis = models.ForeignKey(RoomAnalysis, on_delete=models.CASCADE, related_name='objects')
+    room_analysis = models.ForeignKey(RoomAnalysis, on_delete=models.CASCADE, related_name='room_objects')
     object_name = models.CharField(max_length=100)
     quantity = models.IntegerField(default=1)
     volume_per_unit = models.FloatField(default=0.0)

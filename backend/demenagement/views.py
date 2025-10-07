@@ -257,6 +257,26 @@ def create_manual_selection(request):
             if count > 0:
                 all_objects[obj_name] = all_objects.get(obj_name, 0) + count
         
+        # Add custom objects (manual, non-heavy)
+        if selection.custom_objects:
+            for obj_name, obj_data in selection.custom_objects.items():
+                try:
+                    qty = int(obj_data.get('quantity', 0)) if isinstance(obj_data, dict) else 0
+                except (TypeError, ValueError):
+                    qty = 0
+                if qty > 0:
+                    all_objects[obj_name] = all_objects.get(obj_name, 0) + qty
+
+        # Add custom heavy objects
+        if selection.custom_heavy_objects:
+            for obj_name, obj_data in selection.custom_heavy_objects.items():
+                try:
+                    qty = int(obj_data.get('quantity', 0)) if isinstance(obj_data, dict) else 0
+                except (TypeError, ValueError):
+                    qty = 0
+                if qty > 0:
+                    all_objects[obj_name] = all_objects.get(obj_name, 0) + qty
+        
         # Calculate volume and quote
         volume_calc = calculate_total_volume(all_objects)
         quote_calc = calculate_quote(volume_calc)
@@ -329,3 +349,274 @@ def list_manual_selections(request):
         'count': selections.count(),
         'data': serializer.data
     }, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def create_superficie_calculation(request):
+    """Create superficie calculation with formulas: vhouse = x * 2.5, vfurniture = 40 m³"""
+    try:
+        data = request.data
+        
+        # Extract superficie calculation data
+        client_info_id = data.get('client_info')
+        surface_area = data.get('surface_area')
+        calculated_volumes = data.get('calculated_volumes', {})
+        heavy_objects = data.get('heavy_objects', {})
+        custom_heavy_objects = data.get('custom_heavy_objects', {})
+        special_objects_selected = data.get('special_objects_selected', False)
+        special_object_quantities = data.get('special_object_quantities', {})
+        
+        print(f"Superficie calculation request: {data}")
+        
+        # Validate required fields
+        if not client_info_id:
+            return Response({
+                'success': False,
+                'error': 'Client information is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not surface_area or surface_area <= 0:
+            return Response({
+                'success': False,
+                'error': 'Valid surface area is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Get client information
+        try:
+            client_info = ClientInformation.objects.get(id=client_info_id)
+        except ClientInformation.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Client not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # Calculate volumes using the formulas
+        vhouse = surface_area * 2.5  # vhouse = x * 2.5
+        vfurniture = 40  # vfurniture = 500 * 0.08 = 40 m³
+        total_volume = vhouse + vfurniture
+        
+        # Calculate quote based on total volume
+        PRICE_PER_M3 = 15  # Price per cubic meter
+        base_price = total_volume * PRICE_PER_M3
+        final_price = base_price  # Can add additional calculations here
+        
+        # Create superficie calculation record
+        superficie_calculation = ManualSelection.objects.create(
+            client_info=client_info,
+            method='superficie',
+            surface_area=surface_area,
+            calculated_volumes={
+                'vhouse': vhouse,
+                'vfurniture': vfurniture,
+                'total_volume': total_volume
+            },
+            heavy_objects=heavy_objects,
+            custom_heavy_objects=custom_heavy_objects,
+            total_volume=total_volume,
+            total_objects_count=len(heavy_objects) + len(custom_heavy_objects),
+            base_price=base_price,
+            final_price=final_price,
+            status='completed'
+        )
+        
+        print(f"Superficie calculation created with ID: {superficie_calculation.id}")
+        
+        return Response({
+            'success': True,
+            'message': 'Superficie calculation created successfully',
+            'calculation_id': superficie_calculation.id,
+            'calculated_volumes': {
+                'vhouse': vhouse,
+                'vfurniture': vfurniture,
+                'total_volume': total_volume
+            },
+            'quote': {
+                'base_price': base_price,
+                'final_price': final_price,
+                'volume_breakdown': f"Volume maison: {vhouse}m³, Volume mobilier: {vfurniture}m³"
+            }
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        print(f"Error creating superficie calculation: {str(e)}")
+        return Response({
+            'success': False,
+            'error': f'Error creating superficie calculation: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_volume_calculation(request):
+    """Get volume calculation from surface area and heavy objects data"""
+    try:
+        # Get surface area from query parameters
+        surface_area = request.GET.get('surface_area')
+        client_id = request.GET.get('client_id')
+        
+        if not surface_area:
+            return Response({
+                'success': False,
+                'error': 'Surface area (surface_area) parameter is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            surface_area = float(surface_area)
+            if surface_area <= 0:
+                raise ValueError("Surface area must be positive")
+        except ValueError:
+            return Response({
+                'success': False,
+                'error': 'Invalid surface area. Must be a positive number.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Calculate volumes using the formulas
+        vhouse = surface_area * 2.5  # vhouse = x * 2.5
+        vfurniture = 40  # vfurniture = 500 * 0.08 = 40 m³
+        total_volume = vhouse + vfurniture
+        
+        # Calculate quote
+        PRICE_PER_M3 = 15  # Price per cubic meter
+        base_price = total_volume * PRICE_PER_M3
+        final_price = base_price
+        
+        # Get heavy objects data if client_id is provided
+        heavy_objects_data = {}
+        custom_heavy_objects_data = {}
+        
+        if client_id:
+            try:
+                # Get the latest superficie calculation for this client
+                superficie_calc = ManualSelection.objects.filter(
+                    client_info_id=client_id,
+                    method='superficie'
+                ).order_by('-created_at').first()
+                
+                if superficie_calc:
+                    heavy_objects_data = superficie_calc.heavy_objects
+                    custom_heavy_objects_data = superficie_calc.custom_heavy_objects
+                    
+                    print(f"Found superficie calculation for client {client_id}: {superficie_calc.id}")
+                else:
+                    print(f"No superficie calculation found for client {client_id}")
+                    
+            except Exception as e:
+                print(f"Error retrieving heavy objects for client {client_id}: {str(e)}")
+        
+        # Prepare response
+        response_data = {
+            'success': True,
+            'calculation': {
+                'surface_area': surface_area,
+                'formulas': {
+                    'vhouse': f"{surface_area} * 2.5 = {vhouse}",
+                    'vfurniture': "500 * 0.08 = 40",
+                    'total_volume': f"{vhouse} + {vfurniture} = {total_volume}"
+                },
+                'volumes': {
+                    'vhouse': vhouse,
+                    'vfurniture': vfurniture,
+                    'total_volume': total_volume
+                },
+                'quote': {
+                    'base_price': base_price,
+                    'final_price': final_price,
+                    'price_per_m3': PRICE_PER_M3,
+                    'volume_breakdown': f"Volume maison: {vhouse}m³, Volume mobilier: {vfurniture}m³"
+                }
+            },
+            'heavy_objects': {
+                'predefined': heavy_objects_data,
+                'custom': custom_heavy_objects_data,
+                'total_heavy_objects': len(heavy_objects_data) + len(custom_heavy_objects_data)
+            }
+        }
+        
+        print(f"Volume calculation response: {response_data}")
+        
+        return Response(response_data, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        print(f"Error in volume calculation: {str(e)}")
+        return Response({
+            'success': False,
+            'error': f'Error calculating volume: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_superficie_calculations(request):
+    """Get all superficie calculations data"""
+    try:
+        # Get query parameters
+        client_id = request.GET.get('client_id')
+        calculation_id = request.GET.get('calculation_id')
+        
+        # Build query
+        if calculation_id:
+            # Get specific calculation
+            try:
+                calculation = ManualSelection.objects.get(
+                    id=calculation_id,
+                    method='superficie'
+                )
+                calculations = [calculation]
+            except ManualSelection.DoesNotExist:
+                return Response({
+                    'success': False,
+                    'error': 'Superficie calculation not found'
+                }, status=status.HTTP_404_NOT_FOUND)
+        elif client_id:
+            # Get all calculations for specific client
+            calculations = ManualSelection.objects.filter(
+                client_info_id=client_id,
+                method='superficie'
+            ).order_by('-created_at')
+        else:
+            # Get all superficie calculations
+            calculations = ManualSelection.objects.filter(
+                method='superficie'
+            ).order_by('-created_at')
+        
+        # Serialize the data
+        serializer = ManualSelectionSerializer(calculations, many=True)
+        
+        # Prepare response with additional details
+        response_data = []
+        for calc in calculations:
+            calc_data = {
+                'id': calc.id,
+                'client_info': {
+                    'id': calc.client_info.id,
+                    'nom': calc.client_info.nom,
+                    'prenom': calc.client_info.prenom,
+                    'email': calc.client_info.email
+                },
+                'method': calc.method,
+                'surface_area': calc.surface_area,
+                'calculated_volumes': calc.calculated_volumes,
+                'heavy_objects': calc.heavy_objects,
+                'custom_heavy_objects': calc.custom_heavy_objects,
+                'total_volume': calc.total_volume,
+                'total_objects_count': calc.total_objects_count,
+                'base_price': calc.base_price,
+                'final_price': calc.final_price,
+                'status': calc.status,
+                'created_at': calc.created_at,
+                'updated_at': calc.updated_at,
+                'formula_breakdown': {
+                    'vhouse_formula': f"{calc.surface_area} * 2.5 = {calc.calculated_volumes.get('vhouse', 0)}",
+                    'vfurniture_formula': "500 * 0.08 = 40",
+                    'total_formula': f"{calc.calculated_volumes.get('vhouse', 0)} + 40 = {calc.total_volume}"
+                }
+            }
+            response_data.append(calc_data)
+        
+        return Response({
+            'success': True,
+            'count': len(response_data),
+            'data': response_data
+        }, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        print(f"Error retrieving superficie calculations: {str(e)}")
+        return Response({
+            'success': False,
+            'error': f'Error retrieving data: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
