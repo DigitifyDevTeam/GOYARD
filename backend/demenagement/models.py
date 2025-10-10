@@ -2,15 +2,96 @@ from django.db import models
 
 
 class ClientInformation(models.Model):
+    # Choices for floor
+    ETAGE_CHOICES = [
+        ('RDC', 'RDC'),
+        ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'),
+        ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'),
+        ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'),
+        ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20'),
+    ]
+    
+    # Choices for elevator
+    ASCENSEUR_CHOICES = [
+        ('Non', 'Non'),
+        ('1 personne', '1 personne'),
+        ('2 personnes', '2 personnes'),
+        ('3 personnes', '3 personnes'),
+        ('4 personnes ou plus', '4 personnes ou plus'),
+    ]
+    
     # Informations personnelles
     nom = models.CharField(max_length=30, verbose_name="Nom de famille")
     prenom = models.CharField(max_length=30, verbose_name="Prénom")
     email = models.EmailField(verbose_name="Adresse email")
     phone = models.CharField(max_length=20, verbose_name="Numéro de téléphone")
     
-    # Informations de déménagement
-    adresse_depart = models.TextField(verbose_name="Adresse de départ")
+    # Date de déménagement
     date_demenagement = models.DateField(verbose_name="Date de déménagement")
+    
+    # Adresse de départ
+    adresse_depart = models.TextField(verbose_name="Adresse de départ", default='')
+    etage_depart = models.CharField(
+        max_length=10,
+        choices=ETAGE_CHOICES,
+        default='RDC',
+        verbose_name="Étage de départ"
+    )
+    ascenseur_depart = models.CharField(
+        max_length=20,
+        choices=ASCENSEUR_CHOICES,
+        default='Non',
+        verbose_name="Ascenseur au départ"
+    )
+    options_depart = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="Options départ",
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+    )
+    
+    # Escale (optionnelle)
+    has_stopover = models.BooleanField(default=False, verbose_name="Escale intermédiaire")
+    escale_adresse = models.TextField(blank=True, default='', verbose_name="Adresse escale")
+    escale_etage = models.CharField(
+        max_length=10,
+        choices=ETAGE_CHOICES,
+        blank=True,
+        default='RDC',
+        verbose_name="Étage escale"
+    )
+    escale_ascenseur = models.CharField(
+        max_length=20,
+        choices=ASCENSEUR_CHOICES,
+        default='Non',
+        blank=True,
+        verbose_name="Ascenseur à l'escale"
+    )
+    escale_options = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="Options escale"
+    )
+    
+    # Adresse d'arrivée
+    adresse_arrivee = models.TextField(verbose_name="Adresse d'arrivée", default='')
+    etage_arrivee = models.CharField(
+        max_length=10,
+        choices=ETAGE_CHOICES,
+        default='RDC',
+        verbose_name="Étage d'arrivée"
+    )
+    ascenseur_arrivee = models.CharField(
+        max_length=20,
+        choices=ASCENSEUR_CHOICES,
+        default='Non',
+        verbose_name="Ascenseur à l'arrivée"
+    )
+    options_arrivee = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="Options arrivée"
+    )
     
     # Métadonnées
     created_at = models.DateTimeField(auto_now_add=True)
@@ -224,3 +305,133 @@ class ManualSelection(models.Model):
         # Save the changes
         self.save(update_fields=['total_volume', 'total_objects_count', 'updated_at'])
     
+class Address(models.Model):
+    """
+    Model to store moving addresses (departure, stopover, arrival)
+    """
+    # Choices for floor
+    ETAGE_CHOICES = [
+        ('RDC', 'RDC'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
+        ('8', '8'),
+        ('9', '9'),
+        ('10', '10'),
+        ('11', '11'),
+        ('12', '12'),
+        ('13', '13'),
+        ('14', '14'),
+        ('15', '15'),
+        ('16', '16'),
+        ('17', '17'),
+        ('18', '18'),
+        ('19', '19'),
+        ('20', '20'),
+    ]
+    
+    # Choices for elevator
+    ASCENSEUR_CHOICES = [
+        ('Non', 'Non'),
+        ('1 personne', '1 personne'),
+        ('2 personnes', '2 personnes'),
+        ('3 personnes', '3 personnes'),
+        ('4 personnes ou plus', '4 personnes ou plus'),
+    ]
+    
+    # Link to client information
+    client_info = models.ForeignKey(
+        ClientInformation,
+        on_delete=models.CASCADE,
+        related_name='addresses',
+        verbose_name="Information Client"
+    )
+    
+    # Departure address
+    adresse_depart = models.TextField(verbose_name="Adresse de départ")
+    etage_depart = models.CharField(
+        max_length=10,
+        choices=ETAGE_CHOICES,
+        default='RDC',
+        verbose_name="Étage de départ", 
+        help_text="RDC ou nombre entre 1 et 20"
+    )
+    ascenseur_depart = models.CharField(
+        max_length=20,
+        choices=ASCENSEUR_CHOICES,
+        default='Non',
+        verbose_name="Ascenseur au départ"
+    )
+    options_depart = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="Options départ",
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+    )
+    
+    # Stopover address (optional)
+    has_stopover = models.BooleanField(default=False, verbose_name="Escale intermédiaire")
+    escale_adresse = models.TextField(blank=True, null=True, verbose_name="Adresse escale")
+    escale_etage = models.CharField(
+        max_length=10,
+        choices=ETAGE_CHOICES,
+        blank=True, 
+        null=True,
+        default='RDC',
+        verbose_name="Étage escale",
+        help_text="RDC ou nombre entre 1 et 20"
+    )
+    escale_ascenseur = models.CharField(
+        max_length=20,
+        choices=ASCENSEUR_CHOICES,
+        default='Non',
+        blank=True,
+        null=True,
+        verbose_name="Ascenseur à l'escale"
+    )
+    escale_options = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="Options escale",
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+    )
+    
+    # Arrival address
+    adresse_arrivee = models.TextField(verbose_name="Adresse d'arrivée")
+    etage_arrivee = models.CharField(
+        max_length=10,
+        choices=ETAGE_CHOICES,
+        default='RDC',
+        verbose_name="Étage d'arrivée", 
+        help_text="RDC ou nombre entre 1 et 20"
+    )
+    ascenseur_arrivee = models.CharField(
+        max_length=20,
+        choices=ASCENSEUR_CHOICES,
+        default='Non',
+        verbose_name="Ascenseur à l'arrivée"
+    )
+    options_arrivee = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="Options arrivée",
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+    )
+    
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créé le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifié le")
+    
+    class Meta:
+        verbose_name = "Adresse"
+        verbose_name_plural = "Adresses"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        if self.has_stopover:
+            return f"{self.adresse_depart} → {self.escale_adresse} → {self.adresse_arrivee}"
+        return f"{self.adresse_depart} → {self.adresse_arrivee}"

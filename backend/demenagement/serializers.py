@@ -1,12 +1,18 @@
 from rest_framework import serializers
-from .models import ClientInformation, ManualSelection
+from .models import ClientInformation, ManualSelection, Address
 from ai_detector.views import ROOM_OBJECTS, OBJECT_VOLUMES
 
 
 class ClientInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientInformation
-        fields = ['id', 'prenom', 'nom', 'email', 'phone', 'adresse_depart', 'date_demenagement', 'created_at', 'updated_at']
+        fields = [
+            'id', 'prenom', 'nom', 'email', 'phone', 'date_demenagement',
+            'adresse_depart', 'etage_depart', 'ascenseur_depart', 'options_depart',
+            'has_stopover', 'escale_adresse', 'escale_etage', 'escale_ascenseur', 'escale_options',
+            'adresse_arrivee', 'etage_arrivee', 'ascenseur_arrivee', 'options_arrivee',
+            'created_at', 'updated_at'
+        ]
         read_only_fields = ['id', 'created_at', 'updated_at']
     
     def validate_phone(self, value):
@@ -44,12 +50,121 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         
         return value
     
-    def validate_adresse_depart(self, value):
-        """Validate departure address"""
-        if len(value.strip()) < 10:
-            raise serializers.ValidationError("L'adresse doit contenir au moins 10 caractères")
+    def validate_etage(self, value, field_name):
+        """Helper method to validate floor values"""
+        if not value:
+            raise serializers.ValidationError(f"L'étage est requis pour {field_name}")
         
-        return value.strip()
+        value = value.strip().upper()
+        
+        # Check if it's RDC
+        if value == 'RDC':
+            return value
+        
+        # Check if it's a valid number between 1 and 20
+        try:
+            etage_num = int(value)
+            if 1 <= etage_num <= 20:
+                return str(etage_num)
+            else:
+                raise serializers.ValidationError(
+                    f"L'étage doit être 'RDC' ou un nombre entre 1 et 20 pour {field_name}"
+                )
+        except ValueError:
+            raise serializers.ValidationError(
+                f"L'étage doit être 'RDC' ou un nombre entre 1 et 20 pour {field_name}"
+            )
+    
+    def validate_etage_depart(self, value):
+        """Validate departure floor"""
+        return self.validate_etage(value, "le départ")
+    
+    def validate_etage_arrivee(self, value):
+        """Validate arrival floor"""
+        return self.validate_etage(value, "l'arrivée")
+    
+    def validate_escale_etage(self, value):
+        """Validate stopover floor"""
+        if value:
+            return self.validate_etage(value, "l'escale")
+        return value
+    
+    def validate_ascenseur(self, value, field_name):
+        """Helper method to validate elevator values"""
+        valid_choices = ['Non', '1 personne', '2 personnes', '3 personnes', '4 personnes ou plus']
+        
+        if value not in valid_choices:
+            raise serializers.ValidationError(
+                f"Valeur invalide pour l'ascenseur {field_name}. "
+                f"Choisissez parmi: {', '.join(valid_choices)}"
+            )
+        return value
+    
+    def validate_ascenseur_depart(self, value):
+        """Validate departure elevator"""
+        return self.validate_ascenseur(value, "au départ")
+    
+    def validate_ascenseur_arrivee(self, value):
+        """Validate arrival elevator"""
+        return self.validate_ascenseur(value, "à l'arrivée")
+    
+    def validate_escale_ascenseur(self, value):
+        """Validate stopover elevator"""
+        if value:
+            return self.validate_ascenseur(value, "à l'escale")
+        return value
+    
+    def validate_options(self, value, field_name):
+        """Helper method to validate options"""
+        if not isinstance(value, dict):
+            raise serializers.ValidationError(f"Les options pour {field_name} doivent être un objet JSON")
+        
+        # Valid option keys
+        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser']
+        
+        # Check for invalid keys
+        for key in value.keys():
+            if key not in valid_keys:
+                raise serializers.ValidationError(
+                    f"Clé invalide '{key}' dans les options {field_name}. "
+                    f"Clés valides: {', '.join(valid_keys)}"
+                )
+        
+        # Validate that values are boolean
+        for key, val in value.items():
+            if not isinstance(val, bool):
+                raise serializers.ValidationError(
+                    f"La valeur de '{key}' doit être true ou false dans les options {field_name}"
+                )
+        
+        return value
+    
+    def validate_options_depart(self, value):
+        """Validate departure options"""
+        return self.validate_options(value, "du départ")
+    
+    def validate_options_arrivee(self, value):
+        """Validate arrival options"""
+        return self.validate_options(value, "de l'arrivée")
+    
+    def validate_escale_options(self, value):
+        """Validate stopover options"""
+        if value:
+            return self.validate_options(value, "de l'escale")
+        return value
+    
+    def validate(self, data):
+        """Validate stopover data if has_stopover is True"""
+        has_stopover = data.get('has_stopover', False)
+        
+        if has_stopover:
+            # If stopover is enabled, validate stopover requirements
+            if not data.get('escale_etage'):
+                raise serializers.ValidationError({
+                    'escale_etage': "L'étage d'escale est requis quand l'escale est activée"
+                })
+        
+        return data
 
 
 class ManualSelectionSerializer(serializers.ModelSerializer):
@@ -203,3 +318,145 @@ class ManualSelectionSerializer(serializers.ModelSerializer):
         instance.save()
         instance.calculate_totals()  # Recalculate totals
         return instance
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    # Add choices as extra fields for frontend
+    etage_choices = serializers.SerializerMethodField(read_only=True)
+    ascenseur_choices = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = Address
+        fields = [
+            'id', 'client_info',
+            'adresse_depart', 'etage_depart', 'ascenseur_depart', 'options_depart',
+            'has_stopover', 'escale_adresse', 'escale_etage', 'escale_ascenseur', 'escale_options',
+            'adresse_arrivee', 'etage_arrivee', 'ascenseur_arrivee', 'options_arrivee',
+            'created_at', 'updated_at',
+            'etage_choices', 'ascenseur_choices'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at', 'etage_choices', 'ascenseur_choices']
+    
+    def get_etage_choices(self, obj):
+        """Return available floor choices"""
+        return [choice[0] for choice in Address.ETAGE_CHOICES]
+    
+    def get_ascenseur_choices(self, obj):
+        """Return available elevator choices"""
+        return [choice[0] for choice in Address.ASCENSEUR_CHOICES]
+    
+    def validate_etage(self, value, field_name):
+        """Helper method to validate floor values"""
+        if not value:
+            raise serializers.ValidationError(f"L'étage est requis pour {field_name}")
+        
+        value = value.strip().upper()
+        
+        # Check if it's RDC
+        if value == 'RDC':
+            return value
+        
+        # Check if it's a valid number between 1 and 20
+        try:
+            etage_num = int(value)
+            if 1 <= etage_num <= 20:
+                return str(etage_num)
+            else:
+                raise serializers.ValidationError(
+                    f"L'étage doit être 'RDC' ou un nombre entre 1 et 20 pour {field_name}"
+                )
+        except ValueError:
+            raise serializers.ValidationError(
+                f"L'étage doit être 'RDC' ou un nombre entre 1 et 20 pour {field_name}"
+            )
+    
+    def validate_etage_depart(self, value):
+        """Validate departure floor"""
+        return self.validate_etage(value, "le départ")
+    
+    def validate_etage_arrivee(self, value):
+        """Validate arrival floor"""
+        return self.validate_etage(value, "l'arrivée")
+    
+    def validate_escale_etage(self, value):
+        """Validate stopover floor"""
+        if value:
+            return self.validate_etage(value, "l'escale")
+        return value
+    
+    def validate_ascenseur(self, value, field_name):
+        """Helper method to validate elevator values"""
+        valid_choices = ['Non', '1 personne', '2 personnes', '3 personnes', '4 personnes ou plus']
+        
+        if value not in valid_choices:
+            raise serializers.ValidationError(
+                f"Valeur invalide pour l'ascenseur {field_name}. "
+                f"Choisissez parmi: {', '.join(valid_choices)}"
+            )
+        return value
+    
+    def validate_ascenseur_depart(self, value):
+        """Validate departure elevator"""
+        return self.validate_ascenseur(value, "au départ")
+    
+    def validate_ascenseur_arrivee(self, value):
+        """Validate arrival elevator"""
+        return self.validate_ascenseur(value, "à l'arrivée")
+    
+    def validate_escale_ascenseur(self, value):
+        """Validate stopover elevator"""
+        if value:
+            return self.validate_ascenseur(value, "à l'escale")
+        return value
+    
+    def validate_options(self, value, field_name):
+        """Helper method to validate options"""
+        if not isinstance(value, dict):
+            raise serializers.ValidationError(f"Les options pour {field_name} doivent être un objet JSON")
+        
+        # Valid option keys
+        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser']
+        
+        # Check for invalid keys
+        for key in value.keys():
+            if key not in valid_keys:
+                raise serializers.ValidationError(
+                    f"Clé invalide '{key}' dans les options {field_name}. "
+                    f"Clés valides: {', '.join(valid_keys)}"
+                )
+        
+        # Validate that values are boolean
+        for key, val in value.items():
+            if not isinstance(val, bool):
+                raise serializers.ValidationError(
+                    f"La valeur de '{key}' doit être true ou false dans les options {field_name}"
+                )
+        
+        return value
+    
+    def validate_options_depart(self, value):
+        """Validate departure options"""
+        return self.validate_options(value, "du départ")
+    
+    def validate_options_arrivee(self, value):
+        """Validate arrival options"""
+        return self.validate_options(value, "de l'arrivée")
+    
+    def validate_escale_options(self, value):
+        """Validate stopover options"""
+        if value:
+            return self.validate_options(value, "de l'escale")
+        return value
+    
+    def validate(self, data):
+        """Validate stopover data if has_stopover is True"""
+        has_stopover = data.get('has_stopover', False)
+        
+        if has_stopover:
+            # If stopover is enabled, validate stopover requirements
+            if not data.get('escale_etage'):
+                raise serializers.ValidationError({
+                    'escale_etage': "L'étage d'escale est requis quand l'escale est activée"
+                })
+        
+        return data

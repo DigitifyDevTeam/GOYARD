@@ -595,6 +595,23 @@ function AppContent() {
           formData.append('client_id', clientId.toString());
         }
 
+        // Include heavy objects data
+        const heavyObjectsData: Record<string, any> = {};
+        for (const [key, value] of Object.entries(specialObjectQuantities)) {
+          if (value > 0) {
+            const isCustom = aiCustomHeavyObjects.includes(key);
+            heavyObjectsData[key] = {
+              quantity: value,
+              is_custom: isCustom,
+              ...(isCustom && aiCustomHeavyObjectDetails[key] ? aiCustomHeavyObjectDetails[key] : {})
+            };
+          }
+        }
+        if (Object.keys(heavyObjectsData).length > 0) {
+          formData.append('heavy_objects', JSON.stringify(heavyObjectsData));
+          console.log('Sending heavy objects:', heavyObjectsData);
+        }
+
         const response = await fetch('http://localhost:8000/api/predict/', {
           method: 'POST',
           body: formData,
@@ -902,8 +919,74 @@ function AppContent() {
     }
   };
 
-  const handleContinueToQuote = () => {
+  const handleContinueToQuote = async () => {
+    // Save address data to backend before continuing to quote
+    await submitAddressData();
     navigate("/tunnel/devis");
+  };
+
+  // Submit address data to API
+  const submitAddressData = async () => {
+    if (!clientId) {
+      console.error('No client ID available');
+      return;
+    }
+
+    try {
+      const addressPayload = {
+        client_info: clientId,
+        // Departure address
+        adresse_depart: addressData.departure.address,
+        etage_depart: addressData.departure.floor,
+        ascenseur_depart: addressData.departure.elevator,
+        options_depart: {
+          monte_meuble: addressData.departure.options.monteMenuble || false,
+          cave_ou_garage: addressData.departure.options.caveGarage || false,
+          cours_a_traverser: addressData.departure.options.courTraverser || false,
+        },
+        // Stopover (escale)
+        has_stopover: escales.length > 0,
+        escale_adresse: escales.length > 0 ? escales[0].address : '',
+        escale_etage: escales.length > 0 ? escales[0].floor : 'RDC',
+        escale_ascenseur: escales.length > 0 ? escales[0].elevator : 'Non',
+        escale_options: escales.length > 0 ? {
+          monte_meuble: escales[0].options.monteMenuble || false,
+          cave_ou_garage: escales[0].options.caveGarage || false,
+          cours_a_traverser: escales[0].options.courTraverser || false,
+        } : {},
+        // Arrival address
+        adresse_arrivee: addressData.arrival.address,
+        etage_arrivee: addressData.arrival.floor,
+        ascenseur_arrivee: addressData.arrival.elevator,
+        options_arrivee: {
+          monte_meuble: addressData.arrival.options.monteMenuble || false,
+          cave_ou_garage: addressData.arrival.options.caveGarage || false,
+          cours_a_traverser: addressData.arrival.options.courTraverser || false,
+        },
+      };
+
+      console.log('Submitting address data:', addressPayload);
+
+      const response = await fetch('http://127.0.0.1:8000/api/demenagement/address/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addressPayload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Address data submitted successfully:', result);
+      } else {
+        console.error('Error submitting address data:', result);
+        alert('Erreur lors de l\'enregistrement des adresses: ' + (result.message || 'Erreur inconnue'));
+      }
+    } catch (error) {
+      console.error('Error submitting address data:', error);
+      alert('Erreur lors de l\'enregistrement des adresses');
+    }
   };
 
   const handleBackToAddresses = () => {

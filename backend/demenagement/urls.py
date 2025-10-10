@@ -22,4 +22,12 @@ urlpatterns = [
     path('superficie/', views.create_superficie_calculation, name='create_superficie_calculation'),
     path('superficie/data/', views.get_superficie_calculations, name='get_superficie_calculations'),
     path('volume-calculation/', views.get_volume_calculation, name='get_volume_calculation'),
+    
+    # Address endpoints
+    path('address/', views.create_address, name='create_address'),
+    path('address/<int:address_id>/', views.get_address, name='get_address'),
+    path('address/<int:address_id>/update/', views.update_address, name='update_address'),
+    path('address/<int:address_id>/delete/', views.delete_address, name='delete_address'),
+    path('address/client/<int:client_id>/', views.get_address_by_client, name='get_address_by_client'),
+    path('addresses/', views.list_addresses, name='list_addresses'),
 ]

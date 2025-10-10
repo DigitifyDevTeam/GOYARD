@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ClientInformation, ManualSelection
-from .serializers import ClientInformationSerializer, ManualSelectionSerializer
+from .models import ClientInformation, ManualSelection, Address
+from .serializers import ClientInformationSerializer, ManualSelectionSerializer, AddressSerializer
 
 # Import volume calculation functions from ai_detector
 from ai_detector.views import calculate_total_volume, calculate_quote, OBJECT_VOLUMES, ROOM_OBJECTS
@@ -11,7 +11,7 @@ from ai_detector.views import calculate_total_volume, calculate_quote, OBJECT_VO
 @api_view(['POST'])
 def submit_client_information(request):
     """
-    API endpoint to submit client information for quote request
+    API endpoint to submit client information with address details for quote request
     
     Expected JSON data:
     {
@@ -19,8 +19,24 @@ def submit_client_information(request):
         "prenom": "Jean",
         "email": "jean.dupont@email.com",
         "phone": "0123456789",
+        "date_demenagement": "2024-12-25",
         "adresse_depart": "123 Rue de la Paix, 75001 Paris",
-        "date_demenagement": "2024-12-25"
+        "etage_depart": "3",
+        "ascenseur_depart": "2 personnes",
+        "options_depart": {
+            "monte_meuble": false,
+            "cave_ou_garage": true,
+            "cours_a_traverser": false
+        },
+        "has_stopover": false,
+        "adresse_arrivee": "456 Avenue Victor Hugo, 75016 Paris",
+        "etage_arrivee": "RDC",
+        "ascenseur_arrivee": "Non",
+        "options_arrivee": {
+            "monte_meuble": true,
+            "cave_ou_garage": false,
+            "cours_a_traverser": true
+        }
     }
     """
     serializer = ClientInformationSerializer(data=request.data)
@@ -31,16 +47,7 @@ def submit_client_information(request):
         return Response({
             'success': True,
             'message': 'Informations client enregistrées avec succès',
-            'data': {
-                'id': client_info.id,
-                'nom': client_info.nom,
-                'prenom': client_info.prenom,
-                'email': client_info.email,
-                'phone': client_info.phone,
-                'adresse_depart': client_info.adresse_depart,
-                'date_demenagement': client_info.date_demenagement.isoformat(),
-                'created_at': client_info.created_at.isoformat()
-            }
+            'data': ClientInformationSerializer(client_info).data
         }, status=status.HTTP_201_CREATED)
     
     else:
@@ -620,3 +627,248 @@ def get_superficie_calculations(request):
             'success': False,
             'error': f'Error retrieving data: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# ==================== ADDRESS API ====================
+
+@api_view(['POST'])
+def create_address(request):
+    """
+    API endpoint to create a new address
+    
+    Expected JSON data:
+    {
+        "client_info": 1,
+        "adresse_depart": "123 Rue de la Paix, 75001 Paris",
+        "etage_depart": "3",  // Choices: "RDC", "1", "2", ..., "20"
+        "ascenseur_depart": "2 personnes",  // Choices: "Non", "1 personne", "2 personnes", "3 personnes", "4 personnes ou plus"
+        "options_depart": {
+            "monte_meuble": true,
+            "cave_ou_garage": false,
+            "cours_a_traverser": true
+        },
+        "has_stopover": true,
+        "escale_adresse": "456 Avenue des Champs, 75008 Paris",
+        "escale_etage": "2",
+        "escale_ascenseur": "1 personne",
+        "escale_options": {
+            "monte_meuble": false,
+            "cave_ou_garage": true,
+            "cours_a_traverser": false
+        },
+        "adresse_arrivee": "789 Boulevard Saint-Germain, 75006 Paris",
+        "etage_arrivee": "5",
+        "ascenseur_arrivee": "4 personnes ou plus",
+        "options_arrivee": {
+            "monte_meuble": true,
+            "cave_ou_garage": false,
+            "cours_a_traverser": true
+        }
+    }
+    """
+    print("Create address request data:", request.data)
+    
+    # Check if client already has an address
+    client_info_id = request.data.get('client_info')
+    if client_info_id:
+        existing_addresses = Address.objects.filter(client_info_id=client_info_id)
+        if existing_addresses.exists():
+            # Delete previous addresses for this client
+            deleted_count = existing_addresses.count()
+            existing_addresses.delete()
+            print(f"Deleted {deleted_count} previous addresses for client {client_info_id}")
+    
+    serializer = AddressSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        address = serializer.save()
+        
+        # Check and update "Mon déménagement" (adresse_depart) in ClientInformation if different
+        try:
+            client_info = address.client_info
+            
+            # Compare adresse_depart from Address API with ClientInformation "Mon déménagement"
+            if client_info.adresse_depart != address.adresse_depart:
+                print(f"Updating ClientInformation.adresse_depart from '{client_info.adresse_depart}' to '{address.adresse_depart}'")
+                client_info.adresse_depart = address.adresse_depart
+                client_info.save()
+                print(f"ClientInformation {client_info.id} 'Mon déménagement' updated successfully")
+            else:
+                print(f"ClientInformation {client_info.id} 'Mon déménagement' is already in sync with Address API")
+                
+        except Exception as e:
+            print(f"Error checking/updating ClientInformation adresse_depart: {e}")
+        
+        return Response({
+            'success': True,
+            'message': 'Adresse créée avec succès',
+            'data': {
+                'id': address.id,
+                'client_info': address.client_info.id,
+                'adresse_depart': address.adresse_depart,
+                'etage_depart': address.etage_depart,
+                'ascenseur_depart': address.ascenseur_depart,
+                'options_depart': address.options_depart,
+                'has_stopover': address.has_stopover,
+                'escale_adresse': address.escale_adresse,
+                'escale_etage': address.escale_etage,
+                'escale_ascenseur': address.escale_ascenseur,
+                'escale_options': address.escale_options,
+                'adresse_arrivee': address.adresse_arrivee,
+                'etage_arrivee': address.etage_arrivee,
+                'ascenseur_arrivee': address.ascenseur_arrivee,
+                'options_arrivee': address.options_arrivee,
+                'created_at': address.created_at.isoformat()
+            }
+        }, status=status.HTTP_201_CREATED)
+    
+    else:
+        print("Address serializer errors:", serializer.errors)
+        return Response({
+            'success': False,
+            'message': 'Données invalides',
+            'errors': serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_address(request, address_id):
+    """
+    API endpoint to retrieve an address by ID
+    """
+    try:
+        address = Address.objects.get(id=address_id)
+        serializer = AddressSerializer(address)
+        
+        return Response({
+            'success': True,
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
+        
+    except Address.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': 'Adresse non trouvée'
+        }, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_address_by_client(request, client_id):
+    """
+    API endpoint to retrieve address(es) for a specific client
+    """
+    addresses = Address.objects.filter(client_info_id=client_id).order_by('-created_at')
+    
+    if not addresses.exists():
+        return Response({
+            'success': False,
+            'message': 'Aucune adresse trouvée pour ce client'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Get the most recent address
+    latest_address = addresses.first()
+    serializer = AddressSerializer(latest_address)
+    
+    return Response({
+        'success': True,
+        'data': serializer.data,
+        'total_addresses': addresses.count()
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def list_addresses(request):
+    """
+    API endpoint to list all addresses (optionally filtered by client)
+    
+    Query parameters:
+    - client_id: Filter addresses by client ID
+    """
+    client_id = request.GET.get('client_id')
+    
+    if client_id:
+        addresses = Address.objects.filter(client_info_id=client_id).order_by('-created_at')
+    else:
+        addresses = Address.objects.all().order_by('-created_at')
+    
+    serializer = AddressSerializer(addresses, many=True)
+    
+    return Response({
+        'success': True,
+        'count': addresses.count(),
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT', 'PATCH'])
+def update_address(request, address_id):
+    """
+    API endpoint to update an existing address
+    """
+    try:
+        address = Address.objects.get(id=address_id)
+    except Address.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': 'Adresse non trouvée'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Use partial=True for PATCH requests
+    partial = request.method == 'PATCH'
+    serializer = AddressSerializer(address, data=request.data, partial=partial)
+    
+    if serializer.is_valid():
+        address = serializer.save()
+        
+        # Check and update "Mon déménagement" (adresse_depart) in ClientInformation if different
+        try:
+            client_info = address.client_info
+            
+            # Compare adresse_depart from Address API with ClientInformation "Mon déménagement"
+            if client_info.adresse_depart != address.adresse_depart:
+                print(f"Updating ClientInformation.adresse_depart from '{client_info.adresse_depart}' to '{address.adresse_depart}'")
+                client_info.adresse_depart = address.adresse_depart
+                client_info.save()
+                print(f"ClientInformation {client_info.id} 'Mon déménagement' updated successfully")
+            else:
+                print(f"ClientInformation {client_info.id} 'Mon déménagement' is already in sync with Address API")
+                
+        except Exception as e:
+            print(f"Error checking/updating ClientInformation adresse_depart: {e}")
+        
+        return Response({
+            'success': True,
+            'message': 'Adresse mise à jour avec succès',
+            'data': AddressSerializer(address).data
+        }, status=status.HTTP_200_OK)
+    
+    else:
+        print("Address update errors:", serializer.errors)
+        return Response({
+            'success': False,
+            'message': 'Données invalides',
+            'errors': serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_address(request, address_id):
+    """
+    API endpoint to delete an address
+    """
+    try:
+        address = Address.objects.get(id=address_id)
+        client_info_id = address.client_info.id
+        address.delete()
+        
+        return Response({
+            'success': True,
+            'message': 'Adresse supprimée avec succès',
+            'client_info_id': client_info_id
+        }, status=status.HTTP_200_OK)
+        
+    except Address.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': 'Adresse non trouvée'
+        }, status=status.HTTP_404_NOT_FOUND)

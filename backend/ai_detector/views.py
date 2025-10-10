@@ -1789,6 +1789,85 @@ def predict_objects(request):
                     except Exception as e:
                         print(f"Error deleting manual selections: {e}")
                 
+                # Save detection results to database
+                try:
+                    # Get room type from request or default to 'other'
+                    room_type = request.POST.get('room_type', 'other')
+                    room_name = request.POST.get('room_name', f"AI Room {now.strftime('%Y-%m-%d %H:%M:%S')}")
+                    
+                    # Create Room
+                    room = Room.objects.create(
+                        user=None,
+                        room_type=room_type,
+                        name=room_name
+                    )
+                    print(f"Created room: {room.name} (ID: {room.id})")
+                    
+                    # Create Photo entry
+                    photo = Photo.objects.create(
+                        room=room,
+                        image=image_file.name,  # Store filename
+                        filename=image_file.name,
+                        file_size=image_file.size,
+                        width=img.width if img else 0,
+                        height=img.height if img else 0,
+                        status='analyzed'
+                    )
+                    print(f"Created photo: {photo.filename} (ID: {photo.id})")
+                    
+                    # Create DetectedObject entries
+                    for detected_obj in detected_objects:
+                        obj_class = detected_obj['class']
+                        confidence = detected_obj['confidence']
+                        bbox = detected_obj['bbox']
+                        
+                        # Get volume and estimate weight
+                        volume = OBJECT_VOLUMES.get(obj_class, 0.5)
+                        weight = volume * 150  # Rough estimate: 150 kg/m³
+                        
+                        DetectedObject.objects.create(
+                            photo=photo,
+                            object_class=obj_class,
+                            confidence=confidence,
+                            bbox_x=bbox['x'],
+                            bbox_y=bbox['y'],
+                            bbox_width=bbox['width'],
+                            bbox_height=bbox['height'],
+                            estimated_volume=volume,
+                            estimated_weight=weight
+                        )
+                    
+                    print(f"Saved {len(detected_objects)} detected objects to database")
+                    
+                    # Save heavy objects if provided
+                    heavy_objects_json = request.POST.get('heavy_objects')
+                    if heavy_objects_json:
+                        try:
+                            from .models import HeavyObjectSelection
+                            heavy_objects_data = json.loads(heavy_objects_json)
+                            
+                            for obj_name, obj_data in heavy_objects_data.items():
+                                quantity = obj_data.get('quantity', 1)
+                                if quantity > 0:
+                                    HeavyObjectSelection.objects.create(
+                                        room=room,
+                                        object_name=obj_name,
+                                        quantity=quantity,
+                                        volume_per_unit=OBJECT_VOLUMES.get(obj_name, 0.5),
+                                        length=obj_data.get('length'),
+                                        width=obj_data.get('width'),
+                                        height=obj_data.get('height'),
+                                        is_custom=obj_data.get('is_custom', False)
+                                    )
+                            
+                            print(f"Saved {len(heavy_objects_data)} heavy objects to database")
+                        except Exception as e:
+                            print(f"Error saving heavy objects: {e}")
+                    
+                except Exception as db_error:
+                    print(f"Error saving to database: {db_error}")
+                    # Don't fail the request if database save fails
+                
                 # Always return success, even if no objects detected
                 return JsonResponse({
                     'success': True,
@@ -3254,8 +3333,25 @@ def get_ai_detection_results(request):
                 room_data['total_objects_detected'] = total_objects
                 room_data['object_summary'] = all_detected_objects
                 
-                # Only include rooms that have detected objects
-                if total_objects > 0:
+                # Get heavy objects for this room
+                from .models import HeavyObjectSelection
+                heavy_objects_for_room = []
+                for heavy_obj in room.heavy_objects.all():
+                    heavy_objects_for_room.append({
+                        'name': heavy_obj.object_name,
+                        'quantity': heavy_obj.quantity,
+                        'volume': heavy_obj.volume_per_unit,
+                        'is_custom': heavy_obj.is_custom,
+                        'length': heavy_obj.length,
+                        'width': heavy_obj.width,
+                        'height': heavy_obj.height
+                    })
+                
+                room_data['heavy_objects'] = heavy_objects_for_room
+                room_data['total_heavy_objects'] = len(heavy_objects_for_room)
+                
+                # Include room if it has detected objects OR heavy objects
+                if total_objects > 0 or len(heavy_objects_for_room) > 0:
                     results.append(room_data)
             
             return JsonResponse({

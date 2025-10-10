@@ -11,7 +11,7 @@ class Room(models.Model):
         ('other', 'Autre'),
     ]
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     room_type = models.CharField(max_length=20, choices=ROOM_TYPES)
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,7 +55,7 @@ class DetectedObject(models.Model):
         return f"{self.object_class} (conf: {self.confidence:.2f})"
 
 class Quote(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     total_volume = models.FloatField()
     total_weight = models.FloatField()
     base_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -77,7 +77,7 @@ class Quote(models.Model):
 class RoomAnalysis(models.Model):
     """Stores the analysis results for a specific room"""
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='analyses')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     analysis_date = models.DateTimeField(auto_now_add=True)
     total_objects = models.IntegerField(default=0)
     total_volume = models.FloatField(default=0.0)
@@ -105,3 +105,18 @@ class RoomObject(models.Model):
     
     def __str__(self):
         return f"{self.object_name} x{self.quantity} in {self.room_analysis.room.name}"
+
+class HeavyObjectSelection(models.Model):
+    """Stores heavy objects selected by user for a room"""
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='heavy_objects')
+    object_name = models.CharField(max_length=100)
+    quantity = models.IntegerField(default=1)
+    volume_per_unit = models.FloatField(default=0.0)
+    length = models.FloatField(null=True, blank=True)  # For custom objects
+    width = models.FloatField(null=True, blank=True)  # For custom objects
+    height = models.FloatField(null=True, blank=True)  # For custom objects
+    is_custom = models.BooleanField(default=False)  # True if custom object
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.object_name} x{self.quantity} for {self.room.name}"
