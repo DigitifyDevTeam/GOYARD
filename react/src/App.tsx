@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
+import ScrollToTop from "./components/ScrollToTop";
 import { FormDataManager } from "./utils/formDataManager";
+import HomePage from "./pages/HomeDesigned";
+import Contact from "./pages/Contact";
+import MentionsLegales from "./pages/MentionsLegales";
+import Rgpd from "./pages/Rgpd";
+import Solution from "./pages/Solution";
+import Blog from "./pages/Blog";
+import BlogArticle from "./pages/BlogArticle";
+import FAQ from "./pages/FAQ";
 import {
   Phone,
   MapPin,
@@ -1663,7 +1672,7 @@ function AppContent() {
     currentPage === "options"
   ) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="bg-slate-50">
         {/* Header */}
         <header className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -2559,7 +2568,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="bg-slate-50">
       {/* Header */}
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -5175,8 +5184,16 @@ function AppContent() {
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Navigate to="/tunnel/mes-coordonnees" replace />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/solution" element={<Solution />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogArticle />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/rgpd" element={<Rgpd />} />
         <Route path="/tunnel/mes-coordonnees" element={<AppContent />} />
         <Route path="/tunnel/choix-volume" element={
           <RouteGuard>
