@@ -197,13 +197,13 @@ export default function Solution() {
       step: "Étape 1",
       title: "Estimation du volume",
       content: "Évaluez votre volume de déménagement grâce à nos trois méthodes : surface habitable, liste d'objets, ou analyse IA par photos.",
-      image: "/mesurer le volume.jpg"
+      image: "/mesurer le volume.png"
     },
     {
       step: "Étape 2", 
       title: "Renseignement des adresses",
       content: "Indiquez vos adresses de départ et d'arrivée. Notre système calcule automatiquement la distance pour optimiser votre devis.",
-      image: "/Renseignement des adresses.jpg"
+      image: "/Renseignement des adresses.png"
     },
     {
       step: "Étape 3",
