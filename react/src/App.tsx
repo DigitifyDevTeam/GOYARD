@@ -57,6 +57,8 @@ import {
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
+import { AddressAutocomplete } from "./components/AddressAutocomplete";
+import { getDistanceMatrix } from "./services/googleMapsApi";
 import {
   Select,
   SelectContent,
@@ -132,6 +134,21 @@ function AppContent() {
   
   const [propertyValue, setPropertyValue] = useState(27000);
   const [selectedGuarantee, setSelectedGuarantee] = useState("1000");
+  const [lastCalculationId, setLastCalculationId] = useState<number | null>(null);
+  const [lastAddressId, setLastAddressId] = useState<number | null>(null);
+  const [distanceKm, setDistanceKm] = useState<number>(50);
+  const [quoteResult, setQuoteResult] = useState<{
+    final_price: number;
+    base_price_transport?: number;
+    etage_total?: number;
+    ascenseur_total?: number;
+    assurance_valeur_bien?: number;
+    demontage_remontage?: number;
+    emballage_fragile?: number;
+    portage_total?: number;
+    options_total?: number;
+    breakdown?: Record<string, string>;
+  } | null>(null);
   const [options, setOptions] = useState({
     packCartons: false,
     dateFlexible: false,
@@ -248,6 +265,8 @@ function AppContent() {
         monteMenuble: false,
         caveGarage: false,
         courTraverser: false,
+        distancePortage: false,
+        portageDistanceM: 0 as number,
       },
     },
     arrival: {
@@ -258,6 +277,8 @@ function AppContent() {
         monteMenuble: false,
         caveGarage: false,
         courTraverser: false,
+        distancePortage: false,
+        portageDistanceM: 0 as number,
       },
     },
     preferStorage: false,
@@ -272,6 +293,8 @@ function AppContent() {
       monteMenuble: boolean;
       caveGarage: boolean;
       courTraverser: boolean;
+      distancePortage: boolean;
+      portageDistanceM: number;
     };
   }>>([]);
 
@@ -486,6 +509,7 @@ function AppContent() {
 
       const result = await response.json();
       console.log('Superficie calculation result:', result);
+      if (result.calculation_id != null) setLastCalculationId(result.calculation_id);
 
       // Navigate to next step
       navigate("/tunnel/adresses");
@@ -952,6 +976,7 @@ function AppContent() {
           monte_meuble: addressData.departure.options.monteMenuble || false,
           cave_ou_garage: addressData.departure.options.caveGarage || false,
           cours_a_traverser: addressData.departure.options.courTraverser || false,
+          distance_portage: addressData.departure.options.distancePortage || false,
         },
         // Stopover (escale)
         has_stopover: escales.length > 0,
@@ -962,6 +987,7 @@ function AppContent() {
           monte_meuble: escales[0].options.monteMenuble || false,
           cave_ou_garage: escales[0].options.caveGarage || false,
           cours_a_traverser: escales[0].options.courTraverser || false,
+          distance_portage: escales[0].options.distancePortage || false,
         } : {},
         // Arrival address
         adresse_arrivee: addressData.arrival.address,
@@ -971,6 +997,7 @@ function AppContent() {
           monte_meuble: addressData.arrival.options.monteMenuble || false,
           cave_ou_garage: addressData.arrival.options.caveGarage || false,
           cours_a_traverser: addressData.arrival.options.courTraverser || false,
+          distance_portage: addressData.arrival.options.distancePortage || false,
         },
       };
 
@@ -988,6 +1015,13 @@ function AppContent() {
 
       if (result.success) {
         console.log('Address data submitted successfully:', result);
+        if (result.data?.id != null) setLastAddressId(result.data.id);
+        const origin = addressData.departure.address?.trim();
+        const dest = addressData.arrival.address?.trim();
+        if (origin && dest) {
+          const dist = await getDistanceMatrix(origin, dest);
+          if (dist.success) setDistanceKm(dist.distanceKm);
+        }
       } else {
         console.error('Error submitting address data:', result);
         alert('Erreur lors de l\'enregistrement des adresses: ' + (result.message || 'Erreur inconnue'));
@@ -1018,14 +1052,58 @@ function AppContent() {
     navigate("/tunnel/info");
   };
 
-  const handleSubmitOptions = () => {
-    // Handle final quote submission
-    console.log(
-      "Final quote submitted with options:",
-      options,
-      "guarantee:",
-      selectedGuarantee,
-    );
+  const handleSubmitOptions = async () => {
+    try {
+      const body: Record<string, unknown> = {
+        distance_km: distanceKm,
+        valeur_bien_eur: propertyValue,
+        demontage_remontage: options.demontageRemontage,
+        emballage_fragile: options.emballageFragile,
+      };
+      if (lastCalculationId != null) body.calculation_id = lastCalculationId;
+      else if (surfaceArea) {
+        const vol = parseFloat(surfaceArea) * 2.5 + 40;
+        if (!Number.isNaN(vol)) body.volume_m3 = vol;
+      }
+      if (lastAddressId != null) body.address_id = lastAddressId;
+      if (addressData.departure.options.distancePortage && (addressData.departure.options.portageDistanceM ?? 0) > 0) {
+        body.portage_depart_m = addressData.departure.options.portageDistanceM;
+      }
+      if (addressData.arrival.options.distancePortage && (addressData.arrival.options.portageDistanceM ?? 0) > 0) {
+        body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
+      }
+      if (escales.length > 0 && escales[0].options.distancePortage && (escales[0].options.portageDistanceM ?? 0) > 0) {
+        body.portage_escale_m = escales[0].options.portageDistanceM;
+      }
+
+      const res = await fetch("http://127.0.0.1:8000/api/demenagement/quote/final/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (data.success && data.final_price != null) {
+        setQuoteResult({
+          final_price: data.final_price,
+          base_price_transport: data.base_price_transport,
+          etage_total: data.etage_total,
+          ascenseur_total: data.ascenseur_total,
+          assurance_valeur_bien: data.assurance_valeur_bien,
+          demontage_remontage: data.demontage_remontage,
+          emballage_fragile: data.emballage_fragile,
+          portage_total: data.portage_total,
+          options_total: data.options_total,
+          breakdown: data.breakdown,
+        });
+        navigate("/tunnel/devis");
+      } else {
+        console.error("Quote API error:", data);
+        alert(data.error || "Impossible de calculer le devis.");
+      }
+    } catch (err) {
+      console.error("Final quote error:", err);
+      alert("Erreur lors du calcul du devis. Vérifiez que volume et adresse sont renseignés.");
+    }
   };
 
   const toggleOption = (optionKey: keyof typeof options) => {
@@ -1052,7 +1130,7 @@ function AppContent() {
   const updateAddressOption = (
     section: "departure" | "arrival",
     option: string,
-    value: boolean,
+    value: boolean | number,
   ) => {
     setAddressData((prev) => ({
       ...prev,
@@ -1076,6 +1154,8 @@ function AppContent() {
         monteMenuble: false,
         caveGarage: false,
         courTraverser: false,
+        distancePortage: false,
+        portageDistanceM: 0,
       },
     };
     setEscales((prev) => [...prev, newEscale]);
@@ -1093,7 +1173,7 @@ function AppContent() {
     );
   };
 
-  const updateEscaleOption = (id: number, option: string, value: boolean) => {
+  const updateEscaleOption = (id: number, option: string, value: boolean | number) => {
     setEscales((prev) =>
       prev.map((escale) =>
         escale.id === id
@@ -2118,22 +2198,69 @@ function AppContent() {
                     <h3 className="text-lg font-semibold text-slate-900 mb-2">
                       Déménagement
                     </h3>
-                    <div className="text-3xl font-bold text-slate-900 mb-1">1697.08 €</div>
+                    <div className="text-3xl font-bold text-slate-900 mb-1">
+                      {quoteResult ? `${quoteResult.final_price.toFixed(2)} €` : "— €"}
+                    </div>
                     <div className="text-sm text-slate-600">TTC</div>
                   </div>
 
                   <div className="space-y-3 mb-6 text-sm border-t border-slate-100 pt-4">
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">Prestation</span>
-                      <span className="font-medium">1408.40 €</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">TVA (20%)</span>
-                      <span className="font-medium">281.68 €</span>
-                    </div>
+                    {quoteResult?.base_price_transport != null && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Transport (volume × distance)</span>
+                        <span className="font-medium">{quoteResult.base_price_transport.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {quoteResult?.etage_total != null && quoteResult.etage_total > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Étages</span>
+                        <span className="font-medium">{quoteResult.etage_total.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {quoteResult?.ascenseur_total != null && quoteResult.ascenseur_total > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Ascenseur</span>
+                        <span className="font-medium">{quoteResult.ascenseur_total.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {quoteResult?.assurance_valeur_bien != null && quoteResult.assurance_valeur_bien > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Valeur des biens (assurance)</span>
+                        <span className="font-medium">{quoteResult.assurance_valeur_bien.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {quoteResult?.demontage_remontage != null && quoteResult.demontage_remontage > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Démontage / remontage</span>
+                        <span className="font-medium">{quoteResult.demontage_remontage.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {quoteResult?.emballage_fragile != null && quoteResult.emballage_fragile > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Emballage fragile</span>
+                        <span className="font-medium">{quoteResult.emballage_fragile.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {quoteResult?.portage_total != null && quoteResult.portage_total > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Distance de portage</span>
+                        <span className="font-medium">{quoteResult.portage_total.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {!quoteResult && (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-slate-600">Prestation</span>
+                          <span className="font-medium">—</span>
+                        </div>
+                        <p className="text-xs text-slate-500">Remplissez les options et cliquez sur &quot;Recevoir mon devis&quot; pour voir le détail.</p>
+                      </>
+                    )}
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200">
                       <span className="font-semibold">Total TTC</span>
-                      <span className="font-bold text-lg">1697.08 €</span>
+                      <span className="font-bold text-lg">
+                        {quoteResult ? `${quoteResult.final_price.toFixed(2)} €` : "— €"}
+                      </span>
                     </div>
                   </div>
 
@@ -2637,15 +2764,11 @@ function AppContent() {
                         Mon service de déménagement
                       </Label>
                       <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
-                        <Input
-                          id="address"
-                          type="text"
-                          placeholder="Quelle est votre adresse ?"
+                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 z-10 pointer-events-none" style={{ color: '#CC922F' }} />
+                        <AddressAutocomplete
                           value={formData.address}
-                          onChange={(e) =>
-                            handleInputChange("address", e.target.value)
-                          }
+                          onChange={(v) => handleInputChange("address", v)}
+                          placeholder="Quelle est votre adresse ?"
                           className="pl-12 bg-slate-50 border-slate-200 h-12 text-base"
                         />
                       </div>
@@ -4625,13 +4748,11 @@ function AppContent() {
                           Ville ou adresse complète
                         </Label>
                         <div className="relative">
-                          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#CC922F' }} />
-                          <Input
-                            type="text"
+                          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10 pointer-events-none" style={{ color: '#CC922F' }} />
+                          <AddressAutocomplete
                             value={addressData.departure.address}
-                            onChange={(e) =>
-                              updateAddressData("departure", "address", e.target.value)
-                            }
+                            onChange={(v) => updateAddressData("departure", "address", v)}
+                            placeholder="Ville ou adresse complète"
                             className="bg-slate-50 border-slate-200 pl-12"
                           />
                         </div>
@@ -4687,10 +4808,10 @@ function AppContent() {
                             </SelectTrigger>
                             <SelectContent className="bg-white border border-slate-200 shadow-lg">
                               <SelectItem value="Non">Non</SelectItem>
-                              <SelectItem value="1 personne">1 personne</SelectItem>
-                              <SelectItem value="2 personnes">2 personnes</SelectItem>
-                              <SelectItem value="3 personnes">3 personnes</SelectItem>
-                              <SelectItem value="4 personnes et plus">4 personnes et plus</SelectItem>
+                              <SelectItem value="2-3 personnes">2-3 personnes</SelectItem>
+                              <SelectItem value="3-4 personnes">3-4 personnes</SelectItem>
+                              <SelectItem value="4-6 personnes">4-6 personnes</SelectItem>
+                              <SelectItem value="6-8 personnes ou plus">6-8 personnes ou plus</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -4736,6 +4857,36 @@ function AppContent() {
                             Cour à traverser
                           </Label>
                         </div>
+                        <div className="flex items-center space-x-2 flex-wrap gap-2">
+                          <Switch
+                            id="departure-distance-portage"
+                            checked={addressData.departure.options.distancePortage}
+                            onCheckedChange={(checked) =>
+                              updateAddressOption("departure", "distancePortage", checked as boolean)
+                            }
+                            className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
+                          />
+                          <Label htmlFor="departure-distance-portage" className="text-sm">
+                            Distance de portage
+                          </Label>
+                          {addressData.departure.options.distancePortage && (
+                            <div className="flex items-center gap-1.5">
+                              <Input
+                                type="number"
+                                min={0}
+                                step={1}
+                                placeholder="m"
+                                value={addressData.departure.options.portageDistanceM ?? ""}
+                                onChange={(e) => {
+                                  const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
+                                  updateAddressOption("departure", "portageDistanceM", isNaN(v) ? 0 : v);
+                                }}
+                                className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
+                              />
+                              <span className="text-xs text-slate-600">m</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -4769,14 +4920,11 @@ function AppContent() {
                             Ville ou adresse complète
                           </Label>
                           <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#CC922F' }} />
-                            <Input
-                              type="text"
-                              placeholder="Quelle adresse pour l'escale ?"
+                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10 pointer-events-none" style={{ color: '#CC922F' }} />
+                            <AddressAutocomplete
                               value={escale.address}
-                              onChange={(e) =>
-                                updateEscaleData(escale.id, "address", e.target.value)
-                              }
+                              onChange={(v) => updateEscaleData(escale.id, "address", v)}
+                              placeholder="Quelle adresse pour l'escale ?"
                               className="bg-slate-50 border-slate-200 pl-12"
                             />
                           </div>
@@ -4832,10 +4980,10 @@ function AppContent() {
                               </SelectTrigger>
                               <SelectContent className="bg-white border border-slate-200 shadow-lg">
                                 <SelectItem value="Non">Non</SelectItem>
-                                <SelectItem value="1 personne">1 personne</SelectItem>
-                                <SelectItem value="2 personnes">2 personnes</SelectItem>
-                                <SelectItem value="3 personnes">3 personnes</SelectItem>
-                                <SelectItem value="4 personnes et plus">4 personnes et plus</SelectItem>
+                                <SelectItem value="2-3 personnes">2-3 personnes</SelectItem>
+                                <SelectItem value="3-4 personnes">3-4 personnes</SelectItem>
+                                <SelectItem value="4-6 personnes">4-6 personnes</SelectItem>
+                                <SelectItem value="6-8 personnes ou plus">6-8 personnes ou plus</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -4881,6 +5029,36 @@ function AppContent() {
                               Cour à traverser
                             </Label>
                           </div>
+                          <div className="flex items-center space-x-2 flex-wrap gap-2">
+                            <Switch
+                              id={`escale-${escale.id}-distance-portage`}
+                              checked={escale.options.distancePortage}
+                              onCheckedChange={(checked) =>
+                                updateEscaleOption(escale.id, "distancePortage", checked as boolean)
+                              }
+                              className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
+                            />
+                            <Label htmlFor={`escale-${escale.id}-distance-portage`} className="text-sm">
+                              Distance de portage
+                            </Label>
+                            {escale.options.distancePortage && (
+                              <div className="flex items-center gap-1.5">
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  step={1}
+                                  placeholder="m"
+                                  value={escale.options.portageDistanceM ?? ""}
+                                  onChange={(e) => {
+                                    const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
+                                    updateEscaleOption(escale.id, "portageDistanceM", isNaN(v) ? 0 : v);
+                                  }}
+                                  className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
+                                />
+                                <span className="text-xs text-slate-600">m</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -4915,14 +5093,11 @@ function AppContent() {
                           Ville ou adresse complète
                         </Label>
                         <div className="relative">
-                          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#CC922F' }} />
-                          <Input
-                            type="text"
-                            placeholder="Quel point d'arrivée ?"
+                          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10 pointer-events-none" style={{ color: '#CC922F' }} />
+                          <AddressAutocomplete
                             value={addressData.arrival.address}
-                            onChange={(e) =>
-                              updateAddressData("arrival", "address", e.target.value)
-                            }
+                            onChange={(v) => updateAddressData("arrival", "address", v)}
+                            placeholder="Quel point d'arrivée ?"
                             className="bg-slate-50 border-slate-200 pl-12"
                           />
                         </div>
@@ -4978,10 +5153,10 @@ function AppContent() {
                             </SelectTrigger>
                             <SelectContent className="bg-white border border-slate-200 shadow-lg">
                               <SelectItem value="Non">Non</SelectItem>
-                              <SelectItem value="1 personne">1 personne</SelectItem>
-                              <SelectItem value="2 personnes">2 personnes</SelectItem>
-                              <SelectItem value="3 personnes">3 personnes</SelectItem>
-                              <SelectItem value="4 personnes et plus">4 personnes et plus</SelectItem>
+                              <SelectItem value="2-3 personnes">2-3 personnes</SelectItem>
+                              <SelectItem value="3-4 personnes">3-4 personnes</SelectItem>
+                              <SelectItem value="4-6 personnes">4-6 personnes</SelectItem>
+                              <SelectItem value="6-8 personnes ou plus">6-8 personnes ou plus</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -5026,6 +5201,36 @@ function AppContent() {
                           <Label htmlFor="arrival-cour-traverser" className="text-sm">
                             Cour à traverser
                           </Label>
+                        </div>
+                        <div className="flex items-center space-x-2 flex-wrap gap-2">
+                          <Switch
+                            id="arrival-distance-portage"
+                            checked={addressData.arrival.options.distancePortage}
+                            onCheckedChange={(checked) =>
+                              updateAddressOption("arrival", "distancePortage", checked as boolean)
+                            }
+                            className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
+                          />
+                          <Label htmlFor="arrival-distance-portage" className="text-sm">
+                            Distance de portage
+                          </Label>
+                          {addressData.arrival.options.distancePortage && (
+                            <div className="flex items-center gap-1.5">
+                              <Input
+                                type="number"
+                                min={0}
+                                step={1}
+                                placeholder="m"
+                                value={addressData.arrival.options.portageDistanceM ?? ""}
+                                onChange={(e) => {
+                                  const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
+                                  updateAddressOption("arrival", "portageDistanceM", isNaN(v) ? 0 : v);
+                                }}
+                                className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
+                              />
+                              <span className="text-xs text-slate-600">m</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

@@ -18,6 +18,9 @@ urlpatterns = [
     path('selection/manual/<int:selection_id>/', views.get_manual_selection, name='get_manual_selection'),
     path('selections/manual/', views.list_manual_selections, name='list_manual_selections'),
     
+    # Final quote: volume + distance_km (distance from Google) → price from matrix
+    path('quote/final/', views.get_final_quote, name='get_final_quote'),
+    
     # Superficie calculation endpoints
     path('superficie/', views.create_superficie_calculation, name='create_superficie_calculation'),
     path('superficie/data/', views.get_superficie_calculations, name='get_superficie_calculations'),

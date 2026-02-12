@@ -10,6 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+# Use PyMySQL instead of mysqlclient (avoids DLL issues on Windows)
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from pathlib import Path
 import os
 
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'drf_yasg',
     'core',
     'ai_detector.apps.AiDetectorConfig',
     'demenagement',
@@ -163,3 +168,6 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 # AI Model settings
 AI_MODEL_PATH = BASE_DIR / 'ai_detector' / 'ai_model'
 os.makedirs(AI_MODEL_PATH, exist_ok=True)
+
+# Google Maps API (used by proxy views for Places + Distance Matrix; avoids CORS from frontend)
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', 'AIzaSyBxtvdAKLEDoTLkVew4B2eFlH79SgYcHtU')

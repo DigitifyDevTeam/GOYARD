@@ -4,8 +4,17 @@ from rest_framework import status
 from .models import ClientInformation, ManualSelection, Address
 from .serializers import ClientInformationSerializer, ManualSelectionSerializer, AddressSerializer
 
-# Import volume calculation functions from ai_detector
+# Import volume calculation and pricing from ai_detector
 from ai_detector.views import calculate_total_volume, calculate_quote, OBJECT_VOLUMES, ROOM_OBJECTS
+from ai_detector.pricing import (
+    get_price_breakdown,
+    get_etage_price,
+    get_ascenseur_extra,
+    get_assurance_valeur_bien_price,
+    get_demontage_remontage_price,
+    get_emballage_fragile_price,
+    get_portage_price,
+)
 
 
 @api_view(['POST'])
@@ -284,9 +293,10 @@ def create_manual_selection(request):
                 if qty > 0:
                     all_objects[obj_name] = all_objects.get(obj_name, 0) + qty
         
-        # Calculate volume and quote
+        # Calculate volume only. Final price is computed later when frontend sends
+        # distance_km (from Google distance between the two addresses) to the final-quote endpoint.
         volume_calc = calculate_total_volume(all_objects)
-        quote_calc = calculate_quote(volume_calc)
+        quote_calc = calculate_quote(volume_calc)  # fallback estimate without distance
         
         return Response({
             'success': True,
@@ -357,6 +367,217 @@ def list_manual_selections(request):
         'data': serializer.data
     }, status=status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+def get_final_quote(request):
+    """
+    Final quote: base (volume × distance matrix) + étage (floor) + ascenseur (elevator).
+    - Distance: from frontend (e.g. Google distance between the two addresses).
+    - Étage / ascenseur: from body (etage_depart, etage_arrivee, ascenseur_depart, ascenseur_arrivee)
+      or from address_id (load Address and use its etage/ascenseur for départ, arrivée, and escale).
+    Body: { "distance_km": 120, "volume_m3": 25 } or selection_id/calculation_id;
+      optional: address_id, or etage_depart, etage_arrivee, ascenseur_depart, ascenseur_arrivee,
+      has_stopover, escale_etage, escale_ascenseur.
+    """
+    try:
+        data = request.data or {}
+        distance_km = data.get('distance_km')
+        volume_m3 = data.get('volume_m3')
+        selection_id = data.get('selection_id')
+        calculation_id = data.get('calculation_id')
+        address_id = data.get('address_id')
+        
+        if distance_km is None:
+            return Response({
+                'success': False,
+                'error': 'distance_km is required (from Google distance between the two addresses)'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            distance_km = float(distance_km)
+            if distance_km < 0:
+                raise ValueError('distance_km must be >= 0')
+        except (TypeError, ValueError):
+            return Response({
+                'success': False,
+                'error': 'distance_km must be a non-negative number'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if volume_m3 is not None:
+            try:
+                volume_m3 = float(volume_m3)
+                if volume_m3 <= 0:
+                    raise ValueError('volume_m3 must be > 0')
+            except (TypeError, ValueError):
+                return Response({
+                    'success': False,
+                    'error': 'volume_m3 must be a positive number'
+                }, status=status.HTTP_400_BAD_REQUEST)
+        elif selection_id is not None or calculation_id is not None:
+            id_to_use = selection_id if selection_id is not None else calculation_id
+            try:
+                selection = ManualSelection.objects.get(id=id_to_use)
+                volume_m3 = float(selection.total_volume)
+                if volume_m3 <= 0:
+                    return Response({
+                        'success': False,
+                        'error': 'Selection has no volume; total_volume must be > 0'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            except ManualSelection.DoesNotExist:
+                return Response({
+                    'success': False,
+                    'error': 'Selection/calculation not found'
+                }, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({
+                'success': False,
+                'error': 'Provide either volume_m3 or selection_id (or calculation_id)'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Base price from volume × distance matrix
+        breakdown = get_price_breakdown(volume_m3, distance_km)
+        base_price = breakdown['price_eur']
+        
+        # Étage & ascenseur: from address_id or from body
+        etage_depart = etage_arrivee = ascenseur_depart = ascenseur_arrivee = None
+        has_stopover = False
+        escale_etage = escale_ascenseur = None
+        if address_id:
+            try:
+                addr = Address.objects.get(id=address_id)
+                etage_depart = addr.etage_depart
+                etage_arrivee = addr.etage_arrivee
+                ascenseur_depart = addr.ascenseur_depart
+                ascenseur_arrivee = addr.ascenseur_arrivee
+                has_stopover = bool(addr.has_stopover)
+                escale_etage = addr.escale_etage or None
+                escale_ascenseur = addr.escale_ascenseur or None
+            except Address.DoesNotExist:
+                pass
+        if etage_depart is None:
+            etage_depart = data.get('etage_depart')
+        if etage_arrivee is None:
+            etage_arrivee = data.get('etage_arrivee')
+        if ascenseur_depart is None:
+            ascenseur_depart = data.get('ascenseur_depart')
+        if ascenseur_arrivee is None:
+            ascenseur_arrivee = data.get('ascenseur_arrivee')
+        if not has_stopover and data.get('has_stopover') is not None:
+            has_stopover = bool(data.get('has_stopover'))
+        if escale_etage is None:
+            escale_etage = data.get('escale_etage')
+        if escale_ascenseur is None:
+            escale_ascenseur = data.get('escale_ascenseur')
+        
+        # Sum étage (floor) and ascenseur (elevator) costs per location
+        etage_depart_price = get_etage_price(volume_m3, etage_depart or 'RDC')
+        etage_arrivee_price = get_etage_price(volume_m3, etage_arrivee or 'RDC')
+        ascenseur_depart_extra = get_ascenseur_extra(volume_m3, ascenseur_depart or 'Non')
+        ascenseur_arrivee_extra = get_ascenseur_extra(volume_m3, ascenseur_arrivee or 'Non')
+        etage_escale_price = 0.0
+        ascenseur_escale_extra = 0.0
+        if has_stopover:
+            etage_escale_price = get_etage_price(volume_m3, escale_etage or 'RDC')
+            ascenseur_escale_extra = get_ascenseur_extra(volume_m3, escale_ascenseur or 'Non')
+        
+        etage_total = etage_depart_price + etage_arrivee_price + etage_escale_price
+        ascenseur_total = ascenseur_depart_extra + ascenseur_arrivee_extra + ascenseur_escale_extra
+        
+        # Options: valeur des biens (assurance), démontage/remontage, emballage fragile
+        valeur_bien_eur = None
+        try:
+            v = data.get('valeur_bien_eur')
+            if v is not None:
+                valeur_bien_eur = float(v)
+        except (TypeError, ValueError):
+            pass
+        assurance_bien_price = get_assurance_valeur_bien_price(valeur_bien_eur or 0)
+        demontage_remontage = bool(data.get('demontage_remontage'))
+        emballage_fragile = bool(data.get('emballage_fragile'))
+        demontage_remontage_price = get_demontage_remontage_price(volume_m3, distance_km, demontage_remontage)
+        emballage_fragile_price = get_emballage_fragile_price(volume_m3, emballage_fragile)
+        
+        # Portage (distance de portage): take the longest distance in meters (départ, arrivée, escale), apply once
+        portage_depart_m = None
+        portage_arrival_m = None
+        portage_escale_m = None
+        try:
+            v = data.get('portage_depart_m')
+            if v is not None: portage_depart_m = float(v)
+            v = data.get('portage_arrival_m')
+            if v is not None: portage_arrival_m = float(v)
+            v = data.get('portage_escale_m')
+            if v is not None: portage_escale_m = float(v)
+        except (TypeError, ValueError):
+            pass
+        portage_depart_m = portage_depart_m or 0
+        portage_arrival_m = portage_arrival_m or 0
+        portage_escale_m = (portage_escale_m or 0) if has_stopover else 0
+        portage_distance_used_m = max(portage_depart_m, portage_arrival_m, portage_escale_m)
+        portage_total = get_portage_price(volume_m3, portage_distance_used_m)
+        
+        options_total = assurance_bien_price + demontage_remontage_price + emballage_fragile_price + portage_total
+        final_price = base_price + etage_total + ascenseur_total + options_total
+        
+        breakdown_extra = {
+            'transport': f"Volume {volume_m3}m³, distance {distance_km} km → {base_price}€",
+            'etage_depart': f"Étage départ {etage_depart or 'RDC'} → {etage_depart_price}€",
+            'etage_arrivee': f"Étage arrivée {etage_arrivee or 'RDC'} → {etage_arrivee_price}€",
+            'ascenseur_depart': f"Ascenseur départ → {ascenseur_depart_extra}€",
+            'ascenseur_arrivee': f"Ascenseur arrivée → {ascenseur_arrivee_extra}€",
+        }
+        if has_stopover:
+            breakdown_extra['etage_escale'] = f"Étage escale {escale_etage or 'RDC'} → {etage_escale_price}€"
+            breakdown_extra['ascenseur_escale'] = f"Ascenseur escale → {ascenseur_escale_extra}€"
+        breakdown_extra['assurance_valeur_bien'] = (
+            f"Valeur des biens {valeur_bien_eur or 0}€ → {assurance_bien_price}€"
+            if valeur_bien_eur is not None else "Valeur des biens (non renseignée) → 0€"
+        )
+        breakdown_extra['demontage_remontage'] = (
+            f"Démontage/remontage ({volume_m3}m³, {distance_km} km) → {demontage_remontage_price}€"
+            if demontage_remontage else "Démontage/remontage (non) → 0€"
+        )
+        breakdown_extra['emballage_fragile'] = (
+            f"Emballage fragile ({volume_m3}m³ × 12,5€/m³) → {emballage_fragile_price}€"
+            if emballage_fragile else "Emballage fragile (non) → 0€"
+        )
+        if portage_total > 0:
+            parts = [f"départ {portage_depart_m:.0f}m", f"arrivée {portage_arrival_m:.0f}m"]
+            if has_stopover and portage_escale_m:
+                parts.append(f"escale {portage_escale_m:.0f}m")
+            breakdown_extra['portage'] = f"Portage max({', '.join(parts)}) → {portage_distance_used_m:.0f}m → {portage_total}€"
+        else:
+            breakdown_extra['portage'] = "Portage (non) → 0€"
+        breakdown_extra['total'] = (
+            f"Total: {base_price} (transport) + {etage_total} (étage) + {ascenseur_total} (ascenseur) "
+            f"+ {options_total} (options) = {final_price}€"
+        )
+        
+        return Response({
+            'success': True,
+            'final_price': round(final_price, 2),
+            'currency': 'EUR',
+            'volume_m3': volume_m3,
+            'distance_km': distance_km,
+            'base_price_transport': round(base_price, 2),
+            'etage_total': round(etage_total, 2),
+            'ascenseur_total': round(ascenseur_total, 2),
+            'assurance_valeur_bien': round(assurance_bien_price, 2),
+            'demontage_remontage': round(demontage_remontage_price, 2),
+            'emballage_fragile': round(emballage_fragile_price, 2),
+            'portage_total': round(portage_total, 2),
+            'options_total': round(options_total, 2),
+            'breakdown': breakdown_extra,
+            'volume_bucket_used_m3': breakdown['volume_m3_used'],
+            'distance_band_km': breakdown['distance_band_km'],
+        }, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        return Response({
+            'success': False,
+            'error': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(['POST'])
 def create_superficie_calculation(request):
     """Create superficie calculation with formulas: vhouse = x * 2.5, vfurniture = 40 m³"""
@@ -401,10 +622,11 @@ def create_superficie_calculation(request):
         vfurniture = 40  # vfurniture = 500 * 0.08 = 40 m³
         total_volume = vhouse + vfurniture
         
-        # Calculate quote based on total volume
-        PRICE_PER_M3 = 15  # Price per cubic meter
+        # Store fallback price only. Final price is computed when frontend sends
+        # distance_km (from Google) to the final-quote endpoint.
+        PRICE_PER_M3 = 15
         base_price = total_volume * PRICE_PER_M3
-        final_price = base_price  # Can add additional calculations here
+        final_price = base_price
         
         # Create superficie calculation record
         superficie_calculation = ManualSelection.objects.create(
@@ -479,8 +701,9 @@ def get_volume_calculation(request):
         vfurniture = 40  # vfurniture = 500 * 0.08 = 40 m³
         total_volume = vhouse + vfurniture
         
-        # Calculate quote
-        PRICE_PER_M3 = 15  # Price per cubic meter
+        # Fallback quote only. Final price: frontend gets distance from Google (two addresses)
+        # then calls POST /api/demenagement/quote/final/ with volume_m3 + distance_km.
+        PRICE_PER_M3 = 15
         base_price = total_volume * PRICE_PER_M3
         final_price = base_price
         

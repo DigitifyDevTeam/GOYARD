@@ -1,0 +1,3 @@
+# Django backend dependencies
+# Use PyMySQL instead of mysqlclient for MySQL (pure Python, no DLLs on Windows)
+pymysql>=1.1.0

@@ -16,6 +16,7 @@ from datetime import datetime
 from ultralytics import YOLO
 
 from .models import Room, Photo, DetectedObject, Quote
+from .pricing import get_price_from_matrix, get_price_breakdown
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -263,40 +264,63 @@ def calculate_total_volume(object_counts):
         'formula': f"Total = {' + '.join([str(v['total_volume']) + 'm³' for v in volume_breakdown.values() if v['total_volume'] > 0])} = {total_volume}m³"
     }
 
-def calculate_quote(volume_calculation):
+def calculate_quote(volume_calculation, distance_km=None):
     """
-    Calculate quote based on volume: volume * 50€ per m³
+    Calculate quote from volume and optional distance.
+    When distance_km is provided, uses the official volume × distance price matrix.
+    Otherwise falls back to volume * 50€ per m³.
     
     Args:
         volume_calculation: Result from calculate_total_volume()
+        distance_km: Optional distance in km (uses price matrix when provided and >= 0)
     
     Returns:
         Dictionary with quote calculation details
     """
-    # Base pricing: 1 m³ = 50 euros
-    PRICE_PER_M3 = 50.0
-    
     total_volume = volume_calculation['total_volume']
-    final_price = total_volume * PRICE_PER_M3
-    
-    # Create detailed calculation steps for the frontend
-    calculation_steps = [
-        f"Total Volume Detected: {total_volume}m³",
-        f"Price per m³: {PRICE_PER_M3}€",
-        f"Final Calculation: {total_volume}m³ × {PRICE_PER_M3}€ = {final_price}€"
-    ]
-    
-    return {
-        'total_volume_m3': total_volume,
-        'price_per_m3': PRICE_PER_M3,
-        'final_price': round(final_price, 2),
-        'currency': 'EUR',
-        'calculation_steps': calculation_steps,
-        'breakdown': {
-            'volume_cost': f"{total_volume}m³ × {PRICE_PER_M3}€ = {final_price}€",
-            'total': f"Total: {final_price}€"
+    use_matrix = distance_km is not None and distance_km >= 0
+
+    if use_matrix:
+        breakdown = get_price_breakdown(total_volume, distance_km)
+        final_price = breakdown['price_eur']
+        calculation_steps = [
+            f"Total Volume: {total_volume}m³ (applied bucket: {breakdown['volume_m3_used']}m³)",
+            f"Distance: {distance_km} km (band: {breakdown['distance_band_km']} km)",
+            f"Price from grid: {final_price}€"
+        ]
+        return {
+            'total_volume_m3': total_volume,
+            'distance_km': distance_km,
+            'price_from_matrix': True,
+            'volume_bucket_used_m3': breakdown['volume_m3_used'],
+            'distance_band_km': breakdown['distance_band_km'],
+            'final_price': round(final_price, 2),
+            'currency': 'EUR',
+            'calculation_steps': calculation_steps,
+            'breakdown': {
+                'volume_cost': f"{total_volume}m³ → {breakdown['volume_m3_used']}m³, {breakdown['distance_band_km']} km → {final_price}€",
+                'total': f"Total: {final_price}€"
+            }
         }
-    }
+    else:
+        PRICE_PER_M3 = 50.0
+        final_price = total_volume * PRICE_PER_M3
+        calculation_steps = [
+            f"Total Volume Detected: {total_volume}m³",
+            f"Price per m³: {PRICE_PER_M3}€ (no distance provided)",
+            f"Final Calculation: {total_volume}m³ × {PRICE_PER_M3}€ = {final_price}€"
+        ]
+        return {
+            'total_volume_m3': total_volume,
+            'price_per_m3': PRICE_PER_M3,
+            'final_price': round(final_price, 2),
+            'currency': 'EUR',
+            'calculation_steps': calculation_steps,
+            'breakdown': {
+                'volume_cost': f"{total_volume}m³ × {PRICE_PER_M3}€ = {final_price}€",
+                'total': f"Total: {final_price}€"
+            }
+        }
 
 def upload_photos(request):
     """Handle photo upload and room creation"""
@@ -615,8 +639,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -811,8 +842,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -1050,8 +1088,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -1135,18 +1180,22 @@ def generate_quote(request):
             for obj_class in volumes_data:
                 volumes_data[obj_class]['confidence'] /= volumes_data[obj_class]['count']
             
-            # Generate simple quote (placeholder)
             total_volume = sum(data['volume'] for data in volumes_data.values())
             total_weight = sum(data['weight'] for data in volumes_data.values())
-            base_price = total_volume * 10 + total_weight * 0.5  # Simple pricing
-            final_price = base_price * (1 + distance_km * 0.01)  # Distance factor
+            # Use official volume×distance price matrix when distance provided
+            if distance_km is not None and distance_km >= 0:
+                final_price = get_price_from_matrix(total_volume, distance_km)
+                base_price = final_price
+            else:
+                base_price = total_volume * 10 + total_weight * 0.5
+                final_price = base_price * (1 + (distance_km or 0) * 0.01)
             
             quote_data = {
                 'total_volume': total_volume,
                 'total_weight': total_weight,
                 'base_price': base_price,
                 'final_price': final_price,
-                'confidence_score': 0.8,  # Placeholder
+                'confidence_score': 0.8,
                 'distance_km': distance_km,
                 'services': services
             }
@@ -2066,8 +2115,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -2262,8 +2318,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -2501,8 +2564,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -2684,8 +2754,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -2880,8 +2957,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []
@@ -3119,8 +3203,15 @@ def calculate_manual_quote(request):
             # Calculate volume using existing function
             volume_calculation = calculate_total_volume(object_counts)
             
-            # Calculate quote using existing function
-            quote_calculation = calculate_quote(volume_calculation)
+            # Optional distance_km for volume×distance price matrix
+            distance_km = None
+            try:
+                d = data.get('distance_km')
+                if d is not None:
+                    distance_km = float(d)
+            except (TypeError, ValueError):
+                pass
+            quote_calculation = calculate_quote(volume_calculation, distance_km=distance_km)
             
             # Create summary
             summary_parts = []

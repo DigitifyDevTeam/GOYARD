@@ -200,10 +200,10 @@ export const ETAGE_CHOICES = [
 
 export const ASCENSEUR_CHOICES = [
   'Non',
-  '1 personne',
-  '2 personnes',
-  '3 personnes',
-  '4 personnes ou plus'
+  '2-3 personnes',
+  '3-4 personnes',
+  '4-6 personnes',
+  '6-8 personnes ou plus'
 ];
 
 export const OPTIONS_KEYS = [

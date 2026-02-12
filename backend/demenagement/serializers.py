@@ -91,7 +91,7 @@ class ClientInformationSerializer(serializers.ModelSerializer):
     
     def validate_ascenseur(self, value, field_name):
         """Helper method to validate elevator values"""
-        valid_choices = ['Non', '1 personne', '2 personnes', '3 personnes', '4 personnes ou plus']
+        valid_choices = ['Non', '2-3 personnes', '3-4 personnes', '4-6 personnes', '6-8 personnes ou plus']
         
         if value not in valid_choices:
             raise serializers.ValidationError(
@@ -120,7 +120,7 @@ class ClientInformationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"Les options pour {field_name} doivent être un objet JSON")
         
         # Valid option keys
-        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser']
+        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser', 'distance_portage']
         
         # Check for invalid keys
         for key in value.keys():
@@ -386,7 +386,7 @@ class AddressSerializer(serializers.ModelSerializer):
     
     def validate_ascenseur(self, value, field_name):
         """Helper method to validate elevator values"""
-        valid_choices = ['Non', '1 personne', '2 personnes', '3 personnes', '4 personnes ou plus']
+        valid_choices = ['Non', '2-3 personnes', '3-4 personnes', '4-6 personnes', '6-8 personnes ou plus']
         
         if value not in valid_choices:
             raise serializers.ValidationError(
@@ -415,7 +415,7 @@ class AddressSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"Les options pour {field_name} doivent être un objet JSON")
         
         # Valid option keys
-        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser']
+        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser', 'distance_portage']
         
         # Check for invalid keys
         for key in value.keys():

@@ -14,10 +14,10 @@ class ClientInformation(models.Model):
     # Choices for elevator
     ASCENSEUR_CHOICES = [
         ('Non', 'Non'),
-        ('1 personne', '1 personne'),
-        ('2 personnes', '2 personnes'),
-        ('3 personnes', '3 personnes'),
-        ('4 personnes ou plus', '4 personnes ou plus'),
+        ('2-3 personnes', '2-3 personnes'),
+        ('3-4 personnes', '3-4 personnes'),
+        ('4-6 personnes', '4-6 personnes'),
+        ('6-8 personnes ou plus', '6-8 personnes ou plus'),
     ]
     
     # Informations personnelles
@@ -38,7 +38,7 @@ class ClientInformation(models.Model):
         verbose_name="Étage de départ"
     )
     ascenseur_depart = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=ASCENSEUR_CHOICES,
         default='Non',
         verbose_name="Ascenseur au départ"
@@ -47,7 +47,7 @@ class ClientInformation(models.Model):
         default=dict,
         blank=True,
         verbose_name="Options départ",
-        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser, distance_portage"
     )
     
     # Escale (optionnelle)
@@ -61,7 +61,7 @@ class ClientInformation(models.Model):
         verbose_name="Étage escale"
     )
     escale_ascenseur = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=ASCENSEUR_CHOICES,
         default='Non',
         blank=True,
@@ -82,7 +82,7 @@ class ClientInformation(models.Model):
         verbose_name="Étage d'arrivée"
     )
     ascenseur_arrivee = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=ASCENSEUR_CHOICES,
         default='Non',
         verbose_name="Ascenseur à l'arrivée"
@@ -158,7 +158,7 @@ class ManualSelection(models.Model):
     ]
     
     method = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=METHOD_CHOICES,
         default='manual',
         verbose_name="Méthode de calcul"
@@ -212,7 +212,7 @@ class ManualSelection(models.Model):
     ]
     
     status = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=STATUS_CHOICES,
         default='draft',
         verbose_name="Statut"
@@ -337,10 +337,10 @@ class Address(models.Model):
     # Choices for elevator
     ASCENSEUR_CHOICES = [
         ('Non', 'Non'),
-        ('1 personne', '1 personne'),
-        ('2 personnes', '2 personnes'),
-        ('3 personnes', '3 personnes'),
-        ('4 personnes ou plus', '4 personnes ou plus'),
+        ('2-3 personnes', '2-3 personnes'),
+        ('3-4 personnes', '3-4 personnes'),
+        ('4-6 personnes', '4-6 personnes'),
+        ('6-8 personnes ou plus', '6-8 personnes ou plus'),
     ]
     
     # Link to client information
@@ -361,7 +361,7 @@ class Address(models.Model):
         help_text="RDC ou nombre entre 1 et 20"
     )
     ascenseur_depart = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=ASCENSEUR_CHOICES,
         default='Non',
         verbose_name="Ascenseur au départ"
@@ -370,7 +370,7 @@ class Address(models.Model):
         default=dict,
         blank=True,
         verbose_name="Options départ",
-        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser, distance_portage"
     )
     
     # Stopover address (optional)
@@ -386,7 +386,7 @@ class Address(models.Model):
         help_text="RDC ou nombre entre 1 et 20"
     )
     escale_ascenseur = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=ASCENSEUR_CHOICES,
         default='Non',
         blank=True,
@@ -397,7 +397,7 @@ class Address(models.Model):
         default=dict,
         blank=True,
         verbose_name="Options escale",
-        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser, distance_portage"
     )
     
     # Arrival address
@@ -410,7 +410,7 @@ class Address(models.Model):
         help_text="RDC ou nombre entre 1 et 20"
     )
     ascenseur_arrivee = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=ASCENSEUR_CHOICES,
         default='Non',
         verbose_name="Ascenseur à l'arrivée"
@@ -419,7 +419,7 @@ class Address(models.Model):
         default=dict,
         blank=True,
         verbose_name="Options arrivée",
-        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser"
+        help_text="Options: monte_meuble, cave_ou_garage, cours_a_traverser, distance_portage"
     )
     
     # Metadata
