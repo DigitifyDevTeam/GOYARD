@@ -112,9 +112,9 @@ class HeavyObjectSelection(models.Model):
     object_name = models.CharField(max_length=100)
     quantity = models.IntegerField(default=1)
     volume_per_unit = models.FloatField(default=0.0)
-    length = models.FloatField(null=True, blank=True)  # For custom objects
-    width = models.FloatField(null=True, blank=True)  # For custom objects
-    height = models.FloatField(null=True, blank=True)  # For custom objects
+    length = models.FloatField(null=True, blank=True)  # For  custom objects
+    width = models.FloatField(null=True, blank=True)  # For   custom  objects
+    height = models.FloatField(null=True, blank=True)  # For  custom objects
     is_custom = models.BooleanField(default=False)  # True if custom object
     created_at = models.DateTimeField(auto_now_add=True)
     

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
 import ScrollToTop from "./components/ScrollToTop";
@@ -74,7 +74,7 @@ import { ImageWithFallback } from "./components/figma/ImageWithFallback";
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Get current page from URL
   const getCurrentPage = () => {
     const path = location.pathname;
@@ -98,9 +98,9 @@ function AppContent() {
     if (path === "/tunnel/mon-volume/surface") return "surface";
     return null;
   };
-  
+
   const currentPage = getCurrentPage();
-  
+
   // Update selectedMethod when URL changes and track last used method
   useEffect(() => {
     const methodFromUrl = getSelectedMethodFromUrl();
@@ -131,7 +131,7 @@ function AppContent() {
       setClientId(parseInt(storedClientId));
     }
   }, []);
-  
+
   const [propertyValue, setPropertyValue] = useState(27000);
   const [selectedGuarantee, setSelectedGuarantee] = useState("1000");
   const [lastCalculationId, setLastCalculationId] = useState<number | null>(null);
@@ -142,12 +142,18 @@ function AppContent() {
     base_price_transport?: number;
     etage_total?: number;
     ascenseur_total?: number;
-    assurance_valeur_bien?: number;
-    demontage_remontage?: number;
-    emballage_fragile?: number;
     portage_total?: number;
+    escale_total?: number;
     options_total?: number;
+    assurance_bien_price?: number;
+    demontage_remontage_price?: number;
+    emballage_fragile_price?: number;
+    emballage_cartons_price?: number;
     breakdown?: Record<string, string>;
+    distance_km?: number;
+    volume_m3?: number;
+    adresse_depart?: string;
+    adresse_arrivee?: string;
   } | null>(null);
   const [options, setOptions] = useState({
     packCartons: false,
@@ -177,12 +183,12 @@ function AppContent() {
   const [cleaningQuantities, setCleaningQuantities] = useState<
     Record<string, number>
   >({});
-  
+
   // Room-specific object quantities
   const [roomObjectQuantities, setRoomObjectQuantities] = useState<
     Record<string, Record<string, number>>
   >({});
-  
+
   // AI Photo method state
   const [uploadedImages, setUploadedImages] = useState<Array<{
     id: string;
@@ -195,7 +201,7 @@ function AppContent() {
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [roomAnalysisResults, setRoomAnalysisResults] = useState<Record<string, Record<string, number>>>({});
   const [newObjectInputs, setNewObjectInputs] = useState<Record<string, string>>({});
-  
+
   // Special objects state
   const [hasSpecialObjects, setHasSpecialObjects] = useState(false);
   const [specialObjectQuantities, setSpecialObjectQuantities] = useState<Record<string, number>>({});
@@ -219,7 +225,7 @@ function AppContent() {
     largeur: "",
     hauteur: ""
   });
-  
+
   // Store custom object details (dimensions, etc.)
   const [customObjectDetails, setCustomObjectDetails] = useState<Record<string, {
     name: string;
@@ -228,7 +234,7 @@ function AppContent() {
     width: number;
     height: number;
   }>>({});
-  
+
   // Store custom heavy object details (dimensions, etc.)
   const [customHeavyObjectDetails, setCustomHeavyObjectDetails] = useState<Record<string, {
     name: string;
@@ -237,7 +243,7 @@ function AppContent() {
     width: number;
     height: number;
   }>>({});
-  
+
   // Store AI method custom heavy object details (dimensions, etc.)
   const [aiCustomHeavyObjectDetails, setAiCustomHeavyObjectDetails] = useState<Record<string, {
     name: string;
@@ -246,7 +252,7 @@ function AppContent() {
     width: number;
     height: number;
   }>>({});
-  
+
   // Store superficie method custom heavy object details (dimensions, etc.)
   const [superficieCustomHeavyObjectDetails, setSuperficieCustomHeavyObjectDetails] = useState<Record<string, {
     name: string;
@@ -265,7 +271,6 @@ function AppContent() {
         monteMenuble: false,
         caveGarage: false,
         courTraverser: false,
-        distancePortage: false,
         portageDistanceM: 0 as number,
       },
     },
@@ -277,7 +282,6 @@ function AppContent() {
         monteMenuble: false,
         caveGarage: false,
         courTraverser: false,
-        distancePortage: false,
         portageDistanceM: 0 as number,
       },
     },
@@ -293,8 +297,6 @@ function AppContent() {
       monteMenuble: boolean;
       caveGarage: boolean;
       courTraverser: boolean;
-      distancePortage: boolean;
-      portageDistanceM: number;
     };
   }>>([]);
 
@@ -389,7 +391,7 @@ function AppContent() {
 
       console.log('Submitting client information:', clientData);
 
-      const response = await fetch('http://127.0.0.1:8000/api/demenagement/client-info/', {
+      const response = await fetch('/api/demenagement/client-info/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -403,11 +405,11 @@ function AppContent() {
         console.log('Client information saved successfully:', result.data);
         // Store client ID for later use
         setClientId(result.data.id);
-        
+
         // Mark form as completed for route protection
         FormDataManager.markFormSubmitted(result.data.id);
-        
-    navigate("/tunnel/choix-volume");
+
+        navigate("/tunnel/choix-volume");
       } else {
         console.error('Error saving client information:', result.message);
         alert('Erreur lors de l\'enregistrement de vos informations: ' + result.message);
@@ -440,7 +442,7 @@ function AppContent() {
       const vhouse = area * 2.5; // vhouse = x * 2.5
       const vfurniture = 40; // vfurniture = 500 * 0.08 = 40 m³
       const totalVolume = vhouse + vfurniture;
-      
+
       console.log('Superficie calculation:', {
         area: area,
         vhouse: vhouse,
@@ -468,11 +470,11 @@ function AppContent() {
       if (hasSpecialObjects) {
         const heavyObjects: Record<string, number> = {};
         const customHeavyObjectsData: Record<string, any> = {};
-        
+
         Object.entries(specialObjectQuantities).forEach(([object, quantity]) => {
           if (quantity > 0) {
             const isCustomHeavyObject = superficieCustomHeavyObjects.includes(object);
-            
+
             if (isCustomHeavyObject) {
               const customHeavyDetails = superficieCustomHeavyObjectDetails[object];
               customHeavyObjectsData[object] = {
@@ -487,7 +489,7 @@ function AppContent() {
             }
           }
         });
-        
+
         payload.heavy_objects = heavyObjects;
         payload.custom_heavy_objects = customHeavyObjectsData;
       }
@@ -495,7 +497,7 @@ function AppContent() {
       console.log('Submitting superficie calculation:', payload);
 
       // Call API to save superficie calculation
-      const response = await fetch('http://127.0.0.1:8000/api/demenagement/superficie/', {
+      const response = await fetch('/api/demenagement/superficie/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -513,7 +515,7 @@ function AppContent() {
 
       // Navigate to next step
       navigate("/tunnel/adresses");
-      
+
     } catch (error) {
       console.error('Error in superficie calculation:', error);
       alert('Erreur lors du calcul de la superficie. Veuillez réessayer.');
@@ -560,18 +562,18 @@ function AppContent() {
       });
 
       const result = await response.json();
-      
+
       if (result.success) {
         if (result.duplicate_count > 0) {
           // Show warning about duplicates
           alert(`Attention: ${result.duplicate_count} image(s) déjà uploadée(s) ont été détectées et seront ignorées.`);
         }
-        
+
         // Only add unique images
-        const uniqueFiles = Array.from(files).filter(file => 
+        const uniqueFiles = Array.from(files).filter(file =>
           result.unique_photos.some((unique: any) => unique.filename === file.name)
         );
-        
+
         const newImages = uniqueFiles.map((file, index) => ({
           id: `${roomId}-${Date.now()}-${index}`,
           file,
@@ -651,7 +653,7 @@ function AppContent() {
         });
 
         const results = await response.json();
-        
+
         if (results.success) {
           allResults.push(results);
         } else {
@@ -663,24 +665,24 @@ function AppContent() {
       const combinedResults = combineAnalysisResults(allResults);
       setAnalysisResults(combinedResults);
       setAnalysisProgress(100);
-      
+
       clearInterval(progressInterval);
-      
+
       // Navigate to AI results page after analysis is complete
       setTimeout(() => {
         navigate("/tunnel/ai-results");
       }, 1000);
-      
+
     } catch (error) {
       console.error('Analysis error:', error);
       let errorMessage = 'Erreur lors de l\'analyse';
-      
+
       if (error instanceof Error) {
         errorMessage = error.message;
       } else if (typeof error === 'string') {
         errorMessage = error;
       }
-      
+
       setAnalysisResults({
         success: false,
         error: errorMessage
@@ -700,12 +702,12 @@ function AppContent() {
     results.forEach((result, index) => {
       const roomId = uploadedImages[index]?.roomId || `Room ${index + 1}`;
       roomResults[roomId] = {};
-      
+
       // Collect custom rooms from API response
       if (result.custom_rooms && Array.isArray(result.custom_rooms)) {
         allCustomRooms = [...allCustomRooms, ...result.custom_rooms];
       }
-      
+
       if (result.object_counts) {
         Object.entries(result.object_counts).forEach(([object, count]) => {
           const objectCount = count as number;
@@ -760,14 +762,14 @@ function AppContent() {
     try {
       // Prepare room selections data
       const roomSelections: Record<string, Record<string, number>> = {};
-      
+
       // Map room-specific quantities to API format
       Object.entries(roomObjectQuantities).forEach(([roomName, objects]) => {
         if (Object.keys(objects).length > 0) {
           // Map frontend room names to backend room names
           const roomMapping: Record<string, string> = {
             "Entrée": "entree",
-            "Salle de bain": "salle-de-bain", 
+            "Salle de bain": "salle-de-bain",
             "Salon": "salon",
             "Cuisine": "cuisine",
             "Salle à manger": "salle-a-manger",
@@ -777,14 +779,14 @@ function AppContent() {
             "Garage": "garage",
             "Autre": "autre"
           };
-          
+
           const backendRoomName = roomMapping[roomName] || "autre";
-          
+
           Object.entries(objects).forEach(([item, quantity]) => {
             if (quantity > 0) {
               // Check if this is a predefined object (exists in ROOM_OBJECTS)
               const isPredefinedObject = Object.values(ROOM_OBJECTS).flat().includes(item);
-              
+
               if (isPredefinedObject) {
                 if (!roomSelections[backendRoomName]) {
                   roomSelections[backendRoomName] = {};
@@ -800,7 +802,7 @@ function AppContent() {
       // Prepare heavy objects data (predefined objects only)
       const heavyObjects: Record<string, number> = {};
       const customHeavyObjectsData: Record<string, any> = {};
-      
+
       if (hasSpecialObjects) {
         Object.entries(specialObjectQuantities).forEach(([object, quantity]) => {
           if (quantity > 0) {
@@ -808,7 +810,7 @@ function AppContent() {
             const isCustomHeavyObject = customHeavyObjects.includes(object);
             const isAiCustomHeavyObject = aiCustomHeavyObjects.includes(object);
             const isSuperficieCustomHeavyObject = superficieCustomHeavyObjects.includes(object);
-            
+
             if (isCustomHeavyObject || isAiCustomHeavyObject || isSuperficieCustomHeavyObject) {
               // Handle custom heavy objects like custom objects
               // Use stored custom heavy object details if available, otherwise use defaults
@@ -827,7 +829,7 @@ function AppContent() {
           }
         });
       }
-      
+
       console.log('Heavy objects debug:', {
         hasSpecialObjects,
         specialObjectQuantities,
@@ -868,7 +870,7 @@ function AppContent() {
 
       console.log('Submitting manual selection:', payload);
 
-      const response = await fetch('http://127.0.0.1:8000/api/demenagement/rooms/', {
+      const response = await fetch('/api/demenagement/rooms/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -880,6 +882,13 @@ function AppContent() {
 
       if (result.success) {
         console.log('Manual selection submitted successfully:', result);
+        // Store the selection/calculation ID for later use in quote calculation
+        if (result.data?.selection_id != null) {
+          setLastCalculationId(result.data.selection_id);
+          // Persist in localStorage to survive navigation
+          localStorage.setItem('lastCalculationId', result.data.selection_id.toString());
+          console.log('Stored calculation ID:', result.data.selection_id);
+        }
         // Navigate to addresses page
         navigate("/tunnel/adresses");
       } else {
@@ -897,7 +906,7 @@ function AppContent() {
       const currentObject = prev[roomId]?.[object];
       const currentQuantity = typeof currentObject === 'number' ? currentObject : currentObject?.quantity || 0;
       const newQuantity = Math.max(0, currentQuantity + change);
-      
+
       return {
         ...prev,
         [roomId]: {
@@ -915,7 +924,7 @@ function AppContent() {
     setRoomAnalysisResults(prev => {
       const newRoomResults = { ...prev[roomId] };
       delete newRoomResults[object];
-      
+
       return {
         ...prev,
         [roomId]: newRoomResults
@@ -976,7 +985,6 @@ function AppContent() {
           monte_meuble: addressData.departure.options.monteMenuble || false,
           cave_ou_garage: addressData.departure.options.caveGarage || false,
           cours_a_traverser: addressData.departure.options.courTraverser || false,
-          distance_portage: addressData.departure.options.distancePortage || false,
         },
         // Stopover (escale)
         has_stopover: escales.length > 0,
@@ -987,7 +995,6 @@ function AppContent() {
           monte_meuble: escales[0].options.monteMenuble || false,
           cave_ou_garage: escales[0].options.caveGarage || false,
           cours_a_traverser: escales[0].options.courTraverser || false,
-          distance_portage: escales[0].options.distancePortage || false,
         } : {},
         // Arrival address
         adresse_arrivee: addressData.arrival.address,
@@ -997,13 +1004,12 @@ function AppContent() {
           monte_meuble: addressData.arrival.options.monteMenuble || false,
           cave_ou_garage: addressData.arrival.options.caveGarage || false,
           cours_a_traverser: addressData.arrival.options.courTraverser || false,
-          distance_portage: addressData.arrival.options.distancePortage || false,
         },
       };
 
       console.log('Submitting address data:', addressPayload);
 
-      const response = await fetch('http://127.0.0.1:8000/api/demenagement/address/', {
+      const response = await fetch('/api/demenagement/address/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1055,28 +1061,28 @@ function AppContent() {
   const handleSubmitOptions = async () => {
     try {
       const body: Record<string, unknown> = {
-        distance_km: distanceKm,
         valeur_bien_eur: propertyValue,
         demontage_remontage: options.demontageRemontage,
         emballage_fragile: options.emballageFragile,
+        emballage_cartons: options.emballageCartons,
       };
+      // Volume: from calculation or from surface
       if (lastCalculationId != null) body.calculation_id = lastCalculationId;
       else if (surfaceArea) {
         const vol = parseFloat(surfaceArea) * 2.5 + 40;
         if (!Number.isNaN(vol)) body.volume_m3 = vol;
       }
+      // Address id: backend will load addresses + compute distance via Google
       if (lastAddressId != null) body.address_id = lastAddressId;
-      if (addressData.departure.options.distancePortage && (addressData.departure.options.portageDistanceM ?? 0) > 0) {
+      // Portage (meters)
+      if ((addressData.departure.options.portageDistanceM ?? 0) > 0) {
         body.portage_depart_m = addressData.departure.options.portageDistanceM;
       }
-      if (addressData.arrival.options.distancePortage && (addressData.arrival.options.portageDistanceM ?? 0) > 0) {
+      if ((addressData.arrival.options.portageDistanceM ?? 0) > 0) {
         body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
       }
-      if (escales.length > 0 && escales[0].options.distancePortage && (escales[0].options.portageDistanceM ?? 0) > 0) {
-        body.portage_escale_m = escales[0].options.portageDistanceM;
-      }
 
-      const res = await fetch("http://127.0.0.1:8000/api/demenagement/quote/final/", {
+      const res = await fetch("/api/demenagement/quote/final/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -1088,12 +1094,18 @@ function AppContent() {
           base_price_transport: data.base_price_transport,
           etage_total: data.etage_total,
           ascenseur_total: data.ascenseur_total,
-          assurance_valeur_bien: data.assurance_valeur_bien,
-          demontage_remontage: data.demontage_remontage,
-          emballage_fragile: data.emballage_fragile,
           portage_total: data.portage_total,
+          escale_total: data.escale_total,
           options_total: data.options_total,
+          assurance_bien_price: data.assurance_bien_price,
+          demontage_remontage_price: data.demontage_remontage_price,
+          emballage_fragile_price: data.emballage_fragile_price,
+          emballage_cartons_price: data.emballage_cartons_price,
           breakdown: data.breakdown,
+          distance_km: data.distance_km,
+          volume_m3: data.volume_m3,
+          adresse_depart: data.adresse_depart,
+          adresse_arrivee: data.adresse_arrivee,
         });
         navigate("/tunnel/devis");
       } else {
@@ -1112,6 +1124,132 @@ function AppContent() {
       [optionKey]: !prev[optionKey],
     }));
   };
+
+  // Live option prices (same logic as backend) so the right-side pricing updates instantly when toggling switches
+  const liveOptionPricing = useMemo(() => {
+    const vol = quoteResult?.volume_m3 ?? 0;
+    const dist = quoteResult?.distance_km ?? 0;
+    const base = quoteResult?.base_price_transport ?? 0;
+    const etage = quoteResult?.etage_total ?? 0;
+    const ascenseur = quoteResult?.ascenseur_total ?? 0;
+    const escale = quoteResult?.escale_total ?? 0;
+    const portage = quoteResult?.portage_total ?? 0;
+
+    const assurance = propertyValue > 0
+      ? (propertyValue <= 30000 ? 0 : Math.round(propertyValue * 0.5 * 100) / 100)
+      : 0;
+    const demontage = options.demontageRemontage && vol > 0
+      ? Math.round(vol * (dist <= 200 ? 8 : 16) * 100) / 100
+      : 0;
+    const emballageFragile = options.emballageFragile && vol > 0
+      ? Math.round(vol * 12.5 * 100) / 100
+      : 0;
+    const emballageCartons = options.emballageCartons && vol > 0
+      ? Math.round(vol * 30 * 100) / 100
+      : 0;
+
+    const optionsTotal = assurance + demontage + emballageFragile + emballageCartons;
+    const liveTotal = base + etage + ascenseur + escale + portage + optionsTotal;
+
+    return {
+      assurance,
+      demontage,
+      emballageFragile,
+      emballageCartons,
+      optionsTotal,
+      liveTotal,
+      hasQuote: !!quoteResult && (quoteResult.base_price_transport != null || quoteResult.volume_m3 != null),
+    };
+  }, [quoteResult?.volume_m3, quoteResult?.distance_km, quoteResult?.base_price_transport, quoteResult?.etage_total, quoteResult?.ascenseur_total, quoteResult?.escale_total, quoteResult?.portage_total, propertyValue, options.demontageRemontage, options.emballageFragile, options.emballageCartons]);
+
+  // Auto-calculate quote when entering quote page
+  useEffect(() => {
+    const calculateQuoteOnPageLoad = async () => {
+      // Try to get calculation ID from state or localStorage
+      let calcId = lastCalculationId;
+      if (calcId == null) {
+        const storedId = localStorage.getItem('lastCalculationId');
+        if (storedId) {
+          calcId = parseInt(storedId, 10);
+          console.log('[Quote API Debug] Loaded calculationId from localStorage:', calcId);
+        }
+      }
+
+      console.log('[Quote API Debug] currentPage:', currentPage);
+      console.log('[Quote API Debug] quoteResult:', quoteResult);
+      console.log('[Quote API Debug] lastCalculationId:', lastCalculationId);
+      console.log('[Quote API Debug] calcId (after localStorage check):', calcId);
+      console.log('[Quote API Debug] lastAddressId:', lastAddressId);
+
+      if (currentPage === "quote" && !quoteResult && (calcId || lastAddressId)) {
+        try {
+          const body: Record<string, unknown> = {
+            valeur_bien_eur: propertyValue,
+            demontage_remontage: options.demontageRemontage,
+            emballage_fragile: options.emballageFragile,
+            emballage_cartons: options.emballageCartons,
+          };
+
+          // Volume: from calculation or from surface
+          if (calcId != null) body.calculation_id = calcId;
+          else if (surfaceArea) {
+            const vol = parseFloat(surfaceArea) * 2.5 + 40;
+            if (!Number.isNaN(vol)) body.volume_m3 = vol;
+          }
+
+          // Address id: backend will load addresses + compute distance via Google
+          if (lastAddressId != null) body.address_id = lastAddressId;
+
+          // Stopover count for pricing (150€ per stopover)
+          body.stopover_count = escales.length;
+
+          // Portage (meters)
+          if ((addressData.departure.options.portageDistanceM ?? 0) > 0) {
+            body.portage_depart_m = addressData.departure.options.portageDistanceM;
+          }
+          if ((addressData.arrival.options.portageDistanceM ?? 0) > 0) {
+            body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
+          }
+
+          console.log('[Quote API Debug] Sending body:', JSON.stringify(body, null, 2));
+
+          const res = await fetch("/api/demenagement/quote/final/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json();
+
+          console.log('[Quote API Debug] Response:', data);
+
+          if (data.success && data.final_price != null) {
+            setQuoteResult({
+              final_price: data.final_price,
+              base_price_transport: data.base_price_transport,
+              etage_total: data.etage_total,
+              ascenseur_total: data.ascenseur_total,
+              portage_total: data.portage_total,
+              escale_total: data.escale_total,
+              options_total: data.options_total,
+              assurance_bien_price: data.assurance_bien_price,
+              demontage_remontage_price: data.demontage_remontage_price,
+              emballage_fragile_price: data.emballage_fragile_price,
+              emballage_cartons_price: data.emballage_cartons_price,
+              breakdown: data.breakdown,
+              distance_km: data.distance_km,
+              volume_m3: data.volume_m3,
+              adresse_depart: data.adresse_depart,
+              adresse_arrivee: data.adresse_arrivee,
+            });
+          }
+        } catch (err) {
+          console.error("Auto quote calculation error:", err);
+        }
+      }
+    };
+
+    calculateQuoteOnPageLoad();
+  }, [currentPage, quoteResult, lastCalculationId, lastAddressId, propertyValue, options.demontageRemontage, options.emballageFragile, surfaceArea, addressData.departure.options.portageDistanceM, addressData.arrival.options.portageDistanceM]);
 
   const updateAddressData = (
     section: "departure" | "arrival",
@@ -1154,8 +1292,6 @@ function AppContent() {
         monteMenuble: false,
         caveGarage: false,
         courTraverser: false,
-        distancePortage: false,
-        portageDistanceM: 0,
       },
     };
     setEscales((prev) => [...prev, newEscale]);
@@ -1178,12 +1314,12 @@ function AppContent() {
       prev.map((escale) =>
         escale.id === id
           ? {
-              ...escale,
-              options: {
-                ...escale.options,
-                [option]: value,
-              },
-            }
+            ...escale,
+            options: {
+              ...escale.options,
+              [option]: value,
+            },
+          }
           : escale
       )
     );
@@ -1191,7 +1327,7 @@ function AppContent() {
 
   const updateQuantity = (item: string, change: number) => {
     if (!selectedRoom) return;
-    
+
     // Update room-specific quantities
     setRoomObjectQuantities((prev) => ({
       ...prev,
@@ -1200,7 +1336,7 @@ function AppContent() {
         [item]: Math.max(0, (prev[selectedRoom]?.[item] || 0) + change),
       },
     }));
-    
+
     // Also update global quantities for backward compatibility
     setCleaningQuantities((prev) => ({
       ...prev,
@@ -1216,7 +1352,7 @@ function AppContent() {
         delete newQuantities[objectName];
         return newQuantities;
       });
-      
+
       // Also remove from roomObjectQuantities for all rooms
       setRoomObjectQuantities(prev => {
         const newQuantities = { ...prev };
@@ -1227,7 +1363,7 @@ function AppContent() {
         });
         return newQuantities;
       });
-      
+
       // Also remove from custom object details
       setCustomObjectDetails(prev => {
         const newDetails = { ...prev };
@@ -1259,14 +1395,14 @@ function AppContent() {
   const BoxIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none">
       <g clipPath="url(#clip0_4418_9499)">
-        <path d="M3.17004 7.43945L12 12.5494L20.77 7.46942" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M12 21.6091V12.5391" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M9.92999 2.48L4.59 5.45003C3.38 6.12003 2.39001 7.80001 2.39001 9.18001V14.83C2.39001 16.21 3.38 17.89 4.59 18.56L9.92999 21.53C11.07 22.16 12.94 22.16 14.08 21.53L19.42 18.56C20.63 17.89 21.62 16.21 21.62 14.83V9.18001C21.62 7.80001 20.63 6.12003 19.42 5.45003L14.08 2.48C12.93 1.84 11.07 1.84 9.92999 2.48Z" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M17 13.2396V9.57965L7.51001 4.09961" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3.17004 7.43945L12 12.5494L20.77 7.46942" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M12 21.6091V12.5391" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M9.92999 2.48L4.59 5.45003C3.38 6.12003 2.39001 7.80001 2.39001 9.18001V14.83C2.39001 16.21 3.38 17.89 4.59 18.56L9.92999 21.53C11.07 22.16 12.94 22.16 14.08 21.53L19.42 18.56C20.63 17.89 21.62 16.21 21.62 14.83V9.18001C21.62 7.80001 20.63 6.12003 19.42 5.45003L14.08 2.48C12.93 1.84 11.07 1.84 9.92999 2.48Z" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M17 13.2396V9.57965L7.51001 4.09961" stroke="#cc922f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <defs>
         <clipPath id="clip0_4418_9499">
-          <rect width="24" height="24" fill="white"/>
+          <rect width="24" height="24" fill="white" />
         </clipPath>
       </defs>
     </svg>
@@ -1275,52 +1411,52 @@ function AppContent() {
   // Room-based object organization (matching backend)
   const ROOM_OBJECTS = {
     "Entrée": [
-      "Banc", "Cadre", "Carton", "Console", "Etagére muale", 
+      "Banc", "Cadre", "Carton", "Console", "Etagére muale",
       "Meuble a chaussure", "Miroir", "Porte manteau",
       "Coffre pour chaussures", "Tapis"
     ],
     "Salle de bain": [
-      "Boîte ou panier", "Carton", "Coffre a linge", "Colonne salle de bain", 
+      "Boîte ou panier", "Carton", "Coffre a linge", "Colonne salle de bain",
       "Lave linge", "Meuble salle de bain", "Miroir", "Tapis petit",
       "Baignoire enfant"
     ],
     "Salon": [
-      "Canapé 3 places (-80KG)", "Canapé d'angle (-80KG)", "Carton", "hifi", 
+      "Canapé 3 places (-80KG)", "Canapé d'angle (-80KG)", "Carton", "hifi",
       "Lampadaire", "Meuble TV bas", "Table basse", "Télevision",
       "Fauteuil", "Pouf", "Tapis", "Cadre", "Miroir", "Banc", "Etendoir"
     ],
     "Cuisine": [
-      "Boîte ou panier", "Carton", "Cuisinière (-80KG)", "Four", 
+      "Boîte ou panier", "Carton", "Cuisinière (-80KG)", "Four",
       "Frigo-congélateur", "Lave vaisselle", "Micro ondes", "Etagère",
       "Meuble bas de cuisine", "Meuble haut de cuisine", "Tabouret", "Chaise", "Four piano 6 têtes"
     ],
     "Salle à manger": [
-      "Buffet haut", "Cadre", "Chaise", "Moyenne table", "Plante en pot", 
+      "Buffet haut", "Cadre", "Chaise", "Moyenne table", "Plante en pot",
       "Tapis moyen", "Vaisselier (-80KG)",
       "Commode", "Buffet complet haut + bas", "Bibliothèque"
     ],
     "Chambre": [
-      "Armoire 2p (-80KG)", "Bureau", "Carton", "Chaise de bureau", 
+      "Armoire 2p (-80KG)", "Bureau", "Carton", "Chaise de bureau",
       "Commode", "lit double", "lit simple", "Tapis moyen",
       "Table de nuit", "Banc", "Tête de lit", "TV", "Table à langer bébé", "Coiffeuse"
     ],
     "Cave": [
-      "Armoire ancienne (-80KG)", "Barbecue", "Carton", "Coffre de rangement", 
+      "Armoire ancienne (-80KG)", "Barbecue", "Carton", "Coffre de rangement",
       "Echelle", "Escabeau", "valises", "Etagére",
       "Climatisation"
     ],
     "Jardin": [
-      "Carton", "Chaise", "Coffre de rangement", "Etendoir", 
+      "Carton", "Chaise", "Coffre de rangement", "Etendoir",
       "Parasol", "Table de jardin", "Transat", "Vélo",
       "Poussette", "Scooter (moto)"
     ],
     "Garage": [
-      "Aspirateur", "Carton", "Coffre de rangement", "Lave linge", 
+      "Aspirateur", "Carton", "Coffre de rangement", "Lave linge",
       "séche linge", "Vélo", "Table de ping-pong (-80KG)", "Etagère"
     ],
     "Autre": [
-      "Carton", "Chiffronier", "Guitare", "Lampe de bureau", 
-      "Paravent", "Vélo d'intérieur (-80KG)", "Tapis de course (-80KG)", 
+      "Carton", "Chiffronier", "Guitare", "Lampe de bureau",
+      "Paravent", "Vélo d'intérieur (-80KG)", "Tapis de course (-80KG)",
       "Banc de musculation (-80KG)",
       "Ecran ordinateur", "Imprimante", "Imprimante pro", "Cave à vin"
     ]
@@ -1336,16 +1472,16 @@ function AppContent() {
     const roomObjects = selectedRoom ? getObjectsForRoom(selectedRoom) : [];
     const allObjects = Object.values(ROOM_OBJECTS).flat();
     const objectsToShow = selectedRoom ? roomObjects : allObjects;
-    
+
     // Add custom objects from cleaningQuantities
-    const customObjects = Object.keys(cleaningQuantities).filter(obj => 
+    const customObjects = Object.keys(cleaningQuantities).filter(obj =>
       !Object.values(ROOM_OBJECTS).flat().includes(obj)
     );
-    
+
     // Combine predefined objects with custom objects
     const allObjectsWithCustom = [...objectsToShow, ...customObjects];
-    
-    return allObjectsWithCustom.filter(obj => 
+
+    return allObjectsWithCustom.filter(obj =>
       obj.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
@@ -1386,19 +1522,19 @@ function AppContent() {
 
   // Custom heavy objects added by user (for manual method)
   const [customHeavyObjects, setCustomHeavyObjects] = useState<string[]>([]);
-  
+
   // Custom heavy objects added by user (for AI method)
   const [aiCustomHeavyObjects, setAiCustomHeavyObjects] = useState<string[]>([]);
-  
+
   // Custom heavy objects added by user (for superficie method)
   const [superficieCustomHeavyObjects, setSuperficieCustomHeavyObjects] = useState<string[]>([]);
 
   // Combined list: predefined + custom (custom objects always at the end)
   const specialObjects = [...predefinedSpecialObjects, ...customHeavyObjects];
-  
+
   // AI method special objects (separate from manual method)
   const aiSpecialObjects = [...predefinedSpecialObjects, ...aiCustomHeavyObjects];
-  
+
   // Superficie method special objects (separate from manual and AI methods)
   const superficieSpecialObjects = [...predefinedSpecialObjects, ...superficieCustomHeavyObjects];
 
@@ -1435,7 +1571,7 @@ function AppContent() {
   const handlePreviousRoomPage = () => {
     const currentSelectedIndex = rooms.indexOf(selectedRoom || rooms[0]);
     const currentViewStart = currentRoomIndex;
-    
+
     // If we're at the first room of current view, go to previous page
     if (currentSelectedIndex === currentViewStart) {
       const newIndex = Math.max(0, currentRoomIndex - 1);
@@ -1451,7 +1587,7 @@ function AppContent() {
   const handleNextRoomPage = () => {
     const currentSelectedIndex = rooms.indexOf(selectedRoom || rooms[0]);
     const currentViewEnd = currentRoomIndex + 4;
-    
+
     // If we're at the last room of current view, go to next page
     if (currentSelectedIndex === currentViewEnd) {
       const newIndex = Math.min(rooms.length - 5, currentRoomIndex + 1);
@@ -1474,13 +1610,13 @@ function AppContent() {
       // Add the piece to the cleaningQuantities
       const objectName = pieceForm.nature.trim();
       const quantity = parseInt(pieceForm.quantite) || 0;
-      
+
       if (quantity > 0) {
         setCleaningQuantities(prev => ({
           ...prev,
           [objectName]: (prev[objectName] || 0) + quantity
         }));
-        
+
         // Also add to roomObjectQuantities for the current room (like heavy objects)
         if (selectedRoom) {
           setRoomObjectQuantities(prev => ({
@@ -1491,12 +1627,12 @@ function AppContent() {
             }
           }));
         }
-        
+
         // Store custom object details with form dimensions
         const length = parseFloat(pieceForm.longueur) || 100;
         const width = parseFloat(pieceForm.largeur) || 50;
         const height = parseFloat(pieceForm.hauteur) || 30;
-        
+
         setCustomObjectDetails(prev => ({
           ...prev,
           [objectName]: {
@@ -1507,11 +1643,11 @@ function AppContent() {
             height: height
           }
         }));
-        
+
         // Show success message
         alert(`Objet "${objectName}" ajouté avec succès!`);
       }
-      
+
       // Reset form
       setPieceForm({
         nature: "",
@@ -1532,19 +1668,19 @@ function AppContent() {
         // Add to the end of custom objects list
         setCustomHeavyObjects(prev => [...prev, newHeavyObject]);
       }
-      
+
       // Set the quantity
       const quantity = parseInt(heavyObjectForm.quantite) || 1;
       setSpecialObjectQuantities(prev => ({
         ...prev,
         [newHeavyObject]: quantity
       }));
-      
+
       // Store custom heavy object details with form dimensions
       const length = parseFloat(heavyObjectForm.longueur) || 100;
       const width = parseFloat(heavyObjectForm.largeur) || 50;
       const height = parseFloat(heavyObjectForm.hauteur) || 30;
-      
+
       setCustomHeavyObjectDetails(prev => ({
         ...prev,
         [newHeavyObject]: {
@@ -1555,10 +1691,10 @@ function AppContent() {
           height: height
         }
       }));
-      
+
       // Show success message
       alert(`Objet lourd "${newHeavyObject}" ajouté avec succès!`);
-      
+
       // Reset form
       setHeavyObjectForm({
         nature: "",
@@ -1574,14 +1710,14 @@ function AppContent() {
   const removeCustomHeavyObject = (objectName: string) => {
     // Remove from custom heavy objects list
     setCustomHeavyObjects(prev => prev.filter(obj => obj !== objectName));
-    
+
     // Remove from quantities
     setSpecialObjectQuantities(prev => {
       const newQuantities = { ...prev };
       delete newQuantities[objectName];
       return newQuantities;
     });
-    
+
     // Also remove from custom heavy object details
     setCustomHeavyObjectDetails(prev => {
       const newDetails = { ...prev };
@@ -1599,19 +1735,19 @@ function AppContent() {
         // Add to the end of AI custom objects list
         setAiCustomHeavyObjects(prev => [...prev, newHeavyObject]);
       }
-      
+
       // Set the quantity
       const quantity = parseInt(heavyObjectForm.quantite) || 1;
       setSpecialObjectQuantities(prev => ({
         ...prev,
         [newHeavyObject]: quantity
       }));
-      
+
       // Store AI custom heavy object details with form dimensions
       const length = parseFloat(heavyObjectForm.longueur) || 100;
       const width = parseFloat(heavyObjectForm.largeur) || 50;
       const height = parseFloat(heavyObjectForm.hauteur) || 30;
-      
+
       setAiCustomHeavyObjectDetails(prev => ({
         ...prev,
         [newHeavyObject]: {
@@ -1622,10 +1758,10 @@ function AppContent() {
           height: height
         }
       }));
-      
+
       // Show success message
       alert(`Objet lourd "${newHeavyObject}" ajouté avec succès!`);
-      
+
       // Reset form
       setHeavyObjectForm({
         nature: "",
@@ -1641,14 +1777,14 @@ function AppContent() {
   const removeAiCustomHeavyObject = (objectName: string) => {
     // Remove from AI custom heavy objects list
     setAiCustomHeavyObjects(prev => prev.filter(obj => obj !== objectName));
-    
+
     // Remove from quantities
     setSpecialObjectQuantities(prev => {
       const newQuantities = { ...prev };
       delete newQuantities[objectName];
       return newQuantities;
     });
-    
+
     // Also remove from AI custom heavy object details
     setAiCustomHeavyObjectDetails(prev => {
       const newDetails = { ...prev };
@@ -1666,13 +1802,13 @@ function AppContent() {
         // Add to the end of superficie custom objects list
         setSuperficieCustomHeavyObjects(prev => [...prev, newHeavyObject]);
       }
-      
+
       // Store the custom heavy object details
       const quantity = parseInt(heavyObjectForm.quantite) || 1;
       const length = parseFloat(heavyObjectForm.longueur) || 100;
       const width = parseFloat(heavyObjectForm.largeur) || 50;
       const height = parseFloat(heavyObjectForm.hauteur) || 30;
-      
+
       setSuperficieCustomHeavyObjectDetails(prev => ({
         ...prev,
         [newHeavyObject]: {
@@ -1683,13 +1819,13 @@ function AppContent() {
           height: height
         }
       }));
-      
+
       // Set the quantity in the main quantities state
       setSpecialObjectQuantities(prev => ({
         ...prev,
         [newHeavyObject]: quantity
       }));
-      
+
       alert(`Objet lourd "${newHeavyObject}" ajouté avec succès!`);
       setHeavyObjectForm({
         nature: "",
@@ -1757,12 +1893,15 @@ function AppContent() {
         <header className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-slate-900">
+              <button
+                onClick={() => navigate("/")}
+                className="text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer"
+              >
                 Go
                 <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-3 py-2 rounded ml-1">
                   YARD
                 </span>
-              </h1>
+              </button>
             </div>
             <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
               <Phone className="w-4 h-4 mr-2" style={{ color: '#CC922F' }} />
@@ -1776,7 +1915,7 @@ function AppContent() {
           </div>
         </header>
 
-          {/* Page Content */}
+        {/* Page Content */}
         <div className="max-w-6xl mx-auto px-4 py-8">
           {currentPage === "info" && (
             <>
@@ -1926,11 +2065,10 @@ function AppContent() {
                       key={guarantee.value}
                       variant={selectedGuarantee === guarantee.value ? "default" : "outline"}
                       onClick={() => setSelectedGuarantee(guarantee.value)}
-                      className={`px-8 py-3 ${
-                        selectedGuarantee === guarantee.value
-                          ? "bg-[#CC922F] text-white"
-                          : "bg-white text-slate-900 border-slate-300"
-                      }`}
+                      className={`px-8 py-3 ${selectedGuarantee === guarantee.value
+                        ? "bg-[#CC922F] text-white"
+                        : "bg-white text-slate-900 border-slate-300"
+                        }`}
                     >
                       {guarantee.label}
                     </Button>
@@ -2121,7 +2259,6 @@ function AppContent() {
 
           {currentPage === "quote" && (
             <>
-
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Left Column - Service Summary */}
                 <div className="bg-slate-50 rounded-lg p-6">
@@ -2199,52 +2336,77 @@ function AppContent() {
                       Déménagement
                     </h3>
                     <div className="text-3xl font-bold text-slate-900 mb-1">
-                      {quoteResult ? `${quoteResult.final_price.toFixed(2)} €` : "— €"}
+                      {liveOptionPricing.hasQuote ? `${liveOptionPricing.liveTotal.toFixed(2)} €` : "— €"}
                     </div>
                     <div className="text-sm text-slate-600">TTC</div>
                   </div>
 
                   <div className="space-y-3 mb-6 text-sm border-t border-slate-100 pt-4">
+                    {quoteResult?.adresse_depart && quoteResult?.adresse_arrivee && (
+                      <div className="text-xs text-slate-500 mb-2">
+                        <span className="font-medium text-slate-700">{quoteResult.adresse_depart}</span>
+                        <span className="mx-1">→</span>
+                        <span className="font-medium text-slate-700">{quoteResult.adresse_arrivee}</span>
+                        {quoteResult.distance_km != null && (
+                          <span className="ml-1">({quoteResult.distance_km} km)</span>
+                        )}
+                        {quoteResult.volume_m3 != null && (
+                          <span className="ml-1">· {quoteResult.volume_m3} m³</span>
+                        )}
+                      </div>
+                    )}
                     {quoteResult?.base_price_transport != null && (
                       <div className="flex justify-between">
                         <span className="text-slate-600">Transport (volume × distance)</span>
                         <span className="font-medium">{quoteResult.base_price_transport.toFixed(2)} €</span>
                       </div>
                     )}
-                    {quoteResult?.etage_total != null && quoteResult.etage_total > 0 && (
+                    {quoteResult?.etage_total != null && (
                       <div className="flex justify-between">
                         <span className="text-slate-600">Étages</span>
                         <span className="font-medium">{quoteResult.etage_total.toFixed(2)} €</span>
                       </div>
                     )}
-                    {quoteResult?.ascenseur_total != null && quoteResult.ascenseur_total > 0 && (
+                    {quoteResult?.ascenseur_total != null && (
                       <div className="flex justify-between">
                         <span className="text-slate-600">Ascenseur</span>
                         <span className="font-medium">{quoteResult.ascenseur_total.toFixed(2)} €</span>
                       </div>
                     )}
-                    {quoteResult?.assurance_valeur_bien != null && quoteResult.assurance_valeur_bien > 0 && (
+                    {quoteResult?.escale_total != null && (
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Valeur des biens (assurance)</span>
-                        <span className="font-medium">{quoteResult.assurance_valeur_bien.toFixed(2)} €</span>
+                        <span className="text-slate-600">Escale (stopover)</span>
+                        <span className="font-medium">{quoteResult.escale_total.toFixed(2)} €</span>
                       </div>
                     )}
-                    {quoteResult?.demontage_remontage != null && quoteResult.demontage_remontage > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Démontage / remontage</span>
-                        <span className="font-medium">{quoteResult.demontage_remontage.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.emballage_fragile != null && quoteResult.emballage_fragile > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Emballage fragile</span>
-                        <span className="font-medium">{quoteResult.emballage_fragile.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.portage_total != null && quoteResult.portage_total > 0 && (
+                    {quoteResult?.portage_total != null && (
                       <div className="flex justify-between">
                         <span className="text-slate-600">Distance de portage</span>
                         <span className="font-medium">{quoteResult.portage_total.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {liveOptionPricing.hasQuote && propertyValue > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Valeur des biens (assurance)</span>
+                        <span className="font-medium">{liveOptionPricing.assurance.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {liveOptionPricing.hasQuote && options.demontageRemontage && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Démontage / remontage</span>
+                        <span className="font-medium">{liveOptionPricing.demontage.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {liveOptionPricing.hasQuote && options.emballageFragile && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Emballage fragile</span>
+                        <span className="font-medium">{liveOptionPricing.emballageFragile.toFixed(2)} €</span>
+                      </div>
+                    )}
+                    {liveOptionPricing.hasQuote && options.emballageCartons && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Emballage cartons (inventaire)</span>
+                        <span className="font-medium">{liveOptionPricing.emballageCartons.toFixed(2)} €</span>
                       </div>
                     )}
                     {!quoteResult && (
@@ -2259,7 +2421,7 @@ function AppContent() {
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200">
                       <span className="font-semibold">Total TTC</span>
                       <span className="font-bold text-lg">
-                        {quoteResult ? `${quoteResult.final_price.toFixed(2)} €` : "— €"}
+                        {liveOptionPricing.hasQuote ? `${liveOptionPricing.liveTotal.toFixed(2)} €` : "— €"}
                       </span>
                     </div>
                   </div>
@@ -2296,8 +2458,8 @@ function AppContent() {
                     </div>
                   </div>
 
-                  <Button 
-                    variant="link" 
+                  <Button
+                    variant="link"
                     className="w-full text-slate-600 text-sm p-0 mt-4"
                     onClick={() => {
                       const element = document.getElementById('options-section');
@@ -2333,360 +2495,359 @@ function AppContent() {
 
               {/* Additional Info Section */}
               <div className="mt-8">
-                  <div className="text-center mb-12">
-                    <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
-                      Toutes les prestations de déménagement professionnel avec Des bras en plus comprennent
-                    </h1>
-                  </div>
+                <div className="text-center mb-12">
+                  <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
+                    Toutes les prestations de déménagement professionnel avec Des bras en plus comprennent
+                  </h1>
+                </div>
 
-                  {/* Services Grid */}
-                  <div className="grid md:grid-cols-4 gap-8 mb-16">
-                    {/* Camion équipé */}
-                    <div className="text-center">
-                      <div className="flex items-center justify-center mx-auto mb-4">
-                        <Truck className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                      </div>
-                      <h3 className="font-semibold text-slate-900 mb-3">
-                        Camion équipé
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        Un camion aux normes, avec couvertures de déménagement, des sangles et le carburant
-                      </p>
+                {/* Services Grid */}
+                <div className="grid md:grid-cols-4 gap-8 mb-16">
+                  {/* Camion équipé */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <Truck className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
                     </div>
-
-                    {/* Déménageurs professionnels */}
-                    <div className="text-center">
-                      <div className="flex items-center justify-center mx-auto mb-4">
-                        <Users className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                      </div>
-                      <h3 className="font-semibold text-slate-900 mb-3">
-                        Déménageurs professionnels
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        Une équipe dévouée et suivie, issue du réseau Des bras en plus
-                      </p>
-                    </div>
-
-                    {/* Transport & remise en place */}
-                    <div className="text-center">
-                      <div className="flex items-center justify-center mx-auto mb-4">
-                        <RefreshCw className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                      </div>
-                      <h3 className="font-semibold text-slate-900 mb-3">
-                        Transport & remise en place
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        Le chargement, le transport et la mise en place du mobilier dans la pièce de destination
-                      </p>
-                    </div>
-
-                    {/* Service client dévoué */}
-                    <div className="text-center">
-                      <div className="flex items-center justify-center mx-auto mb-4">
-                        <Headphones className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                      </div>
-                      <h3 className="font-semibold text-slate-900 mb-3">
-                        Service client dévoué
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        Un service client disponible 7j/7
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Property Value Section */}
-                  <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-                    <h2 className="text-xl font-semibold text-slate-900 mb-8">
-                      Quelle est la valeur des biens transportés ?
-                    </h2>
-                    
-                    <div className="text-3xl font-bold text-slate-900 mb-8">
-                      {propertyValue.toLocaleString("fr-FR")} €
-                    </div>
-
-                    <div className="max-w-2xl mx-auto">
-                        <input
-                          type="range"
-                          min="3000"
-                          max="60000"
-                          step="3000"
-                          value={propertyValue}
-                          onChange={(e) => setPropertyValue(parseInt(e.target.value))}
-                          className="w-full h-6 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                          style={{
-                            background: `linear-gradient(to right, #1c3957 0%, #1c3957 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 100%)`,
-                            outline: 'none',
-                            height: '6px',
-                            borderRadius: '3px'
-                          }}
-                        />
-                      
-                      <div className="flex justify-between text-sm text-slate-600 mt-4">
-                        <span>3000€</span>
-                        <span>60000€</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Guarantee Section */}
-                  <div className="bg-slate-100 rounded-lg p-8 text-center mb-16">
-                    <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                      Votre garantie par objet
-                    </h2>
-                    <p className="text-sm text-slate-600 mb-8 max-w-4xl mx-auto">
-                      Indiquez ici le montant maximal de garantie par élément transporté. Si cela ne suffit pas,
-                      vous pourrez faire une{" "}
-                      <span className="underline text-primary cursor-pointer">
-                        déclaration de valeur
-                      </span>
-                      .
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Camion équipé
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Un camion aux normes, avec couvertures de déménagement, des sangles et le carburant
                     </p>
+                  </div>
 
-                    <div className="flex justify-center gap-4">
-                      {[
-                        { value: "250", label: "250 €" },
-                        { value: "500", label: "500 €" },
-                        { value: "1000", label: "1000 €" },
-                      ].map((guarantee) => (
-                        <Button
-                          key={guarantee.value}
-                          variant={selectedGuarantee === guarantee.value ? "default" : "outline"}
-                          onClick={() => setSelectedGuarantee(guarantee.value)}
-                          className={`px-8 py-3 ${
-                            selectedGuarantee === guarantee.value
-                              ? "bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
-                              : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
+                  {/* Déménageurs professionnels */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <Users className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Déménageurs professionnels
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Une équipe dévouée et suivie, issue du réseau Des bras en plus
+                    </p>
+                  </div>
+
+                  {/* Transport & remise en place */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <RefreshCw className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Transport & remise en place
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Le chargement, le transport et la mise en place du mobilier dans la pièce de destination
+                    </p>
+                  </div>
+
+                  {/* Service client dévoué */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <Headphones className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Service client dévoué
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Un service client disponible 7j/7
+                    </p>
+                  </div>
+                </div>
+
+                {/* Property Value Section */}
+                <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
+                  <h2 className="text-xl font-semibold text-slate-900 mb-8">
+                    Quelle est la valeur des biens transportés ?
+                  </h2>
+
+                  <div className="text-3xl font-bold text-slate-900 mb-8">
+                    {propertyValue.toLocaleString("fr-FR")} €
+                  </div>
+
+                  <div className="max-w-2xl mx-auto">
+                    <input
+                      type="range"
+                      min="3000"
+                      max="60000"
+                      step="3000"
+                      value={propertyValue}
+                      onChange={(e) => setPropertyValue(parseInt(e.target.value))}
+                      className="w-full h-6 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: `linear-gradient(to right, #1c3957 0%, #1c3957 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 100%)`,
+                        outline: 'none',
+                        height: '6px',
+                        borderRadius: '3px'
+                      }}
+                    />
+
+                    <div className="flex justify-between text-sm text-slate-600 mt-4">
+                      <span>3000€</span>
+                      <span>60000€</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Guarantee Section */}
+                <div className="bg-slate-100 rounded-lg p-8 text-center mb-16">
+                  <h2 className="text-xl font-semibold text-slate-900 mb-4">
+                    Votre garantie par objet
+                  </h2>
+                  <p className="text-sm text-slate-600 mb-8 max-w-4xl mx-auto">
+                    Indiquez ici le montant maximal de garantie par élément transporté. Si cela ne suffit pas,
+                    vous pourrez faire une{" "}
+                    <span className="underline text-primary cursor-pointer">
+                      déclaration de valeur
+                    </span>
+                    .
+                  </p>
+
+                  <div className="flex justify-center gap-4">
+                    {[
+                      { value: "250", label: "250 €" },
+                      { value: "500", label: "500 €" },
+                      { value: "1000", label: "1000 €" },
+                    ].map((guarantee) => (
+                      <Button
+                        key={guarantee.value}
+                        variant={selectedGuarantee === guarantee.value ? "default" : "outline"}
+                        onClick={() => setSelectedGuarantee(guarantee.value)}
+                        className={`px-8 py-3 ${selectedGuarantee === guarantee.value
+                          ? "bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+                          : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
                           }`}
-                        >
-                          {guarantee.label}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Options Section */}
-                  <div id="options-section" className="mb-12">
-                    <h2 className="text-xl font-semibold text-slate-900 text-center mb-8">
-                      Choisissez vos options
-                    </h2>
-
-                    <div className="space-y-6">
-                      {/* Option 1: Pack Cartons */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Vous souhaitez qu'on vous fournisse un pack cartons, bulle et adhésif? Votre pack, expédié sous 48h, contiendra: 10 cartons standards, 5 cartons livres, 1 film bulles, 1 rouleau adhésif
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.packCartons}
-                              onChange={(e) => setOptions(prev => ({ ...prev, packCartons: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 2: Date Flexible */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Calendar className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Vous serez peut être amené à modifier la date du déménagement? Reporter sans frais une fois la date du déménagement jusque 72h avant
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.dateFlexible}
-                              onChange={(e) => setOptions(prev => ({ ...prev, dateFlexible: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 3: Prix Flexible */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <ArrowDown className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Vous êtes flexible sur la date de la prestation? Economiser sur le prix de votre déménagement en étant flexible sur 14 jours
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.prixFlexible}
-                              onChange={(e) => setOptions(prev => ({ ...prev, prixFlexible: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 4: Démontage Remontage */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Vous souhaitez qu'on s'occupe du démontage et du remontage du mobilier quand c'est nécessaire?
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.demontageRemontage}
-                              onChange={(e) => setOptions(prev => ({ ...prev, demontageRemontage: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 5: Emballage Fragile */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Vous préférez nous confier l'emballage du fragile (vaisselles, tableaux, bibelots)?
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.emballageFragile}
-                              onChange={(e) => setOptions(prev => ({ ...prev, emballageFragile: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 6: Emballage Cartons */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Vous souhaitez qu'on emballe les cartons déclarés dans l'inventaire ?
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.emballageCartons}
-                              onChange={(e) => setOptions(prev => ({ ...prev, emballageCartons: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 7: Autorisation Stationnement */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            L'autorisation de stationnement pour le camion est recommandé et parfois même obligatoire dans certaines communes. Vous souhaitez que nous fassions les démarches pour vous?
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.autorisationStationnement}
-                              onChange={(e) => setOptions(prev => ({ ...prev, autorisationStationnement: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Option 8: Transport Vêtements */}
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-slate-700 leading-relaxed">
-                            Il existe une solution pratique pour transporter vos vêtement sans les froisser. Vous souhaitez qu'on utilise des penderies pour transporter vos vêtements sur cintres?
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={options.transportVetements}
-                              onChange={(e) => setOptions(prev => ({ ...prev, transportVetements: e.target.checked }))}
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Final Quote Section */}
-                  <div className="text-center mb-8">
-                    <p className="text-sm text-slate-600 mb-6">
-                      Recevoir le devis avec les modifications et options supplémentaires que j'ai ajouté
-                    </p>
-
-                    <Button
-                      onClick={handleSubmitOptions}
-                      className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white px-12 py-3 rounded-lg"
-                    >
-                      RECEVOIR MON DEVIS
-                    </Button>
-                  </div>
-
-                </div>
-
-                {/* Floating Total Section */}
-                <div className="fixed bottom-6 right-6 bg-white rounded-lg p-4 shadow-lg z-50 border border-slate-200">
-                  <div className="flex items-center gap-4">
-                    <div className="text-slate-900">
-                      <div className="text-sm font-medium">TOTAL TTC</div>
-                      <div className="text-lg font-bold">1582.51 €</div>
-                    </div>
-                    <Button 
-                      className="bg-[#1c3957] text-white hover:bg-[#1c3957]/90 font-semibold px-4 py-2 rounded"
-                    >
-                      RESERVER
-                    </Button>
+                      >
+                        {guarantee.label}
+                      </Button>
+                    ))}
                   </div>
                 </div>
+
+                {/* Options Section */}
+                <div id="options-section" className="mb-12">
+                  <h2 className="text-xl font-semibold text-slate-900 text-center mb-8">
+                    Choisissez vos options
+                  </h2>
+
+                  <div className="space-y-6">
+                    {/* Option 1: Pack Cartons */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous souhaitez qu'on vous fournisse un pack cartons, bulle et adhésif? Votre pack, expédié sous 48h, contiendra: 10 cartons standards, 5 cartons livres, 1 film bulles, 1 rouleau adhésif
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.packCartons}
+                            onChange={(e) => setOptions(prev => ({ ...prev, packCartons: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 2: Date Flexible */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Calendar className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Reporter sans frais une fois la date du déménagement jusque 72h avant
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.dateFlexible}
+                            onChange={(e) => setOptions(prev => ({ ...prev, dateFlexible: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 3: Prix Flexible */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <ArrowDown className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous êtes flexible sur la date de la prestation? Economiser sur le prix de votre déménagement en étant flexible sur 5 jours
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.prixFlexible}
+                            onChange={(e) => setOptions(prev => ({ ...prev, prixFlexible: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 4: Démontage Remontage */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous souhaitez qu'on s'occupe du démontage et du remontage du mobilier quand c'est nécessaire?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.demontageRemontage}
+                            onChange={(e) => setOptions(prev => ({ ...prev, demontageRemontage: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 5: Emballage Fragile */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous préférez nous confier l'emballage du fragile (vaisselles, tableaux, bibelots)?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.emballageFragile}
+                            onChange={(e) => setOptions(prev => ({ ...prev, emballageFragile: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 6: Emballage Cartons */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous souhaitez qu'on emballe les cartons déclarés dans l'inventaire ?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.emballageCartons}
+                            onChange={(e) => setOptions(prev => ({ ...prev, emballageCartons: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 7: Autorisation Stationnement */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          L'autorisation de stationnement pour le camion est recommandé et parfois même obligatoire dans certaines communes. Vous souhaitez que nous fassions les démarches pour vous?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.autorisationStationnement}
+                            onChange={(e) => setOptions(prev => ({ ...prev, autorisationStationnement: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Option 8: Transport Vêtements */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Il existe une solution pratique pour transporter vos vêtement sans les froisser. Vous souhaitez qu'on utilise des penderies pour transporter vos vêtements sur cintres?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.transportVetements}
+                            onChange={(e) => setOptions(prev => ({ ...prev, transportVetements: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Final Quote Section */}
+                <div className="text-center mb-8">
+                  <p className="text-sm text-slate-600 mb-6">
+                    Recevoir le devis avec les modifications et options supplémentaires que j'ai ajouté
+                  </p>
+
+                  <Button
+                    onClick={handleSubmitOptions}
+                    className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white px-12 py-3 rounded-lg"
+                  >
+                    RECEVOIR MON DEVIS
+                  </Button>
+                </div>
+
+              </div>
+
+              {/* Floating Total Section */}
+              <div className="fixed bottom-6 right-6 bg-white rounded-lg p-4 shadow-lg z-50 border border-slate-200">
+                <div className="flex items-center gap-4">
+                  <div className="text-slate-900">
+                    <div className="text-sm font-medium">TOTAL TTC</div>
+                    <div className="text-lg font-bold">1582.51 €</div>
+                  </div>
+                  <Button
+                    className="bg-[#1c3957] text-white hover:bg-[#1c3957]/90 font-semibold px-4 py-2 rounded"
+                  >
+                    RESERVER
+                  </Button>
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -2700,12 +2861,15 @@ function AppContent() {
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <h1 className="text-3xl font-bold text-slate-900">
+            <button
+              onClick={() => navigate("/")}
+              className="text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer"
+            >
               Go
               <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-3 py-2 rounded ml-1">
                 YARD
               </span>
-            </h1>
+            </button>
             <p className="text-base text-slate-600 ml-3">
               Déménagement professionnel pour tous
             </p>
@@ -2722,8 +2886,8 @@ function AppContent() {
         </div>
       </header>
 
-       <div className="max-w-8xl mx-auto px-6 py-12">
-         <div className="grid lg:grid-cols-3 gap-10">
+      <div className="max-w-8xl mx-auto px-6 py-12">
+        <div className="grid lg:grid-cols-3 gap-10">
           {/* Main Content */}
           <div className="lg:col-span-2">
             <div className="bg-slate-50 rounded-lg shadow-sm p-8">
@@ -2941,9 +3105,9 @@ function AppContent() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                           <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
-                             <List className="w-6 h-6" style={{ color: '#CC922F' }} />
-                           </div>
+                          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
+                            <List className="w-6 h-6" style={{ color: '#CC922F' }} />
+                          </div>
                           <div>
                             <h3 className="font-semibold text-slate-900 mb-1">
                               Je liste mes objets à déménager
@@ -2964,12 +3128,12 @@ function AppContent() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                           <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4 relative">
-                             <Camera className="w-6 h-6" style={{ color: '#CC922F' }} />
-                             <div className="absolute -top-1 -right-1 bg-[#1c3957] text-white text-xs px-1 py-0.5 rounded">
-                               IA
-                             </div>
-                           </div>
+                          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4 relative">
+                            <Camera className="w-6 h-6" style={{ color: '#CC922F' }} />
+                            <div className="absolute -top-1 -right-1 bg-[#1c3957] text-white text-xs px-1 py-0.5 rounded">
+                              IA
+                            </div>
+                          </div>
                           <div>
                             <h3 className="font-semibold text-slate-900 mb-1">
                               J'envoie des photos de mon espace
@@ -2990,9 +3154,9 @@ function AppContent() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                           <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
-                             <Maximize2 className="w-6 h-6" style={{ color: '#CC922F' }} />
-                           </div>
+                          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
+                            <Maximize2 className="w-6 h-6" style={{ color: '#CC922F' }} />
+                          </div>
                           <div>
                             <h3 className="font-semibold text-slate-900 mb-1">
                               Mon devis en fonction de la superficie
@@ -3006,17 +3170,17 @@ function AppContent() {
                       </div>
                     </div>
 
-                     {/* Back Button */}
-                     <div className="mt-8">
-                       <Button
-                         variant="outline"
-                         onClick={handleBackToForm}
-                         className="flex items-center gap-2 bg-[#1c3957] hover:bg-[#1c3957]/90 text-white hover:text-white border-[#1c3957]"
-                       >
-                         <ArrowLeft className="w-4 h-4" />
-                         RETOUR
-                       </Button>
-                     </div>
+                    {/* Back Button */}
+                    <div className="mt-8">
+                      <Button
+                        variant="outline"
+                        onClick={handleBackToForm}
+                        className="flex items-center gap-2 bg-[#1c3957] hover:bg-[#1c3957]/90 text-white hover:text-white border-[#1c3957]"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        RETOUR
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
@@ -3054,24 +3218,23 @@ function AppContent() {
                       >
                         <ArrowLeft className="w-5 h-5 text-slate-600" />
                       </button>
-                      
+
                       {/* Room Buttons */}
                       <div className="flex gap-2">
                         {getVisibleRooms().map((room) => (
                           <button
-                        key={room}
-                        onClick={() => setSelectedRoom(room)}
-                            className={`px-4 py-2 rounded-full text-base font-medium transition-colors ${
-                              selectedRoom === room
-                                ? 'bg-[#1c3957] text-white shadow-md'
-                                : 'text-slate-600 hover:bg-slate-200'
-                            }`}
-                      >
-                        {room}
+                            key={room}
+                            onClick={() => setSelectedRoom(room)}
+                            className={`px-4 py-2 rounded-full text-base font-medium transition-colors ${selectedRoom === room
+                              ? 'bg-[#1c3957] text-white shadow-md'
+                              : 'text-slate-600 hover:bg-slate-200'
+                              }`}
+                          >
+                            {room}
                           </button>
                         ))}
                       </div>
-                      
+
                       {/* Right Arrow Button */}
                       <button
                         onClick={handleNextRoomPage}
@@ -3103,52 +3266,55 @@ function AppContent() {
                       return (
                         <div
                           key={item.name}
-                          className={`rounded-lg p-4 text-center relative transition-colors ${
-                            hasQuantity 
-                              ? 'bg-slate-50 border-2 shadow-md' 
-                              : 'bg-slate-50'
-                          }`}
+                          className={`rounded-lg p-4 text-center relative transition-colors ${hasQuantity
+                            ? 'bg-slate-50 border-2 shadow-md'
+                            : 'bg-slate-50'
+                            }`}
                           style={hasQuantity ? { borderColor: '#1c3957' } : {}}
                         >
-                        {/* Delete icon for custom objects */}
-                        {isCustomObject(item.name) && (
-                          <Trash2 
-                            className="absolute top-2 right-2 w-4 h-4 cursor-pointer hover:scale-110 transition-transform"
-                            style={{ color: '#CC922F' }}
-                            onClick={() => deleteCustomObject(item.name)}
-                            title="Supprimer cet objet personnalisé"
-                          />
-                        )}
-                        
-                        <div className="flex justify-center mb-2">{item.icon}</div>
-                        <h3 className="text-sm font-medium text-slate-900 mb-3">
-                          {item.name}
+                          {/* Delete icon for custom objects */}
                           {isCustomObject(item.name) && (
-                            <span className="text-xs ml-1" style={{ color: '#CC922F' }}>(Personnalisé)</span>
+                            <div
+                              className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform"
+                              title="Supprimer cet objet personnalisé"
+                              onClick={() => deleteCustomObject(item.name)}
+                            >
+                              <Trash2
+                                className="w-4 h-4"
+                                style={{ color: '#CC922F' }}
+                              />
+                            </div>
                           )}
-                        </h3>
-                        <div className="flex items-center justify-center gap-3">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => updateQuantity(item.name, -1)}
-                            disabled={!roomQuantity}
-                            className="w-8 h-8 p-0"
-                          >
-                            <Minus className="w-4 h-4 style={{ color: '#CC922F' }}" />
-                          </Button>
-                          <span className="text-lg font-medium min-w-[2rem] text-center">
-                            {roomQuantity}
-                          </span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => updateQuantity(item.name, 1)}
-                            className="w-8 h-8 p-0"
-                          >
-                            <Plus className="w-4 h-4 style={{ color: '#CC922F' }}" />
-                          </Button>
-                        </div>
+
+                          <div className="flex justify-center mb-2">{item.icon}</div>
+                          <h3 className="text-sm font-medium text-slate-900 mb-3">
+                            {item.name}
+                            {isCustomObject(item.name) && (
+                              <span className="text-xs ml-1" style={{ color: '#CC922F' }}>(Personnalisé)</span>
+                            )}
+                          </h3>
+                          <div className="flex items-center justify-center gap-3">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => updateQuantity(item.name, -1)}
+                              disabled={!roomQuantity}
+                              className="w-8 h-8 p-0"
+                            >
+                              <Minus className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                            </Button>
+                            <span className="text-lg font-medium min-w-[2rem] text-center">
+                              {roomQuantity}
+                            </span>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => updateQuantity(item.name, 1)}
+                              className="w-8 h-8 p-0"
+                            >
+                              <Plus className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                            </Button>
+                          </div>
                         </div>
                       );
                     })}
@@ -3161,9 +3327,9 @@ function AppContent() {
                       <h3 className="text-sm font-medium text-slate-900 mb-3">
                         Ajouter un objet
                       </h3>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
+                      <Button
+                        size="sm"
+                        variant="outline"
                         className="text-xs"
                         onClick={() => setShowAddPieceForm(!showAddPieceForm)}
                       >
@@ -3217,7 +3383,7 @@ function AppContent() {
                               min="1"
                             />
                           </div>
-                          
+
                           {/* Dimensions */}
                           <div className="space-y-2">
                             <Label htmlFor="longueur" className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -3264,7 +3430,7 @@ function AppContent() {
                               min="0"
                             />
                           </div>
-                          
+
                           {/* Ajouter Button */}
                           <div className="flex items-end">
                             <Button
@@ -3290,14 +3456,12 @@ function AppContent() {
                           </h3>
                           <button
                             onClick={handleSpecialObjectsToggle}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
-                              hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
-                            }`}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
+                              }`}
                           >
                             <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -3314,15 +3478,14 @@ function AppContent() {
                               const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
                               // Check if this is a custom object
                               const isCustomObject = customHeavyObjects.includes(object);
-                              
+
                               return (
                                 <div
                                   key={object}
-                                  className={`rounded-lg p-4 text-center transition-colors relative ${
-                                    hasQuantity 
-                                      ? 'bg-slate-50 border-2 shadow-md' 
-                                      : 'bg-slate-50'
-                                  }`}
+                                  className={`rounded-lg p-4 text-center transition-colors relative ${hasQuantity
+                                    ? 'bg-slate-50 border-2 shadow-md'
+                                    : 'bg-slate-50'
+                                    }`}
                                   style={hasQuantity ? { borderColor: '#1c3957' } : {}}
                                 >
                                   {/* Trash icon for custom objects */}
@@ -3335,7 +3498,7 @@ function AppContent() {
                                       <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
                                     </button>
                                   )}
-                                  
+
                                   <div className="flex justify-center mb-2">
                                     <BoxIcon />
                                   </div>
@@ -3354,7 +3517,7 @@ function AppContent() {
                                       className="w-8 h-8 p-0"
                                     >
                                       <Minus className="w-4 h-4" />
-                        </Button>
+                                    </Button>
                                     <span className="text-lg font-medium min-w-[2rem] text-center">
                                       {specialObjectQuantities[object] || 0}
                                     </span>
@@ -3365,12 +3528,12 @@ function AppContent() {
                                       className="w-8 h-8 p-0"
                                     >
                                       <Plus className="w-4 h-4" />
-                        </Button>
+                                    </Button>
                                   </div>
                                 </div>
                               );
                             })}
-                            
+
                             {/* Add Custom Heavy Object */}
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
                               <div className="flex items-center justify-center mx-auto mb-2">
@@ -3379,9 +3542,9 @@ function AppContent() {
                               <h3 className="text-sm font-medium text-slate-900 mb-3">
                                 Ajouter un objet lourd
                               </h3>
-                              <Button 
-                                size="sm" 
-                                variant="outline" 
+                              <Button
+                                size="sm"
+                                variant="outline"
                                 className="text-xs"
                                 onClick={() => setShowAddHeavyObjectForm(!showAddHeavyObjectForm)}
                               >
@@ -3439,7 +3602,7 @@ function AppContent() {
                               min="1"
                             />
                           </div>
-                          
+
                           {/* Dimensions */}
                           <div className="space-y-2">
                             <Label htmlFor="heavy-longueur" className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -3486,7 +3649,7 @@ function AppContent() {
                               min="0"
                             />
                           </div>
-                          
+
                           {/* Ajouter Button */}
                           <div className="flex items-end">
                             <Button
@@ -3546,7 +3709,7 @@ function AppContent() {
                   {/* Surface Input */}
                   <div className="space-y-6">
                     <div>
-                      <Label 
+                      <Label
                         htmlFor="surface"
                         className="text-slate-900 mb-3 block text-base font-medium"
                       >
@@ -3581,14 +3744,12 @@ function AppContent() {
                             </h3>
                             <button
                               onClick={handleSpecialObjectsToggle}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
-                                hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
-                              }`}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
+                                }`}
                             >
                               <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
-                                }`}
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
+                                  }`}
                               />
                             </button>
                           </div>
@@ -3605,15 +3766,14 @@ function AppContent() {
                                 const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
                                 // Check if this is a custom object
                                 const isCustomObject = superficieCustomHeavyObjects.includes(object);
-                                
+
                                 return (
                                   <div
                                     key={object}
-                                    className={`rounded-lg p-4 text-center transition-colors relative ${
-                                      hasQuantity
-                                        ? 'bg-slate-50 border-2 shadow-md'
-                                        : 'bg-slate-50'
-                                    }`}
+                                    className={`rounded-lg p-4 text-center transition-colors relative ${hasQuantity
+                                      ? 'bg-slate-50 border-2 shadow-md'
+                                      : 'bg-slate-50'
+                                      }`}
                                     style={hasQuantity ? { borderColor: '#1c3957' } : {}}
                                   >
                                     {/* Trash icon for custom objects */}
@@ -3626,7 +3786,7 @@ function AppContent() {
                                         <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
                                       </button>
                                     )}
-                                    
+
                                     <div className="flex justify-center mb-2">
                                       <BoxIcon />
                                     </div>
@@ -3663,7 +3823,7 @@ function AppContent() {
                                   </div>
                                 );
                               })}
-                              
+
                               {/* Add Custom Heavy Object */}
                               <div className="bg-slate-50 rounded-lg p-4 text-center">
                                 <div className="flex items-center justify-center mx-auto mb-2">
@@ -3682,7 +3842,7 @@ function AppContent() {
                                 </Button>
                               </div>
                             </div>
-                            
+
                             {/* Add Custom Heavy Object Form */}
                             {showAddHeavyObjectForm && (
                               <div className="mt-6 p-6 bg-slate-50 rounded-lg border-2 border-dashed border-slate-300">
@@ -3830,7 +3990,7 @@ function AppContent() {
                     {rooms.map((room) => {
                       const isSelected = selectedRoom === room;
                       const roomImages = uploadedImages.filter(img => img.roomId === room);
-                      
+
                       return (
                         <div
                           key={room}
@@ -3839,20 +3999,19 @@ function AppContent() {
                         >
                           <div className="flex flex-col items-center text-center space-y-3 p-4 border rounded-lg h-full">
                             <div className="relative">
-                              <div 
-                                className={`p-3 rounded-lg ${
-                                  isSelected 
-                                    ? 'bg-[#1c3957] text-white' 
-                                    : 'bg-slate-100 text-slate-600'
-                                }`}
+                              <div
+                                className={`p-3 rounded-lg ${isSelected
+                                  ? 'bg-[#1c3957] text-white'
+                                  : 'bg-slate-100 text-slate-600'
+                                  }`}
                                 style={{ color: isSelected ? 'white' : '#CC922F' }}
                               >
                                 {getRoomIcon(room)}
                               </div>
                             </div>
-                            
+
                             {/* Camera icon at bottom-right */}
-                            <div 
+                            <div
                               className="absolute bottom-2 right-2 bg-[#CC922F] text-white p-2 rounded-full cursor-pointer hover:bg-[#CC922F]/90 transition-colors shadow-lg"
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -3863,12 +4022,12 @@ function AppContent() {
                             >
                               <Camera className="w-4 h-4" />
                             </div>
-                            
+
                             <div>
                               <h3 className="font-semibold text-lg">{room}</h3>
                               <p className="text-sm text-slate-500">Pièce de vie</p>
                             </div>
-                            
+
                             {/* Uploaded images as small icons */}
                             {roomImages.length > 0 && (
                               <div className="flex flex-wrap gap-1 justify-center mt-2">
@@ -3898,12 +4057,12 @@ function AppContent() {
                         </div>
                       );
                     })}
-                    
+
                     {/* Custom rooms */}
                     {customRooms.map((room) => {
                       const isSelected = selectedRoom === room;
                       const roomImages = uploadedImages.filter(img => img.roomId === room);
-                      
+
                       return (
                         <div
                           key={room}
@@ -3911,11 +4070,10 @@ function AppContent() {
                           onClick={() => setSelectedRoom(room)}
                         >
                           <div className="flex flex-col items-center text-center space-y-3 p-4 border rounded-lg h-full">
-                            <div className={`p-3 rounded-lg ${
-                              isSelected
-                                ? 'bg-[#1c3957] text-white'
-                                : 'bg-slate-100 text-slate-600'
-                            }`}>
+                            <div className={`p-3 rounded-lg ${isSelected
+                              ? 'bg-[#1c3957] text-white'
+                              : 'bg-slate-100 text-slate-600'
+                              }`}>
                               <Package className="w-6 h-6" />
                             </div>
                             <div className="flex-1 flex flex-col justify-center">
@@ -3942,7 +4100,7 @@ function AppContent() {
                               </div>
                             )}
                             {/* Camera icon at bottom-right */}
-                            <div 
+                            <div
                               className="absolute bottom-2 right-2 bg-[#CC922F] text-white p-2 rounded-full cursor-pointer hover:bg-[#CC922F]/90 transition-colors shadow-lg"
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -3952,7 +4110,7 @@ function AppContent() {
                             >
                               <Camera className="w-4 h-4" />
                             </div>
-                            
+
                             {/* Delete button */}
                             <button
                               onClick={(e) => {
@@ -3967,7 +4125,7 @@ function AppContent() {
                         </div>
                       );
                     })}
-                    
+
                     {/* Add Room Card */}
                     <div className="room-card relative group cursor-pointer h-48">
                       <div className="flex flex-col items-center text-center space-y-3 p-4 border rounded-lg h-full">
@@ -4000,7 +4158,7 @@ function AppContent() {
                               autoFocus
                             />
                           ) : (
-                            <h3 
+                            <h3
                               className="font-medium text-slate-900 mb-1 cursor-pointer"
                               onClick={() => {
                                 setIsAddingRoom(true);
@@ -4014,7 +4172,7 @@ function AppContent() {
                             {isAddingRoom ? "Appuyez sur Entrée ou cliquez sur +" : "Cliquez sur + pour ajouter"}
                           </p>
                         </div>
-                        
+
                         {/* Camera Button */}
                         <div className="flex justify-center">
                           <div
@@ -4056,9 +4214,9 @@ function AppContent() {
                             Notre IA analyse vos photos pour estimer le volume et la complexité de votre déménagement.
                           </p>
                           <div className="w-full bg-slate-200 rounded-full h-2 mb-4">
-                            <div 
-                              className="bg-[#1c3957] h-2 rounded-full transition-all duration-500" 
-                              style={{ width: `${analysisProgress}%` }} 
+                            <div
+                              className="bg-[#1c3957] h-2 rounded-full transition-all duration-500"
+                              style={{ width: `${analysisProgress}%` }}
                             />
                           </div>
                           <p className="text-sm text-slate-500 text-center">
@@ -4074,7 +4232,7 @@ function AppContent() {
                               </div>
                               <h2 className="text-2xl font-bold mb-4 text-[#1c3957]">Analyse terminée !</h2>
                               <p className="text-slate-600 mb-6">Vos photos ont été analysées avec succès. Consultez les résultats détaillés ci-dessous.</p>
-                              <Button 
+                              <Button
                                 onClick={() => navigate("/tunnel/ai-results")}
                                 className="px-8 py-3 bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
                               >
@@ -4088,7 +4246,7 @@ function AppContent() {
                               </div>
                               <h2 className="text-2xl font-bold mb-4 text-red-600">Erreur d'analyse</h2>
                               <p className="text-red-600 mb-6">{analysisResults.error}</p>
-                              <Button 
+                              <Button
                                 variant="outline"
                                 onClick={() => {
                                   setAnalysisResults(null);
@@ -4116,117 +4274,114 @@ function AppContent() {
                     <>
                       {/* Special Objects Question */}
                       <div className="max-w-4xl mx-auto mb-8">
-                      <div className="bg-slate-50 rounded-lg p-6">
-                        <div className="mb-4">
-                          <div className="flex items-center mb-2">
-                            <h3 className="text-lg font-semibold text-slate-900">
-                              Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
-                            </h3>
-                            <button
-                              onClick={handleSpecialObjectsToggle}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${
-                                hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
-                              }`}
-                            >
-                              <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
-                                }`}
-                              />
-                            </button>
-                          </div>
-                          <p className="text-sm text-slate-600">
-                            Sélectionnez les objets lourds qui nécessitent une attention particulière
-                          </p>
-                        </div>
-
-                        {/* Special Objects Grid */}
-                        {hasSpecialObjects && (
-                          <div className="mt-6">
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                              {aiSpecialObjects.map((object) => {
-                                const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
-                                // Check if this is a custom object
-                                const isCustomObject = aiCustomHeavyObjects.includes(object);
-                                
-                                return (
-                                  <div
-                                    key={object}
-                                    className={`rounded-lg p-4 text-center transition-colors relative ${
-                                      hasQuantity 
-                                        ? 'bg-slate-50 border-2 shadow-md' 
-                                        : 'bg-slate-50'
+                        <div className="bg-slate-50 rounded-lg p-6">
+                          <div className="mb-4">
+                            <div className="flex items-center mb-2">
+                              <h3 className="text-lg font-semibold text-slate-900">
+                                Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
+                              </h3>
+                              <button
+                                onClick={handleSpecialObjectsToggle}
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ml-2 ${hasSpecialObjects ? 'bg-[#1c3957]' : 'bg-slate-300'
+                                  }`}
+                              >
+                                <span
+                                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${hasSpecialObjects ? 'translate-x-6' : 'translate-x-1'
                                     }`}
-                                    style={hasQuantity ? { borderColor: '#1c3957' } : {}}
-                                  >
-                                    {/* Trash icon for custom objects */}
-                                    {isCustomObject && (
-                                      <button
-                                        onClick={() => removeAiCustomHeavyObject(object)}
-                                        className="absolute top-2 right-2 p-1 hover:bg-blue-100 rounded-full transition-colors"
-                                        title="Supprimer cet objet personnalisé"
-                                      >
-                                        <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
-                                      </button>
-                                    )}
-                                    
-                                    <div className="flex justify-center mb-2">
-                                      <BoxIcon />
-                                    </div>
-                                    <h3 className="text-sm font-medium text-slate-900 mb-3">
-                                      {object}
+                                />
+                              </button>
+                            </div>
+                            <p className="text-sm text-slate-600">
+                              Sélectionnez les objets lourds qui nécessitent une attention particulière
+                            </p>
+                          </div>
+
+                          {/* Special Objects Grid */}
+                          {hasSpecialObjects && (
+                            <div className="mt-6">
+                              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {aiSpecialObjects.map((object) => {
+                                  const hasQuantity = specialObjectQuantities[object] && specialObjectQuantities[object] > 0;
+                                  // Check if this is a custom object
+                                  const isCustomObject = aiCustomHeavyObjects.includes(object);
+
+                                  return (
+                                    <div
+                                      key={object}
+                                      className={`rounded-lg p-4 text-center transition-colors relative ${hasQuantity
+                                        ? 'bg-slate-50 border-2 shadow-md'
+                                        : 'bg-slate-50'
+                                        }`}
+                                      style={hasQuantity ? { borderColor: '#1c3957' } : {}}
+                                    >
+                                      {/* Trash icon for custom objects */}
                                       {isCustomObject && (
-                                        <span className="text-xs ml-1" style={{ color: '#CC922F' }}>(Personnalisé)</span>
+                                        <button
+                                          onClick={() => removeAiCustomHeavyObject(object)}
+                                          className="absolute top-2 right-2 p-1 hover:bg-blue-100 rounded-full transition-colors"
+                                          title="Supprimer cet objet personnalisé"
+                                        >
+                                          <Trash2 className="w-4 h-4" style={{ color: '#CC922F' }} />
+                                        </button>
                                       )}
-                                    </h3>
-                                    <div className="flex items-center justify-center gap-3">
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => updateSpecialObjectQuantity(object, -1)}
-                                        disabled={!specialObjectQuantities[object]}
-                                        className="w-8 h-8 p-0"
-                                      >
-                                        <Minus className="w-4 h-4" />
-                                      </Button>
-                                      <span className="text-lg font-semibold min-w-[2rem] text-center">
-                                        {specialObjectQuantities[object] || 0}
-                                      </span>
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => updateSpecialObjectQuantity(object, 1)}
-                                        className="w-8 h-8 p-0"
-                                      >
-                                        <Plus className="w-4 h-4" />
-                                      </Button>
+
+                                      <div className="flex justify-center mb-2">
+                                        <BoxIcon />
+                                      </div>
+                                      <h3 className="text-sm font-medium text-slate-900 mb-3">
+                                        {object}
+                                        {isCustomObject && (
+                                          <span className="text-xs ml-1" style={{ color: '#CC922F' }}>(Personnalisé)</span>
+                                        )}
+                                      </h3>
+                                      <div className="flex items-center justify-center gap-3">
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          onClick={() => updateSpecialObjectQuantity(object, -1)}
+                                          disabled={!specialObjectQuantities[object]}
+                                          className="w-8 h-8 p-0"
+                                        >
+                                          <Minus className="w-4 h-4" />
+                                        </Button>
+                                        <span className="text-lg font-semibold min-w-[2rem] text-center">
+                                          {specialObjectQuantities[object] || 0}
+                                        </span>
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          onClick={() => updateSpecialObjectQuantity(object, 1)}
+                                          className="w-8 h-8 p-0"
+                                        >
+                                          <Plus className="w-4 h-4" />
+                                        </Button>
+                                      </div>
                                     </div>
+                                  );
+                                })}
+
+                                {/* Add Custom Heavy Object */}
+                                <div className="bg-slate-50 rounded-lg p-4 text-center">
+                                  <div className="flex items-center justify-center mx-auto mb-2">
+                                    <Plus className="w-10 h-10 font-bold" style={{ color: '#CC922F' }} />
                                   </div>
-                                );
-                              })}
-                              
-                              {/* Add Custom Heavy Object */}
-                              <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <div className="flex items-center justify-center mx-auto mb-2">
-                                  <Plus className="w-10 h-10 font-bold" style={{ color: '#CC922F' }} />
+                                  <h3 className="text-sm font-medium text-slate-900 mb-3">
+                                    Ajouter un objet lourd
+                                  </h3>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="text-xs"
+                                    onClick={() => setShowAddHeavyObjectForm(!showAddHeavyObjectForm)}
+                                  >
+                                    Ajouter
+                                  </Button>
                                 </div>
-                                <h3 className="text-sm font-medium text-slate-900 mb-3">
-                                  Ajouter un objet lourd
-                                </h3>
-                                <Button 
-                                  size="sm" 
-                                  variant="outline" 
-                                  className="text-xs"
-                                  onClick={() => setShowAddHeavyObjectForm(!showAddHeavyObjectForm)}
-                                >
-                                  Ajouter
-                                </Button>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
 
                     </>
                   )}
@@ -4276,7 +4431,7 @@ function AppContent() {
                               min="1"
                             />
                           </div>
-                          
+
                           {/* Dimensions */}
                           <div className="space-y-2">
                             <Label htmlFor="heavy-longueur-ai" className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -4323,7 +4478,7 @@ function AppContent() {
                               min="0"
                             />
                           </div>
-                          
+
                           {/* Ajouter Button */}
                           <div className="flex items-end">
                             <Button
@@ -4388,13 +4543,13 @@ function AppContent() {
                             <p className="text-[#1c3957]/80">Vos photos ont été analysées par notre IA</p>
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="bg-white rounded-lg p-4 border border-[#1c3957]">
                             <h4 className="font-semibold text-slate-900 mb-2">Résumé de l'analyse</h4>
                             <p className="text-slate-700">{analysisResults.summary}</p>
                           </div>
-                          
+
                           <div className="bg-white rounded-lg p-4 border border-[#1c3957]">
                             <h4 className="font-semibold text-slate-900 mb-2">Statistiques</h4>
                             <div className="space-y-2">
@@ -4416,7 +4571,7 @@ function AppContent() {
                         <h3 className="text-xl font-semibold text-slate-900 text-center mb-6">
                           Objets détectés par pièce
                         </h3>
-                        
+
                         {Object.entries(roomAnalysisResults).map(([roomId, objects]) => (
                           <div key={roomId} className="bg-white border border-slate-200 rounded-lg p-6">
                             <div className="flex items-center mb-4">
@@ -4427,20 +4582,19 @@ function AppContent() {
                               </div>
                               <h4 className="text-lg font-semibold text-slate-900">{roomId}</h4>
                             </div>
-                            
+
                             {Object.keys(objects).length > 0 ? (
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {Object.entries(objects).map(([object, objectData]) => {
                                   // Handle both old (number) and new (object) data structures
                                   const quantity = typeof objectData === 'number' ? objectData : objectData?.quantity || 0;
                                   const isUserAdded = typeof objectData === 'object' && objectData?.is_ai_detected === false;
-                                  
+
                                   return (
-                                    <div 
-                                      key={object} 
-                                      className={`bg-slate-50 rounded-lg p-4 relative ${
-                                        isUserAdded ? 'border-2 border-[#CC922F]' : 'border border-slate-200'
-                                      }`}
+                                    <div
+                                      key={object}
+                                      className={`bg-slate-50 rounded-lg p-4 relative ${isUserAdded ? 'border-2 border-[#CC922F]' : 'border border-slate-200'
+                                        }`}
                                     >
                                       {/* Delete button for user-added objects */}
                                       {isUserAdded && (
@@ -4452,7 +4606,7 @@ function AppContent() {
                                           <Trash2 className="w-4 h-4 text-[#CC922F]" />
                                         </button>
                                       )}
-                                      
+
                                       <div className="flex flex-col items-center mb-2">
                                         <h5 className="font-medium text-slate-900 mb-2">{object}</h5>
                                         {isUserAdded && (
@@ -4492,7 +4646,7 @@ function AppContent() {
                                 Aucun objet détecté dans cette pièce
                               </p>
                             )}
-                            
+
                             {/* Add New Object */}
                             <div className="mt-4 pt-4 border-t border-slate-200">
                               <div className="relative">
@@ -4517,14 +4671,14 @@ function AppContent() {
                                     }
                                   }}
                                 />
-                                
+
                                 {/* Autocomplete dropdown */}
                                 {newObjectInputs[roomId] && newObjectInputs[roomId].length > 0 && (
                                   <div className="absolute top-full left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-10 mt-1 max-h-40 overflow-y-auto">
                                     {(() => {
                                       // Get current room objects
                                       const currentRoomObjects = Object.keys(objects);
-                                      
+
                                       // Map frontend room names to backend room keys
                                       const roomMapping = {
                                         'Entrée': 'entree',
@@ -4538,7 +4692,7 @@ function AppContent() {
                                         'Garage': 'garage',
                                         'Autre': 'autre'
                                       };
-                                      
+
                                       // Add objects from backend ROOM_OBJECTS for each room type
                                       const commonObjects = {
                                         'entree': ['Banc', 'Cadre', 'Carton', 'Console', 'Etagére muale', 'Meuble a chaussure', 'Miroir', 'Porte manteau', 'Coffre pour s\'assoir et mettre les chaussures', 'Tapis'],
@@ -4552,95 +4706,94 @@ function AppContent() {
                                         'garage': ['Aspirateur', 'Carton', 'Coffre de rangement', 'Lave linge', 'séche linge', 'Vélo', 'Table de ping-pong (-80KG)', 'Etagère'],
                                         'autre': ['Carton', 'Chiffronier', 'Guitare', 'Lampe de bureau', 'Paravent', 'Vélo d\'intérieur (-80KG)', 'Tapis de course (-80KG)', 'Banc de musculation (-80KG)', 'Ecran ordinateur', 'Imprimante', 'Imprimante pro', 'Cave à vin']
                                       };
-                                      
+
                                       // Get the backend room key for this frontend room name
                                       const backendRoomKey = roomMapping[roomId] || roomId;
-                                      
+
                                       // Combine current room objects with common objects for this room
                                       const allSuggestions = [
                                         ...currentRoomObjects,
                                         ...(commonObjects[backendRoomKey] || [])
                                       ];
-                                      
+
                                       // Remove duplicates and filter by input
                                       const uniqueSuggestions = [...new Set(allSuggestions)]
-                                        .filter(objectName => 
+                                        .filter(objectName =>
                                           objectName.toLowerCase().includes(newObjectInputs[roomId].toLowerCase())
                                         );
-                                      
+
                                       return uniqueSuggestions;
                                     })().map((objectName) => {
-                                        // Check if this is a detected object or a common object suggestion
-                                        const isDetectedObject = objects.hasOwnProperty(objectName);
-                                        const objectData = isDetectedObject ? objects[objectName] : null;
-                                        const quantity = isDetectedObject ? (typeof objectData === 'number' ? objectData : objectData?.quantity || 0) : 0;
-                                        const isUserAdded = isDetectedObject && typeof objectData === 'object' && objectData?.is_ai_detected === false;
-                                        
-                                        return (
-                                          <div
-                                            key={objectName}
-                                            className={`p-3 cursor-pointer hover:bg-slate-50 border-b border-slate-100 last:border-b-0 ${
-                                              isUserAdded ? 'bg-[#CC922F]/10 border-l-4 border-l-[#CC922F]' : ''
+                                      // Check if this is a detected object or a common object suggestion
+                                      const isDetectedObject = objects.hasOwnProperty(objectName);
+                                      const objectData = isDetectedObject ? objects[objectName] : null;
+                                      const quantity = isDetectedObject ? (typeof objectData === 'number' ? objectData : objectData?.quantity || 0) : 0;
+                                      const isUserAdded = isDetectedObject && typeof objectData === 'object' && objectData?.is_ai_detected === false;
+
+                                      return (
+                                        <div
+                                          key={objectName}
+                                          className={`p-3 cursor-pointer hover:bg-slate-50 border-b border-slate-100 last:border-b-0 ${isUserAdded ? 'bg-[#CC922F]/10 border-l-4 border-l-[#CC922F]' : ''
                                             }`}
-                                            onClick={() => {
-                                              // Add the object to the room
-                                              addNewObjectToRoom(roomId, objectName);
-                                              // Clear the input
-                                              setNewObjectInputs(prev => ({
-                                                ...prev,
-                                                [roomId]: ''
-                                              }));
-                                            }}
-                                          >
-                                            <div className="flex items-center justify-between">
-                                              <span className={`font-medium ${isUserAdded ? 'text-[#CC922F]' : 'text-slate-900'}`}>{objectName}</span>
-                                              <div className="flex items-center gap-2">
-                                                {isDetectedObject ? (
-                                                  <>
-                                                    {isUserAdded && (
-                                                      <span className="text-xs bg-[#CC922F] text-white px-2 py-1 rounded-full">
-                                                        Ajouté
-                                                      </span>
-                                                    )}
-                                                    <span className="text-sm text-slate-500">({quantity})</span>
-                                                  </>
-                                                ) : (
-                                                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                                                    Suggestion
-                                                  </span>
-                                                )}
-                                              </div>
+                                          onClick={() => {
+                                            // Add the object to the room
+                                            addNewObjectToRoom(roomId, objectName);
+                                            // Clear the input
+                                            setNewObjectInputs(prev => ({
+                                              ...prev,
+                                              [roomId]: ''
+                                            }));
+                                          }}
+                                        >
+                                          <div className="flex items-center justify-between">
+                                            <span className={`font-medium ${isUserAdded ? 'text-[#CC922F]' : 'text-slate-900'}`}>{objectName}</span>
+                                            <div className="flex items-center gap-2">
+                                              {isDetectedObject ? (
+                                                <>
+                                                  {isUserAdded && (
+                                                    <span className="text-xs bg-[#CC922F] text-white px-2 py-1 rounded-full">
+                                                      Ajouté
+                                                    </span>
+                                                  )}
+                                                  <span className="text-sm text-slate-500">({quantity})</span>
+                                                </>
+                                              ) : (
+                                                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                                                  Suggestion
+                                                </span>
+                                              )}
                                             </div>
                                           </div>
-                                        );
-                                      })}
-                                    
+                                        </div>
+                                      );
+                                    })}
+
                                     {/* Show "Add new" option if no matches */}
-                                    {Object.keys(objects).filter(objectName => 
+                                    {Object.keys(objects).filter(objectName =>
                                       objectName.toLowerCase().includes(newObjectInputs[roomId].toLowerCase())
                                     ).length === 0 && (
-                                      <div
-                                        className="p-3 cursor-pointer hover:bg-slate-50 border-b border-slate-100"
-                                        onClick={() => {
-                                          addNewObjectToRoom(roomId, newObjectInputs[roomId]);
-                                          setNewObjectInputs(prev => ({
-                                            ...prev,
-                                            [roomId]: ''
-                                          }));
-                                        }}
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          <Plus className="w-4 h-4 text-[#CC922F]" />
-                                          <span className="font-medium text-[#CC922F]">
-                                            Ajouter "{newObjectInputs[roomId]}"
-                                          </span>
+                                        <div
+                                          className="p-3 cursor-pointer hover:bg-slate-50 border-b border-slate-100"
+                                          onClick={() => {
+                                            addNewObjectToRoom(roomId, newObjectInputs[roomId]);
+                                            setNewObjectInputs(prev => ({
+                                              ...prev,
+                                              [roomId]: ''
+                                            }));
+                                          }}
+                                        >
+                                          <div className="flex items-center gap-2">
+                                            <Plus className="w-4 h-4 text-[#CC922F]" />
+                                            <span className="font-medium text-[#CC922F]">
+                                              Ajouter "{newObjectInputs[roomId]}"
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    )}
+                                      )}
                                   </div>
                                 )}
                               </div>
-                              
+
                               <div className="flex gap-2 mt-3">
                                 <Button
                                   size="sm"
@@ -4799,9 +4952,14 @@ function AppContent() {
                           <Label className="text-slate-900 mb-2 block">Ascenseur</Label>
                           <Select
                             value={addressData.departure.elevator}
-                            onValueChange={(value) =>
-                              updateAddressData("departure", "elevator", value)
-                            }
+                            onValueChange={(value) => {
+                              updateAddressData("departure", "elevator", value);
+                              // If elevator selected (not "Non"), uncheck monte-meuble
+                              if (value !== "Non") {
+                                updateAddressOption("departure", "monteMenuble", false);
+                              }
+                            }}
+                            disabled={addressData.departure.floor === "RDC"}
                           >
                             <SelectTrigger className="bg-slate-50 border-slate-200">
                               <SelectValue />
@@ -4822,9 +4980,13 @@ function AppContent() {
                           <Switch
                             id="departure-monte-meuble"
                             checked={addressData.departure.options.monteMenuble}
-                            onCheckedChange={(checked) =>
-                              updateAddressOption("departure", "monteMenuble", checked as boolean)
-                            }
+                            onCheckedChange={(checked) => {
+                              updateAddressOption("departure", "monteMenuble", checked as boolean);
+                              // If monte-meuble selected, reset elevator to "Non"
+                              if (checked) {
+                                updateAddressData("departure", "elevator", "Non");
+                              }
+                            }}
                             className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
                           />
                           <Label htmlFor="departure-monte-meuble" className="text-sm">
@@ -4858,34 +5020,25 @@ function AppContent() {
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2 flex-wrap gap-2">
-                          <Switch
-                            id="departure-distance-portage"
-                            checked={addressData.departure.options.distancePortage}
-                            onCheckedChange={(checked) =>
-                              updateAddressOption("departure", "distancePortage", checked as boolean)
-                            }
-                            className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
-                          />
                           <Label htmlFor="departure-distance-portage" className="text-sm">
-                            Distance de portage
+                            Distance de portage *
                           </Label>
-                          {addressData.departure.options.distancePortage && (
-                            <div className="flex items-center gap-1.5">
-                              <Input
-                                type="number"
-                                min={0}
-                                step={1}
-                                placeholder="m"
-                                value={addressData.departure.options.portageDistanceM ?? ""}
-                                onChange={(e) => {
-                                  const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
-                                  updateAddressOption("departure", "portageDistanceM", isNaN(v) ? 0 : v);
-                                }}
-                                className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
-                              />
-                              <span className="text-xs text-slate-600">m</span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-1.5">
+                            <Input
+                              type="number"
+                              min={0}
+                              step={1}
+                              placeholder="m"
+                              value={addressData.departure.options.portageDistanceM ?? ""}
+                              onChange={(e) => {
+                                const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
+                                updateAddressOption("departure", "portageDistanceM", isNaN(v) ? 0 : v);
+                              }}
+                              className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
+                              required
+                            />
+                            <span className="text-xs text-slate-500">m</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -4971,9 +5124,13 @@ function AppContent() {
                             <Label className="text-slate-900 mb-2 block">Ascenseur</Label>
                             <Select
                               value={escale.elevator}
-                              onValueChange={(value) =>
-                                updateEscaleData(escale.id, "elevator", value)
-                              }
+                              onValueChange={(value) => {
+                                updateEscaleData(escale.id, "elevator", value);
+                                // If elevator selected (not "Non"), uncheck monte-meuble
+                                if (value !== "Non") {
+                                  updateEscaleOption(escale.id, "monteMenuble", false);
+                                }
+                              }}
                             >
                               <SelectTrigger className="bg-slate-50 border-slate-200">
                                 <SelectValue />
@@ -4994,9 +5151,13 @@ function AppContent() {
                             <Switch
                               id={`escale-${escale.id}-monte-meuble`}
                               checked={escale.options.monteMenuble}
-                              onCheckedChange={(checked) =>
-                                updateEscaleOption(escale.id, "monteMenuble", checked as boolean)
-                              }
+                              onCheckedChange={(checked) => {
+                                updateEscaleOption(escale.id, "monteMenuble", checked as boolean);
+                                // If monte-meuble selected, reset elevator to "Non"
+                                if (checked) {
+                                  updateEscaleData(escale.id, "elevator", "Non");
+                                }
+                              }}
                               className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
                             />
                             <Label htmlFor={`escale-${escale.id}-monte-meuble`} className="text-sm">
@@ -5028,36 +5189,6 @@ function AppContent() {
                             <Label htmlFor={`escale-${escale.id}-cour-traverser`} className="text-sm">
                               Cour à traverser
                             </Label>
-                          </div>
-                          <div className="flex items-center space-x-2 flex-wrap gap-2">
-                            <Switch
-                              id={`escale-${escale.id}-distance-portage`}
-                              checked={escale.options.distancePortage}
-                              onCheckedChange={(checked) =>
-                                updateEscaleOption(escale.id, "distancePortage", checked as boolean)
-                              }
-                              className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
-                            />
-                            <Label htmlFor={`escale-${escale.id}-distance-portage`} className="text-sm">
-                              Distance de portage
-                            </Label>
-                            {escale.options.distancePortage && (
-                              <div className="flex items-center gap-1.5">
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  step={1}
-                                  placeholder="m"
-                                  value={escale.options.portageDistanceM ?? ""}
-                                  onChange={(e) => {
-                                    const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
-                                    updateEscaleOption(escale.id, "portageDistanceM", isNaN(v) ? 0 : v);
-                                  }}
-                                  className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
-                                />
-                                <span className="text-xs text-slate-600">m</span>
-                              </div>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -5144,9 +5275,14 @@ function AppContent() {
                           <Label className="text-slate-900 mb-2 block">Ascenseur</Label>
                           <Select
                             value={addressData.arrival.elevator}
-                            onValueChange={(value) =>
-                              updateAddressData("arrival", "elevator", value)
-                            }
+                            onValueChange={(value) => {
+                              updateAddressData("arrival", "elevator", value);
+                              // If elevator selected (not "Non"), uncheck monte-meuble
+                              if (value !== "Non") {
+                                updateAddressOption("arrival", "monteMenuble", false);
+                              }
+                            }}
+                            disabled={addressData.arrival.floor === "RDC"}
                           >
                             <SelectTrigger className="bg-slate-50 border-slate-200">
                               <SelectValue />
@@ -5167,9 +5303,13 @@ function AppContent() {
                           <Switch
                             id="arrival-monte-meuble"
                             checked={addressData.arrival.options.monteMenuble}
-                            onCheckedChange={(checked) =>
-                              updateAddressOption("arrival", "monteMenuble", checked as boolean)
-                            }
+                            onCheckedChange={(checked) => {
+                              updateAddressOption("arrival", "monteMenuble", checked as boolean);
+                              // If monte-meuble selected, reset elevator to "Non"
+                              if (checked) {
+                                updateAddressData("arrival", "elevator", "Non");
+                              }
+                            }}
                             className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
                           />
                           <Label htmlFor="arrival-monte-meuble" className="text-sm">
@@ -5203,34 +5343,25 @@ function AppContent() {
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2 flex-wrap gap-2">
-                          <Switch
-                            id="arrival-distance-portage"
-                            checked={addressData.arrival.options.distancePortage}
-                            onCheckedChange={(checked) =>
-                              updateAddressOption("arrival", "distancePortage", checked as boolean)
-                            }
-                            className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
-                          />
                           <Label htmlFor="arrival-distance-portage" className="text-sm">
-                            Distance de portage
+                            Distance de portage *
                           </Label>
-                          {addressData.arrival.options.distancePortage && (
-                            <div className="flex items-center gap-1.5">
-                              <Input
-                                type="number"
-                                min={0}
-                                step={1}
-                                placeholder="m"
-                                value={addressData.arrival.options.portageDistanceM ?? ""}
-                                onChange={(e) => {
-                                  const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
-                                  updateAddressOption("arrival", "portageDistanceM", isNaN(v) ? 0 : v);
-                                }}
-                                className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
-                              />
-                              <span className="text-xs text-slate-600">m</span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-1.5">
+                            <Input
+                              type="number"
+                              min={0}
+                              step={1}
+                              placeholder="m"
+                              value={addressData.arrival.options.portageDistanceM ?? ""}
+                              onChange={(e) => {
+                                const v = e.target.value === "" ? 0 : parseFloat(e.target.value);
+                                updateAddressOption("arrival", "portageDistanceM", isNaN(v) ? 0 : v);
+                              }}
+                              className="w-20 h-8 text-sm bg-slate-50 border-slate-200"
+                              required
+                            />
+                            <span className="text-xs text-slate-500">m</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -5258,60 +5389,52 @@ function AppContent() {
             </div>
           </div>
 
-           {/* Sidebar */}
-           <div className="space-y-12">
-             {/* Mes étapes */}
-             <div className="bg-white rounded-lg shadow-sm p-8">
-               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                 Mes étapes
-               </h3>
-               <p className="text-base text-slate-600 mb-6">
-                 Sélectionnez l'étape sur laquelle vous souhaitez revenir
-               </p>
-               <ul className="space-y-4">
-                 <li className="flex items-center">
-                   <div className={`w-3 h-3 rounded-full mr-4 ${
-                     currentPage === "form" ? "bg-slate-900" : "bg-slate-300"
-                   }`}></div>
-                   <span className={`text-base ${
-                     currentPage === "form" ? "font-medium text-slate-900" : "text-slate-500"
-                   }`}>Mes informations</span>
-                 </li>
-                 <li className="flex items-center">
-                   <div className={`w-3 h-3 rounded-full mr-4 ${
-                     currentPage === "methods" ? "bg-slate-900" : "bg-slate-300"
-                   }`}></div>
-                   <span className={`text-base ${
-                     currentPage === "methods" ? "font-medium text-slate-900" : "text-slate-500"
-                   }`}>Mon déménagement</span>
-                 </li>
-                 {(currentPage === "volume" || currentPage === "ai-results" || currentPage === "addresses") && selectedMethod && (
-                   <li className="flex items-center">
-                     <div className={`w-3 h-3 rounded-full mr-4 ${
-                       currentPage === "volume" || currentPage === "ai-results" ? "bg-slate-900" : "bg-slate-300"
-                     }`}></div>
-                     <span className={`text-base ${
-                       currentPage === "volume" || currentPage === "ai-results" ? "font-medium text-slate-900" : "text-slate-500"
-                     }`}>
-                       {selectedMethod === "list" ? "Inventaire manuel" : 
-                        selectedMethod === "photo" ? "Analyse IA" : 
-                        selectedMethod === "surface" ? "Calcul surface" : "Méthode sélectionnée"}
-                     </span>
-                   </li>
-                 )}
-                 <li className="flex items-center">
-                   <div className={`w-3 h-3 rounded-full mr-4 ${
-                     currentPage === "addresses" ? "bg-slate-900" : "bg-slate-300"
-                   }`}></div>
-                   <span className={`text-base ${
-                     currentPage === "addresses" ? "font-medium text-slate-900" : "text-slate-500"
-                   }`}>Mes adresses</span>
-                 </li>
-               </ul>
-             </div>
+          {/* Sidebar */}
+          <div className="space-y-12">
+            {/* Mes étapes */}
+            <div className="bg-white rounded-lg shadow-sm p-8">
+              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                Mes étapes
+              </h3>
+              <p className="text-base text-slate-600 mb-6">
+                Sélectionnez l'étape sur laquelle vous souhaitez revenir
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-center">
+                  <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "form" ? "bg-slate-900" : "bg-slate-300"
+                    }`}></div>
+                  <span className={`text-base ${currentPage === "form" ? "font-medium text-slate-900" : "text-slate-500"
+                    }`}>Mes informations</span>
+                </li>
+                <li className="flex items-center">
+                  <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "methods" ? "bg-slate-900" : "bg-slate-300"
+                    }`}></div>
+                  <span className={`text-base ${currentPage === "methods" ? "font-medium text-slate-900" : "text-slate-500"
+                    }`}>Mon déménagement</span>
+                </li>
+                {(currentPage === "volume" || currentPage === "ai-results" || currentPage === "addresses") && selectedMethod && (
+                  <li className="flex items-center">
+                    <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "volume" || currentPage === "ai-results" ? "bg-slate-900" : "bg-slate-300"
+                      }`}></div>
+                    <span className={`text-base ${currentPage === "volume" || currentPage === "ai-results" ? "font-medium text-slate-900" : "text-slate-500"
+                      }`}>
+                      {selectedMethod === "list" ? "Inventaire manuel" :
+                        selectedMethod === "photo" ? "Analyse IA" :
+                          selectedMethod === "surface" ? "Calcul surface" : "Méthode sélectionnée"}
+                    </span>
+                  </li>
+                )}
+                <li className="flex items-center">
+                  <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "addresses" ? "bg-slate-900" : "bg-slate-300"
+                    }`}></div>
+                  <span className={`text-base ${currentPage === "addresses" ? "font-medium text-slate-900" : "text-slate-500"
+                    }`}>Mes adresses</span>
+                </li>
+              </ul>
+            </div>
 
-             {/* Trust Indicators */}
-             <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
+            {/* Trust Indicators */}
+            <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
               <div className="flex items-center text-base">
                 <div className="flex items-center justify-center mr-3">
                   <Heart className="w-8 h-8 font-bold" style={{ color: '#CC922F' }} />
