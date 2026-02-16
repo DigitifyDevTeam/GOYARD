@@ -266,9 +266,9 @@ const PDFReport: React.FC<PDFReportProps> = ({
                 </div>
                 <div className="mt-3 p-3 bg-orange-100 rounded text-sm text-gray-700">
                   <p className="font-medium mb-1">Détail du calcul :</p>
-                  <p>• Volume habitation : {methodData.surface_area ? (parseFloat(methodData.surface_area.toString()) * 2.5).toFixed(1) : 0} m³</p>
-                  <p>• Volume mobilier : 40 m³ (forfait)</p>
-                  <p>• Volume total : {methodData.volume_m3 || 0} m³</p>
+                  <p>• Volume total : {methodData.surface_area ? (parseFloat(methodData.surface_area.toString()) / 2).toFixed(1) : 0} m³</p>
+                  <p>• Basé sur la surface : {methodData.surface_area || 0} m²</p>
+                  <p>• Coefficient : 1/2 (surface ÷ 2)</p>
                 </div>
               </div>
             </div>
@@ -367,7 +367,6 @@ const PDFReport: React.FC<PDFReportProps> = ({
             )}
             {Object.keys(optionsData.cleaningQuantities).length > 0 && (
               <div className="py-2 border-b">
-                <p className="font-medium mb-2">Services de nettoyage:</p>
                 {Object.entries(optionsData.cleaningQuantities).map(([service, quantity]) => (
                   <div key={service} className="flex justify-between text-sm">
                     <span>{service}</span>

@@ -438,17 +438,14 @@ function AppContent() {
 
   const handleContinueFromSurface = async () => {
     try {
-      // Calculate volumes using the formulas
+      // Calculate volume using the new formula: Volume (m³) = Surface (m²) ÷ 2
       const area = parseFloat(surfaceArea);
-      const vhouse = area * 2.5; // vhouse = x * 2.5
-      const vfurniture = 40; // vfurniture = 500 * 0.08 = 40 m³
-      const totalVolume = vhouse + vfurniture;
+      const totalVolume = area / 2;
 
       console.log('Superficie calculation:', {
         area: area,
-        vhouse: vhouse,
-        vfurniture: vfurniture,
-        totalVolume: totalVolume
+        totalVolume: totalVolume,
+        formula: 'Surface ÷ 2'
       });
 
       // Prepare API payload for superficie method
@@ -457,8 +454,6 @@ function AppContent() {
         method: "superficie",
         surface_area: area,
         calculated_volumes: {
-          vhouse: vhouse,
-          vfurniture: vfurniture,
           total_volume: totalVolume
         },
         heavy_objects: {},
@@ -1072,9 +1067,11 @@ function AppContent() {
         emballage_cartons: options.emballageCartons,
       };
       // Volume: from calculation or from surface
-      if (lastCalculationId != null) body.calculation_id = lastCalculationId;
-      else if (surfaceArea) {
-        const vol = parseFloat(surfaceArea) * 2.5 + 40;
+      // For surface method, always use current surface calculation to avoid cached old values
+      if (lastCalculationId != null && lastUsedMethod !== "surface") {
+        body.calculation_id = lastCalculationId;
+      } else if (surfaceArea) {
+        const vol = parseFloat(surfaceArea) / 2;
         if (!Number.isNaN(vol)) body.volume_m3 = vol;
       }
       // Address id: backend will load addresses + compute distance via Google
@@ -1198,9 +1195,11 @@ function AppContent() {
           };
 
           // Volume: from calculation or from surface
-          if (calcId != null) body.calculation_id = calcId;
-          else if (surfaceArea) {
-            const vol = parseFloat(surfaceArea) * 2.5 + 40;
+          // For surface method, always use current surface calculation to avoid cached old values
+          if (calcId != null && lastUsedMethod !== "surface") {
+            body.calculation_id = calcId;
+          } else if (surfaceArea) {
+            const vol = parseFloat(surfaceArea) / 2;
             if (!Number.isNaN(vol)) body.volume_m3 = vol;
           }
 
@@ -4968,9 +4967,18 @@ function AppContent() {
                           <Label className="text-slate-900 mb-2 block">Étage</Label>
                           <Select
                             value={addressData.departure.floor}
-                            onValueChange={(value) =>
-                              updateAddressData("departure", "floor", value)
-                            }
+                            onValueChange={(value) => {
+                              updateAddressData("departure", "floor", value);
+                              
+                              // If floor is RDC, force monte-meuble to false
+                              if (value === "RDC") {
+                                updateAddressOption("departure", "monteMenuble", false);
+                              }
+                              // If floor is not RDC and elevator is Non, automatically enable monte-meuble
+                              else if (addressData.departure.elevator === "Non") {
+                                updateAddressOption("departure", "monteMenuble", true);
+                              }
+                            }}
                           >
                             <SelectTrigger className="bg-slate-50 border-slate-200">
                               <SelectValue />
@@ -5010,6 +5018,10 @@ function AppContent() {
                               if (value !== "Non") {
                                 updateAddressOption("departure", "monteMenuble", false);
                               }
+                              // If elevator is "Non" and floor is not "RDC", automatically enable monte-meuble
+                              else if (addressData.departure.floor !== "RDC") {
+                                updateAddressOption("departure", "monteMenuble", true);
+                              }
                             }}
                             disabled={addressData.departure.floor === "RDC"}
                           >
@@ -5039,6 +5051,7 @@ function AppContent() {
                                 updateAddressData("departure", "elevator", "Non");
                               }
                             }}
+                            disabled={addressData.departure.floor === "RDC"}
                             className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
                           />
                           <Label htmlFor="departure-monte-meuble" className="text-sm">
@@ -5291,9 +5304,18 @@ function AppContent() {
                           <Label className="text-slate-900 mb-2 block">Étage</Label>
                           <Select
                             value={addressData.arrival.floor}
-                            onValueChange={(value) =>
-                              updateAddressData("arrival", "floor", value)
-                            }
+                            onValueChange={(value) => {
+                              updateAddressData("arrival", "floor", value);
+                              
+                              // If floor is RDC, force monte-meuble to false
+                              if (value === "RDC") {
+                                updateAddressOption("arrival", "monteMenuble", false);
+                              }
+                              // If floor is not RDC and elevator is Non, automatically enable monte-meuble
+                              else if (addressData.arrival.elevator === "Non") {
+                                updateAddressOption("arrival", "monteMenuble", true);
+                              }
+                            }}
                           >
                             <SelectTrigger className="bg-slate-50 border-slate-200">
                               <SelectValue />
@@ -5333,6 +5355,10 @@ function AppContent() {
                               if (value !== "Non") {
                                 updateAddressOption("arrival", "monteMenuble", false);
                               }
+                              // If elevator is "Non" and floor is not "RDC", automatically enable monte-meuble
+                              else if (addressData.arrival.floor !== "RDC") {
+                                updateAddressOption("arrival", "monteMenuble", true);
+                              }
                             }}
                             disabled={addressData.arrival.floor === "RDC"}
                           >
@@ -5362,6 +5388,7 @@ function AppContent() {
                                 updateAddressData("arrival", "elevator", "Non");
                               }
                             }}
+                            disabled={addressData.arrival.floor === "RDC"}
                             className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200"
                           />
                           <Label htmlFor="arrival-monte-meuble" className="text-sm">
