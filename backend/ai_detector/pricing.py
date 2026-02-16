@@ -228,14 +228,14 @@ def get_ascenseur_extra(volume_m3: float, ascenseur_value: str, floor_value: str
 # --- Options devis: valeur des biens, démontage/remontage, emballage fragile ---
 # Valeur des biens (assurance): 0€ si ≤ 30 000€, sinon coût = valeur × 0.5
 ASSURANCE_VALEUR_BIEN_THRESHOLD_EUR = 30_000
-ASSURANCE_VALEUR_BIEN_RATE_OVER_THRESHOLD = 0.5  # 50% of value above threshold
+ASSURANCE_VALEUR_BIEN_RATE_OVER_THRESHOLD = 0.005  # 0.5% of value above threshold
 
 
 def get_assurance_valeur_bien_price(valeur_bien_eur: float) -> float:
     """
     Price in EUR for "Quelle est la valeur des biens transportés ?".
     If user selects 30 000€ or under → cost = 0€.
-    Else → cost = value × 0.5 (e.g. 40 000 × 0.5 = 20 000€).
+    Else → cost = value × 0.005 (0.5% of the value, e.g. 40 000 × 0.005 = 200€).
     """
     if valeur_bien_eur is None or valeur_bien_eur <= 0:
         return 0.0

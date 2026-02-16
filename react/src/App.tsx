@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
 import ScrollToTop from "./components/ScrollToTop";
+import PDFReport from "./components/PDFReport";
 import { FormDataManager } from "./utils/formDataManager";
 import HomePage from "./pages/HomeDesigned";
 import Contact from "./pages/Contact";
@@ -962,6 +963,8 @@ function AppContent() {
   };
 
   const handleContinueToQuote = async () => {
+    // Clear previous quote so pricing is always freshly recalculated
+    setQuoteResult(null);
     // Save address data to backend before continuing to quote
     await submitAddressData();
     navigate("/tunnel/devis");
@@ -1039,6 +1042,8 @@ function AppContent() {
   };
 
   const handleBackToAddresses = () => {
+    // Clear stale quote so pricing is recalculated when user returns to devis
+    setQuoteResult(null);
     navigate("/tunnel/adresses");
   };
 
@@ -1074,6 +1079,8 @@ function AppContent() {
       }
       // Address id: backend will load addresses + compute distance via Google
       if (lastAddressId != null) body.address_id = lastAddressId;
+      // Stopover count for pricing (150€ per stopover)
+      body.stopover_count = escales.length;
       // Portage (meters)
       if ((addressData.departure.options.portageDistanceM ?? 0) > 0) {
         body.portage_depart_m = addressData.departure.options.portageDistanceM;
@@ -1136,7 +1143,7 @@ function AppContent() {
     const portage = quoteResult?.portage_total ?? 0;
 
     const assurance = propertyValue > 0
-      ? (propertyValue <= 30000 ? 0 : Math.round(propertyValue * 0.5 * 100) / 100)
+      ? (propertyValue <= 30000 ? 0 : Math.round(propertyValue * 0.005 * 100) / 100)
       : 0;
     const demontage = options.demontageRemontage && vol > 0
       ? Math.round(vol * (dist <= 200 ? 8 : 16) * 100) / 100
@@ -1249,7 +1256,7 @@ function AppContent() {
     };
 
     calculateQuoteOnPageLoad();
-  }, [currentPage, quoteResult, lastCalculationId, lastAddressId, propertyValue, options.demontageRemontage, options.emballageFragile, surfaceArea, addressData.departure.options.portageDistanceM, addressData.arrival.options.portageDistanceM]);
+  }, [currentPage, quoteResult, lastCalculationId, lastAddressId, propertyValue, options.demontageRemontage, options.emballageFragile, options.emballageCartons, surfaceArea, escales.length, addressData.departure.options.portageDistanceM, addressData.arrival.options.portageDistanceM]);
 
   const updateAddressData = (
     section: "departure" | "arrival",
@@ -2847,6 +2854,51 @@ function AppContent() {
                     RESERVER
                   </Button>
                 </div>
+              </div>
+
+              {/* PDF Report Section */}
+              <div className="mt-12">
+                <PDFReport
+                  clientData={{
+                    nom: formData.name || '',
+                    prenom: formData.firstName || '',
+                    email: formData.email || '',
+                    telephone: formData.phone || '',
+                    date_demenagement: formData.date || ''
+                  }}
+                  methodData={{
+                    method: lastUsedMethod || selectedMethod || 'list',
+                    volume_m3: quoteResult?.volume_m3,
+                    surface_area: selectedMethod === 'surface' ? parseFloat(surfaceArea) : undefined,
+                    roomObjectQuantities: roomObjectQuantities,
+                    uploadedImages: uploadedImages,
+                    roomAnalysisResults: roomAnalysisResults
+                  }}
+                  quoteData={quoteResult || {
+                    final_price: liveOptionPricing.liveTotal,
+                    base_price_transport: quoteResult?.base_price_transport,
+                    volume_m3: quoteResult?.volume_m3,
+                    distance_km: quoteResult?.distance_km,
+                    etage_total: quoteResult?.etage_total,
+                    ascenseur_total: quoteResult?.ascenseur_total,
+                    escale_total: quoteResult?.escale_total,
+                    portage_total: quoteResult?.portage_total
+                  }}
+                  addressData={addressData}
+                  optionsData={{
+                    demontageRemontage: options.demontageRemontage,
+                    emballageFragile: options.emballageFragile,
+                    emballageCartons: options.emballageCartons,
+                    packCartons: options.packCartons,
+                    dateFlexible: options.dateFlexible,
+                    prixFlexible: options.prixFlexible,
+                    autorisationStationnement: options.autorisationStationnement,
+                    transportVetements: options.transportVetements,
+                    assurance: liveOptionPricing.assurance,
+                    cleaningQuantities: cleaningQuantities
+                  }}
+                  propertyValue={propertyValue}
+                />
               </div>
             </>
           )}
