@@ -62,7 +62,7 @@ export default function Footer() {
           <div className="flex flex-col gap-8">
             <Group685 />
             <div className="flex flex-col gap-3 text-[15px]">
-              <p>donec@goyard-demenagement.fr</p>
+              <p>donec@guivarche-demenagement.fr</p>
               <p>+33 76 65 87 98 76</p>
               <p>123 Avenue des Champs-Élysées, 75008 Paris</p>
             </div>
@@ -109,7 +109,7 @@ export default function Footer() {
           {/* Copyright and Legal Links */}
           <div className="flex items-center gap-6">
             <p className="text-[15px] opacity-65 tracking-[-0.1px]">
-              © 2025 Copyright, All Right Reserved, <span className="underline">Goyard Déménagement</span>
+              © 2025 Copyright, All Right Reserved, <span className="underline">Guivarche Déménagement</span>
             </p>
             <a href="/mentions-legales" className="text-[15px] opacity-65 tracking-[-0.1px] hover:opacity-100 transition-opacity">
               Mentions légales

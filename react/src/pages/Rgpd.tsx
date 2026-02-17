@@ -28,10 +28,10 @@ export default function Rgpd() {
             <section>
               <h2 className="text-2xl font-semibold text-[#1C3957] mb-4">Responsable du traitement</h2>
               <p className="leading-relaxed">
-                <span className="font-medium">Goyard Déménagement</span> est responsable du traitement des données personnelles collectées sur ce site web.
+                <span className="font-medium">Guivarche Déménagement</span> est responsable du traitement des données personnelles collectées sur ce site web.
                 Pour toute question concernant la protection de vos données, vous pouvez nous contacter à l'adresse{" "}
-                <a href="mailto:contact@goyard-demenagement.fr" className="text-[#CC922F] hover:underline">
-                  contact@goyard-demenagement.fr
+                <a href="mailto:contact@guivarche-demenagement.fr" className="text-[#CC922F] hover:underline">
+                  contact@guivarche-demenagement.fr
                 </a>.
               </p>
             </section>
@@ -123,8 +123,8 @@ export default function Rgpd() {
               </ul>
               <p className="leading-relaxed mt-6">
                 Pour exercer ces droits, contactez-nous à :{" "}
-                <a href="mailto:contact@goyard-demenagement.fr" className="text-[#CC922F] hover:underline font-medium">
-                  contact@goyard-demenagement.fr
+                <a href="mailto:contact@guivarche-demenagement.fr" className="text-[#CC922F] hover:underline font-medium">
+                  contact@guivarche-demenagement.fr
                 </a>
               </p>
               <p className="leading-relaxed mt-4 text-sm">

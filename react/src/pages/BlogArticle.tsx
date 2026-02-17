@@ -256,7 +256,7 @@ const articles: Record<string, any> = {
         },
       ],
       conclusion:
-        "Déménager de manière écologique n'est pas seulement bon pour la planète, c'est aussi une opportunité de repenser notre consommation et nos habitudes de vie. En adoptant ces pratiques durables, vous réduisez considérablement votre empreinte carbone tout en faisant souvent des économies. Chaque geste compte : des cartons recyclés aux véhicules électriques, en passant par le don d'objets et l'utilisation de produits naturels. Chez Goyard, nous nous engageons à vous proposer des solutions écologiques pour que votre déménagement soit non seulement réussi, mais aussi respectueux de l'environnement. Ensemble, construisons un avenir plus durable, un déménagement à la fois.",
+        "Déménager de manière écologique n'est pas seulement bon pour la planète, c'est aussi une opportunité de repenser notre consommation et nos habitudes de vie. En adoptant ces pratiques durables, vous réduisez considérablement votre empreinte carbone tout en faisant souvent des économies. Chaque geste compte : des cartons recyclés aux véhicules électriques, en passant par le don d'objets et l'utilisation de produits naturels. Chez Guivarche, nous nous engageons à vous proposer des solutions écologiques pour que votre déménagement soit non seulement réussi, mais aussi respectueux de l'environnement. Ensemble, construisons un avenir plus durable, un déménagement à la fois.",
     },
   },
   "comment-emballer-objets-fragiles": {
@@ -376,7 +376,7 @@ const articles: Record<string, any> = {
         },
       ],
       conclusion:
-        "L'emballage des objets fragiles demande du temps, de la patience et de la méthode, mais c'est un investissement qui en vaut largement la peine. En suivant ces techniques professionnelles, vous mettez toutes les chances de votre côté pour que vos biens précieux arrivent en parfait état dans votre nouveau logement. N'oubliez jamais : il vaut mieux passer une heure de plus à bien emballer que de pleurer un objet cassé et irremplaçable. Chez Goyard, nos équipes sont formées aux meilleures techniques d'emballage et peuvent prendre en charge cette étape délicate si vous préférez confier vos objets de valeur à des professionnels. Votre tranquillité d'esprit n'a pas de prix.",
+        "L'emballage des objets fragiles demande du temps, de la patience et de la méthode, mais c'est un investissement qui en vaut largement la peine. En suivant ces techniques professionnelles, vous mettez toutes les chances de votre côté pour que vos biens précieux arrivent en parfait état dans votre nouveau logement. N'oubliez jamais : il vaut mieux passer une heure de plus à bien emballer que de pleurer un objet cassé et irremplaçable. Chez Guivarche, nos équipes sont formées aux meilleures techniques d'emballage et peuvent prendre en charge cette étape délicate si vous préférez confier vos objets de valeur à des professionnels. Votre tranquillité d'esprit n'a pas de prix.",
     },
   },
   "checklist-ultime-demenagement": {
@@ -394,10 +394,10 @@ const articles: Record<string, any> = {
     },
     date: "8 Oct 2025",
     readTime: "7 min",
-    tags: ["Check-list", "Organisation", "Planning", "Déménagement", "Goyard"],
+    tags: ["Check-list", "Organisation", "Planning", "Déménagement", "Guivarche"],
     content: {
       intro:
-        "Un déménagement réussi repose sur une organisation méticuleuse. Avec tant de tâches à accomplir, il est facile d'oublier des détails importants qui peuvent devenir problématiques à la dernière minute. C'est pourquoi nous avons créé cette check-list ultime qui vous accompagne de la première planification jusqu'à votre installation complète. Chez Goyard, nous savons qu'un déménagement bien préparé est un déménagement serein. Cette liste exhaustive couvre tous les aspects : administratif, logistique, pratique et personnel. Imprimez-la, cochez au fur et à mesure, et abordez votre déménagement avec confiance.",
+        "Un déménagement réussi repose sur une organisation méticuleuse. Avec tant de tâches à accomplir, il est facile d'oublier des détails importants qui peuvent devenir problématiques à la dernière minute. C'est pourquoi nous avons créé cette check-list ultime qui vous accompagne de la première planification jusqu'à votre installation complète. Chez Guivarche, nous savons qu'un déménagement bien préparé est un déménagement serein. Cette liste exhaustive couvre tous les aspects : administratif, logistique, pratique et personnel. Imprimez-la, cochez au fur et à mesure, et abordez votre déménagement avec confiance.",
       sections: [
         {
           title: "1. Deux mois avant le déménagement (Semaines 8-9)",
@@ -409,8 +409,8 @@ const articles: Record<string, any> = {
               text: "☐ Donnez votre préavis de départ (vérifiez votre contrat de location pour le délai exact, généralement 3 mois pour une location vide, 1 mois pour meublé)\n☐ Informez votre employeur de votre changement d'adresse\n☐ Prenez rendez-vous pour l'état des lieux de sortie\n☐ Contactez votre banque et vos assurances pour les informer de votre changement d'adresse\n☐ Inscrivez-vous sur les listes électorales de votre nouvelle commune\n☐ Si vous avez des enfants, renseignez-vous sur les écoles/crèches de votre nouveau quartier et lancez les démarches d'inscription",
             },
             {
-              subtitle: "Organisation du déménagement avec Goyard",
-              text: "☐ Obtenez votre devis gratuit sur Goyard.fr en estimant votre volume de déménagement (utilisez notre outil d'estimation par surface, liste d'objets ou analyse IA par photos)\n☐ Comparez les dates disponibles et réservez votre créneau\n☐ Choisissez vos options : emballage professionnel, démontage/remontage de meubles, fourniture de cartons\n☐ Souscrivez à l'assurance déménagement adaptée à la valeur de vos biens\n☐ Si vous déménagez vous-même, commencez à collecter des cartons gratuits (supermarchés, magasins) ou commandez votre pack de cartons Goyard",
+              subtitle: "Organisation du déménagement avec Guivarche",
+              text: "☐ Obtenez votre devis gratuit sur Guivarche.fr en estimant votre volume de déménagement (utilisez notre outil d'estimation par surface, liste d'objets ou analyse IA par photos)\n☐ Comparez les dates disponibles et réservez votre créneau\n☐ Choisissez vos options : emballage professionnel, démontage/remontage de meubles, fourniture de cartons\n☐ Souscrivez à l'assurance déménagement adaptée à la valeur de vos biens\n☐ Si vous déménagez vous-même, commencez à collecter des cartons gratuits (supermarchés, magasins) ou commandez votre pack de cartons Guivarche",
             },
             {
               subtitle: "Tri et désencombrement",
@@ -433,7 +433,7 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Début de l'emballage",
-              text: "☐ Commandez vos fournitures d'emballage (cartons, papier bulle, ruban adhésif) via Goyard ou en magasin\n☐ Créez votre système d'étiquetage (code couleur par pièce, numérotation)\n☐ Commencez à emballer les objets que vous n'utilisez pas quotidiennement : livres, décorations, souvenirs, vêtements hors saison\n☐ Photographiez vos objets de valeur pour l'assurance\n☐ Rassemblez tous vos documents importants dans un dossier sécurisé (papiers d'identité, actes notariés, diplômes, documents médicaux)",
+              text: "☐ Commandez vos fournitures d'emballage (cartons, papier bulle, ruban adhésif) via Guivarche ou en magasin\n☐ Créez votre système d'étiquetage (code couleur par pièce, numérotation)\n☐ Commencez à emballer les objets que vous n'utilisez pas quotidiennement : livres, décorations, souvenirs, vêtements hors saison\n☐ Photographiez vos objets de valeur pour l'assurance\n☐ Rassemblez tous vos documents importants dans un dossier sécurisé (papiers d'identité, actes notariés, diplômes, documents médicaux)",
             },
           ],
         },
@@ -447,8 +447,8 @@ const articles: Record<string, any> = {
               text: "☐ Faites suivre votre courrier via La Poste (service de réexpédition pour 6 ou 12 mois)\n☐ Informez votre caisse d'allocations familiales (CAF)\n☐ Informez votre caisse de sécurité sociale et mutuelle\n☐ Mettez à jour votre adresse auprès des impôts\n☐ Changez l'adresse sur votre carte grise si vous déménagez dans un autre département\n☐ Informez Pôle Emploi si vous êtes demandeur d'emploi",
             },
             {
-              subtitle: "Préparatifs avec Goyard",
-              text: "☐ Confirmez votre réservation Goyard et vérifiez tous les détails (date, heure, adresses exactes)\n☐ Informez Goyard de toute particularité : étage sans ascenseur, autorisation de stationnement nécessaire, objets volumineux\n☐ Si vous avez opté pour le service d'emballage Goyard, planifiez la date d'intervention de l'équipe\n☐ Préparez un plan d'accès clair pour votre nouveau logement (codes d'accès, digicode, places de parking)\n☐ Demandez une autorisation de stationnement à votre mairie si nécessaire pour le camion de déménagement",
+              subtitle: "Préparatifs avec Guivarche",
+              text: "☐ Confirmez votre réservation Guivarche et vérifiez tous les détails (date, heure, adresses exactes)\n☐ Informez Guivarche de toute particularité : étage sans ascenseur, autorisation de stationnement nécessaire, objets volumineux\n☐ Si vous avez opté pour le service d'emballage Guivarche, planifiez la date d'intervention de l'équipe\n☐ Préparez un plan d'accès clair pour votre nouveau logement (codes d'accès, digicode, places de parking)\n☐ Demandez une autorisation de stationnement à votre mairie si nécessaire pour le camion de déménagement",
             },
             {
               subtitle: "Emballage intensif",
@@ -471,18 +471,18 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Jour J - 1",
-              text: "☐ Vérifiez que tout est emballé et que tous les cartons sont fermés et étiquetés\n☐ Préparez des rafraîchissements et snacks pour l'équipe Goyard\n☐ Chargez vos téléphones et appareils électroniques\n☐ Préparez le plan du nouveau logement avec l'emplacement souhaité de chaque meuble\n☐ Vérifiez la météo et prévoyez des bâches si nécessaire\n☐ Dormez bien pour être en forme le lendemain !",
+              text: "☐ Vérifiez que tout est emballé et que tous les cartons sont fermés et étiquetés\n☐ Préparez des rafraîchissements et snacks pour l'équipe Guivarche\n☐ Chargez vos téléphones et appareils électroniques\n☐ Préparez le plan du nouveau logement avec l'emplacement souhaité de chaque meuble\n☐ Vérifiez la météo et prévoyez des bâches si nécessaire\n☐ Dormez bien pour être en forme le lendemain !",
             },
           ],
         },
         {
-          title: "5. Le Jour J - Avec Goyard",
+          title: "5. Le Jour J - Avec Guivarche",
           content:
             "Le grand jour est arrivé ! Suivez cette check-list pour que tout se déroule parfaitement.",
           subsections: [
             {
               subtitle: "Matin - Ancien logement",
-              text: "☐ Levez-vous tôt et prenez un bon petit-déjeuner\n☐ Faites un dernier tour pour vérifier que rien n'est oublié\n☐ Accueillez l'équipe Goyard et faites-lui visiter le logement\n☐ Montrez les cartons 'FRAGILE' et objets nécessitant une attention particulière\n☐ Restez disponible pour répondre aux questions pendant le chargement\n☐ Vérifiez que les protections sont mises en place pour les murs et sols\n☐ Prenez des photos du logement vide pour l'état des lieux",
+              text: "☐ Levez-vous tôt et prenez un bon petit-déjeuner\n☐ Faites un dernier tour pour vérifier que rien n'est oublié\n☐ Accueillez l'équipe Guivarche et faites-lui visiter le logement\n☐ Montrez les cartons 'FRAGILE' et objets nécessitant une attention particulière\n☐ Restez disponible pour répondre aux questions pendant le chargement\n☐ Vérifiez que les protections sont mises en place pour les murs et sols\n☐ Prenez des photos du logement vide pour l'état des lieux",
             },
             {
               subtitle: "État des lieux de sortie",
@@ -490,7 +490,7 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Arrivée dans le nouveau logement",
-              text: "☐ Accueillez l'équipe Goyard au nouveau logement\n☐ Guidez le placement des meubles pièce par pièce selon votre plan\n☐ Vérifiez l'état de vos biens pendant le déchargement\n☐ Faites l'état des lieux d'entrée avec votre nouveau propriétaire\n☐ Vérifiez le fonctionnement de tous les équipements (chauffage, eau chaude, électricité)\n☐ Remerciez l'équipe Goyard et validez la prestation\n☐ Installez immédiatement les lits pour pouvoir dormir le soir même",
+              text: "☐ Accueillez l'équipe Guivarche au nouveau logement\n☐ Guidez le placement des meubles pièce par pièce selon votre plan\n☐ Vérifiez l'état de vos biens pendant le déchargement\n☐ Faites l'état des lieux d'entrée avec votre nouveau propriétaire\n☐ Vérifiez le fonctionnement de tous les équipements (chauffage, eau chaude, électricité)\n☐ Remerciez l'équipe Guivarche et validez la prestation\n☐ Installez immédiatement les lits pour pouvoir dormir le soir même",
             },
           ],
         },
@@ -505,17 +505,17 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Semaine 2 - Déballer et organiser",
-              text: "☐ Déballez pièce par pièce, en commençant par les pièces de vie\n☐ Installez vos décorations pour personnaliser votre espace\n☐ Montez et installez tous les meubles\n☐ Recyclez ou donnez les cartons et matériaux d'emballage (Goyard peut les récupérer)\n☐ Identifiez et effectuez les petits travaux nécessaires (accrochage de tableaux, étagères)\n☐ Testez tous vos appareils électroniques et électroménagers",
+              text: "☐ Déballez pièce par pièce, en commençant par les pièces de vie\n☐ Installez vos décorations pour personnaliser votre espace\n☐ Montez et installez tous les meubles\n☐ Recyclez ou donnez les cartons et matériaux d'emballage (Guivarche peut les récupérer)\n☐ Identifiez et effectuez les petits travaux nécessaires (accrochage de tableaux, étagères)\n☐ Testez tous vos appareils électroniques et électroménagers",
             },
             {
               subtitle: "Semaine 3-4 - Finalisation",
-              text: "☐ Vérifiez que tous vos changements d'adresse sont effectifs\n☐ Inscrivez-vous à un nouveau médecin traitant si nécessaire\n☐ Inscrivez-vous dans une nouvelle salle de sport, bibliothèque, etc.\n☐ Explorez votre nouveau quartier et trouvez vos nouveaux lieux favoris\n☐ Organisez une pendaison de crémaillère pour célébrer votre installation\n☐ Faites un retour d'expérience à Goyard pour nous aider à améliorer nos services\n☐ Récupérez votre caution de l'ancien logement (délai légal : 1 à 2 mois)",
+              text: "☐ Vérifiez que tous vos changements d'adresse sont effectifs\n☐ Inscrivez-vous à un nouveau médecin traitant si nécessaire\n☐ Inscrivez-vous dans une nouvelle salle de sport, bibliothèque, etc.\n☐ Explorez votre nouveau quartier et trouvez vos nouveaux lieux favoris\n☐ Organisez une pendaison de crémaillère pour célébrer votre installation\n☐ Faites un retour d'expérience à Guivarche pour nous aider à améliorer nos services\n☐ Récupérez votre caution de l'ancien logement (délai légal : 1 à 2 mois)",
             },
           ],
         },
       ],
       conclusion:
-        "Cette check-list complète est votre meilleur allié pour un déménagement sans stress et sans oubli. Chez Goyard, nous avons aidé des milliers de familles à déménager sereinement grâce à notre plateforme intuitive et nos services professionnels. N'oubliez pas que vous pouvez obtenir votre devis gratuit en quelques clics sur Goyard.fr, avec la possibilité d'estimer votre volume par surface, liste d'objets ou même par analyse IA de photos de vos pièces. Nos équipes professionnelles se chargent de tout : du chargement au déchargement, avec toutes les options dont vous avez besoin (emballage, démontage, fourniture de matériel). Imprimez cette check-list, cochez chaque étape, et profitez d'un déménagement organisé du début à la fin. Bon déménagement avec Goyard !",
+        "Cette check-list complète est votre meilleur allié pour un déménagement sans stress et sans oubli. Chez Guivarche, nous avons aidé des milliers de familles à déménager sereinement grâce à notre plateforme intuitive et nos services professionnels. N'oubliez pas que vous pouvez obtenir votre devis gratuit en quelques clics sur Guivarche.fr, avec la possibilité d'estimer votre volume par surface, liste d'objets ou même par analyse IA de photos de vos pièces. Nos équipes professionnelles se chargent de tout : du chargement au déchargement, avec toutes les options dont vous avez besoin (emballage, démontage, fourniture de matériel). Imprimez cette check-list, cochez chaque étape, et profitez d'un déménagement organisé du début à la fin. Bon déménagement avec Guivarche !",
     },
   },
   "demenager-avec-enfants-guide-pratique": {
@@ -533,10 +533,10 @@ const articles: Record<string, any> = {
     },
     date: "5 Oct 2025",
     readTime: "5 min",
-    tags: ["Famille", "Enfants", "Déménagement", "Conseils", "Goyard"],
+    tags: ["Famille", "Enfants", "Déménagement", "Conseils", "Guivarche"],
     content: {
       intro:
-        "Déménager avec des enfants représente un défi particulier. Entre l'excitation de la nouvelle maison et l'anxiété de quitter leurs repères, les émotions des enfants peuvent être complexes. Un déménagement mal préparé peut être source de stress pour toute la famille. Chez Goyard, nous accompagnons régulièrement des familles et savons que la clé réside dans la communication, l'implication des enfants et une bonne organisation. Ce guide vous donnera toutes les clés pour transformer cette transition en une aventure familiale positive, quel que soit l'âge de vos enfants.",
+        "Déménager avec des enfants représente un défi particulier. Entre l'excitation de la nouvelle maison et l'anxiété de quitter leurs repères, les émotions des enfants peuvent être complexes. Un déménagement mal préparé peut être source de stress pour toute la famille. Chez Guivarche, nous accompagnons régulièrement des familles et savons que la clé réside dans la communication, l'implication des enfants et une bonne organisation. Ce guide vous donnera toutes les clés pour transformer cette transition en une aventure familiale positive, quel que soit l'âge de vos enfants.",
       sections: [
         {
           title: "1. Préparer psychologiquement vos enfants au changement",
@@ -553,7 +553,7 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Visiter le nouveau logement et le quartier",
-              text: "Si possible, emmenez vos enfants visiter la nouvelle maison avant le déménagement. Laissez-les explorer les pièces, choisir leur future chambre s'il y a plusieurs options. Faites le tour du quartier ensemble : montrez-leur l'école, le parc, la bibliothèque, la boulangerie. Transformez cette visite en aventure excitante ! Prenez des photos qu'ils pourront regarder ensuite. Pour un déménagement longue distance, utilisez Google Street View pour explorer virtuellement le quartier. Chez Goyard, lors de votre réservation, n'hésitez pas à partager ces besoins familiaux : nos équipes comprennent l'importance de ces moments.",
+              text: "Si possible, emmenez vos enfants visiter la nouvelle maison avant le déménagement. Laissez-les explorer les pièces, choisir leur future chambre s'il y a plusieurs options. Faites le tour du quartier ensemble : montrez-leur l'école, le parc, la bibliothèque, la boulangerie. Transformez cette visite en aventure excitante ! Prenez des photos qu'ils pourront regarder ensuite. Pour un déménagement longue distance, utilisez Google Street View pour explorer virtuellement le quartier. Chez Guivarche, lors de votre réservation, n'hésitez pas à partager ces besoins familiaux : nos équipes comprennent l'importance de ces moments.",
             },
           ],
         },
@@ -564,15 +564,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Tout-petits (0-3 ans)",
-              text: "Pour les bébés et tout-petits, maintenez autant que possible leur routine habituelle pendant les préparatifs. Laissez-les jouer avec des petits cartons vides (sous surveillance). Emballez leur chambre en dernier et déballez-la en premier dans la nouvelle maison. Gardez leur doudou, tétine et objets de réconfort toujours accessibles, jamais dans un carton fermé. Le jour du déménagement avec Goyard, si possible, faites-les garder par une personne de confiance dans un environnement familier pour éviter le stress du jour J.",
+              text: "Pour les bébés et tout-petits, maintenez autant que possible leur routine habituelle pendant les préparatifs. Laissez-les jouer avec des petits cartons vides (sous surveillance). Emballez leur chambre en dernier et déballez-la en premier dans la nouvelle maison. Gardez leur doudou, tétine et objets de réconfort toujours accessibles, jamais dans un carton fermé. Le jour du déménagement avec Guivarche, si possible, faites-les garder par une personne de confiance dans un environnement familier pour éviter le stress du jour J.",
             },
             {
               subtitle: "Enfants d'âge préscolaire (3-6 ans)",
-              text: "À cet âge, transformez le déménagement en jeu ! Donnez-leur leur propre petit carton à décorer et à remplir avec leurs jouets préférés. Créez un 'Carton Trésor' qu'ils gèrent eux-mêmes. Utilisez des autocollants colorés pour marquer leurs cartons. Lisez-leur des histoires sur le déménagement. Faites-les participer à des tâches simples : trier les jouets (à garder/à donner), emballer les peluches dans du papier bulle (c'est amusant !), nettoyer avec un petit pulvérisateur et un chiffon. Chez Goyard, nos équipes ont l'habitude des familles et sauront être patientes et souriantes avec vos petits.",
+              text: "À cet âge, transformez le déménagement en jeu ! Donnez-leur leur propre petit carton à décorer et à remplir avec leurs jouets préférés. Créez un 'Carton Trésor' qu'ils gèrent eux-mêmes. Utilisez des autocollants colorés pour marquer leurs cartons. Lisez-leur des histoires sur le déménagement. Faites-les participer à des tâches simples : trier les jouets (à garder/à donner), emballer les peluches dans du papier bulle (c'est amusant !), nettoyer avec un petit pulvérisateur et un chiffon. Chez Guivarche, nos équipes ont l'habitude des familles et sauront être patientes et souriantes avec vos petits.",
             },
             {
               subtitle: "Enfants d'âge scolaire (6-12 ans)",
-              text: "Les enfants de cet âge peuvent prendre de vraies responsabilités. Confiez-leur l'emballage complet de leur chambre (avec supervision). Donnez-leur un rôle de 'chef de projet' pour une pièce ou une catégorie d'objets. Laissez-les créer leur propre système d'étiquetage et inventaire de leurs cartons. Impliquez-les dans les décisions : couleur de leur future chambre, agencement des meubles. Utilisez l'outil d'estimation de volume Goyard ensemble : montrez-leur comment la technologie aide à planifier le déménagement. Responsabilisez-les sur le tri : 'Quels jouets veux-tu garder pour ta nouvelle chambre ?'",
+              text: "Les enfants de cet âge peuvent prendre de vraies responsabilités. Confiez-leur l'emballage complet de leur chambre (avec supervision). Donnez-leur un rôle de 'chef de projet' pour une pièce ou une catégorie d'objets. Laissez-les créer leur propre système d'étiquetage et inventaire de leurs cartons. Impliquez-les dans les décisions : couleur de leur future chambre, agencement des meubles. Utilisez l'outil d'estimation de volume Guivarche ensemble : montrez-leur comment la technologie aide à planifier le déménagement. Responsabilisez-les sur le tri : 'Quels jouets veux-tu garder pour ta nouvelle chambre ?'",
             },
             {
               subtitle: "Adolescents (12+ ans)",
@@ -595,7 +595,7 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Rituels d'accueil dans la nouvelle maison",
-              text: "Créez aussi des rituels positifs pour célébrer le nouveau départ. La première nuit, organisez un pique-nique ou une pizza party dans la nouvelle maison. Plantez un arbre ou une plante ensemble dans le jardin pour marquer le nouveau départ. Organisez une 'chasse au trésor' dans le nouveau quartier : trouvez la boulangerie, le parc, l'école. Laissez chaque enfant laisser son empreinte de main sur un mur avant de le peindre. Une fois installés avec Goyard, organisez une pendaison de crémaillère où vos enfants peuvent inviter leurs nouveaux camarades.",
+              text: "Créez aussi des rituels positifs pour célébrer le nouveau départ. La première nuit, organisez un pique-nique ou une pizza party dans la nouvelle maison. Plantez un arbre ou une plante ensemble dans le jardin pour marquer le nouveau départ. Organisez une 'chasse au trésor' dans le nouveau quartier : trouvez la boulangerie, le parc, l'école. Laissez chaque enfant laisser son empreinte de main sur un mur avant de le peindre. Une fois installés avec Guivarche, organisez une pendaison de crémaillère où vos enfants peuvent inviter leurs nouveaux camarades.",
             },
           ],
         },
@@ -606,15 +606,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Option 1 : Faire garder les enfants",
-              text: "Si possible, c'est souvent la meilleure solution, surtout pour les jeunes enfants. Confiez-les à des grands-parents, amis proches ou une nounou de confiance pour la journée. Choisissez un endroit familier où ils seront occupés et heureux. Cela permet à Goyard de travailler efficacement sans interruption, et à vous de vous concentrer sur la supervision du déménagement. Préparez un sac avec leurs affaires pour la journée, snacks préférés, jouets, et leur doudou. Rassurez-les que vous viendrez les chercher dans la nouvelle maison.",
+              text: "Si possible, c'est souvent la meilleure solution, surtout pour les jeunes enfants. Confiez-les à des grands-parents, amis proches ou une nounou de confiance pour la journée. Choisissez un endroit familier où ils seront occupés et heureux. Cela permet à Guivarche de travailler efficacement sans interruption, et à vous de vous concentrer sur la supervision du déménagement. Préparez un sac avec leurs affaires pour la journée, snacks préférés, jouets, et leur doudou. Rassurez-les que vous viendrez les chercher dans la nouvelle maison.",
             },
             {
               subtitle: "Option 2 : Les impliquer positivement",
-              text: "Si vos enfants restent avec vous, donnez-leur des rôles clairs et adaptés. Désignez un 'assistant' qui aide à cocher les cartons sur l'inventaire. Un plus jeune peut être le 'gardien des snacks' qui distribue les boissons à l'équipe Goyard. Créez une zone sécurisée avec des jouets, livres et activités où ils peuvent se retirer quand ils sont fatigués. Prévoyez des pauses déjeuner et goûter régulières. Emportez tablette chargée avec leurs dessins animés préférés pour les moments calmes. Expliquez-leur le travail de l'équipe Goyard pour qu'ils comprennent ce qui se passe.",
+              text: "Si vos enfants restent avec vous, donnez-leur des rôles clairs et adaptés. Désignez un 'assistant' qui aide à cocher les cartons sur l'inventaire. Un plus jeune peut être le 'gardien des snacks' qui distribue les boissons à l'équipe Guivarche. Créez une zone sécurisée avec des jouets, livres et activités où ils peuvent se retirer quand ils sont fatigués. Prévoyez des pauses déjeuner et goûter régulières. Emportez tablette chargée avec leurs dessins animés préférés pour les moments calmes. Expliquez-leur le travail de l'équipe Guivarche pour qu'ils comprennent ce qui se passe.",
             },
             {
               subtitle: "Kit de survie pour le jour J",
-              text: "Préparez un sac spécial 'jour de déménagement' pour chaque enfant : leurs vêtements pour 2 jours, doudou/peluche préférée, un livre, quelques jouets favoris, snacks et boisson, lingettes et produits de toilette, un petit jeu ou carnet de coloriage, chargeur de tablette/téléphone pour les plus grands. Ce sac reste avec eux toute la journée, jamais dans le camion Goyard. Il contient leurs trésors et le nécessaire pour se sentir en sécurité. Ajoutez une petite surprise (nouveau jouet, livre) à découvrir dans la nouvelle maison.",
+              text: "Préparez un sac spécial 'jour de déménagement' pour chaque enfant : leurs vêtements pour 2 jours, doudou/peluche préférée, un livre, quelques jouets favoris, snacks et boisson, lingettes et produits de toilette, un petit jeu ou carnet de coloriage, chargeur de tablette/téléphone pour les plus grands. Ce sac reste avec eux toute la journée, jamais dans le camion Guivarche. Il contient leurs trésors et le nécessaire pour se sentir en sécurité. Ajoutez une petite surprise (nouveau jouet, livre) à découvrir dans la nouvelle maison.",
             },
           ],
         },
@@ -625,7 +625,7 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Priorité à leur espace personnel",
-              text: "Installez les chambres des enfants en priorité absolue, même avant votre propre chambre. Un espace personnel familier les aide à se sentir en sécurité. Laissez-les disposer leurs meubles et objets comme ils le souhaitent (dans la limite du raisonnable). Accrochez leurs posters, installez leurs peluches, disposez leurs livres. Recréez autant que possible l'ambiance de leur ancienne chambre si c'est rassurant, ou profitez-en pour un nouveau départ s'ils le souhaitent. Chez Goyard, nos équipes peuvent placer les meubles exactement où vous le souhaitez pour faciliter cette installation.",
+              text: "Installez les chambres des enfants en priorité absolue, même avant votre propre chambre. Un espace personnel familier les aide à se sentir en sécurité. Laissez-les disposer leurs meubles et objets comme ils le souhaitent (dans la limite du raisonnable). Accrochez leurs posters, installez leurs peluches, disposez leurs livres. Recréez autant que possible l'ambiance de leur ancienne chambre si c'est rassurant, ou profitez-en pour un nouveau départ s'ils le souhaitent. Chez Guivarche, nos équipes peuvent placer les meubles exactement où vous le souhaitez pour faciliter cette installation.",
             },
             {
               subtitle: "Explorer le nouveau quartier ensemble",
@@ -639,7 +639,7 @@ const articles: Record<string, any> = {
         },
       ],
       conclusion:
-        "Déménager avec des enfants demande une attention particulière, mais c'est aussi une opportunité formidable de renforcer les liens familiaux et d'enseigner la résilience face au changement. En impliquant vos enfants, en validant leurs émotions et en maintenant des routines rassurantes, vous transformez ce qui pourrait être une épreuve en une aventure familiale enrichissante. Chez Goyard, nous comprenons les besoins spécifiques des familles avec enfants. Notre service de déménagement s'adapte à votre rythme familial, et nos équipes professionnelles sont formées pour travailler efficacement tout en respectant votre environnement familial. Obtenez votre devis gratuit sur Goyard.fr et bénéficiez d'un déménagement pensé pour toute la famille. Avec Goyard, votre famille déménage en toute sérénité !",
+        "Déménager avec des enfants demande une attention particulière, mais c'est aussi une opportunité formidable de renforcer les liens familiaux et d'enseigner la résilience face au changement. En impliquant vos enfants, en validant leurs émotions et en maintenant des routines rassurantes, vous transformez ce qui pourrait être une épreuve en une aventure familiale enrichissante. Chez Guivarche, nous comprenons les besoins spécifiques des familles avec enfants. Notre service de déménagement s'adapte à votre rythme familial, et nos équipes professionnelles sont formées pour travailler efficacement tout en respectant votre environnement familial. Obtenez votre devis gratuit sur Guivarche.fr et bénéficiez d'un déménagement pensé pour toute la famille. Avec Guivarche, votre famille déménage en toute sérénité !",
     },
   },
   "erreurs-eviter-demenagement": {
@@ -657,10 +657,10 @@ const articles: Record<string, any> = {
     },
     date: "3 Oct 2025",
     readTime: "6 min",
-    tags: ["Conseils", "Erreurs", "Astuces", "Organisation", "Goyard"],
+    tags: ["Conseils", "Erreurs", "Astuces", "Organisation", "Guivarche"],
     content: {
       intro:
-        "Chaque année, des milliers de personnes vivent des déménagements catastrophiques qui auraient pu être évités avec une meilleure préparation. Des cartons qui s'effondrent, des objets cassés, des coûts explosifs, des oublis administratifs… Les erreurs de déménagement peuvent coûter cher, tant financièrement qu'émotionnellement. Chez Goyard, nous avons accompagné des milliers de déménagements et observé les mêmes erreurs se répéter. La bonne nouvelle ? Elles sont toutes évitables ! Dans cet article, nous partageons les erreurs les plus fréquentes et surtout, comment les éviter pour un déménagement réussi.",
+        "Chaque année, des milliers de personnes vivent des déménagements catastrophiques qui auraient pu être évités avec une meilleure préparation. Des cartons qui s'effondrent, des objets cassés, des coûts explosifs, des oublis administratifs… Les erreurs de déménagement peuvent coûter cher, tant financièrement qu'émotionnellement. Chez Guivarche, nous avons accompagné des milliers de déménagements et observé les mêmes erreurs se répéter. La bonne nouvelle ? Elles sont toutes évitables ! Dans cet article, nous partageons les erreurs les plus fréquentes et surtout, comment les éviter pour un déménagement réussi.",
       sections: [
         {
           title: "1. Erreurs de planification et d'organisation",
@@ -669,15 +669,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Erreur #1 : Commencer les préparatifs trop tard",
-              text: "L'erreur la plus commune ! Beaucoup de gens sous-estiment le temps nécessaire pour préparer un déménagement et commencent seulement une ou deux semaines avant. Résultat : stress maximal, emballage bâclé, oublis en cascade. SOLUTION : Commencez vos préparatifs au minimum 8 semaines avant le jour J. Utilisez Goyard.fr dès que votre déménagement se précise pour obtenir votre devis et réserver votre créneau. Les meilleures dates partent vite, surtout en haute saison (juin-septembre). Un planning bien établi vous évitera 80% des problèmes.",
+              text: "L'erreur la plus commune ! Beaucoup de gens sous-estiment le temps nécessaire pour préparer un déménagement et commencent seulement une ou deux semaines avant. Résultat : stress maximal, emballage bâclé, oublis en cascade. SOLUTION : Commencez vos préparatifs au minimum 8 semaines avant le jour J. Utilisez Guivarche.fr dès que votre déménagement se précise pour obtenir votre devis et réserver votre créneau. Les meilleures dates partent vite, surtout en haute saison (juin-septembre). Un planning bien établi vous évitera 80% des problèmes.",
             },
             {
               subtitle: "Erreur #2 : Ne pas faire de liste ou d'inventaire",
-              text: "Emballer au feeling sans système d'inventaire est la garantie d'oublier des choses et de ne rien retrouver après. Vous vous retrouvez à chercher vos casseroles pendant des semaines ! SOLUTION : Créez un inventaire détaillé de tous vos biens. Numérotez chaque carton et notez son contenu dans un fichier Excel ou un carnet. L'outil de volume Goyard vous aide déjà à lister vos objets pièce par pièce, profitez-en pour créer votre inventaire en même temps. Étiquetez clairement : pièce de destination, contenu général, et niveau de priorité pour le déballage.",
+              text: "Emballer au feeling sans système d'inventaire est la garantie d'oublier des choses et de ne rien retrouver après. Vous vous retrouvez à chercher vos casseroles pendant des semaines ! SOLUTION : Créez un inventaire détaillé de tous vos biens. Numérotez chaque carton et notez son contenu dans un fichier Excel ou un carnet. L'outil de volume Guivarche vous aide déjà à lister vos objets pièce par pièce, profitez-en pour créer votre inventaire en même temps. Étiquetez clairement : pièce de destination, contenu général, et niveau de priorité pour le déballage.",
             },
             {
               subtitle: "Erreur #3 : Sous-estimer le volume à déménager",
-              text: "Beaucoup de gens pensent 'Je n'ai pas tant de choses que ça' et se retrouvent avec un camion trop petit ou un devis sous-évalué. SOLUTION : Utilisez l'outil d'estimation de volume de Goyard qui propose trois méthodes fiables : estimation par surface habitable, calcul par liste d'objets détaillée, ou notre technologie d'analyse IA à partir de photos de vos pièces. Cette estimation précise garantit que vous réservez le bon camion, avec le bon nombre de déménageurs, au juste prix. Mieux vaut prévoir 10% de plus que de se retrouver coincé.",
+              text: "Beaucoup de gens pensent 'Je n'ai pas tant de choses que ça' et se retrouvent avec un camion trop petit ou un devis sous-évalué. SOLUTION : Utilisez l'outil d'estimation de volume de Guivarche qui propose trois méthodes fiables : estimation par surface habitable, calcul par liste d'objets détaillée, ou notre technologie d'analyse IA à partir de photos de vos pièces. Cette estimation précise garantit que vous réservez le bon camion, avec le bon nombre de déménageurs, au juste prix. Mieux vaut prévoir 10% de plus que de se retrouver coincé.",
             },
           ],
         },
@@ -688,15 +688,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Erreur #4 : Utiliser des cartons de récupération en mauvais état",
-              text: "Récupérer des vieux cartons usagés qui ont déjà servi plusieurs fois semble économique, mais c'est un faux calcul. Ces cartons s'effondrent sous le poids, causant casse et accidents. SOLUTION : Investissez dans des cartons neufs et robustes, ou louez des caisses réutilisables. Goyard propose des kits de cartons de qualité professionnelle adaptés à chaque type d'objet : cartons renforcés pour livres, cartons avec séparateurs pour vaisselle, penderies pour vêtements. Un carton coûte quelques euros, remplacer un objet cassé en coûte des centaines.",
+              text: "Récupérer des vieux cartons usagés qui ont déjà servi plusieurs fois semble économique, mais c'est un faux calcul. Ces cartons s'effondrent sous le poids, causant casse et accidents. SOLUTION : Investissez dans des cartons neufs et robustes, ou louez des caisses réutilisables. Guivarche propose des kits de cartons de qualité professionnelle adaptés à chaque type d'objet : cartons renforcés pour livres, cartons avec séparateurs pour vaisselle, penderies pour vêtements. Un carton coûte quelques euros, remplacer un objet cassé en coûte des centaines.",
             },
             {
               subtitle: "Erreur #5 : Surcharger les cartons",
-              text: "Mettre tous vos livres dans un énorme carton jusqu'à ce qu'il pèse 40 kg est une erreur classique. Résultat : le fond du carton cède, impossible à porter sans se blesser. SOLUTION : Respectez la règle des 15-20 kg maximum par carton. Mélangez objets lourds et légers : des livres avec des coussins, de la vaisselle avec du linge de maison. Utilisez des petits cartons pour les objets lourds (livres, conserves, vaisselle) et des grands pour les objets légers (oreillers, vêtements, jouets). Les équipes Goyard apprécient les cartons bien pensés, ça accélère le chargement !",
+              text: "Mettre tous vos livres dans un énorme carton jusqu'à ce qu'il pèse 40 kg est une erreur classique. Résultat : le fond du carton cède, impossible à porter sans se blesser. SOLUTION : Respectez la règle des 15-20 kg maximum par carton. Mélangez objets lourds et légers : des livres avec des coussins, de la vaisselle avec du linge de maison. Utilisez des petits cartons pour les objets lourds (livres, conserves, vaisselle) et des grands pour les objets légers (oreillers, vêtements, jouets). Les équipes Guivarche apprécient les cartons bien pensés, ça accélère le chargement !",
             },
             {
               subtitle: "Erreur #6 : Négliger la protection des objets fragiles",
-              text: "Mettre la vaisselle dans un carton avec juste un peu de papier journal, ou pire, rien du tout, garantit la casse. SOLUTION : Investissez dans du matériel de protection de qualité : papier bulle pour les objets fragiles, papier kraft pour la vaisselle, couvertures pour les meubles. Enveloppez CHAQUE assiette, CHAQUE verre individuellement. Callez tous les espaces vides. Marquez clairement 'FRAGILE' et 'HAUT'. Si vous optez pour le service d'emballage professionnel Goyard, nos équipes utilisent les techniques optimales pour garantir zéro casse.",
+              text: "Mettre la vaisselle dans un carton avec juste un peu de papier journal, ou pire, rien du tout, garantit la casse. SOLUTION : Investissez dans du matériel de protection de qualité : papier bulle pour les objets fragiles, papier kraft pour la vaisselle, couvertures pour les meubles. Enveloppez CHAQUE assiette, CHAQUE verre individuellement. Callez tous les espaces vides. Marquez clairement 'FRAGILE' et 'HAUT'. Si vous optez pour le service d'emballage professionnel Guivarche, nos équipes utilisent les techniques optimales pour garantir zéro casse.",
             },
           ],
         },
@@ -707,15 +707,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Erreur #7 : Oublier de donner son préavis à temps",
-              text: "Ne pas respecter le délai de préavis (généralement 3 mois pour location vide, 1 mois pour meublé) vous engage à payer des loyers supplémentaires inutiles. SOLUTION : Vérifiez votre contrat de bail dès que vous envisagez de déménager. Envoyez votre préavis en recommandé avec accusé de réception et conservez la preuve. Notez la date d'effet dans votre planning Goyard pour coordonner parfaitement les dates.",
+              text: "Ne pas respecter le délai de préavis (généralement 3 mois pour location vide, 1 mois pour meublé) vous engage à payer des loyers supplémentaires inutiles. SOLUTION : Vérifiez votre contrat de bail dès que vous envisagez de déménager. Envoyez votre préavis en recommandé avec accusé de réception et conservez la preuve. Notez la date d'effet dans votre planning Guivarche pour coordonner parfaitement les dates.",
             },
             {
               subtitle: "Erreur #8 : Négliger les changements d'adresse",
-              text: "Oublier de signaler son changement d'adresse à tous les organismes importants crée des complications administratives et des courriers perdus. SOLUTION : Créez une check-list complète : banque, assurances, employeur, CAF, sécurité sociale, impôts, opérateurs télécom, abonnements. Activez la réexpédition du courrier via La Poste pour 6-12 mois. Profitez du récapitulatif que Goyard vous envoie après votre réservation pour planifier ces démarches avec des rappels.",
+              text: "Oublier de signaler son changement d'adresse à tous les organismes importants crée des complications administratives et des courriers perdus. SOLUTION : Créez une check-list complète : banque, assurances, employeur, CAF, sécurité sociale, impôts, opérateurs télécom, abonnements. Activez la réexpédition du courrier via La Poste pour 6-12 mois. Profitez du récapitulatif que Guivarche vous envoie après votre réservation pour planifier ces démarches avec des rappels.",
             },
             {
               subtitle: "Erreur #9 : Négliger l'assurance déménagement",
-              text: "Penser que 'ça n'arrive qu'aux autres' et ne pas souscrire d'assurance adaptée. Le jour où un meuble de valeur est endommagé, c'est trop tard. SOLUTION : Souscrivez à une assurance déménagement couvrant la valeur réelle de vos biens. Goyard propose différentes formules d'assurance adaptées à vos besoins. Photographiez vos objets de valeur avant le déménagement. Vérifiez ce qui est couvert par votre assurance habitation et ce qui nécessite une couverture complémentaire.",
+              text: "Penser que 'ça n'arrive qu'aux autres' et ne pas souscrire d'assurance adaptée. Le jour où un meuble de valeur est endommagé, c'est trop tard. SOLUTION : Souscrivez à une assurance déménagement couvrant la valeur réelle de vos biens. Guivarche propose différentes formules d'assurance adaptées à vos besoins. Photographiez vos objets de valeur avant le déménagement. Vérifiez ce qui est couvert par votre assurance habitation et ce qui nécessite une couverture complémentaire.",
             },
           ],
         },
@@ -726,15 +726,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Erreur #10 : Choisir uniquement selon le prix le plus bas",
-              text: "Sélectionner l'offre la moins chère sans vérifier la qualité du service est une économie de bout de chandelle. Des déménageurs peu sérieux peuvent causer plus de dommages que le prix économisé. SOLUTION : Comparez les devis sur la base du rapport qualité-prix. Vérifiez les avis clients, les assurances incluses, les services proposés. Goyard affiche des prix transparents avec détail de tous les services inclus. Pas de frais cachés, pas de mauvaise surprise. Un devis clair est gage de sérieux.",
+              text: "Sélectionner l'offre la moins chère sans vérifier la qualité du service est une économie de bout de chandelle. Des déménageurs peu sérieux peuvent causer plus de dommages que le prix économisé. SOLUTION : Comparez les devis sur la base du rapport qualité-prix. Vérifiez les avis clients, les assurances incluses, les services proposés. Guivarche affiche des prix transparents avec détail de tous les services inclus. Pas de frais cachés, pas de mauvaise surprise. Un devis clair est gage de sérieux.",
             },
             {
               subtitle: "Erreur #11 : Ne pas prévoir de budget pour les imprévus",
-              text: "Prévoir un budget au centime près sans marge de sécurité. Le jour J, vous devez acheter du matériel supplémentaire, prolonger la location, ou faire face à des frais non anticipés. SOLUTION : Ajoutez systématiquement 15-20% de marge à votre budget prévu. Cela couvre les achats de dernière minute, le nettoyage professionnel si vous manquez de temps, ou les petites réparations pour récupérer votre caution. Avec Goyard, le devis inclut tout ce qui est nécessaire, mais prévoyez quand même une marge pour vos dépenses personnelles (repas du jour J, essence, etc.).",
+              text: "Prévoir un budget au centime près sans marge de sécurité. Le jour J, vous devez acheter du matériel supplémentaire, prolonger la location, ou faire face à des frais non anticipés. SOLUTION : Ajoutez systématiquement 15-20% de marge à votre budget prévu. Cela couvre les achats de dernière minute, le nettoyage professionnel si vous manquez de temps, ou les petites réparations pour récupérer votre caution. Avec Guivarche, le devis inclut tout ce qui est nécessaire, mais prévoyez quand même une marge pour vos dépenses personnelles (repas du jour J, essence, etc.).",
             },
             {
               subtitle: "Erreur #12 : Oublier les frais annexes du déménagement",
-              text: "Ne budgéter que le transport et oublier tous les autres coûts : caution du nouveau logement, frais d'agence, ouverture de compteurs, achats pour le nouveau logement. SOLUTION : Listez TOUS les frais : caution nouveau logement, premier loyer, frais d'agence (si applicable), ouverture compteurs électricité/gaz/eau, abonnement internet, matériel d'emballage, nettoyage ancien logement, petits travaux nouveau logement, changement serrures si souhaité. Goyard vous aide sur la partie transport et logistique, mais pensez au reste !",
+              text: "Ne budgéter que le transport et oublier tous les autres coûts : caution du nouveau logement, frais d'agence, ouverture de compteurs, achats pour le nouveau logement. SOLUTION : Listez TOUS les frais : caution nouveau logement, premier loyer, frais d'agence (si applicable), ouverture compteurs électricité/gaz/eau, abonnement internet, matériel d'emballage, nettoyage ancien logement, petits travaux nouveau logement, changement serrures si souhaité. Guivarche vous aide sur la partie transport et logistique, mais pensez au reste !",
             },
           ],
         },
@@ -745,21 +745,21 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Erreur #13 : Ne pas être présent et disponible",
-              text: "Laisser les déménageurs gérer seuls sans supervision, ou être constamment occupé ailleurs et injoignable. Résultat : les meubles ne sont pas placés où vous vouliez, des objets fragiles sont mal gérés. SOLUTION : Soyez présent et disponible toute la journée. Accueillez l'équipe Goyard, faites le tour du logement avec eux, montrez ce qui nécessite une attention particulière. Restez joignable pour répondre aux questions. Préparez un plan du nouveau logement indiquant où placer chaque meuble. Votre présence active garantit un déménagement conforme à vos attentes.",
+              text: "Laisser les déménageurs gérer seuls sans supervision, ou être constamment occupé ailleurs et injoignable. Résultat : les meubles ne sont pas placés où vous vouliez, des objets fragiles sont mal gérés. SOLUTION : Soyez présent et disponible toute la journée. Accueillez l'équipe Guivarche, faites le tour du logement avec eux, montrez ce qui nécessite une attention particulière. Restez joignable pour répondre aux questions. Préparez un plan du nouveau logement indiquant où placer chaque meuble. Votre présence active garantit un déménagement conforme à vos attentes.",
             },
             {
               subtitle: "Erreur #14 : Mal gérer l'état des lieux de sortie",
-              text: "Bâcler le ménage, ne pas réparer les petits dégâts, arriver en retard à l'état des lieux. Conséquence : perte partielle ou totale de la caution. SOLUTION : Nettoyez impeccablement le logement quitté (ou faites appel à un service professionnel). Réparez les petits trous dans les murs, changez les ampoules grillées, nettoyez les placards. Prenez des photos avant de partir. Soyez à l'heure pour l'état des lieux et contestez tout point litigieux immédiatement. Conservez une copie signée. Si Goyard termine le chargement tôt, profitez-en pour un dernier nettoyage.",
+              text: "Bâcler le ménage, ne pas réparer les petits dégâts, arriver en retard à l'état des lieux. Conséquence : perte partielle ou totale de la caution. SOLUTION : Nettoyez impeccablement le logement quitté (ou faites appel à un service professionnel). Réparez les petits trous dans les murs, changez les ampoules grillées, nettoyez les placards. Prenez des photos avant de partir. Soyez à l'heure pour l'état des lieux et contestez tout point litigieux immédiatement. Conservez une copie signée. Si Guivarche termine le chargement tôt, profitez-en pour un dernier nettoyage.",
             },
             {
               subtitle: "Erreur #15 : Déballer tout en une fois dans le désordre",
-              text: "Ouvrir tous les cartons simultanément et créer un chaos total dans le nouveau logement. Impossible de s'y retrouver, découragement garanti. SOLUTION : Déballez méthodiquement pièce par pièce. Commencez par les essentiels : chambre (pour dormir), salle de bain (hygiène), cuisine (repas). Installez chaque pièce complètement avant de passer à la suivante. Utilisez vos numéros de cartons et votre inventaire pour retrouver ce dont vous avez besoin. Installez d'abord les meubles avec l'aide de Goyard, puis déballez ensuite calmement. Rome ne s'est pas faite en un jour !",
+              text: "Ouvrir tous les cartons simultanément et créer un chaos total dans le nouveau logement. Impossible de s'y retrouver, découragement garanti. SOLUTION : Déballez méthodiquement pièce par pièce. Commencez par les essentiels : chambre (pour dormir), salle de bain (hygiène), cuisine (repas). Installez chaque pièce complètement avant de passer à la suivante. Utilisez vos numéros de cartons et votre inventaire pour retrouver ce dont vous avez besoin. Installez d'abord les meubles avec l'aide de Guivarche, puis déballez ensuite calmement. Rome ne s'est pas faite en un jour !",
             },
           ],
         },
       ],
       conclusion:
-        "Les erreurs de déménagement ne sont pas une fatalité. La plupart découlent d'un manque de préparation, d'organisation, ou simplement de ne pas connaître les bonnes pratiques. En évitant ces 15 erreurs courantes, vous vous épargnez stress, pertes financières et mauvaises surprises. Chez Goyard, notre mission est de vous accompagner pour un déménagement parfait du début à la fin. Notre plateforme vous guide à chaque étape : estimation précise du volume, devis transparent, options personnalisables, équipes professionnelles formées aux meilleures pratiques. Ne laissez pas les erreurs gâcher votre déménagement. Faites confiance à l'expertise de Goyard et obtenez votre devis gratuit dès maintenant sur Goyard.fr. Parce qu'un déménagement bien préparé avec les bons partenaires, c'est un déménagement réussi !",
+        "Les erreurs de déménagement ne sont pas une fatalité. La plupart découlent d'un manque de préparation, d'organisation, ou simplement de ne pas connaître les bonnes pratiques. En évitant ces 15 erreurs courantes, vous vous épargnez stress, pertes financières et mauvaises surprises. Chez Guivarche, notre mission est de vous accompagner pour un déménagement parfait du début à la fin. Notre plateforme vous guide à chaque étape : estimation précise du volume, devis transparent, options personnalisables, équipes professionnelles formées aux meilleures pratiques. Ne laissez pas les erreurs gâcher votre déménagement. Faites confiance à l'expertise de Guivarche et obtenez votre devis gratuit dès maintenant sur Guivarche.fr. Parce qu'un déménagement bien préparé avec les bons partenaires, c'est un déménagement réussi !",
     },
   },
   "budget-demenagement-economies": {
@@ -777,10 +777,10 @@ const articles: Record<string, any> = {
     },
     date: "1 Oct 2025",
     readTime: "5 min",
-    tags: ["Budget", "Économies", "Finance", "Astuces", "Goyard"],
+    tags: ["Budget", "Économies", "Finance", "Astuces", "Guivarche"],
     content: {
       intro:
-        "Un déménagement représente un investissement important qui peut rapidement peser sur votre budget familial. Entre le transport, les cartons, les services annexes et les frais administratifs, la facture grimpe vite. Pourtant, il existe de nombreuses astuces pour réduire significativement vos coûts sans pour autant sacrifier la qualité du service. Chez Goyard, nous croyons qu'un bon déménagement ne doit pas nécessairement être ruineux. Avec une planification intelligente et quelques stratégies éprouvées, vous pouvez économiser plusieurs centaines d'euros tout en bénéficiant d'un service professionnel. Découvrez nos meilleurs conseils pour maîtriser votre budget déménagement.",
+        "Un déménagement représente un investissement important qui peut rapidement peser sur votre budget familial. Entre le transport, les cartons, les services annexes et les frais administratifs, la facture grimpe vite. Pourtant, il existe de nombreuses astuces pour réduire significativement vos coûts sans pour autant sacrifier la qualité du service. Chez Guivarche, nous croyons qu'un bon déménagement ne doit pas nécessairement être ruineux. Avec une planification intelligente et quelques stratégies éprouvées, vous pouvez économiser plusieurs centaines d'euros tout en bénéficiant d'un service professionnel. Découvrez nos meilleurs conseils pour maîtriser votre budget déménagement.",
       sections: [
         {
           title: "1. Planifier au bon moment pour économiser",
@@ -789,15 +789,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Éviter la haute saison",
-              text: "Les mois de juin à septembre sont la haute saison des déménagements, avec des tarifs pouvant être 30 à 50% plus élevés. ASTUCE GOYARD : Déménagez en basse saison (octobre à mai) pour bénéficier de tarifs plus avantageux. Sur Goyard.fr, notre calendrier intelligent vous indique les périodes à tarifs préférentiels. Si votre emploi permet de la flexibilité, choisissez un mardi, mercredi ou jeudi plutôt qu'un week-end : les tarifs y sont souvent 20% moins élevés. Début ou mi-mois est également plus économique que la fin du mois où la demande explose.",
+              text: "Les mois de juin à septembre sont la haute saison des déménagements, avec des tarifs pouvant être 30 à 50% plus élevés. ASTUCE GUIVARCHE : Déménagez en basse saison (octobre à mai) pour bénéficier de tarifs plus avantageux. Sur Guivarche.fr, notre calendrier intelligent vous indique les périodes à tarifs préférentiels. Si votre emploi permet de la flexibilité, choisissez un mardi, mercredi ou jeudi plutôt qu'un week-end : les tarifs y sont souvent 20% moins élevés. Début ou mi-mois est également plus économique que la fin du mois où la demande explose.",
             },
             {
               subtitle: "Réserver à l'avance",
-              text: "Plus vous réservez tôt, plus vous avez de choix et de meilleures conditions tarifaires. Les déménageurs proposent souvent des tarifs préférentiels pour les réservations anticipées. ASTUCE GOYARD : Réservez votre déménagement au moins 6-8 semaines à l'avance sur Goyard.fr pour sécuriser les meilleurs tarifs. Notre système de réservation en ligne vous permet de bloquer une date sans engagement immédiat. Vous bénéficiez aussi de plus de temps pour comparer les options et choisir le service optimal pour votre budget.",
+              text: "Plus vous réservez tôt, plus vous avez de choix et de meilleures conditions tarifaires. Les déménageurs proposent souvent des tarifs préférentiels pour les réservations anticipées. ASTUCE GUIVARCHE : Réservez votre déménagement au moins 6-8 semaines à l'avance sur Guivarche.fr pour sécuriser les meilleurs tarifs. Notre système de réservation en ligne vous permet de bloquer une date sans engagement immédiat. Vous bénéficiez aussi de plus de temps pour comparer les options et choisir le service optimal pour votre budget.",
             },
             {
               subtitle: "Grouper avec d'autres déménagements",
-              text: "Certaines entreprises proposent des déménagements groupés où plusieurs clients partagent un camion sur un même trajet. ASTUCE GOYARD : Pour les déménagements longue distance, renseignez-vous sur nos options de transport groupé. En partageant le camion avec un autre déménagement sur le même itinéraire, vous pouvez économiser jusqu'à 40% sur les frais de transport. Contactez notre service client pour vérifier les possibilités selon votre destination.",
+              text: "Certaines entreprises proposent des déménagements groupés où plusieurs clients partagent un camion sur un même trajet. ASTUCE GUIVARCHE : Pour les déménagements longue distance, renseignez-vous sur nos options de transport groupé. En partageant le camion avec un autre déménagement sur le même itinéraire, vous pouvez économiser jusqu'à 40% sur les frais de transport. Contactez notre service client pour vérifier les possibilités selon votre destination.",
             },
           ],
         },
@@ -808,15 +808,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Désencombrer radicalement",
-              text: "Chaque objet transporté a un coût. Faites le tri impitoyablement : vendez, donnez ou jetez tout ce dont vous n'avez plus besoin. ASTUCE GOYARD : Utilisez l'outil d'estimation de volume Goyard avant et après votre tri. La différence vous montrera concrètement les économies réalisées. Un déménagement de 40m³ réduit à 30m³ peut vous faire économiser 300-500€ ! Vendez vos objets sur Leboncoin, Vinted, ou organisez un vide-grenier : l'argent récupéré finance une partie de votre déménagement.",
+              text: "Chaque objet transporté a un coût. Faites le tri impitoyablement : vendez, donnez ou jetez tout ce dont vous n'avez plus besoin. ASTUCE GUIVARCHE : Utilisez l'outil d'estimation de volume Guivarche avant et après votre tri. La différence vous montrera concrètement les économies réalisées. Un déménagement de 40m³ réduit à 30m³ peut vous faire économiser 300-500€ ! Vendez vos objets sur Leboncoin, Vinted, ou organisez un vide-grenier : l'argent récupéré finance une partie de votre déménagement.",
             },
             {
               subtitle: "Estimation précise du volume",
-              text: "Sous-estimer votre volume peut sembler économique, mais les surcoûts le jour J seront bien plus élevés. Surestimer vous fait payer pour de l'espace vide. ASTUCE GOYARD : Utilisez notre triple méthode d'estimation (surface, liste détaillée, ou analyse IA par photos) pour obtenir le volume le plus précis possible. Une estimation juste vous permet de réserver exactement le bon camion et le bon nombre de déménageurs, sans payer pour du superflu ni manquer d'espace. Notre IA d'analyse de photos est particulièrement précise et gratuite !",
+              text: "Sous-estimer votre volume peut sembler économique, mais les surcoûts le jour J seront bien plus élevés. Surestimer vous fait payer pour de l'espace vide. ASTUCE GUIVARCHE : Utilisez notre triple méthode d'estimation (surface, liste détaillée, ou analyse IA par photos) pour obtenir le volume le plus précis possible. Une estimation juste vous permet de réserver exactement le bon camion et le bon nombre de déménageurs, sans payer pour du superflu ni manquer d'espace. Notre IA d'analyse de photos est particulièrement précise et gratuite !",
             },
             {
               subtitle: "Remplacer plutôt que déménager certains items",
-              text: "Parfois, il est plus économique de ne pas déménager certains objets encombrants peu coûteux et de les racheter à destination. ASTUCE : Calculez le coût du transport d'un vieux canapé volumineux versus l'achat d'un neuf d'occasion sur place. Pour les meubles de faible valeur mais grand volume, la vente/rachat local peut être plus rentable. Avec Goyard, chaque mètre cube transporté a un coût : optimisez en ne gardant que l'essentiel et ce qui a de la valeur.",
+              text: "Parfois, il est plus économique de ne pas déménager certains objets encombrants peu coûteux et de les racheter à destination. ASTUCE : Calculez le coût du transport d'un vieux canapé volumineux versus l'achat d'un neuf d'occasion sur place. Pour les meubles de faible valeur mais grand volume, la vente/rachat local peut être plus rentable. Avec Guivarche, chaque mètre cube transporté a un coût : optimisez en ne gardant que l'essentiel et ce qui a de la valeur.",
             },
           ],
         },
@@ -827,15 +827,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Récupérer des cartons gratuits",
-              text: "De nombreux commerces donnent gratuitement leurs cartons : supermarchés, magasins de bricolage, pharmacies, librairies. Demandez aux gérants, ils sont souvent ravis de s'en débarrasser. ASTUCE : Privilégiez les cartons de taille moyenne, solides et propres. Évitez les cartons alimentaires qui ont contenu des produits frais. Complétez avec le pack Goyard uniquement pour les cartons spécifiques (penderie, vaisselle) qui nécessitent une protection optimale. Économie potentielle : 100-200€.",
+              text: "De nombreux commerces donnent gratuitement leurs cartons : supermarchés, magasins de bricolage, pharmacies, librairies. Demandez aux gérants, ils sont souvent ravis de s'en débarrasser. ASTUCE : Privilégiez les cartons de taille moyenne, solides et propres. Évitez les cartons alimentaires qui ont contenu des produits frais. Complétez avec le pack Guivarche uniquement pour les cartons spécifiques (penderie, vaisselle) qui nécessitent une protection optimale. Économie potentielle : 100-200€.",
             },
             {
               subtitle: "Alternatives au papier bulle",
-              text: "Le papier bulle coûte cher. Utilisez ce que vous avez déjà chez vous ! ASTUCE : Vos serviettes, draps, torchons, vêtements font d'excellents protecteurs pour vaisselle et objets fragiles. Le papier journal gratuit protège aussi bien que le papier kraft pour beaucoup d'objets. Les chaussettes protègent parfaitement les verres. Les couvertures remplacent les housses spéciales pour meubles. Si vous devez acheter du matériel, le pack protection Goyard offre un excellent rapport qualité-prix avec tout le nécessaire en une commande.",
+              text: "Le papier bulle coûte cher. Utilisez ce que vous avez déjà chez vous ! ASTUCE : Vos serviettes, draps, torchons, vêtements font d'excellents protecteurs pour vaisselle et objets fragiles. Le papier journal gratuit protège aussi bien que le papier kraft pour beaucoup d'objets. Les chaussettes protègent parfaitement les verres. Les couvertures remplacent les housses spéciales pour meubles. Si vous devez acheter du matériel, le pack protection Guivarche offre un excellent rapport qualité-prix avec tout le nécessaire en une commande.",
             },
             {
               subtitle: "Location de caisses réutilisables",
-              text: "Plutôt que d'acheter des cartons neufs, louez des caisses en plastique réutilisables. C'est économique et écologique. ASTUCE GOYARD : Nous proposons la location de caisses professionnelles robustes et empilables. Vous les gardez le temps nécessaire et nous les récupérons après. Coût : environ 30% moins cher que l'achat de cartons neufs de qualité équivalente, sans les tracas du recyclage après. Solution idéale pour un déménagement local.",
+              text: "Plutôt que d'acheter des cartons neufs, louez des caisses en plastique réutilisables. C'est économique et écologique. ASTUCE GUIVARCHE : Nous proposons la location de caisses professionnelles robustes et empilables. Vous les gardez le temps nécessaire et nous les récupérons après. Coût : environ 30% moins cher que l'achat de cartons neufs de qualité équivalente, sans les tracas du recyclage après. Solution idéale pour un déménagement local.",
             },
           ],
         },
@@ -846,15 +846,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Formule à la carte plutôt que tout compris",
-              text: "Déléguez uniquement ce qui a le plus de valeur pour vous : le transport lourd et technique. ASTUCE GOYARD : Optez pour notre formule de base (transport uniquement) et gérez vous-même l'emballage des objets standard. Réservez l'emballage professionnel Goyard uniquement pour vos objets fragiles de valeur (vaisselle, électronique, œuvres d'art). Cette approche hybride peut diviser votre facture par deux tout en sécurisant l'essentiel. Vous payez pour l'expertise là où elle compte vraiment.",
+              text: "Déléguez uniquement ce qui a le plus de valeur pour vous : le transport lourd et technique. ASTUCE GUIVARCHE : Optez pour notre formule de base (transport uniquement) et gérez vous-même l'emballage des objets standard. Réservez l'emballage professionnel Guivarche uniquement pour vos objets fragiles de valeur (vaisselle, électronique, œuvres d'art). Cette approche hybride peut diviser votre facture par deux tout en sécurisant l'essentiel. Vous payez pour l'expertise là où elle compte vraiment.",
             },
             {
               subtitle: "Services partiels stratégiques",
-              text: "Certains services valent vraiment leur coût, d'autres sont optionnels selon votre situation. ASTUCE : Le démontage/remontage de meubles est très chronophage et technique. Si vous n'êtes pas bricoleur, cette option Goyard est un excellent investissement (économie de temps = 4-6h minimum). L'assurance complémentaire vaut le coup pour objets de valeur. En revanche, le nettoyage et les cartons peuvent se faire en autonomie si vous avez le temps.",
+              text: "Certains services valent vraiment leur coût, d'autres sont optionnels selon votre situation. ASTUCE : Le démontage/remontage de meubles est très chronophage et technique. Si vous n'êtes pas bricoleur, cette option Guivarche est un excellent investissement (économie de temps = 4-6h minimum). L'assurance complémentaire vaut le coup pour objets de valeur. En revanche, le nettoyage et les cartons peuvent se faire en autonomie si vous avez le temps.",
             },
             {
               subtitle: "Impliquer famille et amis intelligemment",
-              text: "L'aide de proches peut réduire certains coûts, mais attention à ne pas tout miser là-dessus. ASTUCE : Mobilisez vos amis pour l'emballage des objets légers et robustes, le tri, le ménage. Mais confiez le transport des meubles lourds et objets fragiles aux professionnels Goyard. Un dos blessé ou un objet cassé coûte bien plus cher que quelques heures de déménageurs pros. De plus, l'assurance Goyard couvre les dommages, contrairement aux amis. Offrez-leur un bon repas en remerciement, c'est moins cher qu'un déménageur supplémentaire !",
+              text: "L'aide de proches peut réduire certains coûts, mais attention à ne pas tout miser là-dessus. ASTUCE : Mobilisez vos amis pour l'emballage des objets légers et robustes, le tri, le ménage. Mais confiez le transport des meubles lourds et objets fragiles aux professionnels Guivarche. Un dos blessé ou un objet cassé coûte bien plus cher que quelques heures de déménageurs pros. De plus, l'assurance Guivarche couvre les dommages, contrairement aux amis. Offrez-leur un bon repas en remerciement, c'est moins cher qu'un déménageur supplémentaire !",
             },
           ],
         },
@@ -865,21 +865,21 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Crédit d'impôt pour services à la personne",
-              text: "Si votre déménagement est lié à un changement professionnel, vous pouvez bénéficier de déductions fiscales. ASTUCE : Renseignez-vous sur le crédit d'impôt de 50% pour les services à la personne (sous conditions). Conservez tous vos justificatifs et factures Goyard. Pour un déménagement professionnel, votre employeur peut prendre en charge tout ou partie des frais : négociez ! Même 500€ de participation entreprise représentent une économie substantielle.",
+              text: "Si votre déménagement est lié à un changement professionnel, vous pouvez bénéficier de déductions fiscales. ASTUCE : Renseignez-vous sur le crédit d'impôt de 50% pour les services à la personne (sous conditions). Conservez tous vos justificatifs et factures Guivarche. Pour un déménagement professionnel, votre employeur peut prendre en charge tout ou partie des frais : négociez ! Même 500€ de participation entreprise représentent une économie substantielle.",
             },
             {
               subtitle: "Aides spécifiques selon votre situation",
-              text: "Plusieurs organismes proposent des aides au déménagement pour certains profils. ASTUCE : La CAF propose une aide au déménagement (jusqu'à 1000€) pour familles nombreuses ou ménages modestes. Action Logement (ex-1% Logement) aide les salariés du secteur privé. Pôle Emploi peut participer aux frais pour une mobilité professionnelle. Renseignez-vous 2 mois avant votre déménagement, les dossiers prennent du temps. Ces aides couvriraient une grande partie de votre prestation Goyard !",
+              text: "Plusieurs organismes proposent des aides au déménagement pour certains profils. ASTUCE : La CAF propose une aide au déménagement (jusqu'à 1000€) pour familles nombreuses ou ménages modestes. Action Logement (ex-1% Logement) aide les salariés du secteur privé. Pôle Emploi peut participer aux frais pour une mobilité professionnelle. Renseignez-vous 2 mois avant votre déménagement, les dossiers prennent du temps. Ces aides couvriraient une grande partie de votre prestation Guivarche !",
             },
             {
               subtitle: "Optimiser la récupération de caution",
-              text: "Votre caution de l'ancien logement peut financer votre déménagement. ASTUCE : Nettoyez parfaitement, réparez les petits défauts, prenez des photos. Récupérer 100% de votre caution (souvent 1-2 mois de loyer) finance largement le déménagement. Planifiez votre déménagement Goyard pour qu'il se termine tôt dans la journée, vous laissant le temps d'un nettoyage final impeccable avant l'état des lieux. Une caution récupérée, c'est comme si votre déménagement était à moitié gratuit !",
+              text: "Votre caution de l'ancien logement peut financer votre déménagement. ASTUCE : Nettoyez parfaitement, réparez les petits défauts, prenez des photos. Récupérer 100% de votre caution (souvent 1-2 mois de loyer) finance largement le déménagement. Planifiez votre déménagement Guivarche pour qu'il se termine tôt dans la journée, vous laissant le temps d'un nettoyage final impeccable avant l'état des lieux. Une caution récupérée, c'est comme si votre déménagement était à moitié gratuit !",
             },
           ],
         },
       ],
       conclusion:
-        "Faire des économies sur votre déménagement ne signifie pas rogner sur la qualité ou prendre des risques avec vos biens. Avec une planification intelligente, un désencombrement efficace, et en choisissant judicieusement les services à déléguer, vous pouvez réduire votre facture de 30 à 50% tout en bénéficiant d'un déménagement professionnel et sécurisé. Chez Goyard, notre modèle de prix transparent et notre système de réservation flexible vous permettent de construire exactement le service dont vous avez besoin, au prix juste. Utilisez notre simulateur gratuit sur Goyard.fr pour comparer différentes options et trouver le meilleur équilibre qualité-prix pour votre situation. N'oubliez pas : le déménagement le moins cher n'est pas celui qui coûte le moins, mais celui qui vous fait économiser du temps, de l'énergie et vous évite les mauvaises surprises. Avec Goyard, déménagez malin et payez juste ce qu'il faut !",
+        "Faire des économies sur votre déménagement ne signifie pas rogner sur la qualité ou prendre des risques avec vos biens. Avec une planification intelligente, un désencombrement efficace, et en choisissant judicieusement les services à déléguer, vous pouvez réduire votre facture de 30 à 50% tout en bénéficiant d'un déménagement professionnel et sécurisé. Chez Guivarche, notre modèle de prix transparent et notre système de réservation flexible vous permettent de construire exactement le service dont vous avez besoin, au prix juste. Utilisez notre simulateur gratuit sur Guivarche.fr pour comparer différentes options et trouver le meilleur équilibre qualité-prix pour votre situation. N'oubliez pas : le déménagement le moins cher n'est pas celui qui coûte le moins, mais celui qui vous fait économiser du temps, de l'énergie et vous évite les mauvaises surprises. Avec Guivarche, déménagez malin et payez juste ce qu'il faut !",
     },
   },
   "demenagement-longue-distance": {
@@ -897,10 +897,10 @@ const articles: Record<string, any> = {
     },
     date: "28 Sep 2025",
     readTime: "8 min",
-    tags: ["Longue distance", "Organisation", "International", "Planification", "Goyard"],
+    tags: ["Longue distance", "Organisation", "International", "Planification", "Guivarche"],
     content: {
       intro:
-        "Déménager à l'autre bout de la France ou à l'étranger représente un défi bien différent d'un déménagement local. La distance ajoute une couche de complexité logistique, administrative et émotionnelle qui nécessite une préparation encore plus minutieuse. Entre la gestion du transport sur plusieurs centaines de kilomètres, les délais plus longs, les coûts plus élevés et parfois les formalités douanières, un déménagement longue distance demande une expertise spécifique. Chez Goyard, nous accompagnons régulièrement des familles et professionnels dans leurs déménagements interrégionaux et internationaux. Dans ce guide complet, découvrez tout ce qu'il faut savoir pour réussir votre déménagement longue distance en toute sérénité.",
+        "Déménager à l'autre bout de la France ou à l'étranger représente un défi bien différent d'un déménagement local. La distance ajoute une couche de complexité logistique, administrative et émotionnelle qui nécessite une préparation encore plus minutieuse. Entre la gestion du transport sur plusieurs centaines de kilomètres, les délais plus longs, les coûts plus élevés et parfois les formalités douanières, un déménagement longue distance demande une expertise spécifique. Chez Guivarche, nous accompagnons régulièrement des familles et professionnels dans leurs déménagements interrégionaux et internationaux. Dans ce guide complet, découvrez tout ce qu'il faut savoir pour réussir votre déménagement longue distance en toute sérénité.",
       sections: [
         {
           title: "1. Spécificités et défis du déménagement longue distance",
@@ -909,15 +909,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Délais et planification étendue",
-              text: "Un déménagement local se fait généralement en une journée. Un déménagement longue distance peut prendre 2 à 5 jours selon la distance et les conditions. CONSEIL GOYARD : Planifiez votre déménagement longue distance au minimum 10-12 semaines à l'avance, contre 6-8 semaines pour un local. Sur Goyard.fr, notre système vous permet de réserver longtemps à l'avance et de bloquer les meilleures dates. Prévoyez des jours de marge avant et après la date prévue car les aléas (météo, circulation, douanes) sont plus fréquents sur longue distance. Communiquez ces délais à votre employeur et planifiez votre prise de poste en conséquence.",
+              text: "Un déménagement local se fait généralement en une journée. Un déménagement longue distance peut prendre 2 à 5 jours selon la distance et les conditions. CONSEIL GUIVARCHE : Planifiez votre déménagement longue distance au minimum 10-12 semaines à l'avance, contre 6-8 semaines pour un local. Sur Guivarche.fr, notre système vous permet de réserver longtemps à l'avance et de bloquer les meilleures dates. Prévoyez des jours de marge avant et après la date prévue car les aléas (météo, circulation, douanes) sont plus fréquents sur longue distance. Communiquez ces délais à votre employeur et planifiez votre prise de poste en conséquence.",
             },
             {
               subtitle: "Coûts significativement plus élevés",
-              text: "Le prix au kilomètre diminue avec la distance, mais le coût total reste bien supérieur à un déménagement local. Un Paris-Marseille (775 km) coûte typiquement 2 à 3 fois plus qu'un déménagement en Île-de-France. CONSEIL GOYARD : Utilisez notre calculateur de prix Goyard.fr qui prend en compte la distance exacte et optimise l'itinéraire. Nous proposons des options de transport groupé pour les longues distances : partager un camion avec un autre déménagement sur le même axe peut réduire vos coûts de 30-40%. Demandez un devis détaillé incluant tous les frais (péages, carburant, hébergement éventuel des déménageurs) pour éviter les surprises.",
+              text: "Le prix au kilomètre diminue avec la distance, mais le coût total reste bien supérieur à un déménagement local. Un Paris-Marseille (775 km) coûte typiquement 2 à 3 fois plus qu'un déménagement en Île-de-France. CONSEIL GUIVARCHE : Utilisez notre calculateur de prix Guivarche.fr qui prend en compte la distance exacte et optimise l'itinéraire. Nous proposons des options de transport groupé pour les longues distances : partager un camion avec un autre déménagement sur le même axe peut réduire vos coûts de 30-40%. Demandez un devis détaillé incluant tous les frais (péages, carburant, hébergement éventuel des déménageurs) pour éviter les surprises.",
             },
             {
               subtitle: "Risques accrus pendant le transport",
-              text: "Plus le transport est long, plus les risques de dommages augmentent : vibrations prolongées, changements de température, manipulations multiples. CONSEIL GOYARD : Souscrivez impérativement à une assurance « tous risques » adaptée à la valeur réelle de vos biens. Goyard propose des formules spécifiques longue distance avec couverture étendue. Photographiez tous vos objets de valeur avant le départ. Emballez avec un soin particulier : double protection pour la vaisselle, calage renforcé pour les meubles. Nos équipes Goyard utilisent des techniques d'arrimage spécifiques pour les longs trajets.",
+              text: "Plus le transport est long, plus les risques de dommages augmentent : vibrations prolongées, changements de température, manipulations multiples. CONSEIL GUIVARCHE : Souscrivez impérativement à une assurance « tous risques » adaptée à la valeur réelle de vos biens. Guivarche propose des formules spécifiques longue distance avec couverture étendue. Photographiez tous vos objets de valeur avant le départ. Emballez avec un soin particulier : double protection pour la vaisselle, calage renforcé pour les meubles. Nos équipes Guivarche utilisent des techniques d'arrimage spécifiques pour les longs trajets.",
             },
           ],
         },
@@ -928,15 +928,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Changement de région administrative",
-              text: "Déménager dans une nouvelle région nécessite de tout réinitialiser administrativement. CONSEIL : Listez tous les organismes à prévenir : Sécurité sociale (changement de caisse primaire), CAF (nouvelle antenne), Pôle Emploi, centre des impôts, préfecture pour la carte grise (changement obligatoire dans le mois suivant le déménagement si changement de département). Pour les enfants : désinscription de l'ancienne école, inscription dans la nouvelle, transfert du dossier scolaire. Médecins : trouvez un nouveau médecin traitant et demandez le transfert de votre dossier médical. Goyard vous envoie une check-list personnalisée après réservation pour ne rien oublier.",
+              text: "Déménager dans une nouvelle région nécessite de tout réinitialiser administrativement. CONSEIL : Listez tous les organismes à prévenir : Sécurité sociale (changement de caisse primaire), CAF (nouvelle antenne), Pôle Emploi, centre des impôts, préfecture pour la carte grise (changement obligatoire dans le mois suivant le déménagement si changement de département). Pour les enfants : désinscription de l'ancienne école, inscription dans la nouvelle, transfert du dossier scolaire. Médecins : trouvez un nouveau médecin traitant et demandez le transfert de votre dossier médical. Guivarche vous envoie une check-list personnalisée après réservation pour ne rien oublier.",
             },
             {
               subtitle: "Résiliation et souscription de tous les abonnements",
-              text: "Vous devrez tout résilier et tout réabonner : électricité, gaz, eau, internet, téléphone, assurances. CONSEIL : Anticipez ces démarches 6-8 semaines avant. Certains opérateurs ont des délais de résiliation longs. Pour votre nouveau logement, ouvrez les compteurs 1-2 semaines avant votre arrivée : Goyard livre souvent sur plusieurs jours, il faut de l'électricité dès le premier jour de livraison. Comparez les offres locales : certaines régions ont des fournisseurs régionaux plus compétitifs. Groupez vos souscriptions (électricité + gaz + internet) chez un même opérateur pour des tarifs préférentiels.",
+              text: "Vous devrez tout résilier et tout réabonner : électricité, gaz, eau, internet, téléphone, assurances. CONSEIL : Anticipez ces démarches 6-8 semaines avant. Certains opérateurs ont des délais de résiliation longs. Pour votre nouveau logement, ouvrez les compteurs 1-2 semaines avant votre arrivée : Guivarche livre souvent sur plusieurs jours, il faut de l'électricité dès le premier jour de livraison. Comparez les offres locales : certaines régions ont des fournisseurs régionaux plus compétitifs. Groupez vos souscriptions (électricité + gaz + internet) chez un même opérateur pour des tarifs préférentiels.",
             },
             {
               subtitle: "Déménagement international : formalités douanières",
-              text: "Pour un déménagement vers l'étranger, ajoutez les formalités douanières, visas, permis de travail. CONSEIL GOYARD : Pour un déménagement international, Goyard travaille avec des partenaires spécialisés dans chaque pays. Nous gérons toute la partie douanière : déclaration de biens, inventaire détaillé obligatoire, documents nécessaires. Prévoyez 3-4 mois de délai pour un déménagement international. Renseignez-vous sur les restrictions de chaque pays : certains objets sont interdits (plantes, denrées, animaux empaillés). Notre équipe Goyard International vous accompagne dans toutes ces démarches complexes.",
+              text: "Pour un déménagement vers l'étranger, ajoutez les formalités douanières, visas, permis de travail. CONSEIL GUIVARCHE : Pour un déménagement international, Guivarche travaille avec des partenaires spécialisés dans chaque pays. Nous gérons toute la partie douanière : déclaration de biens, inventaire détaillé obligatoire, documents nécessaires. Prévoyez 3-4 mois de délai pour un déménagement international. Renseignez-vous sur les restrictions de chaque pays : certains objets sont interdits (plantes, denrées, animaux empaillés). Notre équipe Guivarche International vous accompagne dans toutes ces démarches complexes.",
             },
           ],
         },
@@ -947,15 +947,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Chargement optimisé et sécurisé",
-              text: "Pour un long trajet, le chargement doit être encore plus méthodique qu'un déménagement local. Chaque vibration sur 800 km peut déplacer les objets. CONSEIL GOYARD : Nos équipes utilisent des techniques d'arrimage renforcées pour longue distance : sangles multiples, calage systematique, répartition du poids calculée. Nous empilons les cartons de manière à minimiser les mouvements. Les objets fragiles sont placés dans des compartiments spécifiques avec protection maximale. Le camion est vérifié avant le départ (freins, suspensions) pour garantir un transport en toute sécurité.",
+              text: "Pour un long trajet, le chargement doit être encore plus méthodique qu'un déménagement local. Chaque vibration sur 800 km peut déplacer les objets. CONSEIL GUIVARCHE : Nos équipes utilisent des techniques d'arrimage renforcées pour longue distance : sangles multiples, calage systematique, répartition du poids calculée. Nous empilons les cartons de manière à minimiser les mouvements. Les objets fragiles sont placés dans des compartiments spécifiques avec protection maximale. Le camion est vérifié avant le départ (freins, suspensions) pour garantir un transport en toute sécurité.",
             },
             {
               subtitle: "Étapes et temps de trajet",
-              text: "Un trajet de plus de 600 km nécessite souvent une ou plusieurs nuits de transport. CONSEIL GOYARD : Pour les très longues distances (Paris-Nice, Paris-Toulouse), Goyard planifie le trajet en plusieurs étapes avec repos réglementaire des conducteurs. Nous vous informons du planning précis et des étapes. Le camion est sécurisé pendant les arrêts nocturnes dans des parkings surveillés. Vous pouvez suivre la progression de votre déménagement via notre interface en ligne. Nous vous contactons régulièrement pour vous tenir informé de l'avancement.",
+              text: "Un trajet de plus de 600 km nécessite souvent une ou plusieurs nuits de transport. CONSEIL GUIVARCHE : Pour les très longues distances (Paris-Nice, Paris-Toulouse), Guivarche planifie le trajet en plusieurs étapes avec repos réglementaire des conducteurs. Nous vous informons du planning précis et des étapes. Le camion est sécurisé pendant les arrêts nocturnes dans des parkings surveillés. Vous pouvez suivre la progression de votre déménagement via notre interface en ligne. Nous vous contactons régulièrement pour vous tenir informé de l'avancement.",
             },
             {
               subtitle: "Livraison flexible",
-              text: "Sur longue distance, la livraison peut rarement être aussi précise qu'en local. CONSEIL GOYARD : Nous vous donnons une fenêtre de livraison réaliste (ex: entre le mardi et le jeudi). Soyez flexible sur vos dates d'arrivée dans votre nouveau logement. Prévoyez un hébergement temporaire si nécessaire (hôtel, famille, amis). Goyard peut aussi proposer un stockage temporaire si votre nouveau logement n'est pas encore disponible à la date de livraison. Cette flexibilité évite stress et précipitation.",
+              text: "Sur longue distance, la livraison peut rarement être aussi précise qu'en local. CONSEIL GUIVARCHE : Nous vous donnons une fenêtre de livraison réaliste (ex: entre le mardi et le jeudi). Soyez flexible sur vos dates d'arrivée dans votre nouveau logement. Prévoyez un hébergement temporaire si nécessaire (hôtel, famille, amis). Guivarche peut aussi proposer un stockage temporaire si votre nouveau logement n'est pas encore disponible à la date de livraison. Cette flexibilité évite stress et précipitation.",
             },
           ],
         },
@@ -966,11 +966,11 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Visite préalable de la nouvelle région",
-              text: "Si possible, visitez votre nouvelle région avant le déménagement définitif. CONSEIL : Passez un week-end prolongé dans votre nouvelle ville. Repérez les quartiers, les écoles pour vos enfants, les commerces, les services. Rencontrez votre futur propriétaire ou employeur. Identifiez les particularités locales (climat, rythme de vie, accent). Cette familiarisation réduit considérablement le stress du changement. Pendant votre visite, prenez les mesures exactes de votre nouveau logement pour planifier le placement des meubles avec Goyard.",
+              text: "Si possible, visitez votre nouvelle région avant le déménagement définitif. CONSEIL : Passez un week-end prolongé dans votre nouvelle ville. Repérez les quartiers, les écoles pour vos enfants, les commerces, les services. Rencontrez votre futur propriétaire ou employeur. Identifiez les particularités locales (climat, rythme de vie, accent). Cette familiarisation réduit considérablement le stress du changement. Pendant votre visite, prenez les mesures exactes de votre nouveau logement pour planifier le placement des meubles avec Guivarche.",
             },
             {
               subtitle: "Préparer la famille au changement",
-              text: "Un déménagement longue distance est souvent un bouleversement, surtout pour les enfants qui changent d'école et perdent leurs amis proches. CONSEIL : Impliquez toute la famille dès l'annonce. Présentez les avantages de la nouvelle région (mer, montagne, climat). Organisez des rituels d'adieu dans l'ancienne ville. Maintenez le contact avec les anciens amis via visio régulière. Aidez vos enfants à s'inscrire dans des activités dès l'arrivée pour créer rapidement de nouveaux liens. Goyard comprend ces enjeux familiaux et adapte son service pour minimiser le stress de tous.",
+              text: "Un déménagement longue distance est souvent un bouleversement, surtout pour les enfants qui changent d'école et perdent leurs amis proches. CONSEIL : Impliquez toute la famille dès l'annonce. Présentez les avantages de la nouvelle région (mer, montagne, climat). Organisez des rituels d'adieu dans l'ancienne ville. Maintenez le contact avec les anciens amis via visio régulière. Aidez vos enfants à s'inscrire dans des activités dès l'arrivée pour créer rapidement de nouveaux liens. Guivarche comprend ces enjeux familiaux et adapte son service pour minimiser le stress de tous.",
             },
             {
               subtitle: "Réseau social et professionnel",
@@ -985,21 +985,21 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Transport de véhicule",
-              text: "Déménager votre véhicule sur longue distance peut se faire de deux façons : le conduire vous-même ou le faire transporter. CONSEIL GOYARD : Si vous avez plusieurs véhicules ou ne pouvez pas conduire sur longue distance, Goyard peut organiser le transport de votre voiture par camion spécialisé. Cela vous permet de voyager confortablement en train ou avion. Le véhicule est assuré pendant le transport. Économisez le kilométrage et l'usure de votre voiture. Alternative : conduisez votre voiture et voyagez en train pour le retour, puis récupérez-la après le déménagement.",
+              text: "Déménager votre véhicule sur longue distance peut se faire de deux façons : le conduire vous-même ou le faire transporter. CONSEIL GUIVARCHE : Si vous avez plusieurs véhicules ou ne pouvez pas conduire sur longue distance, Guivarche peut organiser le transport de votre voiture par camion spécialisé. Cela vous permet de voyager confortablement en train ou avion. Le véhicule est assuré pendant le transport. Économisez le kilométrage et l'usure de votre voiture. Alternative : conduisez votre voiture et voyagez en train pour le retour, puis récupérez-la après le déménagement.",
             },
             {
               subtitle: "Stockage temporaire",
-              text: "Il arrive souvent qu'entre la date de sortie de l'ancien logement et l'entrée dans le nouveau, il y ait un décalage de plusieurs semaines. CONSEIL GOYARD : Notre service de stockage sécurisé vous permet de stocker vos biens dans nos entrepôts pendant 1 jour à 6 mois. Vos affaires sont stockées dans des boxes fermés et surveillés 24h/24. Vous payez uniquement la durée nécessaire. Cela évite de devoir gérer deux logements simultanément. Nous chargeons une seule fois et livrons quand vous êtes prêt. Solution idéale pour les déménagements complexes avec dates décalées.",
+              text: "Il arrive souvent qu'entre la date de sortie de l'ancien logement et l'entrée dans le nouveau, il y ait un décalage de plusieurs semaines. CONSEIL GUIVARCHE : Notre service de stockage sécurisé vous permet de stocker vos biens dans nos entrepôts pendant 1 jour à 6 mois. Vos affaires sont stockées dans des boxes fermés et surveillés 24h/24. Vous payez uniquement la durée nécessaire. Cela évite de devoir gérer deux logements simultanément. Nous chargeons une seule fois et livrons quand vous êtes prêt. Solution idéale pour les déménagements complexes avec dates décalées.",
             },
             {
               subtitle: "Accompagnement complet",
-              text: "Un déménagement longue distance peut bénéficier d'un accompagnement personnalisé complet. CONSEIL GOYARD : Notre formule 'Déménagement Longue Distance Premium' inclut : un coordinateur dédié qui gère votre dossier de A à Z, l'estimation précise par visite virtuelle ou physique, l'emballage professionnel de tout votre logement, le démontage et remontage de tous les meubles, le transport sécurisé avec suivi en temps réel, le déballage et installation dans votre nouveau logement, l'évacuation de tous les déchets d'emballage. Vous n'avez qu'à profiter de votre nouvelle vie, Goyard s'occupe de tout le reste !",
+              text: "Un déménagement longue distance peut bénéficier d'un accompagnement personnalisé complet. CONSEIL GUIVARCHE : Notre formule 'Déménagement Longue Distance Premium' inclut : un coordinateur dédié qui gère votre dossier de A à Z, l'estimation précise par visite virtuelle ou physique, l'emballage professionnel de tout votre logement, le démontage et remontage de tous les meubles, le transport sécurisé avec suivi en temps réel, le déballage et installation dans votre nouveau logement, l'évacuation de tous les déchets d'emballage. Vous n'avez qu'à profiter de votre nouvelle vie, Guivarche s'occupe de tout le reste !",
             },
           ],
         },
       ],
       conclusion:
-        "Un déménagement longue distance est une aventure qui marque un tournant dans votre vie. Si la logistique est plus complexe qu'un déménagement local, une préparation rigoureuse et le choix du bon partenaire transforment ce défi en opportunité excitante. Chez Goyard, nous avons l'expertise et l'expérience des déménagements interrégionaux et internationaux. Notre plateforme vous permet d'estimer précisément votre volume, d'obtenir un devis transparent incluant tous les frais de longue distance, et de personnaliser votre service selon vos besoins et votre budget. Nos équipes connaissent les spécificités de chaque région et les meilleures pratiques pour un transport longue distance sécurisé. Que vous déménagiez de Paris à Marseille, de Lyon à Bordeaux, ou de France vers l'étranger, Goyard vous accompagne à chaque kilomètre. Obtenez votre devis gratuit sur Goyard.fr et commencez votre nouvelle vie en toute sérénité. Avec Goyard, chaque destination devient accessible !",
+        "Un déménagement longue distance est une aventure qui marque un tournant dans votre vie. Si la logistique est plus complexe qu'un déménagement local, une préparation rigoureuse et le choix du bon partenaire transforment ce défi en opportunité excitante. Chez Guivarche, nous avons l'expertise et l'expérience des déménagements interrégionaux et internationaux. Notre plateforme vous permet d'estimer précisément votre volume, d'obtenir un devis transparent incluant tous les frais de longue distance, et de personnaliser votre service selon vos besoins et votre budget. Nos équipes connaissent les spécificités de chaque région et les meilleures pratiques pour un transport longue distance sécurisé. Que vous déménagiez de Paris à Marseille, de Lyon à Bordeaux, ou de France vers l'étranger, Guivarche vous accompagne à chaque kilomètre. Obtenez votre devis gratuit sur Guivarche.fr et commencez votre nouvelle vie en toute sérénité. Avec Guivarche, chaque destination devient accessible !",
     },
   },
   "assurance-demenagement-guide-complet": {
@@ -1017,10 +1017,10 @@ const articles: Record<string, any> = {
     },
     date: "25 Sep 2025",
     readTime: "6 min",
-    tags: ["Assurance", "Protection", "Juridique", "Indemnisation", "Goyard"],
+    tags: ["Assurance", "Protection", "Juridique", "Indemnisation", "Guivarche"],
     content: {
       intro:
-        "L'assurance déménagement est un sujet souvent négligé jusqu'au jour où un objet de valeur arrive cassé ou un meuble est endommagé. Pourtant, comprendre les différentes couvertures et choisir la bonne protection peut vous éviter des milliers d'euros de pertes et beaucoup de stress. Entre l'assurance de base incluse, les options complémentaires, votre assurance habitation et les formules tous risques, le paysage assurantiel du déménagement peut sembler complexe. Chez Goyard, nous croyons en la transparence totale sur les questions d'assurance. Ce guide complet vous explique tout ce que vous devez savoir pour faire le bon choix et protéger efficacement vos biens pendant votre déménagement.",
+        "L'assurance déménagement est un sujet souvent négligé jusqu'au jour où un objet de valeur arrive cassé ou un meuble est endommagé. Pourtant, comprendre les différentes couvertures et choisir la bonne protection peut vous éviter des milliers d'euros de pertes et beaucoup de stress. Entre l'assurance de base incluse, les options complémentaires, votre assurance habitation et les formules tous risques, le paysage assurantiel du déménagement peut sembler complexe. Chez Guivarche, nous croyons en la transparence totale sur les questions d'assurance. Ce guide complet vous explique tout ce que vous devez savoir pour faire le bon choix et protéger efficacement vos biens pendant votre déménagement.",
       sections: [
         {
           title: "1. Les différents types de couverture",
@@ -1029,15 +1029,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Responsabilité légale de base (obligatoire)",
-              text: "Tous les déménageurs professionnels ont une responsabilité légale minimale obligatoire. Cette garantie de base couvre les dommages à hauteur de 23€ par kilogramme d'objet endommagé. AVEC GOYARD : Cette couverture de base est automatiquement incluse dans tous nos devis sans surcoût. ATTENTION : Cette protection est très limitée ! Un ordinateur portable de 2 kg endommagé ne vous rapporterait que 46€, alors qu'il en vaut peut-être 1000€. Un meuble de 50 kg cassé serait indemnisé 1150€ maximum, même s'il en vaut 5000€. Cette assurance de base ne suffit jamais pour protéger réellement vos biens de valeur.",
+              text: "Tous les déménageurs professionnels ont une responsabilité légale minimale obligatoire. Cette garantie de base couvre les dommages à hauteur de 23€ par kilogramme d'objet endommagé. AVEC Guivarche : Cette couverture de base est automatiquement incluse dans tous nos devis sans surcoût. ATTENTION : Cette protection est très limitée ! Un ordinateur portable de 2 kg endommagé ne vous rapporterait que 46€, alors qu'il en vaut peut-être 1000€. Un meuble de 50 kg cassé serait indemnisé 1150€ maximum, même s'il en vaut 5000€. Cette assurance de base ne suffit jamais pour protéger réellement vos biens de valeur.",
             },
             {
               subtitle: "Assurance ad valorem (valeur déclarée)",
-              text: "Vous déclarez la valeur totale de vos biens et payez une prime calculée sur cette valeur (généralement 3-5% de la valeur déclarée). En cas de sinistre, vous êtes indemnisé à hauteur de la valeur déclarée. AVEC GOYARD : Nous proposons cette option dès la réservation sur Goyard.fr. Vous estimez la valeur totale de vos biens (mobilier + électronique + vaisselle + vêtements + tout le reste). Prime indicative : 3,5% de la valeur. Exemple : pour 30 000€ de biens, prime = 1050€. Cette formule offre une protection réelle et proportionnée à la valeur de vos possessions.",
+              text: "Vous déclarez la valeur totale de vos biens et payez une prime calculée sur cette valeur (généralement 3-5% de la valeur déclarée). En cas de sinistre, vous êtes indemnisé à hauteur de la valeur déclarée. AVEC Guivarche : Nous proposons cette option dès la réservation sur Guivarche.fr. Vous estimez la valeur totale de vos biens (mobilier + électronique + vaisselle + vêtements + tout le reste). Prime indicative : 3,5% de la valeur. Exemple : pour 30 000€ de biens, prime = 1050€. Cette formule offre une protection réelle et proportionnée à la valeur de vos possessions.",
             },
             {
               subtitle: "Assurance tous risques",
-              text: "La protection maximale qui couvre tous les types de dommages (casse, vol, incendie, dégât des eaux) sans franchise et avec indemnisation à la valeur de remplacement à neuf. AVEC GOYARD : Notre formule 'Tous Risques Premium' est recommandée pour les biens de grande valeur ou les déménagements complexes (longue distance, international). Elle inclut : indemnisation à neuf (pas de vétusté déduite), pas de franchise à payer, couverture étendue incluant le vol et les catastrophes naturelles, assistance juridique en cas de litige. Prime : environ 5-7% de la valeur déclarée. C'est l'option la plus complète pour une tranquillité d'esprit totale.",
+              text: "La protection maximale qui couvre tous les types de dommages (casse, vol, incendie, dégât des eaux) sans franchise et avec indemnisation à la valeur de remplacement à neuf. AVEC Guivarche : Notre formule 'Tous Risques Premium' est recommandée pour les biens de grande valeur ou les déménagements complexes (longue distance, international). Elle inclut : indemnisation à neuf (pas de vétusté déduite), pas de franchise à payer, couverture étendue incluant le vol et les catastrophes naturelles, assistance juridique en cas de litige. Prime : environ 5-7% de la valeur déclarée. C'est l'option la plus complète pour une tranquillité d'esprit totale.",
             },
           ],
         },
@@ -1052,11 +1052,11 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Ce qui n'est généralement PAS couvert",
-              text: "Votre assurance habitation ne couvre généralement PAS : la casse due au transport professionnel (considérée comme relevant de la responsabilité du déménageur), les objets de grande valeur non déclarés spécifiquement (bijoux, œuvres d'art, antiquités), les dommages pendant le stockage temporaire, la perte ou le vol sans effraction. CONSEIL GOYARD : Ne comptez JAMAIS uniquement sur votre assurance habitation. Contactez votre assureur avant le déménagement pour connaître exactement l'étendue de votre couverture et ses limites. Souvent, un complément via Goyard sera nécessaire pour combler les lacunes.",
+              text: "Votre assurance habitation ne couvre généralement PAS : la casse due au transport professionnel (considérée comme relevant de la responsabilité du déménageur), les objets de grande valeur non déclarés spécifiquement (bijoux, œuvres d'art, antiquités), les dommages pendant le stockage temporaire, la perte ou le vol sans effraction. CONSEIL GUIVARCHE : Ne comptez JAMAIS uniquement sur votre assurance habitation. Contactez votre assureur avant le déménagement pour connaître exactement l'étendue de votre couverture et ses limites. Souvent, un complément via Guivarche sera nécessaire pour combler les lacunes.",
             },
             {
               subtitle: "Extension de garantie habitation",
-              text: "Certains assureurs proposent une extension temporaire pour couvrir spécifiquement votre déménagement. CONSEIL : Si votre assureur le propose, comparez cette extension avec les formules Goyard. Vérifiez bien : le plafond d'indemnisation total, les franchises applicables, les exclusions spécifiques, la procédure de déclaration de sinistre. Parfois l'extension habitation est intéressante, parfois l'assurance Goyard est plus complète et compétitive. L'idéal est souvent une combinaison des deux pour une protection optimale.",
+              text: "Certains assureurs proposent une extension temporaire pour couvrir spécifiquement votre déménagement. CONSEIL : Si votre assureur le propose, comparez cette extension avec les formules Guivarche. Vérifiez bien : le plafond d'indemnisation total, les franchises applicables, les exclusions spécifiques, la procédure de déclaration de sinistre. Parfois l'extension habitation est intéressante, parfois l'assurance Guivarche est plus complète et compétitive. L'idéal est souvent une combinaison des deux pour une protection optimale.",
             },
           ],
         },
@@ -1067,15 +1067,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Méthode d'estimation réaliste",
-              text: "N'estimez pas au hasard ! Procédez méthodiquement pièce par pièce. MÉTHODE GOYARD : Utilisez notre outil d'inventaire en ligne qui vous guide. Listez : tous les meubles avec leur valeur de remplacement actuelle (pas le prix d'achat il y a 10 ans), tous les appareils électroniques et électroménagers (TV, ordinateurs, lave-linge, etc.), vaisselle, linge de maison, vêtements, livres, objets décoratifs, outils, jouets, articles de sport. Additionnez le tout. La plupart des gens sous-estiment : un appartement de 60m² contient généralement 20 000 à 40 000€ de biens. Une maison de 120m² : 40 000 à 80 000€.",
+              text: "N'estimez pas au hasard ! Procédez méthodiquement pièce par pièce. MÉTHODE GUIVARCHE : Utilisez notre outil d'inventaire en ligne qui vous guide. Listez : tous les meubles avec leur valeur de remplacement actuelle (pas le prix d'achat il y a 10 ans), tous les appareils électroniques et électroménagers (TV, ordinateurs, lave-linge, etc.), vaisselle, linge de maison, vêtements, livres, objets décoratifs, outils, jouets, articles de sport. Additionnez le tout. La plupart des gens sous-estiment : un appartement de 60m² contient généralement 20 000 à 40 000€ de biens. Une maison de 120m² : 40 000 à 80 000€.",
             },
             {
               subtitle: "Objets de valeur nécessitant déclaration",
-              text: "Les objets de grande valeur doivent être déclarés spécifiquement avec preuve de valeur. CONSEIL GOYARD : Déclarez séparément et avec justificatifs : bijoux (> 2000€), œuvres d'art et antiquités, instruments de musique professionnels, collections (timbres, vin, montres), matériel professionnel (ordinateurs haute performance, outils spécialisés), meubles d'exception. Fournissez : photos détaillées, factures d'achat, certificats d'authenticité, expertises pour objets anciens. Goyard assurera ces objets avec une attention particulière et nos équipes utiliseront un emballage spécifique renforcé.",
+              text: "Les objets de grande valeur doivent être déclarés spécifiquement avec preuve de valeur. CONSEIL GUIVARCHE : Déclarez séparément et avec justificatifs : bijoux (> 2000€), œuvres d'art et antiquités, instruments de musique professionnels, collections (timbres, vin, montres), matériel professionnel (ordinateurs haute performance, outils spécialisés), meubles d'exception. Fournissez : photos détaillées, factures d'achat, certificats d'authenticité, expertises pour objets anciens. Guivarche assurera ces objets avec une attention particulière et nos équipes utiliseront un emballage spécifique renforcé.",
             },
             {
               subtitle: "Documentation avant le déménagement",
-              text: "La meilleure assurance, c'est la prévention, mais aussi la preuve en cas de sinistre ! CONSEIL : Avant le déménagement Goyard, photographiez ou filmez tout votre logement pièce par pièce. Zoomez sur les objets de valeur, montrez leur état actuel. Conservez toutes vos factures importantes. Créez un dossier numérique avec toutes ces preuves. En cas de sinistre, ces documents accéléreront grandement votre indemnisation. L'assurance Goyard traitera votre dossier rapidement si vous avez toutes les preuves nécessaires.",
+              text: "La meilleure assurance, c'est la prévention, mais aussi la preuve en cas de sinistre ! CONSEIL : Avant le déménagement Guivarche, photographiez ou filmez tout votre logement pièce par pièce. Zoomez sur les objets de valeur, montrez leur état actuel. Conservez toutes vos factures importantes. Créez un dossier numérique avec toutes ces preuves. En cas de sinistre, ces documents accéléreront grandement votre indemnisation. L'assurance Guivarche traitera votre dossier rapidement si vous avez toutes les preuves nécessaires.",
             },
           ],
         },
@@ -1086,15 +1086,15 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Constater les dommages immédiatement",
-              text: "La règle d'or : constatez et signalez TOUT dommage le jour même de la livraison, avant le départ de l'équipe. PROCÉDURE GOYARD : Inspectez chaque meuble et carton à la livraison. Si vous constatez un dommage : faites-le noter immédiatement sur le bon de livraison par le chef d'équipe Goyard, prenez des photos du dommage sous plusieurs angles, ne jetez rien (gardez l'emballage endommagé comme preuve), contactez immédiatement notre service sinistres au numéro indiqué sur vos documents. Les réserves faites APRÈS le départ de l'équipe sont beaucoup plus difficiles à faire valoir auprès des assurances.",
+              text: "La règle d'or : constatez et signalez TOUT dommage le jour même de la livraison, avant le départ de l'équipe. PROCÉDURE Guivarche : Inspectez chaque meuble et carton à la livraison. Si vous constatez un dommage : faites-le noter immédiatement sur le bon de livraison par le chef d'équipe Guivarche, prenez des photos du dommage sous plusieurs angles, ne jetez rien (gardez l'emballage endommagé comme preuve), contactez immédiatement notre service sinistres au numéro indiqué sur vos documents. Les réserves faites APRÈS le départ de l'équipe sont beaucoup plus difficiles à faire valoir auprès des assurances.",
             },
             {
               subtitle: "Déclaration de sinistre",
-              text: "Une fois le dommage constaté, vous avez généralement 5 jours ouvrés pour déclarer officiellement le sinistre par écrit. AVEC GOYARD : Connectez-vous sur votre espace client Goyard.fr ou appelez notre hotline sinistres. Vous recevrez un formulaire de déclaration à remplir. Joignez : photos des dommages, copie du bon de livraison avec réserves, factures ou preuves de valeur des objets endommagés, devis de réparation ou de remplacement. Notre service sinistres accuse réception sous 48h et ouvre votre dossier d'indemnisation. Un expert peut être mandaté pour les dommages importants.",
+              text: "Une fois le dommage constaté, vous avez généralement 5 jours ouvrés pour déclarer officiellement le sinistre par écrit. AVEC Guivarche : Connectez-vous sur votre espace client Guivarche.fr ou appelez notre hotline sinistres. Vous recevrez un formulaire de déclaration à remplir. Joignez : photos des dommages, copie du bon de livraison avec réserves, factures ou preuves de valeur des objets endommagés, devis de réparation ou de remplacement. Notre service sinistres accuse réception sous 48h et ouvre votre dossier d'indemnisation. Un expert peut être mandaté pour les dommages importants.",
             },
             {
               subtitle: "Indemnisation et délais",
-              text: "Les délais d'indemnisation varient selon la formule d'assurance et la complexité du sinistre. DÉLAIS GOYARD : Pour l'assurance ad valorem et tous risques Goyard : expertise sous 5-7 jours si nécessaire, proposition d'indemnisation sous 15 jours pour les dossiers simples, paiement sous 10 jours après acceptation. Pour les sinistres complexes nécessitant expertise contradictoire : 1 à 2 mois. Notre engagement : transparence totale sur l'avancement de votre dossier, un interlocuteur dédié pour chaque sinistre, aucun frais administratif de dossier. Nous traitons en moyenne 95% des sinistres à l'amiable sans procédure judiciaire.",
+              text: "Les délais d'indemnisation varient selon la formule d'assurance et la complexité du sinistre. DÉLAIS Guivarche : Pour l'assurance ad valorem et tous risques Guivarche : expertise sous 5-7 jours si nécessaire, proposition d'indemnisation sous 15 jours pour les dossiers simples, paiement sous 10 jours après acceptation. Pour les sinistres complexes nécessitant expertise contradictoire : 1 à 2 mois. Notre engagement : transparence totale sur l'avancement de votre dossier, un interlocuteur dédié pour chaque sinistre, aucun frais administratif de dossier. Nous traitons en moyenne 95% des sinistres à l'amiable sans procédure judiciaire.",
             },
           ],
         },
@@ -1105,21 +1105,21 @@ const articles: Record<string, any> = {
           subsections: [
             {
               subtitle: "Évaluer vos besoins réels",
-              text: "Adaptez votre couverture à votre situation spécifique. RECOMMANDATIONS GOYARD : Assurance de base (incluse) : acceptable uniquement si vous déménagez très peu de choses, de faible valeur, sur courte distance. Assurance ad valorem : recommandée pour la majorité des déménagements standards. Bon rapport protection/prix. Assurance tous risques : indispensable pour déménagement longue distance ou international, biens de grande valeur (> 50 000€), objets fragiles nombreux ou précieux, déménagement avec stockage intermédiaire. Utilisez notre simulateur Goyard.fr pour recevoir une recommandation personnalisée selon votre profil.",
+              text: "Adaptez votre couverture à votre situation spécifique. RECOMMANDATIONS GUIVARCHE : Assurance de base (incluse) : acceptable uniquement si vous déménagez très peu de choses, de faible valeur, sur courte distance. Assurance ad valorem : recommandée pour la majorité des déménagements standards. Bon rapport protection/prix. Assurance tous risques : indispensable pour déménagement longue distance ou international, biens de grande valeur (> 50 000€), objets fragiles nombreux ou précieux, déménagement avec stockage intermédiaire. Utilisez notre simulateur Guivarche.fr pour recevoir une recommandation personnalisée selon votre profil.",
             },
             {
               subtitle: "Analyser le rapport coût/bénéfice",
-              text: "L'assurance a un coût, mais le non-assurance peut coûter beaucoup plus cher. CALCUL INTELLIGENT : Valeur de vos biens : 30 000€. Assurance ad valorem (3,5%) : 1050€. Si un sinistre détruit 20% de vos biens (6000€) : avec assurance de base (23€/kg), vous récupérez peut-être 500-800€ → perte nette de 5200€. Avec assurance ad valorem, vous récupérez 6000€ → perte nette de 0€. L'assurance vous a 'coûté' 1050€ mais vous a fait économiser 5200€. CONSEIL GOYARD : Pour un déménagement de valeur moyenne (25 000-50 000€), l'assurance ad valorem est toujours rentable. Le risque zéro n'existe pas, même avec nos équipes ultra-professionnelles.",
+              text: "L'assurance a un coût, mais le non-assurance peut coûter beaucoup plus cher. CALCUL INTELLIGENT : Valeur de vos biens : 30 000€. Assurance ad valorem (3,5%) : 1050€. Si un sinistre détruit 20% de vos biens (6000€) : avec assurance de base (23€/kg), vous récupérez peut-être 500-800€ → perte nette de 5200€. Avec assurance ad valorem, vous récupérez 6000€ → perte nette de 0€. L'assurance vous a 'coûté' 1050€ mais vous a fait économiser 5200€. CONSEIL GUIVARCHE : Pour un déménagement de valeur moyenne (25 000-50 000€), l'assurance ad valorem est toujours rentable. Le risque zéro n'existe pas, même avec nos équipes ultra-professionnelles.",
             },
             {
               subtitle: "Lire les petites lignes",
-              text: "Avant de souscrire, lisez attentivement les conditions générales. POINTS À VÉRIFIER : Quelles sont les exclusions exactes ? (emballage fait par vous-même souvent exclu), Y a-t-il une franchise ? (montant restant à votre charge), Comment est calculée l'indemnisation ? (valeur à neuf ou vétusté déduite ?), Quel est le délai de déclaration ? (généralement 5 jours ouvrés), Y a-t-il un plafond par objet ? (souvent 3000-5000€ sauf déclaration spéciale). TRANSPARENCE GOYARD : Tous nos contrats d'assurance sont en français clair, sans jargon. Nos conseillers répondent à toutes vos questions avant souscription. Zéro clause piège, zéro surprise désagréable.",
+              text: "Avant de souscrire, lisez attentivement les conditions générales. POINTS À VÉRIFIER : Quelles sont les exclusions exactes ? (emballage fait par vous-même souvent exclu), Y a-t-il une franchise ? (montant restant à votre charge), Comment est calculée l'indemnisation ? (valeur à neuf ou vétusté déduite ?), Quel est le délai de déclaration ? (généralement 5 jours ouvrés), Y a-t-il un plafond par objet ? (souvent 3000-5000€ sauf déclaration spéciale). TRANSPARENCE GUIVARCHE : Tous nos contrats d'assurance sont en français clair, sans jargon. Nos conseillers répondent à toutes vos questions avant souscription. Zéro clause piège, zéro surprise désagréable.",
             },
           ],
         },
       ],
       conclusion:
-        "L'assurance déménagement n'est pas un coût superflu, c'est un investissement dans votre tranquillité d'esprit. Comprendre les différentes options et choisir la protection adaptée à la valeur de vos biens vous évite des pertes potentiellement dévastatrices. Chez Goyard, nous proposons une gamme complète de solutions d'assurance, de la responsabilité légale de base incluse gratuitement, aux formules tous risques les plus complètes. Notre philosophie : transparence totale, conseils honnêtes, indemnisations rapides. Lors de votre réservation sur Goyard.fr, notre système vous recommande automatiquement la formule adaptée à votre situation, mais vous gardez le libre choix. Nos équipes sont formées aux meilleures pratiques pour minimiser les risques, mais en cas de pépin, notre service sinistres réactif gère votre dossier avec professionnalisme et empathie. Déménagez l'esprit tranquille avec Goyard : obtenez votre devis gratuit incluant nos options d'assurance dès maintenant !",
+        "L'assurance déménagement n'est pas un coût superflu, c'est un investissement dans votre tranquillité d'esprit. Comprendre les différentes options et choisir la protection adaptée à la valeur de vos biens vous évite des pertes potentiellement dévastatrices. Chez Guivarche, nous proposons une gamme complète de solutions d'assurance, de la responsabilité légale de base incluse gratuitement, aux formules tous risques les plus complètes. Notre philosophie : transparence totale, conseils honnêtes, indemnisations rapides. Lors de votre réservation sur Guivarche.fr, notre système vous recommande automatiquement la formule adaptée à votre situation, mais vous gardez le libre choix. Nos équipes sont formées aux meilleures pratiques pour minimiser les risques, mais en cas de pépin, notre service sinistres réactif gère votre dossier avec professionnalisme et empathie. Déménagez l'esprit tranquille avec Guivarche : obtenez votre devis gratuit incluant nos options d'assurance dès maintenant !",
     },
   },
 };

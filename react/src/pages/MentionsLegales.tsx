@@ -14,7 +14,7 @@ export default function MentionsLegales() {
               Mentions légales
             </h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
-              Informations légales et conditions d'utilisation du site Goyard Déménagement
+              Informations légales et conditions d'utilisation du site Guivarche Déménagement
             </p>
           </div>
         </section>
@@ -28,10 +28,10 @@ export default function MentionsLegales() {
             <section>
               <h2 className="text-2xl font-semibold text-[#1C3957] mb-4">Éditeur</h2>
               <div className="space-y-2">
-                <p className="text-lg font-medium">Goyard Déménagement</p>
+                <p className="text-lg font-medium">Guivarche Déménagement</p>
                 <p>Adresse : [Adresse de l'entreprise]</p>
                 <p>Téléphone : +33 76 65 87 98 76</p>
-                <p>Email : contact@goyard-demenagement.fr</p>
+                <p>Email : contact@guivarche-demenagement.fr</p>
               </div>
             </section>
 
@@ -62,13 +62,13 @@ export default function MentionsLegales() {
                 Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois 
                 contenir des inexactitudes, des omissions ou des lacunes. Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, 
                 merci de bien vouloir le signaler par email à l'adresse{" "}
-                <a href="mailto:contact@goyard-demenagement.fr" className="text-[#CC922F] hover:underline">
-                  contact@goyard-demenagement.fr
+                <a href="mailto:contact@guivarche-demenagement.fr" className="text-[#CC922F] hover:underline">
+                  contact@guivarche-demenagement.fr
                 </a>, en décrivant le problème de la manière la plus précise possible 
                 (page posant problème, action déclenchante, type d'ordinateur et de navigateur utilisé, etc.).
               </p>
               <p className="leading-relaxed mt-4">
-                Tout contenu téléchargé se fait aux risques et périls de l'utilisateur et sous sa seule responsabilité. En conséquence, Goyard Déménagement 
+                Tout contenu téléchargé se fait aux risques et périls de l'utilisateur et sous sa seule responsabilité. En conséquence, Guivarche Déménagement 
                 ne saurait être tenu responsable d'un quelconque dommage subi par l'ordinateur de l'utilisateur ou d'une quelconque perte de données 
                 consécutive au téléchargement.
               </p>
@@ -81,8 +81,8 @@ export default function MentionsLegales() {
                 Conformément aux dispositions de la loi n° 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés, 
                 vous disposez d'un droit d'accès, de modification, de rectification et de suppression des données qui vous concernent. 
                 Pour exercer ce droit, vous pouvez nous contacter par email à l'adresse{" "}
-                <a href="mailto:contact@goyard-demenagement.fr" className="text-[#CC922F] hover:underline">
-                  contact@goyard-demenagement.fr
+                <a href="mailto:contact@guivarche-demenagement.fr" className="text-[#CC922F] hover:underline">
+                  contact@guivarche-demenagement.fr
                 </a>.
               </p>
             </section>
@@ -102,7 +102,7 @@ export default function MentionsLegales() {
               <h2 className="text-2xl font-semibold text-[#1C3957] mb-4">Droit applicable et juridiction compétente</h2>
               <p className="leading-relaxed">
                 Tout litige en relation avec l'utilisation du site{" "}
-                <span className="font-medium">www.goyard-demenagement.fr</span> est soumis au droit français. 
+                <span className="font-medium">www.guivarche-demenagement.fr</span> est soumis au droit français. 
                 Il est fait attribution exclusive de juridiction aux tribunaux compétents de Paris.
               </p>
             </section>

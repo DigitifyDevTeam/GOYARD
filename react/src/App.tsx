@@ -1970,7 +1970,7 @@ function AppContent() {
                   />
                 </div>
                 <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
-                  Toutes les prestations de déménagement professionnel avec Des bras en plus comprennent
+                  Toutes les prestations de déménagement professionnel avec guivarche Déménagement comprennent
                 </h1>
               </div>
 
@@ -1998,7 +1998,7 @@ function AppContent() {
                     Déménageurs professionnels
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    Une équipe dévouée et suivie, issue du réseau Des bras en plus
+                    Une équipe dévouée et suivie, issue du réseau Guivarche déménagement
                   </p>
                 </div>
 
@@ -2141,25 +2141,6 @@ function AppContent() {
                     <Switch
                       checked={options.packCartons}
                       onCheckedChange={() => toggleOption("packCartons")}
-                    />
-                  </div>
-
-                  {/* Date flexible */}
-                  <div className="flex items-start gap-4 py-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Calendar className="w-6 h-6 style={{ color: '#CC922F' }}" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-slate-900 mb-1">
-                        Vous serez peut être amené à modifier la date du déménagement ?
-                      </h3>
-                      <p className="text-sm text-slate-600">
-                        Reporter sans frais une fois la date du déménagement jusque 72h avant
-                      </p>
-                    </div>
-                    <Switch
-                      checked={options.dateFlexible}
-                      onCheckedChange={() => toggleOption("dateFlexible")}
                     />
                   </div>
 
@@ -2570,29 +2551,6 @@ function AppContent() {
                     </div>
                   </div>
 
-                  {/* Option 2: Date Flexible */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Calendar className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Reporter sans frais une fois la date du déménagement jusque 72h avant
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.dateFlexible}
-                          onChange={(e) => setOptions(prev => ({ ...prev, dateFlexible: e.target.checked }))}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
-
                   {/* Option 3: Prix Flexible */}
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -2747,67 +2705,6 @@ function AppContent() {
 
               {/* Additional Info Section */}
               <div className="mt-8">
-                <div className="text-center mb-12">
-                  <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
-                    Toutes les prestations de déménagement professionnel avec Des bras en plus comprennent
-                  </h1>
-                </div>
-
-                {/* Services Grid */}
-                <div className="grid md:grid-cols-4 gap-8 mb-16">
-                  {/* Camion équipé */}
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mx-auto mb-4">
-                      <Truck className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                    </div>
-                    <h3 className="font-semibold text-slate-900 mb-3">
-                      Camion équipé
-                    </h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Un camion aux normes, avec couvertures de déménagement, des sangles et le carburant
-                    </p>
-                  </div>
-
-                  {/* Déménageurs professionnels */}
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mx-auto mb-4">
-                      <Users className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                    </div>
-                    <h3 className="font-semibold text-slate-900 mb-3">
-                      Déménageurs professionnels
-                    </h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Une équipe dévouée et suivie, issue du réseau Des bras en plus
-                    </p>
-                  </div>
-
-                  {/* Transport & remise en place */}
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mx-auto mb-4">
-                      <RefreshCw className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                    </div>
-                    <h3 className="font-semibold text-slate-900 mb-3">
-                      Transport & remise en place
-                    </h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Le chargement, le transport et la mise en place du mobilier dans la pièce de destination
-                    </p>
-                  </div>
-
-                  {/* Service client dévoué */}
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mx-auto mb-4">
-                      <Headphones className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                    </div>
-                    <h3 className="font-semibold text-slate-900 mb-3">
-                      Service client dévoué
-                    </h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      Un service client disponible 7j/7
-                    </p>
-                  </div>
-                </div>
-
                 {/* Guarantee Section */}
                 <div className="bg-slate-100 rounded-lg p-8 text-center mb-16">
                   <h2 className="text-xl font-semibold text-slate-900 mb-4">
@@ -2844,7 +2741,7 @@ function AppContent() {
                 </div>
 
                 {/* Property Value Section */}
-                <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
+                <div className="bg-white rounded-lg border border-slate-200 p-8 text-center mb-16">
                   <h2 className="text-xl font-semibold text-slate-900 mb-8">
                     Quelle est la valeur des biens transportés ?
                   </h2>
@@ -2877,199 +2774,68 @@ function AppContent() {
                   </div>
                 </div>
 
-                {/* Options Section */}
-                <div id="options-section" className="mb-12">
-                  <h2 className="text-xl font-semibold text-slate-900 text-center mb-8">
-                    Choisissez vos options
-                  </h2>
+                <div className="text-center mb-12">
+                  <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
+                    Toutes les prestations de déménagement professionnel avec Guivarche Déménagement comprennent
+                  </h1>
+                </div>
 
-                  <div className="space-y-6">
-                    {/* Option 1: Pack Cartons */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Vous souhaitez qu'on vous fournisse un pack cartons, bulle et adhésif? Votre pack, expédié sous 48h, contiendra: 10 cartons standards, 5 cartons livres, 1 film bulles, 1 rouleau adhésif
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.packCartons}
-                            onChange={(e) => setOptions(prev => ({ ...prev, packCartons: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
+                {/* Services Grid */}
+                <div className="grid md:grid-cols-4 gap-8 mb-16">
+                  {/* Camion équipé */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <Truck className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
                     </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Camion équipé
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Un camion aux normes, avec couvertures de déménagement, des sangles et le carburant
+                    </p>
+                  </div>
 
-                    {/* Option 2: Date Flexible */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Calendar className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Reporter sans frais une fois la date du déménagement jusque 72h avant
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.dateFlexible}
-                            onChange={(e) => setOptions(prev => ({ ...prev, dateFlexible: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
+                  {/* Déménageurs professionnels */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <Users className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
                     </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Déménageurs professionnels
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Une équipe dévouée et suivie, issue du réseau Guivarche Déménagement
+                    </p>
+                  </div>
 
-                    {/* Option 3: Prix Flexible */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <ArrowDown className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Vous êtes flexible sur la date de la prestation? Economiser sur le prix de votre déménagement en étant flexible sur 5 jours
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.prixFlexible}
-                            onChange={(e) => setOptions(prev => ({ ...prev, prixFlexible: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
+                  {/* Transport & remise en place */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <RefreshCw className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
                     </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Transport & remise en place
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Le chargement, le transport et la mise en place du mobilier dans la pièce de destination
+                    </p>
+                  </div>
 
-                    {/* Option 4: Démontage Remontage */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Vous souhaitez qu'on s'occupe du démontage et du remontage du mobilier quand c'est nécessaire?
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.demontageRemontage}
-                            onChange={(e) => setOptions(prev => ({ ...prev, demontageRemontage: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
+                  {/* Service client dévoué */}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                      <Headphones className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
                     </div>
-
-                    {/* Option 5: Emballage Fragile */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Vous préférez nous confier l'emballage du fragile (vaisselles, tableaux, bibelots)?
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.emballageFragile}
-                            onChange={(e) => setOptions(prev => ({ ...prev, emballageFragile: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Option 6: Emballage Cartons */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Vous souhaitez qu'on emballe les cartons déclarés dans l'inventaire ?
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.emballageCartons}
-                            onChange={(e) => setOptions(prev => ({ ...prev, emballageCartons: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Option 7: Autorisation Stationnement */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          L'autorisation de stationnement pour le camion est recommandé et parfois même obligatoire dans certaines communes. Vous souhaitez que nous fassions les démarches pour vous?
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.autorisationStationnement}
-                            onChange={(e) => setOptions(prev => ({ ...prev, autorisationStationnement: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Option 8: Transport Vêtements */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                          Il existe une solution pratique pour transporter vos vêtement sans les froisser. Vous souhaitez qu'on utilise des penderies pour transporter vos vêtements sur cintres?
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={options.transportVetements}
-                            onChange={(e) => setOptions(prev => ({ ...prev, transportVetements: e.target.checked }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                        </label>
-                      </div>
-                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-3">
+                      Service client dévoué
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Un service client disponible 7j/7
+                    </p>
                   </div>
                 </div>
 
+                
                 {/* Final Quote Section */}
                 <div className="text-center mb-8">
                   <p className="text-sm text-slate-600 mb-6">
@@ -3358,7 +3124,7 @@ function AppContent() {
                     </div>
 
                     <p className="text-xs text-primary leading-relaxed">
-                      En soumettant ce formulaire, j'accepte d'être contacté par GoYard et ses
+                      En soumettant ce formulaire, j'accepte d'être contacté par Guivarche et ses
                       partenaires pour l'organisation de mon service de déménagement.
                     </p>
 
@@ -5876,10 +5642,10 @@ function AppContent() {
         {/* Footer Text */}
         <div className="mt-8 text-xs text-slate-500 leading-relaxed">
           <p>
-            GoYard est une société française de services de déménagement professionnel fondée en 2018. Nous sommes
+            Guivarche est une société française de services de déménagement professionnel fondée en 2018. Nous sommes
             entièrement agréés, assurés et cautionnés. Notre équipe de déménageurs professionnels certifiés
             subit des vérifications d'antécédents approfondies et une formation approfondie pour garantir un
-            service de la plus haute qualité. GoYard s'engage à utiliser des techniques de déménagement modernes et
+            service de la plus haute qualité. Guivarche s'engage à utiliser des techniques de déménagement modernes et
             à maintenir les normes les plus élevées de sécurité et de satisfaction client.
           </p>
         </div>

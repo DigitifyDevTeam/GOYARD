@@ -4334,7 +4334,7 @@ function Group741() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[74.763%] place-items-start relative">
       <div className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[40px] ml-0 mt-0 not-italic relative text-[17px] text-white tracking-[-0.2px] w-[330px]">
-        <p className="mb-0">donec@goyard-demenagement.fr</p>
+        <p className="mb-0">donec@guivarche-demenagement.fr</p>
         <p>+33 76 65 87 98 76</p>
       </div>
     </div>

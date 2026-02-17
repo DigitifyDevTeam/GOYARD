@@ -12,7 +12,7 @@ export default function GlobeFeatureSection() {
       <div className="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
         <div className="z-10 max-w-xl text-left">
           <h1 className="text-3xl font-normal text-gray-900 dark:text-white">
-            Déménagez avec <span className="text-[#CC922F]">GoYard</span>{" "}
+            Déménagez avec <span className="text-[#CC922F]">Guivarche</span>{" "}
             <span className="text-gray-500 dark:text-gray-400">Votre partenaire de confiance pour un déménagement simple, rapide et sans stress partout en France.</span>
           </h1>
           <Button className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1C3957] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#2a4f6b]">

@@ -290,7 +290,7 @@ export default function Solution() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              Goyard révolutionne le devis de déménagement en ligne. Estimez votre volume, obtenez votre devis 
+              Guivarche révolutionne le devis de déménagement en ligne. Estimez votre volume, obtenez votre devis 
               et réservez votre déménagement en quelques clics, avec la garantie d'une expérience simple et transparente.
             </motion.p>
 
@@ -301,7 +301,7 @@ export default function Solution() {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               Fini les estimations approximatives et les surprises de dernière minute. 
-              Avec Goyard, tout est clair dès le départ.
+              Avec Guivarche, tout est clair dès le départ.
             </motion.p>
           </div>
         </section>
@@ -322,10 +322,10 @@ export default function Solution() {
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
-                Pourquoi choisir Goyard ?
+                Pourquoi choisir Guivarche ?
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto font-['Poppins',sans-serif]">
-                Découvrez tous les avantages qui font de Goyard la solution idéale pour votre déménagement
+                Découvrez tous les avantages qui font de Guivarche la solution idéale pour votre déménagement
               </p>
             </div>
 
@@ -364,7 +364,7 @@ export default function Solution() {
           <div ref={statsRef} className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
-                Goyard en chiffres
+                Guivarche en chiffres
               </h2>
               <p className="text-xl text-gray-600 font-['Poppins',sans-serif]">
                 La confiance de milliers de clients
@@ -403,7 +403,7 @@ export default function Solution() {
               </h2>
               
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
-                Rejoignez des milliers de clients qui ont déjà fait confiance à Goyard. 
+                Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. 
                 Obtenez votre devis gratuit maintenant !
               </p>
               

@@ -153,7 +153,7 @@ const faqData: Record<string, FAQCategory> = {
       },
       {
         question: "Peut-on déménager un jour férié ?",
-        answer: "Oui, Goyard propose ses services 365 jours par an, y compris les jours fériés. Un supplément peut s'appliquer pour les jours fériés, cela sera clairement indiqué dans votre devis."
+        answer: "Oui, Guivarche propose ses services 365 jours par an, y compris les jours fériés. Un supplément peut s'appliquer pour les jours fériés, cela sera clairement indiqué dans votre devis."
       },
       {
         question: "Quel est le meilleur moment pour déménager ?",
@@ -217,7 +217,7 @@ const faqData: Record<string, FAQCategory> = {
     ]
   },
   "technologie": {
-    name: "Technologie Goyard",
+    name: "Technologie Guivarche",
     items: [
       {
         question: "Comment fonctionne l'estimation de volume par IA ?",
@@ -233,16 +233,16 @@ const faqData: Record<string, FAQCategory> = {
       }
     ]
   },
-  "goyard": {
-    name: "À propos de Goyard",
+  "guivarche": {
+    name: "À propos de Guivarche",
     items: [
       {
-        question: "Qu'est-ce qui distingue Goyard des autres déménageurs ?",
-        answer: "Goyard révolutionne le déménagement avec sa plateforme 100% digitale : devis instantané en ligne, estimation par IA, réservation sécurisée, suivi en temps réel. Nous combinons technologie moderne et expertise traditionnelle du déménagement."
+        question: "Qu'est-ce qui distingue Guivarche des autres déménageurs ?",
+        answer: "Guivarche révolutionne le déménagement avec sa plateforme 100% digitale : devis instantané en ligne, estimation par IA, réservation sécurisée, suivi en temps réel. Nous combinons technologie moderne et expertise traditionnelle du déménagement."
       },
       {
         question: "Êtes-vous certifiés et assurés ?",
-        answer: "Oui, Goyard possède toutes les certifications professionnelles requises et dispose d'une assurance responsabilité civile professionnelle complète. Nous sommes également membres des associations professionnelles du déménagement."
+        answer: "Oui, Guivarche possède toutes les certifications professionnelles requises et dispose d'une assurance responsabilité civile professionnelle complète. Nous sommes également membres des associations professionnelles du déménagement."
       },
       {
         question: "Que faire si je ne suis pas satisfait du service ?",
@@ -276,8 +276,8 @@ export default function FAQ() {
     { id: "materiel", label: "Matériel et Équipement" },
     { id: "stockage", label: "Stockage" },
     { id: "objets-speciaux", label: "Objets spéciaux" },
-    { id: "technologie", label: "Technologie Goyard" },
-    { id: "goyard", label: "À propos de Goyard" }
+    { id: "technologie", label: "Technologie Guivarche" },
+    { id: "guivarche", label: "À propos de Guivarche" }
   ];
 
   return (
@@ -462,7 +462,7 @@ export default function FAQ() {
               </h2>
               
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
-                Rejoignez des milliers de clients qui ont déjà fait confiance à Goyard. 
+                Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. 
                 Obtenez votre devis gratuit maintenant !
               </p>
               
