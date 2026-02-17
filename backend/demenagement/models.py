@@ -366,6 +366,10 @@ class Address(models.Model):
         default='Non',
         verbose_name="Ascenseur au départ"
     )
+    demi_etage_depart = models.BooleanField(
+        default=False,
+        verbose_name="Ascenseur desservant uniquement un demi-étage (départ)"
+    )
     options_depart = models.JSONField(
         default=dict,
         blank=True,
@@ -393,6 +397,10 @@ class Address(models.Model):
         null=True,
         verbose_name="Ascenseur à l'escale"
     )
+    demi_etage_escale = models.BooleanField(
+        default=False,
+        verbose_name="Ascenseur desservant uniquement un demi-étage (escale)"
+    )
     escale_options = models.JSONField(
         default=dict,
         blank=True,
@@ -414,6 +422,10 @@ class Address(models.Model):
         choices=ASCENSEUR_CHOICES,
         default='Non',
         verbose_name="Ascenseur à l'arrivée"
+    )
+    demi_etage_arrivee = models.BooleanField(
+        default=False,
+        verbose_name="Ascenseur desservant uniquement un demi-étage (arrivée)"
     )
     options_arrivee = models.JSONField(
         default=dict,

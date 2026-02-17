@@ -16,6 +16,7 @@ from ai_detector.pricing import (
     get_emballage_cartons_price,
     get_portage_price,
     get_escale_price,
+    DEMI_ETAGE_PRICE_EUR,
 )
 
 
@@ -508,10 +509,11 @@ def get_final_quote(request):
         breakdown = get_price_breakdown(volume_m3, distance_km)
         base_price = breakdown['price_eur']
 
-        # ── 5. Étage & ascenseur ────────────────────────────────────────────
+        # ── 5. Étage & ascenseur & demi-étage ─────────────────────────────────
         etage_depart = etage_arrivee = ascenseur_depart = ascenseur_arrivee = None
         has_stopover = False
         escale_etage = escale_ascenseur = None
+        demi_etage_depart = demi_etage_arrivee = False
         if addr:
             etage_depart = addr.etage_depart
             etage_arrivee = addr.etage_arrivee
@@ -520,7 +522,9 @@ def get_final_quote(request):
             has_stopover = bool(addr.has_stopover)
             escale_etage = addr.escale_etage or None
             escale_ascenseur = addr.escale_ascenseur or None
-        # Body overrides (if address_id was not provided)
+            demi_etage_depart = bool(getattr(addr, 'demi_etage_depart', False))
+            demi_etage_arrivee = bool(getattr(addr, 'demi_etage_arrivee', False))
+        # Body overrides (if address_id was not provided or user toggled on quote page)
         if etage_depart is None:
             etage_depart = data.get('etage_depart')
         if etage_arrivee is None:
@@ -529,6 +533,10 @@ def get_final_quote(request):
             ascenseur_depart = data.get('ascenseur_depart')
         if ascenseur_arrivee is None:
             ascenseur_arrivee = data.get('ascenseur_arrivee')
+        if data.get('demi_etage_depart') is not None:
+            demi_etage_depart = bool(data.get('demi_etage_depart'))
+        if data.get('demi_etage_arrivee') is not None:
+            demi_etage_arrivee = bool(data.get('demi_etage_arrivee'))
         if not has_stopover and data.get('has_stopover') is not None:
             has_stopover = bool(data.get('has_stopover'))
         if escale_etage is None:
@@ -582,6 +590,14 @@ def get_final_quote(request):
         etage_total = etage_depart_price + etage_arrivee_price + etage_escale_price
         ascenseur_total = ascenseur_depart_extra + ascenseur_arrivee_extra + ascenseur_escale_extra
 
+        # ── 5b. Demi-étage: 150€ per location when "ascenseur desservant uniquement un demi-étage" is on.
+        # Applies to departure and arrival only; NOT to stepover (escale).
+        demi_etage_total = 0.0
+        if demi_etage_depart:
+            demi_etage_total += DEMI_ETAGE_PRICE_EUR
+        if demi_etage_arrivee:
+            demi_etage_total += DEMI_ETAGE_PRICE_EUR
+
         # ── 6. Options: assurance, démontage/remontage, emballage fragile, emballage cartons ───
         valeur_bien_eur = None
         try:
@@ -624,7 +640,7 @@ def get_final_quote(request):
         # ── 9. Totals ──────────────────────────────────────────────────────
         options_total = (assurance_bien_price + demontage_remontage_price
                          + emballage_fragile_price + emballage_cartons_price + portage_total + escale_total)
-        final_price = base_price + etage_total + ascenseur_total + options_total
+        final_price = base_price + etage_total + ascenseur_total + demi_etage_total + options_total
 
         # ── 9. Breakdown (human-readable) ──────────────────────────────────
         breakdown_extra = {
@@ -637,6 +653,15 @@ def get_final_quote(request):
         if has_stopover:
             breakdown_extra['etage_escale'] = f"Étage escale {escale_etage or 'RDC'} → {etage_escale_price}€"
             breakdown_extra['ascenseur_escale'] = f"Ascenseur escale ({escale_ascenseur or 'Non'}) → {ascenseur_escale_extra}€"
+        if demi_etage_total > 0:
+            parts = []
+            if demi_etage_depart:
+                parts.append("départ")
+            if demi_etage_arrivee:
+                parts.append("arrivée")
+            breakdown_extra['demi_etage'] = f"Demi-étage ({', '.join(parts)}, {DEMI_ETAGE_PRICE_EUR}€/lieu) → {demi_etage_total}€"
+        else:
+            breakdown_extra['demi_etage'] = "Demi-étage (non) → 0€"
         if portage_total > 0:
             parts = [f"départ {portage_depart_m:.0f}m", f"arrivée {portage_arrival_m:.0f}m"]
             if has_stopover and portage_escale_m:
@@ -659,7 +684,7 @@ def get_final_quote(request):
             breakdown_extra['emballage_cartons'] = f"Emballage cartons inventaire ({volume_m3}m³ × 30€/m³) → {emballage_cartons_price}€"
         breakdown_extra['total'] = (
             f"Total: {base_price} (transport) + {etage_total} (étage) + {ascenseur_total} (ascenseur) "
-            f"+ {options_total} (options) = {final_price}€"
+            f"+ {demi_etage_total} (demi-étage) + {options_total} (options) = {final_price}€"
         )
 
         print(f"[get_final_quote] {origin_address} → {destination_address} = {distance_km} km | vol={volume_m3}m³ | final={final_price}€")
@@ -675,6 +700,7 @@ def get_final_quote(request):
             'base_price_transport': round(base_price, 2),
             'etage_total': round(etage_total, 2),
             'ascenseur_total': round(ascenseur_total, 2),
+            'demi_etage_total': round(demi_etage_total, 2),
             'portage_total': round(portage_total, 2),
             'escale_total': round(escale_total, 2),
             'stopover_count': stopover_count,
@@ -1077,15 +1103,18 @@ def create_address(request):
                 'adresse_depart': address.adresse_depart,
                 'etage_depart': address.etage_depart,
                 'ascenseur_depart': address.ascenseur_depart,
+                'demi_etage_depart': getattr(address, 'demi_etage_depart', False),
                 'options_depart': address.options_depart,
                 'has_stopover': address.has_stopover,
                 'escale_adresse': address.escale_adresse,
                 'escale_etage': address.escale_etage,
                 'escale_ascenseur': address.escale_ascenseur,
+                'demi_etage_escale': getattr(address, 'demi_etage_escale', False),
                 'escale_options': address.escale_options,
                 'adresse_arrivee': address.adresse_arrivee,
                 'etage_arrivee': address.etage_arrivee,
                 'ascenseur_arrivee': address.ascenseur_arrivee,
+                'demi_etage_arrivee': getattr(address, 'demi_etage_arrivee', False),
                 'options_arrivee': address.options_arrivee,
                 'created_at': address.created_at.isoformat()
             }

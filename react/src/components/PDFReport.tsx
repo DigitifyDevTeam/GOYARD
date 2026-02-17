@@ -22,6 +22,7 @@ interface PDFReportProps {
       roomId: string;
     }>;
     roomAnalysisResults?: Record<string, Record<string, number>>;
+    specialObjectQuantities?: Record<string, number>;
   };
   quoteData: {
     final_price: number;
@@ -30,6 +31,7 @@ interface PDFReportProps {
     distance_km?: number;
     etage_total?: number;
     ascenseur_total?: number;
+    demi_etage_total?: number;
     escale_total?: number;
     portage_total?: number;
   };
@@ -270,6 +272,23 @@ const PDFReport: React.FC<PDFReportProps> = ({
                   <p>• Basé sur la surface : {methodData.surface_area || 0} m²</p>
                   <p>• Coefficient : 1/2 (surface ÷ 2)</p>
                 </div>
+                
+                {/* Special Objects */}
+                {methodData.specialObjectQuantities && Object.keys(methodData.specialObjectQuantities).length > 0 && (
+                  <div className="mt-4 p-3 bg-orange-50 rounded border border-orange-200">
+                    <h4 className="font-medium text-gray-800 mb-2">Objets spéciaux sélectionnés</h4>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      {Object.entries(methodData.specialObjectQuantities)
+                        .filter(([_, quantity]) => quantity > 0)
+                        .map(([objectName, quantity]) => (
+                          <div key={objectName} className="flex justify-between py-1 border-b border-orange-100">
+                            <span className="text-gray-600">{objectName}</span>
+                            <span className="font-medium text-gray-800">{quantity}</span>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -400,6 +419,12 @@ const PDFReport: React.FC<PDFReportProps> = ({
               <div className="flex justify-between items-center py-2 border-b">
                 <span>Supplément absence d'ascenseur</span>
                 <span className="font-medium">{formatCurrency(quoteData.ascenseur_total)}</span>
+              </div>
+            )}
+            {quoteData.demi_etage_total != null && quoteData.demi_etage_total > 0 && (
+              <div className="flex justify-between items-center py-2 border-b">
+                <span>Demi-étage</span>
+                <span className="font-medium">{formatCurrency(quoteData.demi_etage_total)}</span>
               </div>
             )}
             {quoteData.escale_total && quoteData.escale_total > 0 && (

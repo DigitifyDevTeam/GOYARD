@@ -329,9 +329,9 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         fields = [
             'id', 'client_info',
-            'adresse_depart', 'etage_depart', 'ascenseur_depart', 'options_depart',
-            'has_stopover', 'escale_adresse', 'escale_etage', 'escale_ascenseur', 'escale_options',
-            'adresse_arrivee', 'etage_arrivee', 'ascenseur_arrivee', 'options_arrivee',
+            'adresse_depart', 'etage_depart', 'ascenseur_depart', 'demi_etage_depart', 'options_depart',
+            'has_stopover', 'escale_adresse', 'escale_etage', 'escale_ascenseur', 'demi_etage_escale', 'escale_options',
+            'adresse_arrivee', 'etage_arrivee', 'ascenseur_arrivee', 'demi_etage_arrivee', 'options_arrivee',
             'created_at', 'updated_at',
             'etage_choices', 'ascenseur_choices'
         ]

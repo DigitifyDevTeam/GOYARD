@@ -31,7 +31,7 @@ DISTANCE_BANDS_KM = [
 VOLUME_BUCKETS_M3 = [5, 10, 15, 20, 25, 30, 40, 45, 50, 60, 70, 80, 90, 100]
 
 # Price matrix: rows = distance bands, cols = volume buckets
-# Volume:  0–5  5.1–10 10.1–15 15.1–20 20.1–25 25.1–30 30.1–40 40.1–45 45.1–50 50.1–60 60.1–70 70.1–80 80.1–90 90.1–100
+# Volume:  0_5  5,1_10 10,1_15 15,1_20 20,1_25 25,1_30 30,1_40 40,1_45 45,1_50 50,1_60 60,1_70 70,1_80 80,1_90 90,1_100
 PRICE_MATRIX = [
     [300, 450, 600, 780, 950, 1100, 1500, 1600, 1900, 2300, 2600, 2900, 3400, 3900],   # 0-50 Km
     [500, 650, 800, 980, 1150, 1300, 1730, 1830, 2200, 2650, 2950, 3300, 3800, 4400],  # 50-100 Km
@@ -181,8 +181,8 @@ FLOOR_PRICES_PER_M3 = {
     '20': 11,      # 20th floor: 11€/m³
 }
 
-ASCENSEUR_EXTRA_3_4 = [0, 0, 0, 70, 70, 70, 120, 120, 120, 180, 180, 180, 300, 400]  # by VOLUME_BUCKETS_M3
-ASCENSEUR_EXTRA_4_6 = [0, 0, 0, 50, 50, 50, 80, 80, 80, 120, 120, 120, 180, 220]
+ASCENSEUR_EXTRA_3_4 = [0, 0, 0, 70, 70, 70, 120, 120, 180, 180, 180, 300, 400, 500]  # by VOLUME_BUCKETS_M3
+ASCENSEUR_EXTRA_4_6 = [0, 0, 0, 50, 50, 50, 80, 80, 120, 120, 120, 180, 220, 300]
 
 
 def get_ascenseur_extra(volume_m3: float, ascenseur_value: str, floor_value: str = 'RDC') -> float:
@@ -349,6 +349,12 @@ def get_portage_price(volume_m3: float, distance_m: float) -> float:
         extra_intervals = int(extra_meters // 10) + (1 if extra_meters % 10 > 0 else 0)
         extra_charge = extra_intervals * EXTRA_CHARGE_PER_10M
         return base_price + extra_charge
+
+
+# --- Demi-étage (elevator serving half-floor only) ---
+# Fixed surcharge per location when "ascenseur desservant uniquement un demi-étage" is selected.
+# Applies to departure and arrival only; NOT to stepover (escale).
+DEMI_ETAGE_PRICE_EUR = 150.0
 
 
 # --- Escale (stopover) pricing ---

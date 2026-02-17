@@ -82,6 +82,7 @@ def generate_quote_pdf(quote_data):
         ['Prix de base', f"{quote_data.get('base_price_transport', 0):.2f}"],
         ['Frais d\'étages', f"{quote_data.get('etage_total', 0):.2f}"],
         ['Ascenseur', f"{quote_data.get('ascenseur_total', 0):.2f}"],
+        ['Demi-étage', f"{quote_data.get('demi_etage_total', 0):.2f}"],
         ['Portage', f"{quote_data.get('portage_total', 0):.2f}"],
         ['Escale', f"{quote_data.get('escale_total', 0):.2f}"],
     ]

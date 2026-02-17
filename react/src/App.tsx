@@ -143,6 +143,7 @@ function AppContent() {
     base_price_transport?: number;
     etage_total?: number;
     ascenseur_total?: number;
+    demi_etage_total?: number;
     portage_total?: number;
     escale_total?: number;
     options_total?: number;
@@ -268,6 +269,7 @@ function AppContent() {
       address: "Paris, France",
       floor: "RDC",
       elevator: "Non",
+      demiEtage: false,
       options: {
         monteMenuble: false,
         caveGarage: false,
@@ -279,6 +281,7 @@ function AppContent() {
       address: "Lyon, France",
       floor: "RDC",
       elevator: "Non",
+      demiEtage: false,
       options: {
         monteMenuble: false,
         caveGarage: false,
@@ -294,6 +297,7 @@ function AppContent() {
     address: string;
     floor: string;
     elevator: string;
+    demiEtage: boolean;
     options: {
       monteMenuble: boolean;
       caveGarage: boolean;
@@ -979,6 +983,7 @@ function AppContent() {
         adresse_depart: addressData.departure.address,
         etage_depart: addressData.departure.floor,
         ascenseur_depart: addressData.departure.elevator,
+        demi_etage_depart: addressData.departure.demiEtage || false,
         options_depart: {
           monte_meuble: addressData.departure.options.monteMenuble || false,
           cave_ou_garage: addressData.departure.options.caveGarage || false,
@@ -989,6 +994,7 @@ function AppContent() {
         escale_adresse: escales.length > 0 ? escales[0].address : '',
         escale_etage: escales.length > 0 ? escales[0].floor : 'RDC',
         escale_ascenseur: escales.length > 0 ? escales[0].elevator : 'Non',
+        demi_etage_escale: escales.length > 0 ? escales[0].demiEtage || false : false,
         escale_options: escales.length > 0 ? {
           monte_meuble: escales[0].options.monteMenuble || false,
           cave_ou_garage: escales[0].options.caveGarage || false,
@@ -998,6 +1004,7 @@ function AppContent() {
         adresse_arrivee: addressData.arrival.address,
         etage_arrivee: addressData.arrival.floor,
         ascenseur_arrivee: addressData.arrival.elevator,
+        demi_etage_arrivee: addressData.arrival.demiEtage || false,
         options_arrivee: {
           monte_meuble: addressData.arrival.options.monteMenuble || false,
           cave_ou_garage: addressData.arrival.options.caveGarage || false,
@@ -1085,6 +1092,9 @@ function AppContent() {
       if ((addressData.arrival.options.portageDistanceM ?? 0) > 0) {
         body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
       }
+      // Demi-étage: 150€ per location when "ascenseur desservant uniquement un demi-étage" is on (départ/arrivée only, not stepover)
+      body.demi_etage_depart = addressData.departure.demiEtage ?? false;
+      body.demi_etage_arrivee = addressData.arrival.demiEtage ?? false;
 
       const res = await fetch("/api/demenagement/quote/final/", {
         method: "POST",
@@ -1098,6 +1108,7 @@ function AppContent() {
           base_price_transport: data.base_price_transport,
           etage_total: data.etage_total,
           ascenseur_total: data.ascenseur_total,
+          demi_etage_total: data.demi_etage_total ?? 0,
           portage_total: data.portage_total,
           escale_total: data.escale_total,
           options_total: data.options_total,
@@ -1123,10 +1134,29 @@ function AppContent() {
   };
 
   const toggleOption = (optionKey: keyof typeof options) => {
-    setOptions((prev) => ({
-      ...prev,
-      [optionKey]: !prev[optionKey],
-    }));
+    setOptions((prev) => {
+      const newValue = !prev[optionKey];
+      
+      // Handle mutual exclusivity between emballageFragile and emballageCartons
+      if (optionKey === "emballageFragile" && newValue) {
+        return {
+          ...prev,
+          emballageFragile: true,
+          emballageCartons: false,
+        };
+      } else if (optionKey === "emballageCartons" && newValue) {
+        return {
+          ...prev,
+          emballageCartons: true,
+          emballageFragile: false,
+        };
+      }
+      
+      return {
+        ...prev,
+        [optionKey]: newValue,
+      };
+    });
   };
 
   // Live option prices (same logic as backend) so the right-side pricing updates instantly when toggling switches
@@ -1136,6 +1166,7 @@ function AppContent() {
     const base = quoteResult?.base_price_transport ?? 0;
     const etage = quoteResult?.etage_total ?? 0;
     const ascenseur = quoteResult?.ascenseur_total ?? 0;
+    const demiEtage = quoteResult?.demi_etage_total ?? 0;
     const escale = quoteResult?.escale_total ?? 0;
     const portage = quoteResult?.portage_total ?? 0;
 
@@ -1153,7 +1184,7 @@ function AppContent() {
       : 0;
 
     const optionsTotal = assurance + demontage + emballageFragile + emballageCartons;
-    const liveTotal = base + etage + ascenseur + escale + portage + optionsTotal;
+    const liveTotal = base + etage + ascenseur + demiEtage + escale + portage + optionsTotal;
 
     return {
       assurance,
@@ -1164,7 +1195,7 @@ function AppContent() {
       liveTotal,
       hasQuote: !!quoteResult && (quoteResult.base_price_transport != null || quoteResult.volume_m3 != null),
     };
-  }, [quoteResult?.volume_m3, quoteResult?.distance_km, quoteResult?.base_price_transport, quoteResult?.etage_total, quoteResult?.ascenseur_total, quoteResult?.escale_total, quoteResult?.portage_total, propertyValue, options.demontageRemontage, options.emballageFragile, options.emballageCartons]);
+  }, [quoteResult?.volume_m3, quoteResult?.distance_km, quoteResult?.base_price_transport, quoteResult?.etage_total, quoteResult?.ascenseur_total, quoteResult?.demi_etage_total, quoteResult?.escale_total, quoteResult?.portage_total, propertyValue, options.demontageRemontage, options.emballageFragile, options.emballageCartons]);
 
   // Auto-calculate quote when entering quote page
   useEffect(() => {
@@ -1216,6 +1247,8 @@ function AppContent() {
           if ((addressData.arrival.options.portageDistanceM ?? 0) > 0) {
             body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
           }
+          body.demi_etage_depart = addressData.departure.demiEtage ?? false;
+          body.demi_etage_arrivee = addressData.arrival.demiEtage ?? false;
 
           console.log('[Quote API Debug] Sending body:', JSON.stringify(body, null, 2));
 
@@ -1234,6 +1267,7 @@ function AppContent() {
               base_price_transport: data.base_price_transport,
               etage_total: data.etage_total,
               ascenseur_total: data.ascenseur_total,
+              demi_etage_total: data.demi_etage_total ?? 0,
               portage_total: data.portage_total,
               escale_total: data.escale_total,
               options_total: data.options_total,
@@ -1294,6 +1328,7 @@ function AppContent() {
       address: "",
       floor: "RDC",
       elevator: "Non",
+      demiEtage: false,
       options: {
         monteMenuble: false,
         caveGarage: false,
@@ -2379,6 +2414,12 @@ function AppContent() {
                         <span className="font-medium">{quoteResult.ascenseur_total.toFixed(2)} €</span>
                       </div>
                     )}
+                    {quoteResult?.demi_etage_total != null && quoteResult.demi_etage_total > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Demi-étage</span>
+                        <span className="font-medium">{quoteResult.demi_etage_total.toFixed(2)} €</span>
+                      </div>
+                    )}
                     {quoteResult?.escale_total != null && (
                       <div className="flex justify-between">
                         <span className="text-slate-600">Escale (stopover)</span>
@@ -2499,6 +2540,211 @@ function AppContent() {
                 </div>
               </div>
 
+              {/* Options Section */}
+              <div id="options-section" className="mb-12">
+                <h2 className="text-xl font-semibold text-slate-900 text-center mb-8">
+                  Choisissez vos options
+                </h2>
+
+                <div className="space-y-6">
+                  {/* Option 1: Pack Cartons */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Vous souhaitez qu'on vous fournisse un pack cartons, bulle et adhésif? Votre pack, expédié sous 48h, contiendra: 10 cartons standards, 5 cartons livres, 1 film bulles, 1 rouleau adhésif
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.packCartons}
+                          onChange={(e) => setOptions(prev => ({ ...prev, packCartons: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 2: Date Flexible */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Calendar className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Reporter sans frais une fois la date du déménagement jusque 72h avant
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.dateFlexible}
+                          onChange={(e) => setOptions(prev => ({ ...prev, dateFlexible: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 3: Prix Flexible */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <ArrowDown className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Vous êtes flexible sur la date de la prestation? Economiser sur le prix de votre déménagement en étant flexible sur 5 jours
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.prixFlexible}
+                          onChange={(e) => setOptions(prev => ({ ...prev, prixFlexible: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 4: Démontage Remontage */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Vous souhaitez qu'on s'occupe du démontage et du remontage du mobilier quand c'est nécessaire?
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.demontageRemontage}
+                          onChange={(e) => setOptions(prev => ({ ...prev, demontageRemontage: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 5: Emballage Fragile */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Vous préférez nous confier l'emballage du fragile (vaisselles, tableaux, bibelots)?
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.emballageFragile}
+                          onChange={(e) => {
+                            setOptions(prev => ({ 
+                              ...prev, 
+                              emballageFragile: e.target.checked,
+                              emballageCartons: e.target.checked ? false : prev.emballageCartons
+                            }))
+                          }}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 6: Emballage Cartons */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Vous souhaitez qu'on emballe les cartons déclarés dans l'inventaire ?
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.emballageCartons}
+                          onChange={(e) => {
+                            setOptions(prev => ({ 
+                              ...prev, 
+                              emballageCartons: e.target.checked,
+                              emballageFragile: e.target.checked ? false : prev.emballageFragile
+                            }))
+                          }}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 7: Autorisation Stationnement */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        L'autorisation de stationnement pour le camion est recommandé et parfois même obligatoire dans certaines communes. Vous souhaitez que nous fassions les démarches pour vous?
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.autorisationStationnement}
+                          onChange={(e) => setOptions(prev => ({ ...prev, autorisationStationnement: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Option 8: Transport Vêtements */}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 leading-relaxed">
+                        Il existe une solution pratique pour transporter vos vêtement sans les froisser. Vous souhaitez qu'on utilise des penderies pour transporter vos vêtements sur cintres?
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={options.transportVetements}
+                          onChange={(e) => setOptions(prev => ({ ...prev, transportVetements: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Additional Info Section */}
               <div className="mt-8">
                 <div className="text-center mb-12">
@@ -2562,40 +2808,6 @@ function AppContent() {
                   </div>
                 </div>
 
-                {/* Property Value Section */}
-                <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-                  <h2 className="text-xl font-semibold text-slate-900 mb-8">
-                    Quelle est la valeur des biens transportés ?
-                  </h2>
-
-                  <div className="text-3xl font-bold text-slate-900 mb-8">
-                    {propertyValue.toLocaleString("fr-FR")} €
-                  </div>
-
-                  <div className="max-w-2xl mx-auto">
-                    <input
-                      type="range"
-                      min="3000"
-                      max="60000"
-                      step="3000"
-                      value={propertyValue}
-                      onChange={(e) => setPropertyValue(parseInt(e.target.value))}
-                      className="w-full h-6 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                      style={{
-                        background: `linear-gradient(to right, #1c3957 0%, #1c3957 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 100%)`,
-                        outline: 'none',
-                        height: '6px',
-                        borderRadius: '3px'
-                      }}
-                    />
-
-                    <div className="flex justify-between text-sm text-slate-600 mt-4">
-                      <span>3000€</span>
-                      <span>60000€</span>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Guarantee Section */}
                 <div className="bg-slate-100 rounded-lg p-8 text-center mb-16">
                   <h2 className="text-xl font-semibold text-slate-900 mb-4">
@@ -2628,6 +2840,40 @@ function AppContent() {
                         {guarantee.label}
                       </Button>
                     ))}
+                  </div>
+                </div>
+
+                {/* Property Value Section */}
+                <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
+                  <h2 className="text-xl font-semibold text-slate-900 mb-8">
+                    Quelle est la valeur des biens transportés ?
+                  </h2>
+
+                  <div className="text-3xl font-bold text-slate-900 mb-8">
+                    {propertyValue.toLocaleString("fr-FR")} €
+                  </div>
+
+                  <div className="max-w-2xl mx-auto">
+                    <input
+                      type="range"
+                      min="3000"
+                      max="60000"
+                      step="3000"
+                      value={propertyValue}
+                      onChange={(e) => setPropertyValue(parseInt(e.target.value))}
+                      className="w-full h-6 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: `linear-gradient(to right, #1c3957 0%, #1c3957 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 100%)`,
+                        outline: 'none',
+                        height: '6px',
+                        borderRadius: '3px'
+                      }}
+                    />
+
+                    <div className="flex justify-between text-sm text-slate-600 mt-4">
+                      <span>3000€</span>
+                      <span>60000€</span>
+                    </div>
                   </div>
                 </div>
 
@@ -2871,7 +3117,8 @@ function AppContent() {
                     surface_area: selectedMethod === 'surface' ? parseFloat(surfaceArea) : undefined,
                     roomObjectQuantities: roomObjectQuantities,
                     uploadedImages: uploadedImages,
-                    roomAnalysisResults: roomAnalysisResults
+                    roomAnalysisResults: roomAnalysisResults,
+                    specialObjectQuantities: specialObjectQuantities
                   }}
                   quoteData={quoteResult || {
                     final_price: liveOptionPricing.liveTotal,
@@ -2880,6 +3127,7 @@ function AppContent() {
                     distance_km: quoteResult?.distance_km,
                     etage_total: quoteResult?.etage_total,
                     ascenseur_total: quoteResult?.ascenseur_total,
+                    demi_etage_total: quoteResult?.demi_etage_total,
                     escale_total: quoteResult?.escale_total,
                     portage_total: quoteResult?.portage_total
                   }}
@@ -3148,90 +3396,85 @@ function AppContent() {
                   </div>
 
                   {/* Method Selection */}
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Method 1: List Cleaning Tasks */}
                     <div
-                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-colors"
+                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
                       onClick={() => handleSelectMethod("list")}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
-                            <List className="w-6 h-6" style={{ color: '#CC922F' }} />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-slate-900 mb-1">
-                              Je liste mes objets à déménager
-                            </h3>
-                            <p className="text-sm text-slate-600">
-                              Préciser quelles pièces et objets vous souhaitez déménager.
-                            </p>
-                          </div>
+                      <div className="flex flex-col items-center text-center space-y-4">
+                        <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
+                          <List className="w-8 h-8" style={{ color: '#CC922F' }} />
                         </div>
-                        <ChevronRight className="w-5 h-5 style={{ color: '#CC922F' }}" />
+                        <div>
+                          <h3 className="font-semibold text-slate-900 text-lg mb-2">
+                            Je liste mes objets à déménager
+                          </h3>
+                          <p className="text-sm text-slate-600 leading-relaxed">
+                            Préciser quelles pièces et objets vous souhaitez déménager.
+                          </p>
+                        </div>
+                        <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
                       </div>
                     </div>
 
                     {/* Method 2: AI Photo Detection */}
                     <div
-                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-colors"
+                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
                       onClick={() => handleSelectMethod("photo")}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4 relative">
-                            <Camera className="w-6 h-6" style={{ color: '#CC922F' }} />
-                            <div className="absolute -top-1 -right-1 bg-[#1c3957] text-white text-xs px-1 py-0.5 rounded">
-                              IA
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-slate-900 mb-1">
-                              J'envoie des photos de mon espace
-                            </h3>
-                            <p className="text-sm text-slate-600">
-                              Notre IA évaluera automatiquement le volume de votre déménagement.
-                            </p>
+                      <div className="flex flex-col items-center text-center space-y-4">
+                        <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center relative">
+                          <Camera className="w-8 h-8" style={{ color: '#CC922F' }} />
+                          <div className="absolute -top-2 -right-2 bg-[#1c3957] text-white text-xs px-2 py-1 rounded-full font-semibold">
+                            IA
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 style={{ color: '#CC922F' }}" />
+                        <div>
+                          <h3 className="font-semibold text-slate-900 text-lg mb-2">
+                            J'envoie des photos de mon espace
+                          </h3>
+                          <p className="text-sm text-slate-600 leading-relaxed">
+                            Notre IA évaluera automatiquement le volume de votre déménagement.
+                          </p>
+                        </div>
+                        <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
                       </div>
                     </div>
 
                     {/* Method 3: Surface Area Based Quote */}
                     <div
-                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-colors"
+                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
                       onClick={() => handleSelectMethod("surface")}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
-                            <Maximize2 className="w-6 h-6" style={{ color: '#CC922F' }} />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-slate-900 mb-1">
-                              Mon devis en fonction de la superficie
-                            </h3>
-                            <p className="text-sm text-slate-600">
-                              Obtenez une estimation rapide basée sur la surface totale de votre logement.
-                            </p>
-                          </div>
+                      <div className="flex flex-col items-center text-center space-y-4">
+                        <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
+                          <Maximize2 className="w-8 h-8" style={{ color: '#CC922F' }} />
                         </div>
-                        <ChevronRight className="w-5 h-5 style={{ color: '#CC922F' }}" />
+                        <div>
+                          <h3 className="font-semibold text-slate-900 text-lg mb-2">
+                            Mon devis en fonction de la superficie
+                          </h3>
+                          <p className="text-sm text-slate-600 leading-relaxed">
+                            Obtenez une estimation rapide basée sur la surface totale de votre logement.
+                          </p>
+                        </div>
+                        <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
                       </div>
                     </div>
 
-                    {/* Back Button */}
-                    <div className="mt-8">
-                      <Button
-                        variant="outline"
-                        onClick={handleBackToForm}
-                        className="flex items-center gap-2 bg-[#1c3957] hover:bg-[#1c3957]/90 text-white hover:text-white border-[#1c3957]"
-                      >
-                        <ArrowLeft className="w-4 h-4" />
-                        RETOUR
-                      </Button>
-                    </div>
+                  </div>
+
+                  {/* Back Button */}
+                  <div className="mt-8 lg:col-span-3">
+                    <Button
+                      variant="outline"
+                      onClick={handleBackToForm}
+                      className="flex items-center gap-2 bg-[#1c3957] hover:bg-[#1c3957]/90 text-white hover:text-white border-[#1c3957]"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      RETOUR
+                    </Button>
                   </div>
                 </>
               )}
@@ -5022,6 +5265,10 @@ function AppContent() {
                               else if (addressData.departure.floor !== "RDC") {
                                 updateAddressOption("departure", "monteMenuble", true);
                               }
+                              // Reset demi-étage when elevator is set to "Non"
+                              if (value === "Non") {
+                                updateAddressData("departure", "demiEtage", false);
+                              }
                             }}
                             disabled={addressData.departure.floor === "RDC"}
                           >
@@ -5038,6 +5285,21 @@ function AppContent() {
                           </Select>
                         </div>
                       </div>
+                      {addressData.departure.elevator !== "Non" && (
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="departure-demi-etage"
+                            checked={addressData.departure.demiEtage}
+                            onCheckedChange={(checked) =>
+                              updateAddressData("departure", "demiEtage", checked as boolean)
+                            }
+                            className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200 shrink-0"
+                          />
+                          <Label htmlFor="departure-demi-etage" className="text-sm text-slate-600">
+                            Dans les étages sélectionnés, y a-t-il un ascenseur desservant uniquement un demi-étage ?
+                          </Label>
+                        </div>
+                      )}
 
                       <div className="flex flex-wrap gap-4">
                         <div className="flex items-center space-x-2">
@@ -5195,6 +5457,10 @@ function AppContent() {
                                 if (value !== "Non") {
                                   updateEscaleOption(escale.id, "monteMenuble", false);
                                 }
+                                // Reset demi-étage when elevator is set to "Non"
+                                if (value === "Non") {
+                                  updateEscaleData(escale.id, "demiEtage", false);
+                                }
                               }}
                             >
                               <SelectTrigger className="bg-slate-50 border-slate-200">
@@ -5210,6 +5476,21 @@ function AppContent() {
                             </Select>
                           </div>
                         </div>
+                        {escale.elevator !== "Non" && (
+                          <div className="flex items-center space-x-2">
+                            <Switch
+                              id={`escale-${escale.id}-demi-etage`}
+                              checked={escale.demiEtage}
+                              onCheckedChange={(checked) =>
+                                updateEscaleData(escale.id, "demiEtage", checked as boolean)
+                              }
+                              className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200 shrink-0"
+                            />
+                            <Label htmlFor={`escale-${escale.id}-demi-etage`} className="text-sm text-slate-600">
+                              Dans les étages sélectionnés, y a-t-il un ascenseur desservant uniquement un demi-étage ?
+                            </Label>
+                          </div>
+                        )}
 
                         <div className="flex flex-wrap gap-4">
                           <div className="flex items-center space-x-2">
@@ -5359,6 +5640,10 @@ function AppContent() {
                               else if (addressData.arrival.floor !== "RDC") {
                                 updateAddressOption("arrival", "monteMenuble", true);
                               }
+                              // Reset demi-étage when elevator is set to "Non"
+                              if (value === "Non") {
+                                updateAddressData("arrival", "demiEtage", false);
+                              }
                             }}
                             disabled={addressData.arrival.floor === "RDC"}
                           >
@@ -5375,6 +5660,21 @@ function AppContent() {
                           </Select>
                         </div>
                       </div>
+                      {addressData.arrival.elevator !== "Non" && (
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="arrival-demi-etage"
+                            checked={addressData.arrival.demiEtage}
+                            onCheckedChange={(checked) =>
+                              updateAddressData("arrival", "demiEtage", checked as boolean)
+                            }
+                            className="data-[state=checked]:bg-[#1c3957] data-[state=unchecked]:bg-slate-200 shrink-0"
+                          />
+                          <Label htmlFor="arrival-demi-etage" className="text-sm text-slate-600">
+                            Dans les étages sélectionnés, y a-t-il un ascenseur desservant uniquement un demi-étage ?
+                          </Label>
+                        </div>
+                      )}
 
                       <div className="flex flex-wrap gap-4">
                         <div className="flex items-center space-x-2">
