@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/HeroSection";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { RoomSelector } from "@/components/RoomSelector";
-import { ArrowLeft, Zap, Camera, CheckCircle, AlertCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { ArrowLeft, Zap, CheckCircle, AlertCircle } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 type Step = 'hero' | 'selection' | 'analysis' | 'quote';
 
@@ -20,11 +20,10 @@ const Index = () => {
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
-  const [surfaceArea, setSurfaceArea] = useState<number>(30);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
-  const [quoteData, setQuoteData] = useState<any>(null);
+  const [_surfaceArea, setSurfaceArea] = useState<number>(0);
   const { toast } = useToast();
 
   const handleGetStarted = () => {
@@ -281,7 +280,7 @@ const Index = () => {
     });
 
     // Create summary
-    const summaryParts = [];
+    const summaryParts: string[] = [];
     Object.entries(combinedCounts).forEach(([object, count]) => {
       if (count === 1) {
         summaryParts.push(`1 ${object}`);
@@ -304,12 +303,12 @@ const Index = () => {
     };
   };
 
-  const handleImagesUpload = (images: UploadedImage[]) => {
-    setUploadedImages(prev => [...prev, ...images]);
-  };
-
   const handleSurfaceChange = (surface: number) => {
     setSurfaceArea(surface);
+  };
+
+  const handleImagesUpload = (images: UploadedImage[]) => {
+    setUploadedImages(prev => [...prev, ...images]);
   };
 
   const handleDeleteImage = (imageId: string) => {
@@ -373,16 +372,17 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           {currentStep === 'selection' && (
             <>
-                             <RoomSelector
-                 selectedRoom={selectedRoom}
-                 onRoomSelect={handleRoomSelect}
-                 onImagesUpload={handleImagesUpload}
-                 onContinue={handleContinueToAnalysis}
-                 hasUploadedImages={uploadedImages.length > 0}
-                 onSurfaceChange={handleSurfaceChange}
-                 uploadedImages={uploadedImages}
-                 onDeleteImage={handleDeleteImage}
-               />
+              <RoomSelector
+                selectedRoom={selectedRoom}
+                onRoomSelect={handleRoomSelect}
+                rooms={['salon', 'cuisine', 'chambre', 'salle-de-bain', 'bureau', 'entree', 'garage', 'salle-a-manger', 'autre']}
+                uploadedImages={uploadedImages}
+                onImagesUpload={(imgs) => handleImagesUpload(imgs as UploadedImage[])}
+                onContinue={handleContinueToAnalysis}
+                hasUploadedImages={uploadedImages.length > 0}
+                onSurfaceChange={handleSurfaceChange}
+                onDeleteImage={handleDeleteImage}
+              />
             </>
           )}
 

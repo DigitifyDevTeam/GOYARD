@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export const ProfessionalConnect = () => {
   const [, setHoveredIndex] = useState<number | null>(null);

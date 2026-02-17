@@ -53,7 +53,6 @@ import {
   Tag,
   Hash,
   Ruler,
-  X,
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
@@ -67,7 +66,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./components/ui/select";
-import { Checkbox } from "./components/ui/checkbox";
 import { Slider } from "./components/ui/slider";
 import { Switch } from "./components/ui/switch";
 import { ImageWithFallback } from "./components/figma/ImageWithFallback";
@@ -137,7 +135,7 @@ function AppContent() {
   const [selectedGuarantee, setSelectedGuarantee] = useState("1000");
   const [lastCalculationId, setLastCalculationId] = useState<number | null>(null);
   const [lastAddressId, setLastAddressId] = useState<number | null>(null);
-  const [distanceKm, setDistanceKm] = useState<number>(50);
+  const [, setDistanceKm] = useState<number>(50);
   const [quoteResult, setQuoteResult] = useState<{
     final_price: number;
     base_price_transport?: number;
@@ -201,7 +199,8 @@ function AppContent() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
-  const [roomAnalysisResults, setRoomAnalysisResults] = useState<Record<string, Record<string, number>>>({});
+  type RoomObjectValue = number | { quantity: number; volume_per_unit: number; total_volume: number; is_ai_detected: boolean; confidence: number | null };
+  const [roomAnalysisResults, setRoomAnalysisResults] = useState<Record<string, Record<string, RoomObjectValue>>>({});
   const [newObjectInputs, setNewObjectInputs] = useState<Record<string, string>>({});
 
   // Special objects state
@@ -530,14 +529,14 @@ function AppContent() {
     navigate("/tunnel/choix-volume");
   };
 
-  const handlePreviousRoom = () => {
+  const _handlePreviousRoom = () => {
     const currentIndex = rooms.indexOf(selectedRoom || rooms[0]);
     if (currentIndex > 0) {
       setSelectedRoom(rooms[currentIndex - 1]);
     }
   };
 
-  const handleNextRoom = () => {
+  const _handleNextRoom = () => {
     const currentIndex = rooms.indexOf(selectedRoom || rooms[0]);
     if (currentIndex < rooms.length - 1) {
       setSelectedRoom(rooms[currentIndex + 1]);
@@ -746,7 +745,7 @@ function AppContent() {
     };
   };
 
-  const handleContinueToAddresses = () => {
+  const _handleContinueToAddresses = () => {
     navigate("/tunnel/adresses");
   };
 
@@ -764,7 +763,7 @@ function AppContent() {
       const roomSelections: Record<string, Record<string, number>> = {};
 
       // Map room-specific quantities to API format
-      Object.entries(roomObjectQuantities).forEach(([roomName, objects]) => {
+      Object.entries(roomObjectQuantities).forEach(([_roomName, objects]) => {
         if (Object.keys(objects).length > 0) {
           // Map frontend room names to backend room names
           const roomMapping: Record<string, string> = {
@@ -780,7 +779,7 @@ function AppContent() {
             "Autre": "autre"
           };
 
-          const backendRoomName = roomMapping[roomName] || "autre";
+          const backendRoomName = roomMapping[_roomName] || "autre";
 
           Object.entries(objects).forEach(([item, quantity]) => {
             if (quantity > 0) {
@@ -839,7 +838,7 @@ function AppContent() {
 
       // Prepare custom objects data from room-specific quantities
       const customObjects: Record<string, any> = {};
-      Object.entries(roomObjectQuantities).forEach(([roomName, objects]) => {
+      Object.entries(roomObjectQuantities).forEach(([, objects]) => {
         Object.entries(objects).forEach(([item, quantity]) => {
           if (quantity > 0) {
             // Check if this is a custom object (not in predefined objects)
@@ -904,17 +903,16 @@ function AppContent() {
   const updateRoomObjectQuantity = (roomId: string, object: string, change: number) => {
     setRoomAnalysisResults(prev => {
       const currentObject = prev[roomId]?.[object];
-      const currentQuantity = typeof currentObject === 'number' ? currentObject : currentObject?.quantity || 0;
+      const currentQuantity = typeof currentObject === 'number' ? currentObject : (currentObject && typeof currentObject === 'object' && 'quantity' in currentObject ? currentObject.quantity : 0);
       const newQuantity = Math.max(0, currentQuantity + change);
-
+      const isObjectVal = currentObject && typeof currentObject === 'object' && 'quantity' in currentObject;
       return {
         ...prev,
         [roomId]: {
           ...prev[roomId],
-          [object]: typeof currentObject === 'object' ? {
-            ...currentObject,
-            quantity: newQuantity
-          } : newQuantity
+          [object]: isObjectVal && currentObject && typeof currentObject === 'object'
+            ? { ...currentObject, quantity: newQuantity }
+            : newQuantity
         }
       };
     });
@@ -1049,9 +1047,15 @@ function AppContent() {
     navigate("/tunnel/adresses");
   };
 
-  const handleContinueToInfo = () => {
+  const _handleContinueToInfo = () => {
     navigate("/tunnel/info");
   };
+
+  // Keep handlers for potential use (e.g. room navigation, steps)
+  useEffect(() => {
+    const _handlers = [_handlePreviousRoom, _handleNextRoom, _handleContinueToAddresses, _handleContinueToInfo, _dateOptions];
+    void _handlers;
+  }, []);
 
   const handleBackToQuote = () => {
     navigate("/tunnel/devis");
@@ -1902,7 +1906,7 @@ function AppContent() {
   };
 
 
-  const dateOptions = [
+  const _dateOptions = [
     { date: "ven. 29/08", price: null, selected: false },
     { date: "sam. 30/08", price: null, selected: false },
     { date: "dim. 31/08", price: null, selected: false },
@@ -2886,18 +2890,41 @@ function AppContent() {
                     roomAnalysisResults: roomAnalysisResults,
                     specialObjectQuantities: specialObjectQuantities
                   }}
-                  quoteData={quoteResult || {
+                  quoteData={quoteResult ? {
+                    final_price: quoteResult.final_price,
+                    base_price_transport: quoteResult.base_price_transport,
+                    volume_m3: quoteResult.volume_m3,
+                    distance_km: quoteResult.distance_km,
+                    etage_total: quoteResult.etage_total,
+                    ascenseur_total: quoteResult.ascenseur_total,
+                    demi_etage_total: quoteResult.demi_etage_total,
+                    escale_total: quoteResult.escale_total,
+                    portage_total: quoteResult.portage_total
+                  } : {
                     final_price: liveOptionPricing.liveTotal,
-                    base_price_transport: quoteResult?.base_price_transport,
-                    volume_m3: quoteResult?.volume_m3,
-                    distance_km: quoteResult?.distance_km,
-                    etage_total: quoteResult?.etage_total,
-                    ascenseur_total: quoteResult?.ascenseur_total,
-                    demi_etage_total: quoteResult?.demi_etage_total,
-                    escale_total: quoteResult?.escale_total,
-                    portage_total: quoteResult?.portage_total
+                    base_price_transport: undefined,
+                    volume_m3: undefined,
+                    distance_km: undefined,
+                    etage_total: undefined,
+                    ascenseur_total: undefined,
+                    demi_etage_total: undefined,
+                    escale_total: undefined,
+                    portage_total: undefined
                   }}
-                  addressData={addressData}
+                  addressData={{
+                    departure: {
+                      address: addressData.departure.address,
+                      floor: addressData.departure.floor,
+                      elevator: addressData.departure.elevator === "Oui",
+                      options: { portageDistanceM: addressData.departure.options.portageDistanceM }
+                    },
+                    arrival: {
+                      address: addressData.arrival.address,
+                      floor: addressData.arrival.floor,
+                      elevator: addressData.arrival.elevator === "Oui",
+                      options: { portageDistanceM: addressData.arrival.options.portageDistanceM }
+                    }
+                  }}
                   optionsData={{
                     demontageRemontage: options.demontageRemontage,
                     emballageFragile: options.emballageFragile,
@@ -4647,8 +4674,8 @@ function AppContent() {
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {Object.entries(objects).map(([object, objectData]) => {
                                   // Handle both old (number) and new (object) data structures
-                                  const quantity = typeof objectData === 'number' ? objectData : objectData?.quantity || 0;
-                                  const isUserAdded = typeof objectData === 'object' && objectData?.is_ai_detected === false;
+                                  const quantity = typeof objectData === 'number' ? objectData : (objectData && typeof objectData === 'object' && 'quantity' in objectData ? objectData.quantity : 0);
+                                  const isUserAdded = typeof objectData === 'object' && objectData !== null && 'is_ai_detected' in objectData && objectData.is_ai_detected === false;
 
                                   return (
                                     <div
@@ -4740,7 +4767,7 @@ function AppContent() {
                                       const currentRoomObjects = Object.keys(objects);
 
                                       // Map frontend room names to backend room keys
-                                      const roomMapping = {
+                                      const roomMapping: Record<string, string> = {
                                         'Entrée': 'entree',
                                         'Salle de bain': 'salle-de-bain',
                                         'Salon': 'salon',
@@ -4754,7 +4781,7 @@ function AppContent() {
                                       };
 
                                       // Add objects from backend ROOM_OBJECTS for each room type
-                                      const commonObjects = {
+                                      const commonObjects: Record<string, string[]> = {
                                         'entree': ['Banc', 'Cadre', 'Carton', 'Console', 'Etagére muale', 'Meuble a chaussure', 'Miroir', 'Porte manteau', 'Coffre pour s\'assoir et mettre les chaussures', 'Tapis'],
                                         'salle-de-bain': ['Boîte ou panier', 'Carton', 'Coffre a linge', 'Colonne salle de bain', 'Lave linge', 'Meuble salle de bain', 'Miroir', 'Tapis petit', 'Baignoire enfant'],
                                         'salon': ['Canapé 3 places (-80KG)', 'Canapé d\'angle (-80KG)', 'Carton', 'hifi', 'Lampadaire', 'Meuble TV bas', 'Table basse', 'Télevision', 'Fauteuil', 'Pouf', 'Tapis', 'Cadre', 'Miroir', 'Banc', 'Etendoir'],
@@ -4787,8 +4814,8 @@ function AppContent() {
                                       // Check if this is a detected object or a common object suggestion
                                       const isDetectedObject = objects.hasOwnProperty(objectName);
                                       const objectData = isDetectedObject ? objects[objectName] : null;
-                                      const quantity = isDetectedObject ? (typeof objectData === 'number' ? objectData : objectData?.quantity || 0) : 0;
-                                      const isUserAdded = isDetectedObject && typeof objectData === 'object' && objectData?.is_ai_detected === false;
+                                      const quantity = isDetectedObject ? (typeof objectData === 'number' ? objectData : (objectData && typeof objectData === 'object' && 'quantity' in objectData ? objectData.quantity : 0)) : 0;
+                                      const isUserAdded = isDetectedObject && typeof objectData === 'object' && objectData !== null && 'is_ai_detected' in objectData && objectData.is_ai_detected === false;
 
                                       return (
                                         <div

@@ -1,22 +1,5 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { RefreshCw } from "lucide-react";
-
-// NOTE: The following is a placeholder for the original Button component.
-// In a real app, you would use your existing UI library.
-const Button = ({
-  className,
-  children,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
-    className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 ${className}`}
-    {...props}
-  >
-    {children}
-  </button>
-);
-
 // Seeded pseudo-random number generator
 class SeededRandom {
   private seed: number;
@@ -138,7 +121,7 @@ const ImageStack = React.forwardRef<ImageStackRef, ImageStackProps>(
       ScatterPosition[]
     >([]);
     const [currentSeed, setCurrentSeed] = React.useState(seed);
-    const [loadedImages, setLoadedImages] = React.useState<Set<string>>(
+    const [, setLoadedImages] = React.useState<Set<string>>(
       new Set()
     );
 
@@ -311,8 +294,8 @@ const ImageStack = React.forwardRef<ImageStackRef, ImageStackProps>(
 );
 ImageStack.displayName = "ImageStack";
 
-// Example usage component
-const ImageStackDemo = () => {
+// Example usage component (exported for potential use)
+export function ImageStackDemo() {
   const sampleImages: ImageData[] = [
     {
       id: "mountain",
@@ -348,7 +331,7 @@ const ImageStackDemo = () => {
       </div>
     </div>
   );
-};
+}
 
 export { ImageStack };
 export default ImageStack;

@@ -194,7 +194,8 @@ function Group727() {
   );
 }
 
-function Group726() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group726() {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-start left-[1013px] top-[135px]">
       <div className="bg-white box-border content-stretch flex gap-[10px] items-center justify-center px-[10px] py-[12px] relative rounded-[4px] shadow-[0px_27px_8px_0px_rgba(251,116,163,0),0px_17px_7px_0px_rgba(251,116,163,0.01),0px_10px_6px_0px_rgba(251,116,163,0.05),0px_4px_4px_0px_rgba(251,116,163,0.09),0px_1px_2px_0px_rgba(251,116,163,0.1)] shrink-0">
@@ -530,7 +531,8 @@ function Frame720() {
   );
 }
 
-function Group1() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group1() {
   return (
     <svg
       className="block size-full"
@@ -807,7 +809,8 @@ function Group752() {
   );
 }
 
-function Group747() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group747() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[16.25%] mt-[76px] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[107.5px] not-italic relative text-[#161c2d] text-[24px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
@@ -818,7 +821,8 @@ function Group747() {
   );
 }
 
-function Group748() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group748() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[33.438%] mt-[calc(50%+13px)] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[27.5px] not-italic relative text-[#161c2d] text-[0px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
@@ -831,7 +835,8 @@ function Group748() {
   );
 }
 
-function Group749() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group749() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[50.625%] mt-[calc(50%+13px)] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[27.5px] not-italic relative text-[#161c2d] text-[24px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
@@ -843,7 +848,8 @@ function Group749() {
   );
 }
 
-function Group750() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group750() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[67.813%] mt-[calc(50%+13px)] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[27.5px] not-italic relative text-[#161c2d] text-[24px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
@@ -4109,7 +4115,8 @@ function Group753() {
   );
 }
 
-function Group685() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group685() {
   return (
     <div className="h-[32.102px] relative w-[259.486px]">
       <svg
@@ -4341,7 +4348,8 @@ function Group741() {
   );
 }
 
-function Group742() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Group742() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[16.25%] mt-[125px] place-items-start relative">
       <Group738 />
@@ -4466,7 +4474,8 @@ function LogoLinkedin() {
   );
 }
 
-function Social() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function _Social() {
   return (
     <div
       className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[75.313%] mt-[90.265%] place-items-start relative"

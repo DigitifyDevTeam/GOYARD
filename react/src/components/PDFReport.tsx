@@ -21,7 +21,7 @@ interface PDFReportProps {
       preview: string;
       roomId: string;
     }>;
-    roomAnalysisResults?: Record<string, Record<string, number>>;
+    roomAnalysisResults?: Record<string, Record<string, number | { quantity: number; volume_per_unit: number; total_volume: number; is_ai_detected: boolean; confidence: number | null }>>;
     specialObjectQuantities?: Record<string, number>;
   };
   quoteData: {
@@ -232,7 +232,8 @@ const PDFReport: React.FC<PDFReportProps> = ({
                           <p className="font-medium text-gray-600 mb-1">Objets détectés par l'IA :</p>
                           <div className="grid grid-cols-2 gap-1">
                             {Object.entries(methodData.roomAnalysisResults?.[image.roomId] || {})
-                              .filter(([_, quantity]) => quantity > 0)
+                              .map(([objectName, val]): [string, number] => [objectName, typeof val === 'number' ? val : (val?.quantity ?? 0)])
+                              .filter(([_, q]) => q > 0)
                               .map(([objectName, quantity]) => (
                                 <div key={objectName} className="flex justify-between text-xs py-1">
                                   <span className="text-gray-600">{objectName}</span>

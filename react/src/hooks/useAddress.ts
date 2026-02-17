@@ -11,8 +11,6 @@ import {
   updateAddress,
   deleteAddress,
   AddressData,
-  ApiResponse,
-  AddressListResponse,
 } from '@/services/addressApi';
 
 interface UseAddressReturn {
