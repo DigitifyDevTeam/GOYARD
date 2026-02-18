@@ -10,11 +10,11 @@ cd ~/GOYARD/backend
 source load_env.sh
 
 echo "[2/5] Installing Python dependencies..."
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 echo "[3/5] Running Django migrations & collecting static files..."
-python manage.py migrate --noinput
-python manage.py collectstatic --noinput
+python3 manage.py migrate --noinput
+python3 manage.py collectstatic --noinput
 
 # ── 2. Frontend build ──
 echo ""
