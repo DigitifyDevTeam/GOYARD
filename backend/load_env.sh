@@ -9,9 +9,9 @@ export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 export DJANGO_SECRET_KEY="J0UNZwQmnaSWOKQlfaumdKsmqwIF63iE5peYeWT8FFeTKGxtAatphQDswe0pJjttOlA"
 
 # MySQL/MariaDB Database Configuration
-export DB_NAME=qe2rfm_dev
-export DB_USER=qe2rfm_dev
-export DB_PASSWORD="Abra5687ca77dabra."
+export DB_NAME=121iq1_guivarchebd
+export DB_USER=121iq1_uivarchea
+export DB_PASSWORD="hMN1Zb4FnvTTfXg!"
 export DB_HOST=localhost
 export DB_PORT=3306
 

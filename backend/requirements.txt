@@ -8,7 +8,9 @@ gunicorn>=21.0.0
 # Core Django dependencies
 Django==4.2.7
 djangorestframework>=3.14.0
-tensorflow==2.15.0
+# Use CPU-only build on server (no GPU) — avoids ~2GB of NVIDIA CUDA/cuDNN deps.
+# For local GPU dev, replace with: tensorflow==2.15.0
+tensorflow-cpu==2.15.0
 keras==2.15.0
 opencv-python==4.8.1.78
 Pillow>=11.1.0
