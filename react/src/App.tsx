@@ -555,7 +555,7 @@ function AppContent() {
         formData.append('photos', file);
       });
 
-      const response = await fetch('http://localhost:8000/api/check-duplicates/', {
+      const response = await fetch('/api/check-duplicates/', {
         method: 'POST',
         body: formData,
       });
@@ -646,7 +646,7 @@ function AppContent() {
           console.log('Sending heavy objects:', heavyObjectsData);
         }
 
-        const response = await fetch('http://localhost:8000/api/predict/', {
+        const response = await fetch('/api/predict/', {
           method: 'POST',
           body: formData,
         });

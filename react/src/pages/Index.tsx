@@ -82,7 +82,7 @@ const Index = () => {
         const formData = new FormData();
         formData.append('image', image.file);
 
-        const response = await fetch('http://localhost:8000/api/predict/', {
+        const response = await fetch('/api/predict/', {
           method: 'POST',
           body: formData,
         });

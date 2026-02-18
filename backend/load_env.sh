@@ -1,19 +1,28 @@
 #!/bin/bash
+# Production environment for goyard-demenagement.fr
+# Usage: source load_env.sh
 
-# Load environment variables for production
+# Django
 export DJANGO_SETTINGS_MODULE=core.settings.production
+export DJANGO_ENV=production
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+export DJANGO_SECRET_KEY="J0UNZwQmnaSWOKQlfaumdKsmqwIF63iE5peYeWT8FFeTKGxtAatphQDswe0pJjttOlA"
 
-# Add any additional environment variables here
-# Example:
-export DJANGO_SECRET_KEY="your-secret-key-here-change-this-in-production"
-export DB_NAME="your_database_name"
-export DB_USER="your_database_user"
-export DB_PASSWORD="your_database_password"
-export DB_HOST="localhost"
-export DB_PORT="3306"
-export ALLOWED_HOSTS="goyard-demenagement.fr,www.goyard-demenagement.fr"
-export CORS_ALLOWED_ORIGINS="https://goyard-demenagement.fr,https://www.goyard-demenagement.fr"
-export GOOGLE_MAPS_API_KEY="your-google-maps-api-key"
+# MySQL/MariaDB Database Configuration
+export DB_NAME=qe2rfm_dev
+export DB_USER=qe2rfm_dev
+export DB_PASSWORD="Abra5687ca77dabra."
+export DB_HOST=localhost
+export DB_PORT=3306
+
+# Allowed hosts
+export ALLOWED_HOSTS=goyard-demenagement.fr,www.goyard-demenagement.fr
+
+# CORS (no trailing slashes)
+export CORS_ALLOW_ALL_ORIGINS=False
+export CORS_ALLOWED_ORIGINS=https://goyard-demenagement.fr,https://www.goyard-demenagement.fr
+
+# Google Maps API key
+export GOOGLE_MAPS_API_KEY="AIzaSyBxtvdAKLEDoTLkVew4B2eFlH79SgYcHtU"
 
 echo "Environment variables loaded for production"

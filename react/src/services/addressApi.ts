@@ -3,8 +3,8 @@
  * Handles all API calls related to addresses
  */
 
-// Use environment variable or fallback to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+// In production (same domain), use empty string for relative URLs; in dev, Vite proxy handles /api
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
 
 // Types
 export interface AddressOptions {

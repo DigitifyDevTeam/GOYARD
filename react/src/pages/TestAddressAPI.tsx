@@ -22,7 +22,7 @@ export function TestAddressAPI() {
 
   const checkAPIStatus = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/demenagement/addresses/');
+      const response = await fetch('/api/demenagement/addresses/');
       if (response.ok) {
         setApiStatus('online');
       } else {
@@ -108,7 +108,7 @@ export function TestAddressAPI() {
                 <XCircle className="text-red-500" />
                 <span className="text-red-500 font-semibold">API is Offline ✗</span>
                 <span className="text-sm text-gray-500 ml-2">
-                  Make sure the Django server is running on http://127.0.0.1:8000
+                  Make sure the Django backend API is running
                 </span>
               </>
             )}
@@ -236,7 +236,7 @@ export function TestAddressAPI() {
               loading,
               error,
               addressCount: addresses.length,
-              apiUrl: 'http://127.0.0.1:8000',
+              apiUrl: window.location.origin,
             }, null, 2)}
           </pre>
         </CardContent>
