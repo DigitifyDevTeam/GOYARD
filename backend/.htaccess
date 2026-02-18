@@ -9,39 +9,24 @@
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
-# ─── Passenger (Django WSGI via Apache) ───
-# Adjust the paths below to match your server:
-#   PassengerAppRoot  = where passenger_wsgi.py lives (backend directory)
-#   PassengerPython   = path to the Python binary (virtualenv or system)
-<IfModule mod_passenger.c>
-    PassengerEnabled On
-    PassengerAppRoot /home/uid332672/GOYARD/backend
-    PassengerAppType wsgi
-    PassengerStartupFile passenger_wsgi.py
-    # Uncomment and adjust if using a virtualenv:
-    # PassengerPython /home/uid332672/virtualenv/GOYARD/3.11/bin/python
+# ─── Reverse proxy: send /api, /admin, /static, /media to Gunicorn (port 8002) ───
+# Requires: mod_proxy, mod_proxy_http, mod_rewrite. If you get 500, ask host to enable "AllowOverride" for proxy or add ProxyPass in vhost.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} ^/(api|admin|static|media|swagger|redoc)/
+    RewriteRule ^(.*)$ http://127.0.0.1:8002/$1 [P,L]
 </IfModule>
 
-# ─── Routing ───
+# ─── Routing (static files + SPA) ───
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # 1) If the requested file or directory exists, serve it directly
-    #    (this serves index.html, assets/*, images, etc. from dist/)
+    # 1) If the requested file or directory exists, serve it directly (frontend dist/)
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # 2) API, admin, swagger, static, media → fall through to Passenger → Django
-    RewriteCond %{REQUEST_URI} ^/api/ [OR]
-    RewriteCond %{REQUEST_URI} ^/admin/ [OR]
-    RewriteCond %{REQUEST_URI} ^/swagger/ [OR]
-    RewriteCond %{REQUEST_URI} ^/redoc/ [OR]
-    RewriteCond %{REQUEST_URI} ^/static/ [OR]
-    RewriteCond %{REQUEST_URI} ^/media/
-    RewriteRule ^ - [L]
-
-    # 3) SPA catch-all: everything else → index.html (React Router handles it)
+    # 2) SPA catch-all: everything else → index.html (React Router)
     RewriteRule ^ index.html [L]
 </IfModule>
 
