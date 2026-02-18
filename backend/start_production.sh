@@ -16,7 +16,7 @@ python manage.py migrate
 # Start Gunicorn server
 echo "Starting Gunicorn server..."
 gunicorn \
-    --bind 0.0.0.0:8000 \
+    --bind 0.0.0.0:8002 \
     --workers 4 \
     --worker-class sync \
     --timeout 120 \
