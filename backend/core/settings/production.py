@@ -21,7 +21,8 @@ DEBUG = False
 # Set ALLOWED_HOSTS from env (comma-separated) or default to empty (you must set it)
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()]
 if not ALLOWED_HOSTS:
-    raise ValueError('ALLOWED_HOSTS environment variable must be set in production (e.g. yourdomain.com,www.yourdomain.com)')
+    # Default to goyard-demenagement.fr if not set in environment
+    ALLOWED_HOSTS = ['goyard-demenagement.fr', 'www.goyard-demenagement.fr']
 
 # Application definition
 INSTALLED_APPS = [
@@ -112,7 +113,8 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
 if not CORS_ALLOWED_ORIGINS:
-    raise ValueError('CORS_ALLOWED_ORIGINS must be set in production (e.g. https://yourdomain.com,https://www.yourdomain.com)')
+    # Default to goyard-demenagement.fr if not set in environment
+    CORS_ALLOWED_ORIGINS = ['https://goyard-demenagement.fr', 'https://www.goyard-demenagement.fr']
 
 # File upload settings
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
