@@ -1,0 +1,35 @@
+# Apache configuration for Django backend (goyard-demenagement.fr)
+# Place this in the backend directory that Apache uses as document root or application path.
+
+# Force HTTPS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Protect sensitive files (env, scripts, Python, DB)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(env|pyc|py|sqlite3|db)$">
+    Require all denied
+</FilesMatch>
+<Files "load_env.sh">
+    Require all denied
+</Files>
+<Files "env.production.example">
+    Require all denied
+</Files>
+
+# Deny access to directories that must not be served
+<IfModule mod_rewrite.c>
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^\.git - [F,L]
+    RewriteRule ^__pycache__ - [F,L]
+    RewriteRule ^(staticfiles|media|logs)/ - [F,L]
+</IfModule>
+
+# Optional: if Apache is configured with mod_wsgi and this dir is the app root,
+# your VirtualHost should define WSGIScriptAlias; .htaccess cannot start WSGI.
+# See apache-vhost.conf.example for a sample VirtualHost.
