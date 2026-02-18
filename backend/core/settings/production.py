@@ -23,6 +23,10 @@ ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',
 if not ALLOWED_HOSTS:
     # Default to goyard-demenagement.fr if not set in environment
     ALLOWED_HOSTS = ['goyard-demenagement.fr', 'www.goyard-demenagement.fr']
+# Allow localhost/127.0.0.1 for health checks and curl from the server
+for host in ('127.0.0.1', 'localhost'):
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 # Application definition
 INSTALLED_APPS = [
