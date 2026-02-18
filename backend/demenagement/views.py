@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -371,7 +373,7 @@ def list_manual_selections(request):
     }, status=status.HTTP_200_OK)
 
 
-def _google_distance_matrix_km(origin: str, destination: str) -> float | None:
+def _google_distance_matrix_km(origin: str, destination: str) -> Optional[float]:
     """
     Call Google Distance Matrix API server-side and return driving distance in km.
     Returns None on error.

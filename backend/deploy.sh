@@ -1,4 +1,5 @@
 #!/bin/bash
+# Run this script only (./deploy.sh). Do not paste pip or npm output into the terminal.
 set -e
 
 echo "=== Deploying goyard-demenagement.fr ==="

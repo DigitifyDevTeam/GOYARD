@@ -1,0 +1,458 @@
+1)uid332672@od-e61616:~/GOYARD$ cd backend/
+uid332672@od-e61616:~/GOYARD/backend$ pip3 install -r requirements.txt
+Requirement already satisfied: pymysql>=1.1.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from -r requirements.txt (line 3)) (1.1.2)
+Collecting gunicorn>=21.0.0
+  Using cached gunicorn-23.0.0-py3-none-any.whl (85 kB)
+Collecting Django==4.2.7
+  Using cached Django-4.2.7-py3-none-any.whl (8.0 MB)
+Collecting djangorestframework>=3.14.0
+  Using cached djangorestframework-3.16.1-py3-none-any.whl (1.1 MB)
+Collecting tensorflow==2.15.0
+  Using cached tensorflow-2.15.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (475.2 MB)
+Collecting keras==2.15.0
+  Using cached keras-2.15.0-py3-none-any.whl (1.7 MB)
+Collecting opencv-python==4.8.1.78
+  Using cached opencv_python-4.8.1.78-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (61.7 MB)
+Requirement already satisfied: Pillow>=11.1.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from -r requirements.txt (line 14)) (11.3.0)
+Collecting numpy==1.24.3
+  Using cached numpy-1.24.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
+Collecting scikit-learn==1.3.2
+  Using cached scikit_learn-1.3.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (10.9 MB)
+Collecting django-cors-headers==4.3.1
+  Using cached django_cors_headers-4.3.1-py3-none-any.whl (12 kB)
+Collecting python-decouple==3.8
+  Using cached python_decouple-3.8-py3-none-any.whl (9.9 kB)
+Collecting matplotlib==3.7.2
+  Using cached matplotlib-3.7.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.6 MB)
+Collecting joblib==1.3.2
+  Using cached joblib-1.3.2-py3-none-any.whl (302 kB)
+Collecting ultralytics==8.3.189
+  Using cached ultralytics-8.3.189-py3-none-any.whl (1.1 MB)
+Collecting imageio>=2.33.0
+  Downloading imageio-2.37.2-py3-none-any.whl (317 kB)
+     |████████████████████████████████| 317 kB 1.9 MB/s
+Collecting imageio-ffmpeg==0.6.0
+  Using cached imageio_ffmpeg-0.6.0-py3-none-manylinux2014_x86_64.whl (29.5 MB)
+Collecting pillow-heif>=1.1.0
+  Downloading pillow_heif-1.1.1-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (5.5 MB)
+     |████████████████████████████████| 5.5 MB 37.6 MB/s
+Collecting drf-yasg==1.21.11
+  Using cached drf_yasg-1.21.11-py3-none-any.whl (4.3 MB)
+Requirement already satisfied: asgiref<4,>=3.6.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from Django==4.2.7->-r requirements.txt (line 9)) (3.11.1)
+Requirement already satisfied: sqlparse>=0.3.1 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from Django==4.2.7->-r requirements.txt (line 9)) (0.5.5)
+Collecting inflection>=0.3.1
+  Using cached inflection-0.5.1-py2.py3-none-any.whl (9.5 kB)
+Requirement already satisfied: pyyaml>=5.1 in /usr/lib/python3/dist-packages (from drf-yasg==1.21.11->-r requirements.txt (line 25)) (5.3.1)
+Requirement already satisfied: packaging>=21.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from drf-yasg==1.21.11->-r requirements.txt (line 25)) (26.0)
+Collecting uritemplate>=3.0.0
+  Using cached uritemplate-4.2.0-py3-none-any.whl (11 kB)
+Collecting pytz>=2021.1
+  Using cached pytz-2025.2-py2.py3-none-any.whl (509 kB)
+Requirement already satisfied: python-dateutil>=2.7 in /usr/lib/python3/dist-packages (from matplotlib==3.7.2->-r requirements.txt (line 19)) (2.8.1)
+Collecting fonttools>=4.22.0
+  Using cached fonttools-4.60.2-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.8 MB)
+Collecting cycler>=0.10
+  Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Collecting pyparsing<3.1,>=2.3.1
+  Using cached pyparsing-3.0.9-py3-none-any.whl (98 kB)
+Collecting contourpy>=1.0.1
+  Using cached contourpy-1.3.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (321 kB)
+Collecting importlib-resources>=3.2.0
+  Using cached importlib_resources-6.5.2-py3-none-any.whl (37 kB)
+Collecting kiwisolver>=1.0.1
+  Using cached kiwisolver-1.4.7-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (1.6 MB)
+Collecting scipy>=1.5.0
+  Downloading scipy-1.13.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (38.6 MB)
+     |████████████████████████████████| 38.6 MB 87.3 MB/s
+Collecting threadpoolctl>=2.0.0
+  Downloading threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+Collecting tensorflow-estimator<2.16,>=2.15.0
+  Downloading tensorflow_estimator-2.15.0-py2.py3-none-any.whl (441 kB)
+     |████████████████████████████████| 441 kB 103.0 MB/s
+Requirement already satisfied: flatbuffers>=23.5.26 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (25.12.19)
+Requirement already satisfied: grpcio<2.0,>=1.24.3 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (1.78.0)
+Requirement already satisfied: google-pasta>=0.1.1 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (0.2.0)
+Requirement already satisfied: astunparse>=1.6.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (1.6.3)
+Requirement already satisfied: absl-py>=1.0.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (2.3.1)
+Requirement already satisfied: termcolor>=1.1.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (3.1.0)
+Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (0.7.0)
+Requirement already satisfied: setuptools in /usr/lib/python3/dist-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (52.0.0)
+Requirement already satisfied: six>=1.12.0 in /usr/lib/python3/dist-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (1.16.0)
+Requirement already satisfied: libclang>=13.0.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (18.1.1)
+Collecting wrapt<1.15,>=1.11.0
+  Downloading wrapt-1.14.2-cp39-cp39-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (76 kB)
+     |████████████████████████████████| 76 kB 5.2 MB/s
+Collecting tensorflow-io-gcs-filesystem>=0.23.1
+  Downloading tensorflow_io_gcs_filesystem-0.37.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.1 MB)
+     |████████████████████████████████| 5.1 MB 23.8 MB/s
+Requirement already satisfied: typing-extensions>=3.6.6 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (4.15.0)
+Collecting tensorboard<2.16,>=2.15
+  Downloading tensorboard-2.15.2-py3-none-any.whl (5.5 MB)
+     |████████████████████████████████| 5.5 MB 96.3 MB/s
+Collecting ml-dtypes~=0.2.0
+  Downloading ml_dtypes-0.2.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.0 MB)
+     |████████████████████████████████| 1.0 MB 91.1 MB/s
+Requirement already satisfied: opt-einsum>=2.3.2 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (3.4.0)
+Collecting protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3
+  Downloading protobuf-4.25.8-cp37-abi3-manylinux2014_x86_64.whl (294 kB)
+     |████████████████████████████████| 294 kB 141.9 MB/s
+Requirement already satisfied: h5py>=2.9.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorflow==2.15.0->-r requirements.txt (line 11)) (3.14.0)
+Collecting torchvision>=0.9.0
+  Downloading torchvision-0.23.0-cp39-cp39-manylinux_2_28_x86_64.whl (8.6 MB)
+     |████████████████████████████████| 8.6 MB 43.2 MB/s
+Requirement already satisfied: requests>=2.23.0 in /usr/lib/python3/dist-packages (from ultralytics==8.3.189->-r requirements.txt (line 21)) (2.25.1)
+Collecting py-cpuinfo
+  Downloading py_cpuinfo-9.0.0-py3-none-any.whl (22 kB)
+Collecting torch>=1.8.0
+  Downloading torch-2.8.0-cp39-cp39-manylinux_2_28_x86_64.whl (888.0 MB)
+     |████████████████████████████████| 888.0 MB 2.1 kB/s
+Collecting ultralytics-thop>=2.0.0
+  Downloading ultralytics_thop-2.0.18-py3-none-any.whl (28 kB)
+Requirement already satisfied: psutil in /usr/lib/python3/dist-packages (from ultralytics==8.3.189->-r requirements.txt (line 21)) (5.8.0)
+Collecting polars
+  Downloading polars-1.36.1-py3-none-any.whl (802 kB)
+     |████████████████████████████████| 802 kB 58.4 MB/s
+Requirement already satisfied: wheel<1.0,>=0.23.0 in /usr/lib/python3/dist-packages (from astunparse>=1.6.0->tensorflow==2.15.0->-r requirements.txt (line 11)) (0.34.2)
+Requirement already satisfied: zipp>=3.1.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from importlib-resources>=3.2.0->matplotlib==3.7.2->-r requirements.txt (line 19)) (3.23.0)
+Collecting google-auth-oauthlib<2,>=0.5
+  Downloading google_auth_oauthlib-1.2.4-py3-none-any.whl (19 kB)
+Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (0.7.2)
+Requirement already satisfied: werkzeug>=1.0.1 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (3.1.5)
+Requirement already satisfied: markdown>=2.6.8 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (3.9)
+Collecting google-auth<3,>=1.6.3
+  Downloading google_auth-2.48.0-py3-none-any.whl (236 kB)
+     |████████████████████████████████| 236 kB 143.4 MB/s
+Collecting rsa<5,>=3.1.4
+  Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+Collecting cryptography>=38.0.3
+  Downloading cryptography-46.0.5-cp38-abi3-manylinux_2_28_x86_64.whl (4.5 MB)
+     |████████████████████████████████| 4.5 MB 97.3 MB/s
+Collecting pyasn1-modules>=0.2.1
+  Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+     |████████████████████████████████| 181 kB 146.3 MB/s
+Collecting cffi>=2.0.0
+  Downloading cffi-2.0.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (216 kB)
+     |████████████████████████████████| 216 kB 126.5 MB/s
+Collecting pycparser
+  Downloading pycparser-2.23-py3-none-any.whl (118 kB)
+     |████████████████████████████████| 118 kB 99.2 MB/s
+Collecting requests-oauthlib>=0.7.0
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Requirement already satisfied: importlib-metadata>=4.4 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from markdown>=2.6.8->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (8.7.1)
+Collecting pyasn1<0.7.0,>=0.6.1
+  Downloading pyasn1-0.6.2-py3-none-any.whl (83 kB)
+     |████████████████████████████████| 83 kB 2.5 MB/s
+Requirement already satisfied: oauthlib>=3.0.0 in /usr/lib/python3/dist-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (3.1.0)
+Collecting nvidia-cufft-cu12==11.3.3.83
+  Downloading nvidia_cufft_cu12-11.3.3.83-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (193.1 MB)
+     |████████████████████████████████| 193.1 MB 30 kB/s
+Collecting nvidia-cudnn-cu12==9.10.2.21
+  Downloading nvidia_cudnn_cu12-9.10.2.21-py3-none-manylinux_2_27_x86_64.whl (706.8 MB)
+     |████████████████████████████████| 706.8 MB 9.3 kB/s
+Collecting fsspec
+  Downloading fsspec-2025.10.0-py3-none-any.whl (200 kB)
+     |████████████████████████████████| 200 kB 92.9 MB/s
+Collecting nvidia-cusparse-cu12==12.5.8.93
+  Downloading nvidia_cusparse_cu12-12.5.8.93-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (288.2 MB)
+     |████████████████████████████████| 288.2 MB 9.7 kB/s
+Collecting nvidia-cusolver-cu12==11.7.3.90
+  Downloading nvidia_cusolver_cu12-11.7.3.90-py3-none-manylinux_2_27_x86_64.whl (267.5 MB)
+     |████████████████████████████████| 267.5 MB 51 kB/s
+Collecting nvidia-cufile-cu12==1.13.1.3
+  Downloading nvidia_cufile_cu12-1.13.1.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.2 MB)
+     |████████████████████████████████| 1.2 MB 104.0 MB/s
+Collecting nvidia-nvjitlink-cu12==12.8.93
+  Downloading nvidia_nvjitlink_cu12-12.8.93-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (39.3 MB)
+     |████████████████████████████████| 39.3 MB 82 kB/s
+Collecting nvidia-cuda-runtime-cu12==12.8.90
+  Downloading nvidia_cuda_runtime_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (954 kB)
+     |████████████████████████████████| 954 kB 107.6 MB/s
+Collecting nvidia-nvtx-cu12==12.8.90
+  Downloading nvidia_nvtx_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (89 kB)
+     |████████████████████████████████| 89 kB 8.5 MB/s
+Collecting networkx
+  Downloading networkx-3.2.1-py3-none-any.whl (1.6 MB)
+     |████████████████████████████████| 1.6 MB 95.1 MB/s
+Collecting nvidia-cublas-cu12==12.8.4.1
+  Downloading nvidia_cublas_cu12-12.8.4.1-py3-none-manylinux_2_27_x86_64.whl (594.3 MB)
+     |████████████████████████████████| 594.3 MB 18 kB/s
+Collecting nvidia-cusparselt-cu12==0.7.1
+  Downloading nvidia_cusparselt_cu12-0.7.1-py3-none-manylinux2014_x86_64.whl (287.2 MB)
+Collecting requests-oauthlib>=0.7.0
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Requirement already satisfied: importlib-metadata>=4.4 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from markdown>=2.6.8->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (8.7.1)
+Collecting pyasn1<0.7.0,>=0.6.1
+  Downloading pyasn1-0.6.2-py3-none-any.whl (83 kB)
+     |████████████████████████████████| 83 kB 2.5 MB/s
+Requirement already satisfied: oauthlib>=3.0.0 in /usr/lib/python3/dist-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (3.1.0)
+Collecting nvidia-cufft-cu12==11.3.3.83
+  Downloading nvidia_cufft_cu12-11.3.3.83-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (193.1 MB)
+     |████████████████████████████████| 193.1 MB 30 kB/s
+Collecting nvidia-cudnn-cu12==9.10.2.21
+  Downloading nvidia_cudnn_cu12-9.10.2.21-py3-none-manylinux_2_27_x86_64.whl (706.8 MB)
+     |████████████████████████████████| 706.8 MB 9.3 kB/s
+Collecting fsspec
+  Downloading fsspec-2025.10.0-py3-none-any.whl (200 kB)
+     |████████████████████████████████| 200 kB 92.9 MB/s
+Collecting nvidia-cusparse-cu12==12.5.8.93
+  Downloading nvidia_cusparse_cu12-12.5.8.93-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (288.2 MB)
+     |████████████████████████████████| 288.2 MB 9.7 kB/s
+Collecting nvidia-cusolver-cu12==11.7.3.90
+  Downloading nvidia_cusolver_cu12-11.7.3.90-py3-none-manylinux_2_27_x86_64.whl (267.5 MB)
+     |████████████████████████████████| 267.5 MB 51 kB/s
+Collecting nvidia-cufile-cu12==1.13.1.3
+  Downloading nvidia_cufile_cu12-1.13.1.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.2 MB)
+     |████████████████████████████████| 1.2 MB 104.0 MB/s
+Collecting nvidia-nvjitlink-cu12==12.8.93
+  Downloading nvidia_nvjitlink_cu12-12.8.93-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (39.3 MB)
+     |████████████████████████████████| 39.3 MB 82 kB/s
+Collecting nvidia-cuda-runtime-cu12==12.8.90
+  Downloading nvidia_cuda_runtime_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (954 kB)
+     |████████████████████████████████| 954 kB 107.6 MB/s
+Collecting nvidia-nvtx-cu12==12.8.90
+  Downloading nvidia_nvtx_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (89 kB)
+     |████████████████████████████████| 89 kB 8.5 MB/s
+Collecting networkx
+  Downloading networkx-3.2.1-py3-none-any.whl (1.6 MB)
+     |████████████████████████████████| 1.6 MB 95.1 MB/s
+Collecting nvidia-cublas-cu12==12.8.4.1
+  Downloading nvidia_cublas_cu12-12.8.4.1-py3-none-manylinux_2_27_x86_64.whl (594.3 MB)
+     |████████████████████████████████| 287.2 MB 16 kB/s
+Collecting triton==3.4.0
+  Downloading triton-3.4.0-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (155.4 MB)
+     |████████████████████████████████| 155.4 MB 246.9 MB/s
+Collecting filelock
+  Downloading filelock-3.19.1-py3-none-any.whl (15 kB)
+Collecting nvidia-cuda-cupti-cu12==12.8.90
+  Downloading nvidia_cuda_cupti_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.2 MB)
+     |████████████████████████████████| 10.2 MB 46 kB/s
+Collecting nvidia-curand-cu12==10.3.9.90
+  Downloading nvidia_curand_cu12-10.3.9.90-py3-none-manylinux_2_27_x86_64.whl (63.6 MB)
+     |████████████████████████████████| 63.6 MB 31 kB/s
+Collecting nvidia-nccl-cu12==2.27.3
+  Downloading nvidia_nccl_cu12-2.27.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (322.4 MB)
+     |████████████████████████████████| 322.4 MB 44 kB/s
+Collecting sympy>=1.13.3
+  Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+     |████████████████████████████████| 6.3 MB 129.9 MB/s
+Requirement already satisfied: jinja2 in /usr/lib/python3/dist-packages (from torch>=1.8.0->ultralytics==8.3.189->-r requirements.txt (line 21)) (2.11.3)
+Collecting nvidia-cuda-nvrtc-cu12==12.8.93
+  Downloading nvidia_cuda_nvrtc_cu12-12.8.93-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (88.0 MB)
+     |████████████████████████████████| 88.0 MB 71 kB/s
+Collecting mpmath<1.4,>=1.1.0
+  Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+     |████████████████████████████████| 536 kB 116.4 MB/s
+Requirement already satisfied: markupsafe>=2.1.1 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from werkzeug>=1.0.1->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (3.0.3)
+Collecting polars-runtime-32==1.36.1
+  Downloading polars_runtime_32-1.36.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (44.5 MB)
+     |████████████████████████████████| 44.5 MB 574 kB/s
+Installing collected packages: pycparser, pyasn1, nvidia-nvjitlink-cu12, cffi, rsa, pyasn1-modules, nvidia-cusparse-cu12, nvidia-cublas-cu12, mpmath, cryptography, triton, sympy, requests-oauthlib, nvidia-nvtx-cu12, nvidia-nccl-cu12, nvidia-cusparselt-cu12, nvidia-cusolver-cu12, nvidia-curand-cu12, nvidia-cufile-cu12, nvidia-cufft-cu12, nvidia-cudnn-cu12, nvidia-cuda-runtime-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-cupti-cu12, numpy, networkx, google-auth, fsspec, filelock, torch, pyparsing, protobuf, polars-runtime-32, kiwisolver, importlib-resources, google-auth-oauthlib, fonttools, Django, cycler, contourpy, wrapt, uritemplate, ultralytics-thop, torchvision, threadpoolctl, tensorflow-io-gcs-filesystem, tensorflow-estimator, tensorboard, scipy, pytz, py-cpuinfo, polars, opencv-python, ml-dtypes, matplotlib, keras, joblib, inflection, djangorestframework, ultralytics, tensorflow, scikit-learn, python-decouple, pillow-heif, imageio-ffmpeg, imageio, gunicorn, drf-yasg, django-cors-headers
+  WARNING: The scripts pyrsa-decrypt, pyrsa-encrypt, pyrsa-keygen, pyrsa-priv2pub, pyrsa-sign and pyrsa-verify are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts proton and proton-viewer are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script isympy is installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  Attempting uninstall: numpy
+    Found existing installation: numpy 2.0.2
+    Uninstalling numpy-2.0.2:
+      Successfully uninstalled numpy-2.0.2
+  WARNING: The scripts f2py, f2py3 and f2py3.9 are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts torchfrtrace and torchrun are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 6.33.5
+    Uninstalling protobuf-6.33.5:
+      Successfully uninstalled protobuf-6.33.5
+  WARNING: The script google-oauthlib-tool is installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts fonttools, pyftmerge, pyftsubset and ttx are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  Attempting uninstall: Django
+    Found existing installation: django 4.2.28
+    Uninstalling django-4.2.28:
+      Successfully uninstalled django-4.2.28
+  WARNING: The script django-admin is installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  Attempting uninstall: wrapt
+    Found existing installation: wrapt 2.1.1
+    Uninstalling wrapt-2.1.1:
+      Successfully uninstalled wrapt-2.1.1
+  Attempting uninstall: tensorboard
+    Found existing installation: tensorboard 2.20.0
+    Uninstalling tensorboard-2.20.0:
+      Successfully uninstalled tensorboard-2.20.0
+  WARNING: The script tensorboard is installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script cpuinfo is installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  Attempting uninstall: ml-dtypes
+    Found existing installation: ml-dtypes 0.5.4
+    Uninstalling ml-dtypes-0.5.4:
+      Successfully uninstalled ml-dtypes-0.5.4
+  Attempting uninstall: keras
+    Found existing installation: keras 3.10.0
+    Uninstalling keras-3.10.0:
+      Successfully uninstalled keras-3.10.0
+  WARNING: The scripts ultralytics and yolo are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  Attempting uninstall: tensorflow
+    Found existing installation: tensorflow 2.20.0
+    Uninstalling tensorflow-2.20.0:
+      Successfully uninstalled tensorflow-2.20.0
+  WARNING: The scripts estimator_ckpt_converter, import_pb_to_tensorboard, saved_model_cli, tensorboard, tf_upgrade_v2, tflite_convert, toco and toco_from_protos are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts imageio_download_bin and imageio_remove_bin are installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script gunicorn is installed in '/home/clients/98150c14a4d71f3399353e87134c05cc/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed Django-4.2.7 cffi-2.0.0 contourpy-1.3.0 cryptography-46.0.5 cycler-0.12.1 django-cors-headers-4.3.1 djangorestframework-3.16.1 drf-yasg-1.21.11 filelock-3.19.1 fonttools-4.60.2 fsspec-2025.10.0 google-auth-2.48.0 google-auth-oauthlib-1.2.4 gunicorn-23.0.0 imageio-2.37.2 imageio-ffmpeg-0.6.0 importlib-resources-6.5.2 inflection-0.5.1 joblib-1.3.2 keras-2.15.0 kiwisolver-1.4.7 matplotlib-3.7.2 ml-dtypes-0.2.0 mpmath-1.3.0 networkx-3.2.1 numpy-1.24.3 nvidia-cublas-cu12-12.8.4.1 nvidia-cuda-cupti-cu12-12.8.90 nvidia-cuda-nvrtc-cu12-12.8.93 nvidia-cuda-runtime-cu12-12.8.90 nvidia-cudnn-cu12-9.10.2.21 nvidia-cufft-cu12-11.3.3.83 nvidia-cufile-cu12-1.13.1.3 nvidia-curand-cu12-10.3.9.90 nvidia-cusolver-cu12-11.7.3.90 nvidia-cusparse-cu12-12.5.8.93 nvidia-cusparselt-cu12-0.7.1 nvidia-nccl-cu12-2.27.3 nvidia-nvjitlink-cu12-12.8.93 nvidia-nvtx-cu12-12.8.90 opencv-python-4.8.1.78 pillow-heif-1.1.1 polars-1.36.1 polars-runtime-32-1.36.1 protobuf-4.25.8 py-cpuinfo-9.0.0 pyasn1-0.6.2 pyasn1-modules-0.4.2 pycparser-2.23 pyparsing-3.0.9 python-decouple-3.8 pytz-2025.2 requests-oauthlib-2.0.0 rsa-4.9.1 scikit-learn-1.3.2 scipy-1.13.1 sympy-1.14.0 tensorboard-2.15.2 tensorflow-2.15.0 tensorflow-estimator-2.15.0 tensorflow-io-gcs-filesystem-0.37.1 threadpoolctl-3.6.0 torch-2.8.0 torchvision-0.23.0 triton-3.4.0 ultralytics-8.3.189 ultralytics-thop-2.0.18 uritemplate-4.2.0 wrapt-1.14.2
+uid332672@od-e61616:~/GOYARD/backend$ Collecting requests-oauthlib>=0.7.0
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$ Requirement already satisfied: importlib-metadata>=4.4 in /home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages (from markdown>=2.6.8->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (8.7.1)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$ Collecting pyasn1<0.7.0,>=0.6.1
+bash: 0.7.0,: No such file or directory
+uid332672@od-e61616:~/GOYARD/backend$   Downloading pyasn1-0.6.2-py3-none-any.whl (83 kB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 83 kB 2.5 MB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Requirement already satisfied: oauthlib>=3.0.0 in /usr/lib/python3/dist-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow==2.15.0->-r requirements.txt (line 11)) (3.1.0)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cufft-cu12==11.3.3.83
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cufft_cu12-11.3.3.83-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (193.1 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 193.1 MB 30 kB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cudnn-cu12==9.10.2.21
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cudnn_cu12-9.10.2.21-py3-none-manylinux_2_27_x86_64.whl (706.8 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 706.8 MB 9.3 kB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting fsspec
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading fsspec-2025.10.0-py3-none-any.whl (200 kB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 200 kB 92.9 MB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cusparse-cu12==12.5.8.93
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cusparse_cu12-12.5.8.93-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (288.2 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 288.2 MB 9.7 kB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cusolver-cu12==11.7.3.90
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cusolver_cu12-11.7.3.90-py3-none-manylinux_2_27_x86_64.whl (267.5 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 267.5 MB 51 kB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cufile-cu12==1.13.1.3
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cufile_cu12-1.13.1.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.2 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 1.2 MB 104.0 MB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-nvjitlink-cu12==12.8.93
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_nvjitlink_cu12-12.8.93-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (39.3 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 39.3 MB 82 kB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cuda-runtime-cu12==12.8.90
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cuda_runtime_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (954 kB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 954 kB 107.6 MB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-nvtx-cu12==12.8.90
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_nvtx_cu12-12.8.90-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (89 kB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 89 kB 8.5 MB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting networkx
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading networkx-3.2.1-py3-none-any.whl (1.6 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$      |████████████████████████████████| 1.6 MB 95.1 MB/s
+bash: syntax error near unexpected token `|'
+uid332672@od-e61616:~/GOYARD/backend$ Collecting nvidia-cublas-cu12==12.8.4.1
+bash: Collecting: command not found
+uid332672@od-e61616:~/GOYARD/backend$   Downloading nvidia_cublas_cu12-12.8.4.1-py3-none-manylinux_2_27_x86_64.whl (594.3 MB)
+bash: syntax error near unexpected token `('
+uid332672@od-e61616:~/GOYARD/backend$
+
+2)uid332672@od-e61616:~/GOYARD/backend$ source load_env.sh
+Environment variables loaded for production
+uid332672@od-e61616:~/GOYARD/backend$ python3 manage.py migrate --noinput
+WARNING ⚠️ user config directory '/home/clients/98150c14a4d71f3399353e87134c05cc/.config/Ultralytics' is not writeable, defaulting to '/tmp' or CWD. Alternatively you can define a YOLO_CONFIG_DIR environment variable for this path.
+Creating new Ultralytics Settings v0.0.6 file ✅
+View Ultralytics Settings with 'yolo settings' or at '/tmp/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.
+Traceback (most recent call last):
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/GOYARD/backend/manage.py", line 22, in <module>
+    main()
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/GOYARD/backend/manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+    utility.execute()
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/__init__.py", line 436, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/base.py", line 412, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/base.py", line 458, in execute
+    output = self.handle(*args, **options)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/base.py", line 106, in wrapper
+    res = handle_func(*args, **kwargs)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/commands/migrate.py", line 100, in handle
+    self.check(databases=[database])
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/management/base.py", line 485, in check
+    all_issues = checks.run_checks(
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 790, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/GOYARD/backend/core/urls.py", line 42, in <module>
+    path('api/demenagement/', include('demenagement.urls')),
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/.local/lib/python3.9/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 790, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/GOYARD/backend/demenagement/urls.py", line 2, in <module>
+    from . import views
+  File "/home/clients/98150c14a4d71f3399353e87134c05cc/GOYARD/backend/demenagement/views.py", line 374, in <module>
+    def _google_distance_matrix_km(origin: str, destination: str) -> float | None:
+TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'
+uid332672@od-e61616:~/GOYARD/backend$
