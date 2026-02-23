@@ -1,6 +1,6 @@
 import svgPaths from "./svg-jmcfzlx209";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import imgRectangle821 from "../assets/78a4471b4fbaf9a72a64dbc0d232cff16ca8bab6.png";
@@ -4489,6 +4489,258 @@ export function _Social() {
   );
 }
 
+const venteFlashData = [
+  {
+    id: 1,
+    depart: "Paris 15e",
+    arrivee: "Lyon 3e",
+    description: "Studio 25m² — Déménagement express avec 2 déménageurs, véhicule 12m³ inclus.",
+    prix: 349,
+    prixOriginal: 589,
+    badge: "-41%",
+  },
+  {
+    id: 2,
+    depart: "Marseille 6e",
+    arrivee: "Nice Centre",
+    description: "T2 45m² — Formule complète : emballage, transport et installation.",
+    prix: 499,
+    prixOriginal: 820,
+    badge: "-39%",
+  },
+  {
+    id: 3,
+    depart: "Toulouse",
+    arrivee: "Bordeaux",
+    description: "T3 65m² — Équipe de 3, camion 20m³, protection meubles premium.",
+    prix: 679,
+    prixOriginal: 1150,
+    badge: "-41%",
+  },
+  {
+    id: 4,
+    depart: "Lille Centre",
+    arrivee: "Bruxelles",
+    description: "Studio 30m² — Déménagement international, formalités douanières incluses.",
+    prix: 599,
+    prixOriginal: 980,
+    badge: "-39%",
+  },
+  {
+    id: 5,
+    depart: "Nantes",
+    arrivee: "Rennes",
+    description: "T2 50m² — Transport soigné avec assurance tous risques incluse.",
+    prix: 389,
+    prixOriginal: 650,
+    badge: "-40%",
+  },
+  {
+    id: 6,
+    depart: "Strasbourg",
+    arrivee: "Metz",
+    description: "T4 80m² — Équipe de 4, démontage/remontage meubles compris.",
+    prix: 799,
+    prixOriginal: 1320,
+    badge: "-39%",
+  },
+  {
+    id: 7,
+    depart: "Lyon 7e",
+    arrivee: "Grenoble",
+    description: "Studio 20m² — Petit déménagement rapide, idéal étudiant.",
+    prix: 249,
+    prixOriginal: 420,
+    badge: "-41%",
+  },
+  {
+    id: 8,
+    depart: "Montpellier",
+    arrivee: "Perpignan",
+    description: "T3 70m² — Pack sérénité avec emballage fragile et suivi GPS.",
+    prix: 549,
+    prixOriginal: 890,
+    badge: "-38%",
+  },
+];
+
+function VenteFlashCard({
+  depart,
+  arrivee,
+  description,
+  prix,
+  prixOriginal,
+  badge,
+}: {
+  depart: string;
+  arrivee: string;
+  description: string;
+  prix: number;
+  prixOriginal: number;
+  badge: string;
+}) {
+  return (
+    <div className="group relative bg-white rounded-[16px] shadow-[0px_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex-shrink-0 w-[340px] transition-all duration-300 hover:shadow-[0px_16px_48px_rgba(0,0,0,0.14)] hover:-translate-y-1 border border-[#f0eeef]">
+      <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-[#CC922F] to-[#e8b54a]" />
+
+      <div className="absolute top-[16px] right-[16px] bg-[#CC922F] text-white font-['Poppins',_sans-serif] font-[700] text-[13px] px-[10px] py-[4px] rounded-[20px] leading-none">
+        {badge}
+      </div>
+
+      <div className="p-[24px] pt-[28px]">
+        <div className="flex items-center gap-[12px] mb-[16px]">
+          <div className="flex flex-col items-center gap-[4px]">
+            <div className="w-[10px] h-[10px] rounded-full border-[2.5px] border-[#CC922F]" />
+            <div className="w-[2px] h-[28px] bg-gradient-to-b from-[#CC922F] to-[#1c3957] rounded-full" />
+            <div className="w-[10px] h-[10px] rounded-full bg-[#1c3957]" />
+          </div>
+          <div className="flex flex-col gap-[12px] flex-1">
+            <div>
+              <p className="font-['Poppins',_sans-serif] font-[400] text-[12px] text-[#90a1b9] uppercase tracking-[1px] leading-none mb-[3px]">
+                Départ
+              </p>
+              <p className="font-['Poppins',_sans-serif] font-[600] text-[15px] text-[#161c2d] leading-[1.3]">
+                {depart}
+              </p>
+            </div>
+            <div>
+              <p className="font-['Poppins',_sans-serif] font-[400] text-[12px] text-[#90a1b9] uppercase tracking-[1px] leading-none mb-[3px]">
+                Arrivée
+              </p>
+              <p className="font-['Poppins',_sans-serif] font-[600] text-[15px] text-[#161c2d] leading-[1.3]">
+                {arrivee}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full h-[1px] bg-[#f0eeef] mb-[14px]" />
+
+        <p className="font-['Poppins',_sans-serif] font-[400] text-[13.5px] text-[#555e6d] leading-[1.55] mb-[18px] line-clamp-2">
+          {description}
+        </p>
+
+        <div className="flex items-end justify-between">
+          <div className="flex items-baseline gap-[8px]">
+            <span className="font-['Poppins',_sans-serif] font-[700] text-[28px] text-[#1c3957] leading-none">
+              {prix}€
+            </span>
+            <span className="font-['Poppins',_sans-serif] font-[400] text-[15px] text-[#90a1b9] line-through leading-none">
+              {prixOriginal}€
+            </span>
+          </div>
+          <button className="bg-[#1c3957] text-white font-['Poppins',_sans-serif] font-[600] text-[13px] px-[18px] py-[10px] rounded-[8px] transition-all duration-200 hover:bg-[#2a4f6b] cursor-pointer leading-none">
+            Réserver
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VenteFlash() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const cardWidth = 340;
+  const gap = 24;
+  const step = cardWidth + gap;
+  const maxIndex = venteFlashData.length - 3;
+
+  const next = useCallback(() => {
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  }, [maxIndex]);
+
+  const prev = useCallback(() => {
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  }, [maxIndex]);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(next, 3000);
+    return () => clearInterval(interval);
+  }, [isHovered, next]);
+
+  return (
+    <section className="relative w-full bg-[#faf9f7] py-[80px] overflow-hidden shrink-0">
+      <div className="absolute top-0 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#CC922F] to-transparent opacity-30" />
+
+      <div className="max-w-[1320px] mx-auto px-[40px]">
+        <div className="flex items-center justify-between mb-[48px]">
+          <div>
+            <div className="flex items-center gap-[12px] mb-[12px]">
+              <div className="w-[40px] h-[3px] bg-[#CC922F] rounded-full" />
+              <span className="font-['Poppins',_sans-serif] font-[600] text-[14px] text-[#CC922F] uppercase tracking-[2px]">
+                Offres limitées
+              </span>
+            </div>
+            <h2 className="font-['Poppins',_sans-serif] font-[700] text-[42px] text-[#161c2d] leading-[1.2] tracking-[-0.5px]">
+              Vente Flash
+            </h2>
+            <p className="font-['Poppins',_sans-serif] font-[400] text-[17px] text-[#555e6d] mt-[10px] leading-[1.5]">
+              Profitez de nos offres exceptionnelles sur des déménagements à prix réduit.
+            </p>
+          </div>
+
+          <div className="flex gap-[12px]">
+            <button
+              onClick={prev}
+              className="w-[48px] h-[48px] rounded-full border-[2px] border-[#1c3957] flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-[#1c3957] hover:text-white text-[#1c3957] bg-transparent"
+              aria-label="Précédent"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button
+              onClick={next}
+              className="w-[48px] h-[48px] rounded-full bg-[#1c3957] flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-[#2a4f6b] text-white border-none"
+              aria-label="Suivant"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="overflow-hidden"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div
+            ref={trackRef}
+            className="flex gap-[24px] transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+            style={{ transform: `translateX(-${currentIndex * step}px)` }}
+          >
+            {venteFlashData.map((deal) => (
+              <VenteFlashCard key={deal.id} {...deal} />
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-[8px] mt-[36px]">
+          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`h-[8px] rounded-full transition-all duration-300 border-none cursor-pointer ${
+                i === currentIndex
+                  ? "w-[32px] bg-[#CC922F]"
+                  : "w-[8px] bg-[#d4d4d4] hover:bg-[#a0a0a0]"
+              }`}
+              aria-label={`Page ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#CC922F] to-transparent opacity-15" />
+    </section>
+  );
+}
+
 export default function Home() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
@@ -4512,6 +4764,7 @@ export default function Home() {
       <Group745 />
       <Frame23 />
       <Frame702 />
+      <VenteFlash />
       <Group719 />
       <Group756 />
       <Content01 />
