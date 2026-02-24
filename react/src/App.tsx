@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
 import ScrollToTop from "./components/ScrollToTop";
@@ -133,28 +133,11 @@ function AppContent() {
 
   const [propertyValue, setPropertyValue] = useState(27000);
   const [selectedGuarantee, setSelectedGuarantee] = useState("1000");
-  const [lastCalculationId, setLastCalculationId] = useState<number | null>(null);
-  const [lastAddressId, setLastAddressId] = useState<number | null>(null);
-  const [, setDistanceKm] = useState<number>(50);
-  const [quoteResult, setQuoteResult] = useState<{
-    final_price: number;
-    base_price_transport?: number;
-    etage_total?: number;
-    ascenseur_total?: number;
-    demi_etage_total?: number;
-    portage_total?: number;
-    escale_total?: number;
-    options_total?: number;
-    assurance_bien_price?: number;
-    demontage_remontage_price?: number;
-    emballage_fragile_price?: number;
-    emballage_cartons_price?: number;
-    breakdown?: Record<string, string>;
-    distance_km?: number;
-    volume_m3?: number;
-    adresse_depart?: string;
-    adresse_arrivee?: string;
-  } | null>(null);
+  const [, setLastCalculationId] = useState<number | null>(null);
+  const [, setLastAddressId] = useState<number | null>(null);
+  const [distanceKm, setDistanceKm] = useState<number | null>(null);
+  const [distanceText, setDistanceText] = useState<string>("");
+  const [distanceLoading, setDistanceLoading] = useState<boolean>(false);
   const [options, setOptions] = useState({
     packCartons: false,
     dateFlexible: false,
@@ -180,6 +163,18 @@ function AppContent() {
   const [surfaceArea, setSurfaceArea] = useState("");
   const [selectedMethod, setSelectedMethod] = useState<"list" | "photo" | "surface" | null>(getSelectedMethodFromUrl());
   const [lastUsedMethod, setLastUsedMethod] = useState<"list" | "photo" | "surface" | null>(null);
+  const [declaredVolumeM3, setDeclaredVolumeM3] = useState<number | null>(() => {
+    try {
+      const v = localStorage.getItem('declaredVolumeM3');
+      return v != null ? parseFloat(v) : null;
+    } catch { return null; }
+  });
+  const [declaredVolumeMethod, setDeclaredVolumeMethod] = useState<"list" | "photo" | "surface" | null>(() => {
+    try {
+      const m = localStorage.getItem('declaredVolumeMethod');
+      return (m === 'list' || m === 'photo' || m === 'surface') ? m : null;
+    } catch { return null; }
+  });
   const [cleaningQuantities, setCleaningQuantities] = useState<
     Record<string, number>
   >({});
@@ -511,6 +506,10 @@ function AppContent() {
       const result = await response.json();
       console.log('Superficie calculation result:', result);
       if (result.calculation_id != null) setLastCalculationId(result.calculation_id);
+      setDeclaredVolumeM3(totalVolume);
+      setDeclaredVolumeMethod('surface');
+      localStorage.setItem('declaredVolumeM3', String(totalVolume));
+      localStorage.setItem('declaredVolumeMethod', 'surface');
 
       // Navigate to next step
       navigate("/tunnel/adresses");
@@ -663,6 +662,12 @@ function AppContent() {
       // Combine results
       const combinedResults = combineAnalysisResults(allResults);
       setAnalysisResults(combinedResults);
+      if (combinedResults.total_volume != null && combinedResults.total_volume > 0) {
+        setDeclaredVolumeM3(combinedResults.total_volume);
+        setDeclaredVolumeMethod('photo');
+        localStorage.setItem('declaredVolumeM3', String(combinedResults.total_volume));
+        localStorage.setItem('declaredVolumeMethod', 'photo');
+      }
       setAnalysisProgress(100);
 
       clearInterval(progressInterval);
@@ -696,6 +701,7 @@ function AppContent() {
     const combinedCounts: Record<string, number> = {};
     let totalObjects = 0;
     let allCustomRooms: string[] = [];
+    const totalVolumeM3 = results.reduce((sum, r) => sum + (typeof r?.volume_calculation?.total_volume === 'number' ? r.volume_calculation.total_volume : 0), 0);
 
     // Organize results by room
     results.forEach((result, index) => {
@@ -740,6 +746,7 @@ function AppContent() {
       object_counts: combinedCounts,
       summary: summaryParts.length > 0 ? summaryParts.join(', ') : "Aucun objet détecté",
       total_objects: totalObjects,
+      total_volume: totalVolumeM3 > 0 ? totalVolumeM3 : undefined,
       custom_rooms: uniqueCustomRooms,  // Include custom rooms in combined results
       individual_results: results
     };
@@ -888,6 +895,12 @@ function AppContent() {
           localStorage.setItem('lastCalculationId', result.data.selection_id.toString());
           console.log('Stored calculation ID:', result.data.selection_id);
         }
+        if (result.data?.total_volume != null && typeof result.data.total_volume === 'number') {
+          setDeclaredVolumeM3(result.data.total_volume);
+          setDeclaredVolumeMethod('list');
+          localStorage.setItem('declaredVolumeM3', String(result.data.total_volume));
+          localStorage.setItem('declaredVolumeMethod', 'list');
+        }
         // Navigate to addresses page
         navigate("/tunnel/adresses");
       } else {
@@ -960,9 +973,6 @@ function AppContent() {
   };
 
   const handleContinueToQuote = async () => {
-    // Clear previous quote so pricing is always freshly recalculated
-    setQuoteResult(null);
-    // Save address data to backend before continuing to quote
     await submitAddressData();
     navigate("/tunnel/devis");
   };
@@ -1029,7 +1039,10 @@ function AppContent() {
         const dest = addressData.arrival.address?.trim();
         if (origin && dest) {
           const dist = await getDistanceMatrix(origin, dest);
-          if (dist.success) setDistanceKm(dist.distanceKm);
+          if (dist.success) {
+            setDistanceKm(dist.distanceKm);
+            setDistanceText(dist.distanceText || `${dist.distanceKm} km`);
+          }
         }
       } else {
         console.error('Error submitting address data:', result);
@@ -1042,8 +1055,6 @@ function AppContent() {
   };
 
   const handleBackToAddresses = () => {
-    // Clear stale quote so pricing is recalculated when user returns to devis
-    setQuoteResult(null);
     navigate("/tunnel/adresses");
   };
 
@@ -1056,6 +1067,26 @@ function AppContent() {
     const _handlers = [_handlePreviousRoom, _handleNextRoom, _handleContinueToAddresses, _handleContinueToInfo, _dateOptions];
     void _handlers;
   }, []);
+
+  // Fetch distance when on quote page and we have both addresses (e.g. direct navigation or refresh)
+  useEffect(() => {
+    const origin = addressData.departure.address?.trim();
+    const dest = addressData.arrival.address?.trim();
+    if (currentPage !== "quote" || !origin || !dest) return;
+    let cancelled = false;
+    if (distanceKm == null && !distanceText) setDistanceLoading(true);
+    getDistanceMatrix(origin, dest).then((dist) => {
+      if (cancelled) return;
+      setDistanceLoading(false);
+      if (dist.success) {
+        setDistanceKm(dist.distanceKm);
+        setDistanceText(dist.distanceText || `${dist.distanceKm} km`);
+      }
+    }).catch(() => {
+      if (!cancelled) setDistanceLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [currentPage, addressData.departure.address, addressData.arrival.address]);
 
   const handleBackToQuote = () => {
     navigate("/tunnel/devis");
@@ -1070,71 +1101,7 @@ function AppContent() {
   };
 
   const handleSubmitOptions = async () => {
-    try {
-      const body: Record<string, unknown> = {
-        valeur_bien_eur: propertyValue,
-        demontage_remontage: options.demontageRemontage,
-        emballage_fragile: options.emballageFragile,
-        emballage_cartons: options.emballageCartons,
-      };
-      // Volume: from calculation or from surface
-      // For surface method, always use current surface calculation to avoid cached old values
-      if (lastCalculationId != null && lastUsedMethod !== "surface") {
-        body.calculation_id = lastCalculationId;
-      } else if (surfaceArea) {
-        const vol = parseFloat(surfaceArea) / 2;
-        if (!Number.isNaN(vol)) body.volume_m3 = vol;
-      }
-      // Address id: backend will load addresses + compute distance via Google
-      if (lastAddressId != null) body.address_id = lastAddressId;
-      // Stopover count for pricing (150€ per stopover)
-      body.stopover_count = escales.length;
-      // Portage (meters)
-      if ((addressData.departure.options.portageDistanceM ?? 0) > 0) {
-        body.portage_depart_m = addressData.departure.options.portageDistanceM;
-      }
-      if ((addressData.arrival.options.portageDistanceM ?? 0) > 0) {
-        body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
-      }
-      // Demi-étage: 150€ per location when "ascenseur desservant uniquement un demi-étage" is on (départ/arrivée only, not stepover)
-      body.demi_etage_depart = addressData.departure.demiEtage ?? false;
-      body.demi_etage_arrivee = addressData.arrival.demiEtage ?? false;
-
-      const res = await fetch("/api/demenagement/quote/final/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (data.success && data.final_price != null) {
-        setQuoteResult({
-          final_price: data.final_price,
-          base_price_transport: data.base_price_transport,
-          etage_total: data.etage_total,
-          ascenseur_total: data.ascenseur_total,
-          demi_etage_total: data.demi_etage_total ?? 0,
-          portage_total: data.portage_total,
-          escale_total: data.escale_total,
-          options_total: data.options_total,
-          assurance_bien_price: data.assurance_bien_price,
-          demontage_remontage_price: data.demontage_remontage_price,
-          emballage_fragile_price: data.emballage_fragile_price,
-          emballage_cartons_price: data.emballage_cartons_price,
-          breakdown: data.breakdown,
-          distance_km: data.distance_km,
-          volume_m3: data.volume_m3,
-          adresse_depart: data.adresse_depart,
-          adresse_arrivee: data.adresse_arrivee,
-        });
-        navigate("/tunnel/devis");
-      } else {
-        console.error("Quote API error:", data);
-        alert(data.error || "Impossible de calculer le devis.");
-      }
-    } catch (err) {
-      console.error("Final quote error:", err);
-      alert("Erreur lors du calcul du devis. Vérifiez que volume et adresse sont renseignés.");
-    }
+    navigate("/tunnel/devis");
   };
 
   const toggleOption = (optionKey: keyof typeof options) => {
@@ -1163,137 +1130,7 @@ function AppContent() {
     });
   };
 
-  // Live option prices (same logic as backend) so the right-side pricing updates instantly when toggling switches
-  const liveOptionPricing = useMemo(() => {
-    const vol = quoteResult?.volume_m3 ?? 0;
-    const dist = quoteResult?.distance_km ?? 0;
-    const base = quoteResult?.base_price_transport ?? 0;
-    const etage = quoteResult?.etage_total ?? 0;
-    const ascenseur = quoteResult?.ascenseur_total ?? 0;
-    const demiEtage = quoteResult?.demi_etage_total ?? 0;
-    const escale = quoteResult?.escale_total ?? 0;
-    const portage = quoteResult?.portage_total ?? 0;
 
-    const assurance = propertyValue > 0
-      ? (propertyValue <= 30000 ? 0 : Math.round(propertyValue * 0.005 * 100) / 100)
-      : 0;
-    const demontage = options.demontageRemontage && vol > 0
-      ? Math.round(vol * (dist <= 200 ? 8 : 16) * 100) / 100
-      : 0;
-    const emballageFragile = options.emballageFragile && vol > 0
-      ? Math.round(vol * 12.5 * 100) / 100
-      : 0;
-    const emballageCartons = options.emballageCartons && vol > 0
-      ? Math.round(vol * 30 * 100) / 100
-      : 0;
-
-    const optionsTotal = assurance + demontage + emballageFragile + emballageCartons;
-    const liveTotal = base + etage + ascenseur + demiEtage + escale + portage + optionsTotal;
-
-    return {
-      assurance,
-      demontage,
-      emballageFragile,
-      emballageCartons,
-      optionsTotal,
-      liveTotal,
-      hasQuote: !!quoteResult && (quoteResult.base_price_transport != null || quoteResult.volume_m3 != null),
-    };
-  }, [quoteResult?.volume_m3, quoteResult?.distance_km, quoteResult?.base_price_transport, quoteResult?.etage_total, quoteResult?.ascenseur_total, quoteResult?.demi_etage_total, quoteResult?.escale_total, quoteResult?.portage_total, propertyValue, options.demontageRemontage, options.emballageFragile, options.emballageCartons]);
-
-  // Auto-calculate quote when entering quote page
-  useEffect(() => {
-    const calculateQuoteOnPageLoad = async () => {
-      // Try to get calculation ID from state or localStorage
-      let calcId = lastCalculationId;
-      if (calcId == null) {
-        const storedId = localStorage.getItem('lastCalculationId');
-        if (storedId) {
-          calcId = parseInt(storedId, 10);
-          console.log('[Quote API Debug] Loaded calculationId from localStorage:', calcId);
-        }
-      }
-
-      console.log('[Quote API Debug] currentPage:', currentPage);
-      console.log('[Quote API Debug] quoteResult:', quoteResult);
-      console.log('[Quote API Debug] lastCalculationId:', lastCalculationId);
-      console.log('[Quote API Debug] calcId (after localStorage check):', calcId);
-      console.log('[Quote API Debug] lastAddressId:', lastAddressId);
-
-      if (currentPage === "quote" && !quoteResult && (calcId || lastAddressId)) {
-        try {
-          const body: Record<string, unknown> = {
-            valeur_bien_eur: propertyValue,
-            demontage_remontage: options.demontageRemontage,
-            emballage_fragile: options.emballageFragile,
-            emballage_cartons: options.emballageCartons,
-          };
-
-          // Volume: from calculation or from surface
-          // For surface method, always use current surface calculation to avoid cached old values
-          if (calcId != null && lastUsedMethod !== "surface") {
-            body.calculation_id = calcId;
-          } else if (surfaceArea) {
-            const vol = parseFloat(surfaceArea) / 2;
-            if (!Number.isNaN(vol)) body.volume_m3 = vol;
-          }
-
-          // Address id: backend will load addresses + compute distance via Google
-          if (lastAddressId != null) body.address_id = lastAddressId;
-
-          // Stopover count for pricing (150€ per stopover)
-          body.stopover_count = escales.length;
-
-          // Portage (meters)
-          if ((addressData.departure.options.portageDistanceM ?? 0) > 0) {
-            body.portage_depart_m = addressData.departure.options.portageDistanceM;
-          }
-          if ((addressData.arrival.options.portageDistanceM ?? 0) > 0) {
-            body.portage_arrival_m = addressData.arrival.options.portageDistanceM;
-          }
-          body.demi_etage_depart = addressData.departure.demiEtage ?? false;
-          body.demi_etage_arrivee = addressData.arrival.demiEtage ?? false;
-
-          console.log('[Quote API Debug] Sending body:', JSON.stringify(body, null, 2));
-
-          const res = await fetch("/api/demenagement/quote/final/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          });
-          const data = await res.json();
-
-          console.log('[Quote API Debug] Response:', data);
-
-          if (data.success && data.final_price != null) {
-            setQuoteResult({
-              final_price: data.final_price,
-              base_price_transport: data.base_price_transport,
-              etage_total: data.etage_total,
-              ascenseur_total: data.ascenseur_total,
-              demi_etage_total: data.demi_etage_total ?? 0,
-              portage_total: data.portage_total,
-              escale_total: data.escale_total,
-              options_total: data.options_total,
-              assurance_bien_price: data.assurance_bien_price,
-              demontage_remontage_price: data.demontage_remontage_price,
-              emballage_fragile_price: data.emballage_fragile_price,
-              emballage_cartons_price: data.emballage_cartons_price,
-              breakdown: data.breakdown,
-              distance_km: data.distance_km,
-              volume_m3: data.volume_m3,
-              adresse_depart: data.adresse_depart,
-              adresse_arrivee: data.adresse_arrivee,
-            });
-          }
-        } catch (err) {
-          console.error("Auto quote calculation error:", err);
-        }
-      }
-    };
-
-    calculateQuoteOnPageLoad();
-  }, [currentPage, quoteResult, lastCalculationId, lastAddressId, propertyValue, options.demontageRemontage, options.emballageFragile, options.emballageCartons, surfaceArea, escales.length, addressData.departure.options.portageDistanceM, addressData.arrival.options.portageDistanceM]);
 
   const updateAddressData = (
     section: "departure" | "arrival",
@@ -1979,13 +1816,13 @@ function AppContent() {
               </div>
 
               {/* Services Grid */}
-              <div className="grid md:grid-cols-4 gap-8 mb-16">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-10 sm:mb-16">
                 {/* Camion équipé */}
                 <div className="text-center">
                   <div className="flex items-center justify-center mx-auto mb-4">
-                    <Truck className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    <Truck className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 font-bold" style={{ color: '#CC922F' }} />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
+                  <h3 className="font-semibold text-sm sm:text-base text-slate-900 mb-2 sm:mb-3">
                     Camion équipé
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -1996,9 +1833,9 @@ function AppContent() {
                 {/* Déménageurs professionnels */}
                 <div className="text-center">
                   <div className="flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    <Users className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 font-bold" style={{ color: '#CC922F' }} />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
+                  <h3 className="font-semibold text-sm sm:text-base text-slate-900 mb-2 sm:mb-3">
                     Déménageurs professionnels
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -2009,9 +1846,9 @@ function AppContent() {
                 {/* Transport & remise en place */}
                 <div className="text-center">
                   <div className="flex items-center justify-center mx-auto mb-4">
-                    <RefreshCw className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    <RefreshCw className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 font-bold" style={{ color: '#CC922F' }} />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
+                  <h3 className="font-semibold text-sm sm:text-base text-slate-900 mb-2 sm:mb-3">
                     Transport & remise en place
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -2022,9 +1859,9 @@ function AppContent() {
                 {/* Service client dévoué */}
                 <div className="text-center">
                   <div className="flex items-center justify-center mx-auto mb-4">
-                    <Headphones className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
+                    <Headphones className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 font-bold" style={{ color: '#CC922F' }} />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
+                  <h3 className="font-semibold text-sm sm:text-base text-slate-900 mb-2 sm:mb-3">
                     Service client dévoué
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -2034,13 +1871,13 @@ function AppContent() {
               </div>
 
               {/* Property Value Section */}
-              <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-                <h2 className="text-xl font-semibold text-slate-900 mb-6">
+              <div className="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 lg:p-8 text-center">
+                <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-4 sm:mb-6">
                   Quelle est la valeur des biens transportés ?
                 </h2>
 
                 <div className="max-w-2xl mx-auto">
-                  <div className="text-3xl font-bold text-slate-900 mb-8">
+                  <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 sm:mb-8">
                     {propertyValue.toLocaleString("fr-FR")} €
                   </div>
 
@@ -2087,11 +1924,11 @@ function AppContent() {
           {currentPage === "options" && (
             <>
               {/* Guarantee Section */}
-              <div className="bg-slate-100 rounded-lg p-8 text-center mb-12">
-                <h2 className="text-xl font-semibold text-slate-900 mb-4">
+              <div className="bg-slate-100 rounded-lg p-4 sm:p-6 lg:p-8 text-center mb-8 sm:mb-12">
+                <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4">
                   Votre garantie par objet
                 </h2>
-                <p className="text-sm text-slate-600 mb-8 max-w-4xl mx-auto">
+                <p className="text-sm text-slate-600 mb-6 sm:mb-8 max-w-4xl mx-auto">
                   Indiquez ici le montant maximal de garantie par élément transporté. Si cela ne suffit pas,
                   vous pourrez faire une{" "}
                   <span className="underline text-primary cursor-pointer">
@@ -2100,7 +1937,7 @@ function AppContent() {
                   .
                 </p>
 
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
                   {[
                     { value: "250", label: "250 €" },
                     { value: "500", label: "500 €" },
@@ -2110,7 +1947,7 @@ function AppContent() {
                       key={guarantee.value}
                       variant={selectedGuarantee === guarantee.value ? "default" : "outline"}
                       onClick={() => setSelectedGuarantee(guarantee.value)}
-                      className={`px-8 py-3 ${selectedGuarantee === guarantee.value
+                      className={`px-6 sm:px-8 py-3 ${selectedGuarantee === guarantee.value
                         ? "bg-[#CC922F] text-white"
                         : "bg-white text-slate-900 border-slate-300"
                         }`}
@@ -2122,16 +1959,16 @@ function AppContent() {
               </div>
 
               {/* Options Section */}
-              <div className="mb-12">
-                <h2 className="text-xl font-semibold text-slate-900 text-center mb-8">
+              <div className="mb-8 sm:mb-12">
+                <h2 className="text-lg sm:text-xl font-semibold text-slate-900 text-center mb-6 sm:mb-8">
                   Choisissez vos options
                 </h2>
 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Pack cartons */}
-                  <div className="flex items-start gap-4 py-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                  <div className="flex items-start gap-3 sm:gap-4 py-3 sm:py-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-5 h-5 sm:w-6 sm:h-6 style={{ color: '#CC922F' }}" />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2285,53 +2122,82 @@ function AppContent() {
 
           {currentPage === "quote" && (
             <>
-              <div className="grid lg:grid-cols-2 gap-8">
-                {/* Left Column - Service Summary */}
-                <div className="bg-slate-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-6">
-                    Mon déménagement
-                  </h3>
-
-                  <div className="space-y-4 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">Date</span>
-                      <span className="font-medium">mar. 02/09/2025</span>
+              <div className="bg-white rounded-lg border border-slate-200 p-4 sm:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 md:divide-x md:divide-slate-200">
+                  {/* Left half */}
+                  <div className="space-y-4">
+                    <div className="text-center md:text-left">
+                      <div className="flex items-center justify-center md:justify-start mb-3">
+                        <Truck className="w-12 h-12 sm:w-16 sm:h-16 font-bold" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="text-xl font-bold text-slate-900 mb-1">
+                        Devis personnalisé
+                      </div>
+                      <div className="text-sm text-slate-600">
+                        Un conseiller vous contactera avec votre devis détaillé
+                      </div>
                     </div>
 
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">Volume déclaré</span>
-                      <span className="font-medium">(calculé par inventaire)</span>
+                    <div className="space-y-3 text-sm border-t border-slate-100 pt-4">
+                      <div className="text-xs text-slate-500 mb-2">
+                        <span className="font-medium text-slate-700">{addressData.departure.address}</span>
+                        <span className="mx-1">→</span>
+                        <span className="font-medium text-slate-700">{addressData.arrival.address}</span>
+                      </div>
+                      <p className="text-xs text-slate-500">Sélectionnez vos options ci-dessous puis cliquez sur &quot;Recevoir mon devis&quot; pour être recontacté.</p>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-200">
-                      <div className="font-medium text-slate-900 mb-3">Départ</div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-slate-600">Adresse</span>
-                        <span className="font-medium text-right max-w-[200px]">
-                          {addressData.departure.address}
+                    <div className="space-y-4 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Date</span>
+                        <span className="font-medium">mar. 02/09/2025</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Volume déclaré</span>
+                        <span className="font-medium">
+                          {declaredVolumeM3 != null && !Number.isNaN(declaredVolumeM3)
+                            ? `${Number(declaredVolumeM3).toFixed(1)} m³${declaredVolumeMethod ? ` (calculé par ${declaredVolumeMethod === 'list' ? 'inventaire' : declaredVolumeMethod === 'surface' ? 'superficie' : 'photo/IA'})` : ''}`
+                            : '(calculé par inventaire)'}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Étage</span>
-                        <span className="font-medium">{addressData.departure.floor}</span>
-                      </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-slate-200">
-                      <div className="font-medium text-slate-900 mb-3">Arrivée</div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-slate-600">Adresse</span>
-                        <span className="font-medium text-right max-w-[200px]">
-                          {addressData.arrival.address}
+                        <span className="text-slate-600">Distance</span>
+                        <span className="font-medium">
+                          {distanceLoading ? "Calcul…" : distanceText || (distanceKm != null ? `${distanceKm} km` : "—")}
                         </span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Étage</span>
-                        <span className="font-medium">{addressData.arrival.floor}</span>
+                      <div className="pt-4 border-t border-slate-200">
+                        <div className="font-medium text-slate-900 mb-3">Départ</div>
+                        <div className="flex justify-between mb-2">
+                          <span className="text-slate-600">Adresse</span>
+                          <span className="font-medium text-right max-w-[140px] sm:max-w-[180px] truncate block">
+                            {addressData.departure.address}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-600">Étage</span>
+                          <span className="font-medium">{addressData.departure.floor}</span>
+                        </div>
+                      </div>
+                      <div className="pt-4 border-t border-slate-200">
+                        <div className="font-medium text-slate-900 mb-3">Arrivée</div>
+                        <div className="flex justify-between mb-2">
+                          <span className="text-slate-600">Adresse</span>
+                          <span className="font-medium text-right max-w-[140px] sm:max-w-[180px] truncate block">
+                            {addressData.arrival.address}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-600">Étage</span>
+                          <span className="font-medium">{addressData.arrival.floor}</span>
+                        </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="pt-4 border-t border-slate-200">
+                  {/* Right half - "Services inclus" on same line as "Devis personnalisé" */}
+                  <div className="flex flex-col justify-center md:pl-6 space-y-4">
+                    <div className="border-t border-slate-200 pt-4 md:border-t-0 md:pt-0 md:pt-[3.75rem]">
                       <div className="font-medium text-slate-900 mb-3">Services inclus</div>
                       <div className="space-y-2">
                         <div className="flex items-center text-xs text-slate-600">
@@ -2348,160 +2214,49 @@ function AppContent() {
                         </div>
                       </div>
                     </div>
+
+                    <div className="space-y-3 text-sm border-t border-slate-100 pt-4 pb-2">
+                      <div className="flex items-center">
+                        <Heart className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <span className="text-slate-700">+100 000 clients satisfaits depuis 2011</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <span className="text-slate-700">Déménageurs professionnels suivis</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Phone className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <span className="text-slate-700">Service client 7j/7 de 9h à 18h</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Shield className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <span className="text-slate-700">Assurance incluse</span>
+                      </div>
+                    </div>
+
+                    <div className="h-10 shrink-0" aria-hidden="true" />
+
+                    <Button className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white py-3">
+                      RÉSERVER
+                    </Button>
+
+                    <Button variant="link" className="w-full text-primary text-sm p-0">
+                      J'ai un code client
+                    </Button>
+
+                    <Button
+                      variant="link"
+                      className="w-full text-slate-600 text-sm p-0"
+                      onClick={() => {
+                        const element = document.getElementById('options-section');
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      Personnaliser et voir ce qui est inclus
+                    </Button>
                   </div>
-                </div>
-
-                {/* Right Column - Quote Summary */}
-                <div className="bg-white rounded-lg border border-slate-200 p-6">
-                  <div className="text-center mb-6">
-                    <div className="flex items-center justify-center mx-auto mb-4">
-                      <Truck className="w-16 h-16 font-bold" style={{ color: '#CC922F' }} />
-                    </div>
-
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                      Déménagement
-                    </h3>
-                    <div className="text-3xl font-bold text-slate-900 mb-1">
-                      {liveOptionPricing.hasQuote ? `${liveOptionPricing.liveTotal.toFixed(2)} €` : "— €"}
-                    </div>
-                    <div className="text-sm text-slate-600">TTC</div>
-                  </div>
-
-                  <div className="space-y-3 mb-6 text-sm border-t border-slate-100 pt-4">
-                    {quoteResult?.adresse_depart && quoteResult?.adresse_arrivee && (
-                      <div className="text-xs text-slate-500 mb-2">
-                        <span className="font-medium text-slate-700">{quoteResult.adresse_depart}</span>
-                        <span className="mx-1">→</span>
-                        <span className="font-medium text-slate-700">{quoteResult.adresse_arrivee}</span>
-                        {quoteResult.distance_km != null && (
-                          <span className="ml-1">({quoteResult.distance_km} km)</span>
-                        )}
-                        {quoteResult.volume_m3 != null && (
-                          <span className="ml-1">· {quoteResult.volume_m3} m³</span>
-                        )}
-                      </div>
-                    )}
-                    {quoteResult?.base_price_transport != null && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Transport (volume × distance)</span>
-                        <span className="font-medium">{quoteResult.base_price_transport.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.etage_total != null && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Étages</span>
-                        <span className="font-medium">{quoteResult.etage_total.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.ascenseur_total != null && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Ascenseur</span>
-                        <span className="font-medium">{quoteResult.ascenseur_total.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.demi_etage_total != null && quoteResult.demi_etage_total > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Demi-étage</span>
-                        <span className="font-medium">{quoteResult.demi_etage_total.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.escale_total != null && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Escale (stopover)</span>
-                        <span className="font-medium">{quoteResult.escale_total.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {quoteResult?.portage_total != null && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Distance de portage</span>
-                        <span className="font-medium">{quoteResult.portage_total.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {liveOptionPricing.hasQuote && propertyValue > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Valeur des biens (assurance)</span>
-                        <span className="font-medium">{liveOptionPricing.assurance.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {liveOptionPricing.hasQuote && options.demontageRemontage && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Démontage / remontage</span>
-                        <span className="font-medium">{liveOptionPricing.demontage.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {liveOptionPricing.hasQuote && options.emballageFragile && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Emballage fragile</span>
-                        <span className="font-medium">{liveOptionPricing.emballageFragile.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {liveOptionPricing.hasQuote && options.emballageCartons && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Emballage cartons (inventaire)</span>
-                        <span className="font-medium">{liveOptionPricing.emballageCartons.toFixed(2)} €</span>
-                      </div>
-                    )}
-                    {!quoteResult && (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">Prestation</span>
-                          <span className="font-medium">—</span>
-                        </div>
-                        <p className="text-xs text-slate-500">Remplissez les options et cliquez sur &quot;Recevoir mon devis&quot; pour voir le détail.</p>
-                      </>
-                    )}
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200">
-                      <span className="font-semibold">Total TTC</span>
-                      <span className="font-bold text-lg">
-                        {liveOptionPricing.hasQuote ? `${liveOptionPricing.liveTotal.toFixed(2)} €` : "— €"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center text-green-600 text-sm mb-6">
-                    <Check className="w-4 h-4 mr-1 style={{ color: '#CC922F' }}" />
-                    <span>Éligible au paiement en plusieurs fois</span>
-                  </div>
-
-                  <Button className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white mb-4 py-3">
-                    RÉSERVER
-                  </Button>
-
-                  <Button variant="link" className="w-full text-primary text-sm p-0 mb-6">
-                    J'ai un code client
-                  </Button>
-
-                  <div className="space-y-3 text-sm border-t border-slate-100 pt-4">
-                    <div className="flex items-center">
-                      <Heart className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
-                      <span className="text-slate-700">+100 000 clients satisfaits depuis 2011</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
-                      <span className="text-slate-700">Déménageurs professionnels suivis</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Phone className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
-                      <span className="text-slate-700">Service client 7j/7 de 9h à 18h</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Shield className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
-                      <span className="text-slate-700">Assurance incluse</span>
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="link"
-                    className="w-full text-slate-600 text-sm p-0 mt-4"
-                    onClick={() => {
-                      const element = document.getElementById('options-section');
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                  >
-                    Personnaliser et voir ce qui est inclus
-                  </Button>
                 </div>
               </div>
 
@@ -2526,14 +2281,14 @@ function AppContent() {
               </div>
 
               {/* Options Section */}
-              <div id="options-section" className="mb-12">
-                <h2 className="text-xl font-semibold text-slate-900 text-center mb-8">
+              <div id="options-section" className="mb-8 sm:mb-12">
+                <h2 className="text-lg sm:text-xl font-semibold text-slate-900 text-center mb-6 sm:mb-8">
                   Choisissez vos options
                 </h2>
 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Option 1: Pack Cartons */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2556,7 +2311,7 @@ function AppContent() {
                   </div>
 
                   {/* Option 3: Prix Flexible */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <ArrowDown className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2579,7 +2334,7 @@ function AppContent() {
                   </div>
 
                   {/* Option 4: Démontage Remontage */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2602,7 +2357,7 @@ function AppContent() {
                   </div>
 
                   {/* Option 5: Emballage Fragile */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2631,7 +2386,7 @@ function AppContent() {
                   </div>
 
                   {/* Option 6: Emballage Cartons */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2660,7 +2415,7 @@ function AppContent() {
                   </div>
 
                   {/* Option 7: Autorisation Stationnement */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2683,7 +2438,7 @@ function AppContent() {
                   </div>
 
                   {/* Option 8: Transport Vêtements */}
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
@@ -2709,74 +2464,6 @@ function AppContent() {
 
               {/* Additional Info Section */}
               <div className="mt-8">
-                {/* Guarantee Section */}
-                <div className="bg-slate-100 rounded-lg p-8 text-center mb-16">
-                  <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                    Votre garantie par objet
-                  </h2>
-                  <p className="text-sm text-slate-600 mb-8 max-w-4xl mx-auto">
-                    Indiquez ici le montant maximal de garantie par élément transporté. Si cela ne suffit pas,
-                    vous pourrez faire une{" "}
-                    <span className="underline text-primary cursor-pointer">
-                      déclaration de valeur
-                    </span>
-                    .
-                  </p>
-
-                  <div className="flex justify-center gap-4">
-                    {[
-                      { value: "250", label: "250 €" },
-                      { value: "500", label: "500 €" },
-                      { value: "1000", label: "1000 €" },
-                    ].map((guarantee) => (
-                      <Button
-                        key={guarantee.value}
-                        variant={selectedGuarantee === guarantee.value ? "default" : "outline"}
-                        onClick={() => setSelectedGuarantee(guarantee.value)}
-                        className={`px-8 py-3 ${selectedGuarantee === guarantee.value
-                          ? "bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
-                          : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
-                          }`}
-                      >
-                        {guarantee.label}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Property Value Section */}
-                <div className="bg-white rounded-lg border border-slate-200 p-8 text-center mb-16">
-                  <h2 className="text-xl font-semibold text-slate-900 mb-8">
-                    Quelle est la valeur des biens transportés ?
-                  </h2>
-
-                  <div className="text-3xl font-bold text-slate-900 mb-8">
-                    {propertyValue.toLocaleString("fr-FR")} €
-                  </div>
-
-                  <div className="max-w-2xl mx-auto">
-                    <input
-                      type="range"
-                      min="3000"
-                      max="60000"
-                      step="3000"
-                      value={propertyValue}
-                      onChange={(e) => setPropertyValue(parseInt(e.target.value))}
-                      className="w-full h-6 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                      style={{
-                        background: `linear-gradient(to right, #1c3957 0%, #1c3957 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 ${((propertyValue - 3000) / (60000 - 3000)) * 100}%, #e2e8f0 100%)`,
-                        outline: 'none',
-                        height: '6px',
-                        borderRadius: '3px'
-                      }}
-                    />
-
-                    <div className="flex justify-between text-sm text-slate-600 mt-4">
-                      <span>3000€</span>
-                      <span>60000€</span>
-                    </div>
-                  </div>
-                </div>
 
                 <div className="text-center mb-12">
                   <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
@@ -2856,20 +2543,6 @@ function AppContent() {
 
               </div>
 
-              {/* Floating Total Section */}
-              <div className="fixed bottom-6 right-6 bg-white rounded-lg p-4 shadow-lg z-50 border border-slate-200">
-                <div className="flex items-center gap-4">
-                  <div className="text-slate-900">
-                    <div className="text-sm font-medium">TOTAL TTC</div>
-                    <div className="text-lg font-bold">1582.51 €</div>
-                  </div>
-                  <Button
-                    className="bg-[#1c3957] text-white hover:bg-[#1c3957]/90 font-semibold px-4 py-2 rounded"
-                  >
-                    RESERVER
-                  </Button>
-                </div>
-              </div>
 
               {/* PDF Report Section */}
               <div className="mt-12">
@@ -2883,25 +2556,15 @@ function AppContent() {
                   }}
                   methodData={{
                     method: lastUsedMethod || selectedMethod || 'list',
-                    volume_m3: quoteResult?.volume_m3,
+                    volume_m3: undefined,
                     surface_area: selectedMethod === 'surface' ? parseFloat(surfaceArea) : undefined,
                     roomObjectQuantities: roomObjectQuantities,
                     uploadedImages: uploadedImages,
                     roomAnalysisResults: roomAnalysisResults,
                     specialObjectQuantities: specialObjectQuantities
                   }}
-                  quoteData={quoteResult ? {
-                    final_price: quoteResult.final_price,
-                    base_price_transport: quoteResult.base_price_transport,
-                    volume_m3: quoteResult.volume_m3,
-                    distance_km: quoteResult.distance_km,
-                    etage_total: quoteResult.etage_total,
-                    ascenseur_total: quoteResult.ascenseur_total,
-                    demi_etage_total: quoteResult.demi_etage_total,
-                    escale_total: quoteResult.escale_total,
-                    portage_total: quoteResult.portage_total
-                  } : {
-                    final_price: liveOptionPricing.liveTotal,
+                  quoteData={{
+                    final_price: 0,
                     base_price_transport: undefined,
                     volume_m3: undefined,
                     distance_km: undefined,
@@ -2934,10 +2597,10 @@ function AppContent() {
                     prixFlexible: options.prixFlexible,
                     autorisationStationnement: options.autorisationStationnement,
                     transportVetements: options.transportVetements,
-                    assurance: liveOptionPricing.assurance,
+                    assurance: 0,
                     cleaningQuantities: cleaningQuantities
                   }}
-                  propertyValue={propertyValue}
+                  propertyValue={0}
                 />
               </div>
             </>
@@ -2951,43 +2614,43 @@ function AppContent() {
     <div className="bg-slate-50">
       {/* Header */}
       <header className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
+        <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex flex-wrap justify-between items-center gap-2">
+          <div className="flex items-center min-w-0">
             <button
               onClick={() => navigate("/")}
-              className="text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer"
+              className="text-xl sm:text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer flex-shrink-0"
             >
               Go
-              <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-3 py-2 rounded ml-1">
+              <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded ml-1">
                 YARD
               </span>
             </button>
-            <p className="text-base text-slate-600 ml-3">
+            <p className="text-xs sm:text-base text-slate-600 ml-2 sm:ml-3 hidden sm:block">
               Déménagement professionnel pour tous
             </p>
           </div>
-          <div className="flex items-center bg-[#1c3957] text-white px-6 py-3 rounded-full">
+          <div className="flex items-center bg-[#1c3957] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex-shrink-0">
             <Phone className="w-5 h-5 mr-2" style={{ color: '#CC922F' }} />
-            <span className="text-base font-medium">
+            <span className="text-sm sm:text-base font-medium">
               09 74 50 50 47
             </span>
-            <span className="text-sm ml-2 opacity-90">
+            <span className="text-xs sm:text-sm ml-1 sm:ml-2 opacity-90 hidden sm:inline">
               Numéro non surtaxé
             </span>
           </div>
         </div>
       </header>
 
-      <div className="max-w-8xl mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-3 gap-10">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-10">
           {/* Main Content */}
-          <div className="lg:col-span-2">
-            <div className="bg-slate-50 rounded-lg shadow-sm p-8">
+          <div className="lg:col-span-2 min-w-0">
+            <div className="bg-slate-50 rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
               {currentPage === "form" && (
                 <div>
                   {/* Sophie's Profile */}
-                  <div className="flex items-start mb-10">
-                    <div className="w-20 h-20 rounded-full overflow-hidden mr-5 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5 mb-8 sm:mb-10">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                       <ImageWithFallback
                         src="/sophie.jpeg"
                         alt="Sophie"
@@ -2995,17 +2658,15 @@ function AppContent() {
                         style={{ transform: 'scale(1.2)' }}
                       />
                     </div>
-                    <div>
-                      <h2 className="text-xl font-semibold text-slate-900 mb-2">
+                    <div className="min-w-0">
+                      <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2">
                         Sophie
                       </h2>
-                      <p className="text-primary text-base mb-3">
+                      <p className="text-primary text-sm sm:text-base mb-3">
                         Bonjour ! Je suis Sophie.
                       </p>
-                      <p className="text-slate-600 text-base leading-relaxed">
-                        En quelques questions, je vais vous trouver le service
-                        <br />
-                        de déménagement qui vous convient au meilleur prix.
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        En quelques questions, je vais vous trouver le service de déménagement qui vous convient au meilleur prix.
                       </p>
                     </div>
                   </div>
@@ -3160,7 +2821,7 @@ function AppContent() {
                       size="lg"
                       onClick={handleSubmitForm}
                     >
-                      VOIR LES PRIX →
+                      CONTINUER →
                     </Button>
                   </div>
                 </div>
@@ -3169,8 +2830,8 @@ function AppContent() {
               {currentPage === "methods" && (
                 <>
                   {/* Sophie's Profile - Methods Page */}
-                  <div className="flex items-start mb-8">
-                    <div className="w-20 h-20 rounded-full overflow-hidden mr-5 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 mb-6 sm:mb-8">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                       <ImageWithFallback
                         src="/sophie.jpeg"
                         alt="Sophie"
@@ -3178,7 +2839,7 @@ function AppContent() {
                         style={{ transform: 'scale(1.2)' }}
                       />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h2 className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
                       </h2>
@@ -3189,7 +2850,7 @@ function AppContent() {
                   </div>
 
                   {/* Method Selection */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                     {/* Method 1: List Cleaning Tasks */}
                     <div
                       className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
@@ -3275,8 +2936,8 @@ function AppContent() {
               {currentPage === "volume" && selectedMethod === "list" && (
                 <>
                   {/* Sophie's Profile - Cleaning Page */}
-                  <div className="flex items-start mb-6">
-                    <div className="w-20 h-20 rounded-full overflow-hidden mr-5 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                       <ImageWithFallback
                         src="/sophie.jpeg"
                         alt="Sophie"
@@ -3284,7 +2945,7 @@ function AppContent() {
                         style={{ transform: 'scale(1.2)' }}
                       />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h2 className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
                       </h2>
@@ -3295,8 +2956,8 @@ function AppContent() {
                   </div>
 
                   {/* Room Navigation */}
-                  <div className="flex items-center justify-center mb-6">
-                    <div className="flex items-center bg-slate-100 rounded-full px-6 py-3 gap-6">
+                  <div className="flex items-center justify-center mb-4 sm:mb-6 overflow-x-auto">
+                    <div className="flex items-center bg-slate-100 rounded-full px-3 sm:px-6 py-3 gap-2 sm:gap-6 min-w-0">
                       {/* Left Arrow Button */}
                       <button
                         onClick={handlePreviousRoomPage}
@@ -3307,12 +2968,12 @@ function AppContent() {
                       </button>
 
                       {/* Room Buttons */}
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-shrink-0">
                         {getVisibleRooms().map((room) => (
                           <button
                             key={room}
                             onClick={() => setSelectedRoom(room)}
-                            className={`px-4 py-2 rounded-full text-base font-medium transition-colors ${selectedRoom === room
+                            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium transition-colors whitespace-nowrap ${selectedRoom === room
                               ? 'bg-[#1c3957] text-white shadow-md'
                               : 'text-slate-600 hover:bg-slate-200'
                               }`}
@@ -3774,8 +3435,8 @@ function AppContent() {
               {currentPage === "volume" && selectedMethod === "surface" && (
                 <>
                   {/* Sophie's Profile - Surface Page */}
-                  <div className="flex items-start mb-8">
-                    <div className="w-20 h-20 rounded-full overflow-hidden mr-5 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 mb-6 sm:mb-8">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                       <ImageWithFallback
                         src="/sophie.jpeg"
                         alt="Sophie"
@@ -3783,7 +3444,7 @@ function AppContent() {
                         style={{ transform: 'scale(1.2)' }}
                       />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h2 className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
                       </h2>
@@ -3822,11 +3483,11 @@ function AppContent() {
                     </div>
 
                     {/* Special Objects Question */}
-                    <div className="max-w-4xl mx-auto mb-8">
-                      <div className="bg-slate-50 rounded-lg p-6">
+                    <div className="w-full max-w-4xl mx-auto mb-6 sm:mb-8">
+                      <div className="bg-slate-50 rounded-lg p-4 sm:p-6">
                         <div className="mb-4">
-                          <div className="flex items-center mb-2">
-                            <h3 className="text-lg font-semibold text-slate-900">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                            <h3 className="text-base sm:text-lg font-semibold text-slate-900">
                               Avez-vous des objets particuliers ou de + de 80kgs à déménager ?
                             </h3>
                             <button
@@ -4049,9 +3710,9 @@ function AppContent() {
               {currentPage === "volume" && selectedMethod === "photo" && (
                 <>
                   {/* AI Photo Method Interface */}
-                  <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold mb-2">Sélectionnez le type de pièce</h2>
-                    <p className="text-muted-foreground">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-2">Sélectionnez le type de pièce</h2>
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       Choisissez la pièce et ajoutez vos photos pour un devis précis
                     </p>
                   </div>
@@ -4072,7 +3733,7 @@ function AppContent() {
                     }}
                   />
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
                     {/* Regular rooms */}
                     {rooms.map((room) => {
                       const isSelected = selectedRoom === room;
@@ -4952,8 +4613,8 @@ function AppContent() {
               {currentPage === "addresses" && (
                 <>
                   {/* Sophie's Profile - Addresses Page */}
-                  <div className="flex items-start mb-6">
-                    <div className="w-20 h-20 rounded-full overflow-hidden mr-5 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                       <ImageWithFallback
                         src="/sophie.jpeg"
                         alt="Sophie"
@@ -4961,7 +4622,7 @@ function AppContent() {
                         style={{ transform: 'scale(1.2)' }}
                       />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h2 className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
                       </h2>
@@ -4972,7 +4633,7 @@ function AppContent() {
                   </div>
 
                   {/* Departure Section */}
-                  <div className="mb-8 border-2 border-slate-200 rounded-lg p-6 bg-white">
+                  <div className="mb-6 sm:mb-8 border-2 border-slate-200 rounded-lg p-4 sm:p-6 bg-white">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
                         <MapPin className="w-5 h-5" style={{ color: '#CC922F' }} />
@@ -5166,7 +4827,7 @@ function AppContent() {
 
                   {/* Escales Sections */}
                   {escales.map((escale, index) => (
-                    <div key={escale.id} className="mb-8 border-2 border-slate-200 rounded-lg p-6 bg-white">
+                    <div key={escale.id} className="mb-6 sm:mb-8 border-2 border-slate-200 rounded-lg p-4 sm:p-6 bg-white">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
@@ -5347,9 +5008,9 @@ function AppContent() {
                   </div>
 
                   {/* Arrival Section */}
-                  <div className="mb-8 border-2 border-slate-200 rounded-lg p-6 bg-white">
+                  <div className="mb-6 sm:mb-8 border-2 border-slate-200 rounded-lg p-4 sm:p-6 bg-white">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
                         <MapPin className="w-5 h-5" style={{ color: '#CC922F' }} />
                       </div>
                       <h3 className="text-lg font-semibold text-slate-900">
@@ -5553,7 +5214,7 @@ function AppContent() {
                       className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white flex-1"
                       onClick={handleContinueToQuote}
                     >
-                      MON DEVIS →
+                      Continuer →
                     </Button>
                   </div>
                 </>
@@ -5562,33 +5223,33 @@ function AppContent() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-12">
+          <div className="space-y-6 lg:space-y-12">
             {/* Mes étapes */}
-            <div className="bg-white rounded-lg shadow-sm p-8">
-              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2 sm:mb-4">
                 Mes étapes
               </h3>
-              <p className="text-base text-slate-600 mb-6">
+              <p className="text-sm sm:text-base text-slate-600 mb-4 sm:mb-6">
                 Sélectionnez l'étape sur laquelle vous souhaitez revenir
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-center">
-                  <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "form" ? "bg-slate-900" : "bg-slate-300"
+              <ul className="space-y-3 sm:space-y-4">
+                <li className="flex items-center min-w-0">
+                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "form" ? "bg-slate-900" : "bg-slate-300"
                     }`}></div>
-                  <span className={`text-base ${currentPage === "form" ? "font-medium text-slate-900" : "text-slate-500"
+                  <span className={`text-sm sm:text-base truncate ${currentPage === "form" ? "font-medium text-slate-900" : "text-slate-500"
                     }`}>Mes informations</span>
                 </li>
-                <li className="flex items-center">
-                  <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "methods" ? "bg-slate-900" : "bg-slate-300"
+                <li className="flex items-center min-w-0">
+                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "methods" ? "bg-slate-900" : "bg-slate-300"
                     }`}></div>
-                  <span className={`text-base ${currentPage === "methods" ? "font-medium text-slate-900" : "text-slate-500"
+                  <span className={`text-sm sm:text-base truncate ${currentPage === "methods" ? "font-medium text-slate-900" : "text-slate-500"
                     }`}>Mon déménagement</span>
                 </li>
                 {(currentPage === "volume" || currentPage === "ai-results" || currentPage === "addresses") && selectedMethod && (
-                  <li className="flex items-center">
-                    <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "volume" || currentPage === "ai-results" ? "bg-slate-900" : "bg-slate-300"
+                  <li className="flex items-center min-w-0">
+                    <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "volume" || currentPage === "ai-results" ? "bg-slate-900" : "bg-slate-300"
                       }`}></div>
-                    <span className={`text-base ${currentPage === "volume" || currentPage === "ai-results" ? "font-medium text-slate-900" : "text-slate-500"
+                    <span className={`text-sm sm:text-base truncate ${currentPage === "volume" || currentPage === "ai-results" ? "font-medium text-slate-900" : "text-slate-500"
                       }`}>
                       {selectedMethod === "list" ? "Inventaire manuel" :
                         selectedMethod === "photo" ? "Analyse IA" :
@@ -5596,17 +5257,17 @@ function AppContent() {
                     </span>
                   </li>
                 )}
-                <li className="flex items-center">
-                  <div className={`w-3 h-3 rounded-full mr-4 ${currentPage === "addresses" ? "bg-slate-900" : "bg-slate-300"
+                <li className="flex items-center min-w-0">
+                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "addresses" ? "bg-slate-900" : "bg-slate-300"
                     }`}></div>
-                  <span className={`text-base ${currentPage === "addresses" ? "font-medium text-slate-900" : "text-slate-500"
+                  <span className={`text-sm sm:text-base truncate ${currentPage === "addresses" ? "font-medium text-slate-900" : "text-slate-500"
                     }`}>Mes adresses</span>
                 </li>
               </ul>
             </div>
 
             {/* Trust Indicators */}
-            <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
               <div className="flex items-center text-base">
                 <div className="flex items-center justify-center mr-3">
                   <Heart className="w-8 h-8 font-bold" style={{ color: '#CC922F' }} />

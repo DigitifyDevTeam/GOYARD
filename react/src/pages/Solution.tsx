@@ -100,7 +100,7 @@ function AutoCarousel({ features }: AutoCarouselProps) {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Main Content Area */}
-      <div className="relative bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] rounded-3xl overflow-hidden shadow-2xl" style={{ minHeight: '550px' }}>
+      <div className="relative bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl" style={{ minHeight: '400px' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
@@ -261,10 +261,10 @@ export default function Solution() {
       
       <main className="flex-1">
         {/* Hero Section with Blue Bar */}
-        <section className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-20">
-          <div className="max-w-7xl mx-auto px-6 text-center">
+        <section className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
             <motion.div
-              className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8"
+              className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-6 sm:mb-8"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -276,7 +276,7 @@ export default function Solution() {
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-['Poppins',sans-serif]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-['Poppins',sans-serif]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -285,7 +285,7 @@ export default function Solution() {
             </motion.h1>
 
             <motion.p
-              className="text-xl text-white/90 max-w-3xl mx-auto mb-6 font-['Poppins',sans-serif]"
+              className="text-base sm:text-lg lg:text-xl text-white/90 max-w-3xl mx-auto mb-4 sm:mb-6 font-['Poppins',sans-serif]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -295,7 +295,7 @@ export default function Solution() {
             </motion.p>
 
             <motion.p
-              className="text-lg text-white/80 max-w-2xl mx-auto font-['Poppins',sans-serif]"
+              className="text-sm sm:text-base lg:text-lg text-white/80 max-w-2xl mx-auto font-['Poppins',sans-serif]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -307,9 +307,9 @@ export default function Solution() {
         </section>
 
         {/* Steps Section */}
-        <section className="bg-white py-20">
-          <div className="container mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-10 text-center text-[#1C3957] font-['Poppins',sans-serif]">
+        <section className="bg-white py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10 text-center text-[#1C3957] font-['Poppins',sans-serif]">
               Les étapes de votre déménagement
             </h2>
             
@@ -318,22 +318,22 @@ export default function Solution() {
         </section>
 
         {/* Advantages Section */}
-        <section className="bg-gray-50 py-20">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
+        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
                 Pourquoi choisir Guivarche ?
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-['Poppins',sans-serif]">
                 Découvrez tous les avantages qui font de Guivarche la solution idéale pour votre déménagement
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {advantages.map((advantage, index) => (
                 <motion.div
                   key={index}
-                  className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] p-8 rounded-2xl border border-[#1C3957] text-center group hover:from-[#2a4f6b] hover:to-[#1C3957] hover:shadow-xl shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] p-6 sm:p-8 rounded-2xl border border-[#1C3957] text-center group hover:from-[#2a4f6b] hover:to-[#1C3957] hover:shadow-xl shadow-lg transition-all duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -360,18 +360,18 @@ export default function Solution() {
         </section>
 
         {/* Stats Section */}
-        <section className="bg-white py-20">
-          <div ref={statsRef} className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
+        <section className="bg-white py-12 sm:py-16 lg:py-20">
+          <div ref={statsRef} className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
                 Guivarche en chiffres
               </h2>
-              <p className="text-xl text-gray-600 font-['Poppins',sans-serif]">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 font-['Poppins',sans-serif]">
                 La confiance de milliers de clients
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {stats.map((stat, index) => (
                 <StatCounter
                   key={index}
@@ -387,9 +387,9 @@ export default function Solution() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gray-50 py-20">
-          <div className="container mx-auto px-6">
-            <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-12 rounded-3xl text-center">
+        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center">
               <motion.div
                 className="inline-flex items-center gap-2 mb-6"
                 animate={{ rotate: [0, 5, -5, 0] }}
@@ -402,7 +402,7 @@ export default function Solution() {
                 Prêt à déménager en toute sérénité ?
               </h2>
               
-              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+              <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
                 Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. 
                 Obtenez votre devis gratuit maintenant !
               </p>
@@ -435,10 +435,10 @@ export default function Solution() {
         </section>
 
         {/* FAQ Section */}
-        <section className="bg-white py-20">
-          <div className="container mx-auto px-6">
+        <section className="bg-white py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-[#1C3957] font-['Poppins',sans-serif]">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-12 text-center text-[#1C3957] font-['Poppins',sans-serif]">
                 Questions fréquentes
               </h2>
               <Accordion type="single" collapsible className="w-full space-y-4">

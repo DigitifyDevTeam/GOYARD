@@ -492,15 +492,50 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 
 function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
-    <div className="h-[499px] overflow-clip relative shrink-0 w-[1920px]">
-      <Group744 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
-    </div>
+    <>
+      {/* Desktop hero (>= lg) */}
+      <div className="hidden lg:block h-[499px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+        <Group744 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
+      </div>
+      {/* Mobile/Tablet hero (< lg) */}
+      <div className="lg:hidden relative w-full bg-[#f0eeef] overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <img src={imgRectangle821} alt="" className="w-full h-full object-cover object-right" />
+        </div>
+        <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
+          <h1 className="capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.5] text-2xl sm:text-4xl text-black mb-4 sm:mb-6 max-w-lg">{`Votre déménagement simple & intelligent`}</h1>
+          <p className="capitalize font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-black mb-6 sm:mb-8">
+            Commencez par l'introduction de votre adresse de départ
+          </p>
+          <div className="w-full max-w-lg flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6" style={{ "--fill-0": "#CC922F", "--stroke-0": "#CC922F" } as React.CSSProperties}>
+                <VuesaxBoldLocation />
+              </div>
+              <input
+                type="text"
+                value={address}
+                onChange={onAddressChange}
+                placeholder="Adresse de départ"
+                className="w-full bg-white border border-slate-200 rounded-lg pl-11 pr-4 py-3.5 font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-[#020618] placeholder:text-[#90a1b9] focus:ring-2 focus:ring-[#1c3957] focus:ring-opacity-50 outline-none shadow-md"
+              />
+            </div>
+            <button
+              onClick={onGetQuote}
+              className="bg-[#1c3957] text-white font-['Poppins',_sans-serif] font-[600] text-sm sm:text-base px-6 py-3.5 rounded-lg hover:bg-[#2a4f6b] transition-colors shadow-md whitespace-nowrap"
+            >
+              Obtenir un devis gratuit
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
 function Frame720() {
   return (
-    <div className="h-[132px] relative shrink-0 w-[1920px]">
+    <div className="h-[80px] sm:h-[100px] lg:h-[132px] relative shrink-0 w-full">
       <svg
         className="block size-full"
         fill="none"
@@ -861,70 +896,74 @@ export function _Group750() {
 
 function Group745() {
   return (
-    <div className="relative shrink-0 w-[1920px]">
-      <div className="bg-white h-[286px] w-full" />
-
-      {/* Stats Section - Redesigned for proper alignment */}
-      <div className="absolute inset-0 flex items-end justify-center gap-[80px] px-[210px] pb-[50px]">
-        {/* Stat 1: 23 ans d'éxpérience - Crown Icon Independent */}
-        <div className="h-[160px] w-[250px] flex items-center justify-center self-start mt-[60px]">
-          <img 
-            src={imgCrownIcon} 
-            alt="Crown icon" 
-            className="h-full w-full object-contain"
-          />
-        </div>
-        {/* Stat 1: Description Independent */}
-        <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap absolute left-[312px] bottom-[50px]">{`23 ans d'éxpérience`}</p>
-
-        {/* Stat 2: 780 déménagement par mois - Certificate Icon SECOND */}
-        <div className="flex flex-col items-center gap-[20px]">
-          <div className="h-[70px] w-[80px] flex items-center justify-center">
-            <div className="h-[76px] w-[75px]">
-              <svg
-                className="block size-full"
-                fill="none"
-                preserveAspectRatio="none"
-                viewBox="0 0 75 76"
-              >
-                <path
-                  clipRule="evenodd"
-                  d={svgPaths.p1755e980}
-                  fill="var(--fill-0, #CC922F)"
-                  fillRule="evenodd"
-                  id="Vector"
-                />
-              </svg>
+    <>
+      {/* Desktop: keep original layout (lg and above) */}
+      <div className="hidden lg:block relative shrink-0 w-[1920px]">
+        <div className="bg-white h-[286px] w-full" />
+        <div className="absolute inset-0 flex items-end justify-center gap-[80px] px-[210px] pb-[50px]">
+          <div className="h-[160px] w-[250px] flex items-center justify-center self-start mt-[60px]">
+            <img src={imgCrownIcon} alt="Crown icon" className="h-full w-full object-contain" />
+          </div>
+          <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap absolute left-[312px] bottom-[50px]">{`23 ans d'éxpérience`}</p>
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[76px] w-[75px]">
+                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
+                  <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" id="Vector" />
+                </svg>
+              </div>
             </div>
+            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780 déménagement par mois</p>
           </div>
-          <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">
-            780 déménagement par mois
-          </p>
-        </div>
-
-        {/* Stat 3: 22 camions à disposition - Truck Icon THIRD */}
-        <div className="flex flex-col items-center gap-[20px]">
-          <div className="h-[70px] w-[80px] flex items-center justify-center">
-            <div className="h-[70px] w-[80px]">
-              <Group751 />
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[70px] w-[80px]"><Group751 /></div>
             </div>
+            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">22 camions à disposition</p>
           </div>
-          <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">
-            22 camions à disposition
-          </p>
-        </div>
-
-        {/* Stat 4: +500 avis positifs - Smiley Icon FOURTH */}
-        <div className="flex flex-col items-center gap-[20px]">
-          <div className="h-[70px] w-[80px] flex items-center justify-center">
-            <Component024 />
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <Component024 />
+            </div>
+            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">+500 avis positifs</p>
           </div>
-          <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">
-            +500 avis positifs
-          </p>
         </div>
       </div>
-    </div>
+
+      {/* Mobile & Tablet: responsive grid - all four stats same structure */}
+      <div className="lg:hidden w-full bg-white py-8 sm:py-12 px-4 sm:px-6">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-start">
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
+              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
+                <img src={imgCrownIcon} alt="Crown icon" className="h-full w-full object-contain" />
+              </div>
+              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">{`23 ans d'éxpérience`}</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
+              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
+                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
+                  <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" />
+                </svg>
+              </div>
+              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">780 déménagement par mois</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
+              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
+                <Group751 />
+              </div>
+              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">22 camions à disposition</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
+              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
+                <Component024 />
+              </div>
+              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">+500 avis positifs</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -1304,7 +1343,9 @@ function Group27() {
 
 function Frame23() {
   return (
-    <div className="h-[662px] overflow-clip relative shrink-0 w-[1920px]">
+    <>
+    {/* Desktop testimonials */}
+    <div className="hidden lg:block h-[662px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
       <Group20 />
       <div
         className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[1565px] top-[416px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]"
@@ -1349,6 +1390,30 @@ function Frame23() {
         </div>
       </div>
     </div>
+    {/* Mobile testimonials */}
+    <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
+      <div className="max-w-2xl mx-auto text-center">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black mb-3">
+          Ce que nos clients disent de nous !
+        </h2>
+        <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-[#62748e] mb-8">
+          Des témoignages authentiques qui parlent d'eux-mêmes
+        </p>
+        <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory -mx-4 px-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="snap-center shrink-0 w-[240px] sm:w-[280px]">
+              <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                <img src={imgImage5} alt="" className="w-full h-48 sm:h-56 object-cover" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <a href="https://g.page" className="inline-flex items-center gap-2 mt-6 bg-[#197bff] text-white font-['Inter',_sans-serif] font-[600] text-sm px-6 py-3 rounded hover:bg-blue-600 transition-colors uppercase tracking-wider">
+          Donnez-nous votre avis sur Google
+        </a>
+      </div>
+    </div>
+    </>
   );
 }
 
@@ -1884,9 +1949,50 @@ function Group701() {
 
 function Frame702() {
   return (
-    <div className="h-[711px] overflow-clip relative shrink-0 w-[1920px]">
-      <Group701 />
-    </div>
+    <>
+      {/* Desktop how-it-works */}
+      <div className="hidden lg:block h-[711px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+        <Group701 />
+      </div>
+      {/* Mobile how-it-works */}
+      <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-[#1c3957] text-center mb-8 sm:mb-10">
+            Comment ça marche
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+            <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">1</div>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Estimez votre volume</h3>
+              <p className="text-sm text-gray-600">Par liste d'objets, surface ou photos IA</p>
+            </div>
+            <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">2</div>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Renseignez vos adresses</h3>
+              <p className="text-sm text-gray-600">Départ, arrivée et escales éventuelles</p>
+            </div>
+            <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">3</div>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Choisissez vos options</h3>
+              <p className="text-sm text-gray-600">Emballage, démontage, cartons et plus</p>
+            </div>
+            <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">4</div>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Recevez votre devis</h3>
+              <p className="text-sm text-gray-600">Instantané, transparent, sans surprise</p>
+            </div>
+          </div>
+          <div className="text-center mt-8">
+            <button
+              onClick={() => window.location.href = '/tunnel/mes-coordonnees'}
+              className="bg-white border-2 border-[#1c3957] text-[#1c3957] font-['Poppins',_sans-serif] font-[600] text-sm sm:text-base px-6 py-3 rounded hover:bg-[#1c3957] hover:text-white transition-colors"
+            >
+              Planifier mon déménagement
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -1990,10 +2096,25 @@ function Frame722() {
 
 function Group719() {
   return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-      <div className="[grid-area:1_/_1] bg-white h-[242px] ml-0 mt-0 w-[1920px]" />
-      <Frame722 />
-    </div>
+    <>
+      {/* Desktop CTA (>= lg) */}
+      <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
+        <div className="[grid-area:1_/_1] bg-white h-[242px] ml-0 mt-0 w-[1920px]" />
+        <Frame722 />
+      </div>
+      {/* Mobile/Tablet CTA (< lg) */}
+      <div className="lg:hidden w-full bg-white py-8 sm:py-12 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto bg-[#1c3957] rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 overflow-hidden relative">
+          <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5" />
+          <h3 className="font-['Poppins',_sans-serif] font-[600] text-xl sm:text-2xl lg:text-3xl text-white mb-3 sm:mb-4 relative z-10 leading-snug">
+            Des professionnels à votre service, où que vous soyez
+          </h3>
+          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-white/80 relative z-10">
+            Nulla eu lacus mollis turpis facilisis malesuada. In finibus, velit ac sodales ultrices
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -2176,43 +2297,54 @@ function Frame2147226883() {
 
 function Group756() {
   return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-      <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-[1920px]" />
-      <Frame2147226883 />
-      <div className="[grid-area:1_/_1] flex flex-col font-['Poppins',_sans-serif] font-[600] h-[80.924px] justify-center ml-[974.5px] mt-[110.197px] not-italic relative text-[51px] text-black text-center translate-x-[-50%] translate-y-[-50%] w-[985px]">
-        <h2 className="leading-[62px]">
-          Les société qui nous ont fait confiance
-        </h2>
-      </div>
-      <div
-        className="[grid-area:1_/_1] h-[70.26px] ml-[757px] mt-[74.956px] relative w-[445px]"
-        data-name="path"
-      >
+    <>
+      {/* Desktop companies (>= lg) */}
+      <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
+        <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-[1920px]" />
+        <Frame2147226883 />
+        <div className="[grid-area:1_/_1] flex flex-col font-['Poppins',_sans-serif] font-[600] h-[80.924px] justify-center ml-[974.5px] mt-[110.197px] not-italic relative text-[51px] text-black text-center translate-x-[-50%] translate-y-[-50%] w-[985px]">
+          <h2 className="leading-[62px]">
+            Les société qui nous ont fait confiance
+          </h2>
+        </div>
         <div
-          className="absolute inset-[-7.02%_-0.17%_-7.09%_-0.18%]"
-          style={
-            {
-              "--stroke-0": "rgba(204, 146, 47, 1)",
-            } as React.CSSProperties
-          }
+          className="[grid-area:1_/_1] h-[70.26px] ml-[757px] mt-[74.956px] relative w-[445px]"
+          data-name="path"
         >
-          <svg
-            className="block size-full"
-            fill="none"
-            preserveAspectRatio="none"
-            viewBox="0 0 447 81"
+          <div
+            className="absolute inset-[-7.02%_-0.17%_-7.09%_-0.18%]"
+            style={{ "--stroke-0": "rgba(204, 146, 47, 1)" } as React.CSSProperties}
           >
-            <path
-              d={svgPaths.p2e7a9680}
-              id="path"
-              opacity="0.1"
-              stroke="var(--stroke-0, #CC922F)"
-              strokeWidth="10"
-            />
-          </svg>
+            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 447 81">
+              <path d={svgPaths.p2e7a9680} id="path" opacity="0.1" stroke="var(--stroke-0, #CC922F)" strokeWidth="10" />
+            </svg>
+          </div>
         </div>
       </div>
-    </div>
+      {/* Mobile/Tablet companies (< lg) */}
+      <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black text-center mb-8 sm:mb-10 leading-tight">
+          Les société qui nous ont fait confiance
+        </h2>
+        <div className="max-w-3xl mx-auto overflow-x-auto pb-4">
+          <div className="min-w-[600px] h-[63px] mx-auto">
+            <svg className="block w-full h-full" fill="none" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1296 63">
+              <g clipPath="url(#clip0_mobile_762)" id="Frame 2147226883">
+                <g id="Group 754">
+                  <path clipRule="evenodd" d={svgPaths.p32823000} fill="var(--fill-0, black)" fillRule="evenodd" />
+                  <path clipRule="evenodd" d={svgPaths.p352c5e00} fill="var(--fill-0, black)" fillRule="evenodd" />
+                </g>
+                <path d={svgPaths.p155eb700} fill="var(--fill-0, #E30613)" />
+                <path clipRule="evenodd" d={svgPaths.pf6c1d00} fill="var(--fill-0, #255398)" fillRule="evenodd" />
+              </g>
+              <defs>
+                <clipPath id="clip0_mobile_762"><rect fill="white" height="63" width="1296" /></clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -2501,51 +2633,59 @@ function Group717() {
 
 function Content01() {
   return (
-    <div
-      className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
-      data-name="Content 01"
-    >
-      <Bg />
-      <div
-        className="[grid-area:1_/_1] h-[771px] ml-0 mt-0 relative w-[714px]"
-        data-name="Bitmap"
-      >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img
-            alt=""
-            className="absolute h-[111.67%] left-[-11.34%] max-w-none top-[-11.28%] w-[123.84%]"
-            src={imgBitmap}
-          />
+    <>
+      {/* Desktop features */}
+      <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0" data-name="Content 01">
+        <Bg />
+        <div className="[grid-area:1_/_1] h-[771px] ml-0 mt-0 relative w-[714px]" data-name="Bitmap">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <img alt="" className="absolute h-[111.67%] left-[-11.34%] max-w-none top-[-11.28%] w-[123.84%]" src={imgBitmap} />
+          </div>
+        </div>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[838px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[330px]">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
+        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[838px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[330px]">Saisie manuelle organisée</h3>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1302px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[306px]">Téléchargez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
+        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1302px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px]">Scan intelligent par IA</h3>
+        <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[752px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">Déclarez vos affaires en toute simplicité, rapidité et précision</h2>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[752px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">Deux méthodes simples pour estimer votre déménagement.</p>
+      </div>
+      {/* Mobile features */}
+      <div className="lg:hidden w-full py-10 sm:py-14 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="mb-8 sm:mb-10">
+            <img src={imgBitmap} alt="" className="w-full h-48 sm:h-64 object-cover rounded-xl mb-6 sm:mb-8" />
+          </div>
+          <h2 className="font-['Poppins',_sans-serif] font-normal text-2xl sm:text-3xl text-[#161c2d] tracking-tight leading-snug mb-4">
+            Déclarez vos affaires en toute simplicité, rapidité et précision
+          </h2>
+          <p className="font-['Poppins',_sans-serif] font-[500] text-base text-[#161c2d] opacity-70 mb-8 sm:mb-10">
+            Deux méthodes simples pour estimer votre déménagement.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-12 h-12 mb-4">
+                <Group717 />
+              </div>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Saisie manuelle organisée</h3>
+              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
+            </div>
+            <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-12 h-12 mb-4">
+                <Group717 />
+              </div>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Scan intelligent par IA</h3>
+              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Téléchargez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[838px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[330px]">
-        Choisissez vos objets depuis une liste organisée
-        (meubles, électroménagers, cartons, etc.)
-      </p>
-      <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[838px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[330px]">
-        Saisie manuelle organisée
-      </h3>
-      <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1302px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[306px]">
-        Téléchargez une photo, l'IA détecte vos objets et
-        calcule en temps réel.
-      </p>
-      <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1302px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px]">
-        Scan intelligent par IA
-      </h3>
-      <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[752px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">
-        Déclarez vos affaires en toute simplicité, rapidité et
-        précision
-      </h2>
-      <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[752px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">
-        Deux méthodes simples pour estimer votre déménagement.
-      </p>
-    </div>
+    </>
   );
 }
 
 function Frame721() {
   return (
-    <div className="h-[132px] relative shrink-0 w-[1920px]">
+    <div className="h-[80px] sm:h-[100px] lg:h-[132px] relative shrink-0 w-full">
       <svg
         className="block size-full"
         fill="none"
@@ -3123,50 +3263,45 @@ function Frame725() {
 
 function Frame700() {
   return (
-    <div className="h-[787px] overflow-clip relative shrink-0 w-[1920px]">
-      <div className="absolute bg-[#020618] h-[787px] left-0 top-0 w-[1920px]" />
-      <div className="absolute flex h-[397px] items-center justify-center left-[1045px] top-[176px] w-[627px]">
-        <div className="flex-none rotate-[180deg]">
-          <Group714 />
+    <>
+      {/* Desktop tutorials */}
+      <div className="hidden lg:block h-[787px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+        <div className="absolute bg-[#020618] h-[787px] left-0 top-0 w-full" />
+        <div className="absolute flex h-[397px] items-center justify-center left-[1045px] top-[176px] w-[627px]">
+          <div className="flex-none rotate-[180deg]"><Group714 /></div>
+        </div>
+        <div className="absolute inset-[6.86%_29.22%_86.3%_47.6%]" data-name="path">
+          <div className="absolute inset-[-9.22%_-0.13%_-9.27%_-0.14%]" style={{ "--stroke-0": "rgba(248, 250, 252, 1)" } as React.CSSProperties}>
+            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 447 64">
+              <path d={svgPaths.p2d77cf80} id="path" opacity="0.2" stroke="var(--stroke-0, #F8FAFC)" strokeWidth="10" />
+            </svg>
+          </div>
+        </div>
+        <h2 className="absolute font-['Poppins',_sans-serif] font-[600] leading-[62px] left-[calc(50%+0.5px)] not-italic text-[51px] text-center text-nowrap text-white top-[46px] translate-x-[-50%] whitespace-pre">Préparer son déménagement</h2>
+        <p className="absolute font-['Poppins',_sans-serif] font-[500] leading-[normal] left-[calc(50%-290px)] not-italic text-[20px] text-nowrap text-slate-50 top-[114px] whitespace-pre">L'organisation sans stress, pour un nouveau départ réussi</p>
+        <Frame725 />
+      </div>
+      {/* Mobile tutorials */}
+      <div className="lg:hidden w-full bg-[#020618] py-10 sm:py-14 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-white mb-3">Préparer son déménagement</h2>
+          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-slate-300 mb-8 sm:mb-10">L'organisation sans stress, pour un nouveau départ réussi</p>
+          <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
+            {[
+              { title: "Check-list déménagement", desc: "Tout ce qu'il faut prévoir avant le jour J." },
+              { title: "Emballer efficacement", desc: "Techniques pour protéger vos affaires." },
+              { title: "Nos tutorials", desc: "Guides complets pour un déménagement réussi." },
+            ].map((item, i) => (
+              <div key={i} className="bg-slate-800/60 border border-slate-700 rounded-2xl p-5 sm:p-6 text-left">
+                <div className="w-10 h-10 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold mb-4">{i + 1}</div>
+                <h3 className="font-['Poppins',_sans-serif] font-[700] text-base sm:text-lg text-white mb-2">{item.title}</h3>
+                <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#62748e]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <div
-        className="absolute inset-[6.86%_29.22%_86.3%_47.6%]"
-        data-name="path"
-      >
-        <div
-          className="absolute inset-[-9.22%_-0.13%_-9.27%_-0.14%]"
-          style={
-            {
-              "--stroke-0": "rgba(248, 250, 252, 1)",
-            } as React.CSSProperties
-          }
-        >
-          <svg
-            className="block size-full"
-            fill="none"
-            preserveAspectRatio="none"
-            viewBox="0 0 447 64"
-          >
-            <path
-              d={svgPaths.p2d77cf80}
-              id="path"
-              opacity="0.2"
-              stroke="var(--stroke-0, #F8FAFC)"
-              strokeWidth="10"
-            />
-          </svg>
-        </div>
-      </div>
-      <h2 className="absolute font-['Poppins',_sans-serif] font-[600] leading-[62px] left-[calc(50%+0.5px)] not-italic text-[51px] text-center text-nowrap text-white top-[46px] translate-x-[-50%] whitespace-pre">
-        Préparer son déménagement
-      </h2>
-      <p className="absolute font-['Poppins',_sans-serif] font-[500] leading-[normal] left-[calc(50%-290px)] not-italic text-[20px] text-nowrap text-slate-50 top-[114px] whitespace-pre">
-        L'organisation sans stress, pour un nouveau départ
-        réussi
-      </p>
-      <Frame725 />
-    </div>
+    </>
   );
 }
 
@@ -3969,10 +4104,41 @@ function Group736() {
 
 function Frame701() {
   return (
-    <div className="h-[756px] overflow-clip relative shrink-0 w-[1920px]">
-      <Group707 />
-      <Group736 />
-    </div>
+    <>
+      {/* Desktop blog section */}
+      <div className="hidden lg:block h-[756px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+        <Group707 />
+        <Group736 />
+      </div>
+      {/* Mobile blog section */}
+      <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black mb-3">
+            Notre Blog
+          </h2>
+          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-[#62748e] mb-8">
+            Conseils, astuces et actualités du déménagement
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+            {[
+              { img: imgRectangle2, title: "Guide complet pour un déménagement réussi", date: "27 janvier 2025" },
+              { img: imgRectangle3, title: "Comment emballer vos objets fragiles", date: "27 janvier 2025" },
+            ].map((post, i) => (
+              <div key={i} className="bg-white rounded-xl shadow-md overflow-hidden text-left">
+                <img src={post.img} alt="" className="w-full h-40 sm:h-48 object-cover" />
+                <div className="p-4 sm:p-5">
+                  <p className="font-['Inter',_sans-serif] font-[600] text-xs text-[#CC922F] mb-2">{post.date}</p>
+                  <h3 className="font-['Poppins',_sans-serif] font-[600] text-base sm:text-lg text-black leading-snug">{post.title}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+          <a href="/blog" className="inline-block mt-6 font-['Poppins',_sans-serif] font-[500] text-sm text-black underline">
+            Voir tous les articles
+          </a>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -4062,7 +4228,9 @@ function Frame2147226884() {
 
 function Group753() {
   return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
+    <>
+    {/* Desktop press section */}
+    <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
       <div className="[grid-area:1_/_1] h-[282px] ml-0 mt-0 relative w-[1920px]">
         <svg
           className="block size-full"
@@ -4112,6 +4280,20 @@ function Group753() {
         </div>
       </div>
     </div>
+    {/* Mobile press section */}
+    <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black mb-8 sm:mb-10">
+          La presse parle de nous !
+        </h2>
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 grayscale opacity-70">
+          <img src={imgLogoDidomiPng} alt="Didomi" className="h-8 sm:h-10 object-contain" />
+          <img src={img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic} alt="Press" className="h-8 sm:h-10 object-contain" />
+          <img src={imgMidiLibrePng} alt="Midi Libre" className="h-8 sm:h-10 object-contain" />
+        </div>
+      </div>
+    </div>
+    </>
   );
 }
 
@@ -4662,11 +4844,11 @@ function VenteFlash() {
   }, [isHovered, next]);
 
   return (
-    <section className="relative w-full bg-[#faf9f7] py-[80px] overflow-hidden shrink-0">
+    <section className="relative w-full bg-[#faf9f7] py-10 sm:py-14 lg:py-[80px] overflow-hidden shrink-0">
       <div className="absolute top-0 left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#CC922F] to-transparent opacity-30" />
 
-      <div className="max-w-[1320px] mx-auto px-[40px]">
-        <div className="flex items-center justify-between mb-[48px]">
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-[40px]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-[48px]">
           <div>
             <div className="flex items-center gap-[12px] mb-[12px]">
               <div className="w-[40px] h-[3px] bg-[#CC922F] rounded-full" />
@@ -4674,7 +4856,7 @@ function VenteFlash() {
                 Offres limitées
               </span>
             </div>
-            <h2 className="font-['Poppins',_sans-serif] font-[700] text-[42px] text-[#161c2d] leading-[1.2] tracking-[-0.5px]">
+            <h2 className="font-['Poppins',_sans-serif] font-[700] text-2xl sm:text-3xl lg:text-[42px] text-[#161c2d] leading-[1.2] tracking-[-0.5px]">
               Vente Flash
             </h2>
             <p className="font-['Poppins',_sans-serif] font-[400] text-[17px] text-[#555e6d] mt-[10px] leading-[1.5]">
@@ -4755,7 +4937,7 @@ export default function Home() {
 
   return (
     <div
-      className="bg-white flex flex-col items-center relative w-full"
+      className="bg-white flex flex-col items-center relative w-full overflow-x-hidden"
       data-name="Home"
     >
       <Header onGetQuote={handleGetQuote} />

@@ -1219,7 +1219,7 @@ export default function BlogArticle() {
       />
 
       {/* Hero Section */}
-      <div className="relative h-[70vh] min-h-[500px] overflow-hidden">
+      <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] min-h-[350px] sm:min-h-[400px] lg:min-h-[500px] overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={article.image}
@@ -1230,7 +1230,7 @@ export default function BlogArticle() {
         </div>
 
         <div className="relative h-full flex items-end">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 lg:pb-16">
             <motion.button
               onClick={() => navigate("/blog")}
               className="flex items-center gap-2 text-white/90 hover:text-white mb-8 group"
@@ -1265,7 +1265,7 @@ export default function BlogArticle() {
               </motion.div>
 
               <motion.h1
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight font-['Poppins',sans-serif]"
+                className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight font-['Poppins',sans-serif]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -1274,7 +1274,7 @@ export default function BlogArticle() {
               </motion.h1>
 
               <motion.p
-                className="text-xl text-white/90 mb-8 leading-relaxed"
+                className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -1283,7 +1283,7 @@ export default function BlogArticle() {
               </motion.p>
 
               <motion.div
-                className="flex items-center gap-6"
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
@@ -1300,7 +1300,7 @@ export default function BlogArticle() {
                   </div>
                 </div>
 
-                <div className="relative ml-auto">
+                <div className="relative sm:ml-auto">
                   <button
                     onClick={() => setShowShareMenu(!showShareMenu)}
                     className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white hover:bg-white/20 transition-all"
@@ -1353,8 +1353,8 @@ export default function BlogArticle() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-12 gap-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Table of Contents - Sticky Sidebar */}
           <aside className="lg:col-span-3 hidden lg:block">
             <div className="sticky top-24">
@@ -1407,8 +1407,8 @@ export default function BlogArticle() {
           <article className="lg:col-span-9">
             <div className="max-w-4xl">
               {/* Introduction */}
-              <div className="prose prose-lg max-w-none mb-12">
-                <p className="text-xl text-gray-700 leading-relaxed font-['Poppins',sans-serif] first-letter:text-7xl first-letter:font-bold first-letter:text-[#CC922F] first-letter:mr-3 first-letter:float-left">
+              <div className="prose prose-lg max-w-none mb-8 sm:mb-12">
+                <p className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed font-['Poppins',sans-serif] first-letter:text-5xl sm:first-letter:text-7xl first-letter:font-bold first-letter:text-[#CC922F] first-letter:mr-3 first-letter:float-left">
                   {article.content.intro}
                 </p>
               </div>
@@ -1418,15 +1418,15 @@ export default function BlogArticle() {
                 <div
                   key={sectionIndex}
                   id={`section-${sectionIndex}`}
-                  className="mb-16 scroll-mt-24"
+                  className="mb-10 sm:mb-16 scroll-mt-24"
                 >
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6 font-['Poppins',sans-serif] flex items-center gap-3">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 font-['Poppins',sans-serif] flex items-center gap-3">
                     <span className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-[#CC922F] to-[#1C3957] text-white rounded-full text-lg">
                       {sectionIndex + 1}
                     </span>
                     {section.title}
                   </h2>
-                  <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                  <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                     {section.content}
                   </p>
 
@@ -1443,7 +1443,7 @@ export default function BlogArticle() {
               ))}
 
               {/* Conclusion */}
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-8 md:p-12 mb-12">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 mb-8 sm:mb-12">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6 font-['Poppins',sans-serif]">
                   Conclusion
                 </h2>
@@ -1453,7 +1453,7 @@ export default function BlogArticle() {
               </div>
 
               {/* CTA Section */}
-              <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-8 md:p-12 rounded-3xl text-center mb-12">
+              <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl text-center mb-8 sm:mb-12">
                 <motion.div
                   className="inline-flex items-center gap-2 mb-6"
                   animate={{ rotate: [0, 5, -5, 0] }}
@@ -1466,7 +1466,7 @@ export default function BlogArticle() {
                   Prêt à déménager ?
                 </h2>
 
-                <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+                <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
                   Obtenez votre devis gratuit en quelques clics et profitez de notre expertise pour un déménagement sans stress !
                 </p>
 
@@ -1483,11 +1483,11 @@ export default function BlogArticle() {
             </div>
 
             {/* Related Articles */}
-            <div className="mt-20">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 font-['Poppins',sans-serif]">
+            <div className="mt-12 sm:mt-16 lg:mt-20">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 font-['Poppins',sans-serif]">
                 Articles similaires
               </h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {relatedArticles.map((related) => (
                   <motion.div
                     key={related.id}

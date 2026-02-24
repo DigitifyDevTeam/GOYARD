@@ -295,27 +295,27 @@ export default function FAQ() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-20">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <h1 className="text-5xl font-bold mb-6 font-['Poppins',sans-serif]">
+        <section className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 font-['Poppins',sans-serif]">
               Questions fréquemment posées
             </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+            <p className="text-base sm:text-lg lg:text-xl text-white/90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
               Trouvez rapidement des réponses à vos questions sur nos services de déménagement.
             </p>
           </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="py-32 px-8 bg-white">
-          <div className="max-w-full px-8">
+        <section className="py-12 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-full sm:px-4 lg:px-8">
             {/* Small Title */}
-            <h2 className="text-2xl font-semibold text-[#0C1E3A] mb-6 font-['Poppins',sans-serif]">
+            <h2 className="text-xl sm:text-2xl font-semibold text-[#0C1E3A] mb-4 sm:mb-6 font-['Poppins',sans-serif]">
               Choisissez une catégorie
             </h2>
             
             {/* Category Navigation */}
-            <div className="mb-24 flex gap-3 justify-start flex-wrap">
+            <div className="mb-10 sm:mb-16 lg:mb-24 flex gap-2 sm:gap-3 justify-start flex-wrap">
               {categories.map((category) => (
                 <button
                   key={category.id}
@@ -325,7 +325,7 @@ export default function FAQ() {
                   }}
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   className={`
-                    px-5 py-2.5 rounded-full text-[17px] transition-all duration-300
+                    px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-sm sm:text-[17px] transition-all duration-300
                     whitespace-nowrap
                     ${activeCategory === category.id 
                       ? 'bg-[#1c3957] text-white shadow-sm' 
@@ -339,9 +339,9 @@ export default function FAQ() {
             </div>
 
             {/* FAQ Content with Images */}
-            <div className="flex gap-8">
+            <div className="flex flex-col lg:flex-row gap-8">
               {/* Left side - FAQ Items */}
-              <div className="w-2/3">
+              <div className="w-full lg:w-2/3">
                 <div className="space-y-4">
               {faqData[activeCategory].items.map((item, index) => (
                 <div 
@@ -350,11 +350,11 @@ export default function FAQ() {
                 >
                   <button
                     onClick={() => toggleItem(index)}
-                    className="w-full py-5 flex items-start text-left hover:opacity-80 transition-opacity duration-200 relative"
+                    className="w-full py-4 sm:py-5 flex items-start text-left hover:opacity-80 transition-opacity duration-200 relative"
                   >
-                    <div className="flex items-start gap-6 pr-32">
+                    <div className="flex items-start gap-3 sm:gap-6 pr-12 sm:pr-20 lg:pr-32">
                       <div className={`
-                        flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 mt-1
+                        flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 mt-1
                         ${expandedItem === index 
                           ? 'bg-[#1c3957]' 
                           : 'bg-[#CC922F]'
@@ -372,19 +372,19 @@ export default function FAQ() {
                           />
                         )}
                       </div>
-                      <span className="text-[22px] font-semibold text-[#0C1E3A] leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                      <span className="text-base sm:text-lg lg:text-[22px] font-semibold text-[#0C1E3A] leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif' }}>
                         {item.question}
                       </span>
                     </div>
-                    <div className="absolute top-5 right-48">
+                    <div className="absolute top-4 sm:top-5 right-0 sm:right-8 lg:right-48">
                       {expandedItem === index ? (
                         <ArrowDownLeft 
-                          className="w-20 h-20 flex-shrink-0 transition-all duration-300 text-[#1c3957]"
+                          className="w-8 h-8 sm:w-12 sm:h-12 lg:w-20 lg:h-20 flex-shrink-0 transition-all duration-300 text-[#1c3957]"
                           strokeWidth={2.5}
                         />
                       ) : (
                         <ArrowUpRight 
-                          className="w-20 h-20 flex-shrink-0 transition-all duration-300 text-[#CC922F]"
+                          className="w-8 h-8 sm:w-12 sm:h-12 lg:w-20 lg:h-20 flex-shrink-0 transition-all duration-300 text-[#CC922F]"
                           strokeWidth={2.5}
                         />
                       )}
@@ -397,8 +397,8 @@ export default function FAQ() {
                       ${expandedItem === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
                     `}
                   >
-                    <div className="pb-6 pt-3 pr-48">
-                      <p className="text-[#6B6B8C] leading-relaxed text-[20px] font-['Inter',sans-serif]">
+                    <div className="pb-4 sm:pb-6 pt-2 sm:pt-3 pr-4 sm:pr-12 lg:pr-48">
+                      <p className="text-[#6B6B8C] leading-relaxed text-sm sm:text-base lg:text-[20px] font-['Inter',sans-serif]">
                         {item.answer}
                       </p>
                     </div>
@@ -409,7 +409,7 @@ export default function FAQ() {
               </div>
               
               {/* Right side - Image Stack */}
-              <div className="w-1/3 flex-shrink-0 flex justify-end">
+              <div className="hidden lg:flex w-1/3 flex-shrink-0 justify-end">
                 <ImageStack 
                   images={[
                     {
@@ -446,9 +446,9 @@ export default function FAQ() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gray-50 py-20">
-          <div className="container mx-auto px-6">
-            <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-12 rounded-3xl text-center">
+        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center">
               <motion.div
                 className="inline-flex items-center gap-2 mb-6"
                 animate={{ rotate: [0, 5, -5, 0] }}
@@ -461,7 +461,7 @@ export default function FAQ() {
                 Prêt à déménager en toute sérénité ?
               </h2>
               
-              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+              <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
                 Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. 
                 Obtenez votre devis gratuit maintenant !
               </p>

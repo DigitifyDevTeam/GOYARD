@@ -1,13 +1,23 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 interface HeaderProps {
   onGetQuote?: () => void;
 }
 
-function Group685() {
+const navLinks = [
+  { href: "/", label: "Accueil" },
+  { href: "/solution", label: "Solution" },
+  { href: "/blog", label: "Blog" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
+];
+
+function Group685({ className = "" }: { className?: string }) {
   return (
-    <div className="h-[32.103px] relative w-[259.486px]">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 260 33">
+    <div className={`relative h-7 w-40 lg:h-[32.103px] lg:w-[259.486px] ${className}`}>
+      <svg className="block size-full" fill="none" preserveAspectRatio="xMidYMid meet" viewBox="0 0 260 33">
         <g id="Group 683">
           <path d="M11.4678 32H0V20.6484L8.59473 18.835L11.4678 32ZM32 32H16.6016L13.5029 17.7998L32 13.8975V32ZM8.11914 16.6514L0 18.3643V0H4.48633L8.11914 16.6514ZM32 11.6133L13.0264 15.6162L9.61914 0H32V11.6133Z" fill="var(--fill-0, #1C3957)" id="Subtract" />
           <g id="Group 727">
@@ -60,8 +70,10 @@ function Group685() {
 
 export default function Header({ onGetQuote }: HeaderProps) {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleGetQuote = () => {
+    setMobileMenuOpen(false);
     if (onGetQuote) {
       onGetQuote();
     } else {
@@ -69,61 +81,96 @@ export default function Header({ onGetQuote }: HeaderProps) {
     }
   };
 
+  const linkClass = "font-['Poppins',sans-serif] font-semibold text-[#191919] hover:text-[#CC922F] transition-colors text-sm lg:text-[15px] py-2 px-4 lg:px-5 rounded-md hover:bg-slate-50/80";
+
   return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-      <div className="[grid-area:1_/_1] h-[32.103px] ml-[302.996px] mt-[56px] relative w-[259.486px]">
-        <Group685 />
-      </div>
-      
-      <div className="[grid-area:1_/_1] bg-white h-[56px] ml-0 mt-[107px] relative shadow-[0px_6px_16px_0px_rgba(25,25,25,0.06)] w-[1920px]" data-name="Header">
-        <div className="absolute h-[56px] left-[210px] right-[210px] top-0" data-name="Nav - Main">
-          <div className="absolute font-['Poppins',_sans-serif] font-[600] h-[56px] leading-[0] left-[146px] not-italic text-[#191919] top-0 w-[728.75px]" data-name="Nav">
-            <div className="absolute flex flex-col h-[18.75px] justify-center left-[30px] text-[14.883px] top-[28px] translate-y-[-50%] w-[62.68px]">
-              <a href="/" className="leading-[18.75px] hover:text-[#CC922F] transition-colors">Acceuil</a>
+    <>
+      {/* Top bar: logo + desktop nav + CTA / hamburger */}
+      <header className="w-full bg-white shadow-[0px_6px_16px_0px_rgba(25,25,25,0.06)]">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
+          <div className="flex items-center justify-between h-14 lg:h-[56px] gap-4">
+            {/* Logo + nav grouped so Accueil sits closer to logo */}
+            <div className="flex items-center gap-6 lg:gap-20">
+              <a href="/" className="flex-shrink-0" aria-label="Accueil">
+                <Group685 />
+              </a>
+              {/* Desktop nav - hidden on mobile */}
+              <nav className="hidden lg:flex items-center gap-12 xl:gap-16 2xl:gap-20 font-[600] text-[#191919]" aria-label="Navigation principale">
+                {navLinks.map(({ href, label }) => (
+                  <a key={href} href={href} className={linkClass}>
+                    {label}
+                  </a>
+                ))}
+              </nav>
             </div>
-            <div className="absolute flex flex-col justify-center left-[152.48px] text-[14.766px] text-nowrap top-[28.13px] translate-y-[-50%]">
-              <a href="/solution" className="leading-[18.75px] whitespace-pre hover:text-[#CC922F] transition-colors">Solution </a>
-            </div>
-            <div className="absolute flex flex-col h-[18px] justify-center left-[289px] text-[14.648px] top-[28px] translate-y-[-50%] w-[62px]">
-              <a href="/blog" className="leading-[18.75px] hover:text-[#CC922F] transition-colors">Blog</a>
-            </div>
-            <div className="absolute flex flex-col h-[18px] justify-center left-[421px] text-[14.531px] top-[28px] translate-y-[-50%] w-[44px]">
-              <a href="/faq" className="leading-[18.75px] hover:text-[#CC922F] transition-colors">FAQ</a>
-            </div>
-            <div className="absolute flex flex-col h-[18px] justify-center left-[552px] text-[15px] top-[28px] translate-y-[-50%] w-[50px]">
-              <a href="/contact" className="leading-[18.75px] hover:text-[#CC922F] transition-colors cursor-pointer">Contact</a>
-            </div>
-          </div>
-          
-          <div className="absolute inset-[12px_1378px_12px_90px]" data-name="Link - Xiaomi">
-            <div className="absolute inset-0" data-name="SVG">
-              <div className="absolute inset-[23.21%_20.26%_30.36%_-73.21%]" data-name="Group">
-                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 49 15">
-                  <g id="Group">
-                    <path d="M7.94441 0.21239L7.98046 0.250934L14.6766 7.93671C15.0772 8.39643 14.7682 9.10629 14.1712 9.1415L14.1247 9.14286H13.1429V12.9527C13.1429 14.0047 12.2803 14.8571 11.2158 14.8571H3.64136C2.57687 14.8571 1.71429 14.0047 1.71429 12.9527V9.14286H0.732449C0.120983 9.14286 -0.213402 8.44449 0.151135 7.97255L0.180562 7.93671L6.87668 0.250934C7.15593 -0.0702616 7.64764 -0.0831091 7.94441 0.21239ZM48.743 2.44571C48.8533 2.44571 48.9447 2.53429 48.9447 2.64343V14.5011C48.9447 14.6086 48.8533 14.6977 48.743 14.6977H46.1447C46.0333 14.6977 45.943 14.6086 45.943 14.5011V2.64343C45.943 2.53429 46.0333 2.44571 46.1447 2.44571H48.743ZM37.4687 2.44571C39.4287 2.44571 41.4779 2.53543 42.4882 3.54686C43.4824 4.54225 43.5897 6.5238 43.5938 8.44812L43.5939 14.5011C43.5939 14.6086 43.5036 14.6977 43.3922 14.6977H40.795C40.6836 14.6977 40.5927 14.6086 40.5927 14.5011V8.344C40.5899 7.26914 40.5282 6.16457 39.9739 5.60857C39.4967 5.13029 38.6065 5.02057 37.6807 4.99771H32.9722C32.8613 4.99771 32.771 5.08686 32.771 5.19429V14.5011C32.771 14.6086 32.6796 14.6977 32.5687 14.6977H29.9693C29.8585 14.6977 29.7687 14.6086 29.7687 14.5011V2.64343C29.7687 2.53429 29.8585 2.44571 29.9693 2.44571H37.4687ZM38.0505 7.168C38.1607 7.168 38.2505 7.25657 38.2505 7.36457V14.5011C38.2505 14.6086 38.1607 14.6977 38.0505 14.6977H35.3213C35.2093 14.6977 35.119 14.6086 35.119 14.5011V7.36457C35.119 7.25657 35.2093 7.168 35.3213 7.168H38.0505ZM8.37141 8H6.48437C6.07421 8 5.73989 8.34122 5.71569 8.7709L5.71429 8.82085V10.6077C5.71429 11.0438 6.03342 11.4012 6.43739 11.4271L6.48437 11.4286H8.37141C8.78157 11.4286 9.11715 11.0874 9.14145 10.6577L9.14286 10.6077V8.82085C9.14286 8.36797 8.79734 8 8.37141 8Z" fill="var(--fill-0, white)" id="Vector" />
-                  </g>
-                </svg>
-              </div>
-              <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 32 32">
-                <g id="home-smile-svgrepo-com 1">
-                  <path d="M2.66667 16.2719C2.66667 13.2207 2.66667 11.695 3.35893 10.4303C4.0512 9.16561 5.31593 8.38068 7.84537 6.81084L10.512 5.15583C13.1859 3.49639 14.5228 2.66667 16 2.66667C17.4772 2.66667 18.8141 3.49639 21.488 5.15583L24.1547 6.81083C26.6841 8.38068 27.9488 9.16561 28.6411 10.4303C29.3333 11.695 29.3333 13.2207 29.3333 16.2719V18.3C29.3333 23.5011 29.3333 26.1017 27.7712 27.7175C26.2092 29.3333 23.6949 29.3333 18.6667 29.3333H13.3333C8.30501 29.3333 5.79087 29.3333 4.22876 27.7175C2.66667 26.1017 2.66667 23.5011 2.66667 18.3V16.2719Z" id="Vector" stroke="var(--stroke-0, #1C274C)" strokeWidth="2" />
-                  <path d="M12 21.3333C13.1338 22.1737 14.5128 22.6667 16 22.6667C17.4872 22.6667 18.8661 22.1737 20 21.3333" id="Vector_2" stroke="var(--stroke-0, #CC922F)" strokeLinecap="round" strokeWidth="2" />
-                </g>
-              </svg>
+
+            {/* CTA desktop / Hamburger mobile */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleGetQuote}
+                className="hidden sm:flex bg-[#1c3957] hover:bg-[#2a4f6b] text-white font-['Poppins',sans-serif] font-semibold text-sm lg:text-base px-4 py-2.5 lg:px-5 lg:py-3 rounded transition-colors duration-200 capitalize"
+              >
+                obtenir un devis gratuit
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden p-2 rounded-md text-[#191919] hover:bg-slate-100 transition-colors"
+                aria-label="Ouvrir le menu"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
             </div>
           </div>
         </div>
-      </div>
-      
-      <button 
-        onClick={handleGetQuote}
-        className="[grid-area:1_/_1] bg-[#1c3957] box-border content-stretch flex gap-[10px] items-center justify-center ml-[1394px] mt-[58px] px-[10px] py-[12px] relative rounded-[4px] shadow-[0px_27px_8px_0px_rgba(251,116,163,0),0px_17px_7px_0px_rgba(251,116,163,0.01),0px_10px_6px_0px_rgba(251,116,163,0.05),0px_4px_4px_0px_rgba(251,116,163,0.09),0px_1px_2px_0px_rgba(251,116,163,0.1)] cursor-pointer hover:bg-[#2a4f6b] transition-colors duration-200"
+      </header>
+
+      {/* Mobile menu overlay */}
+      <div
+        className={`fixed inset-0 z-50 lg:hidden transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        aria-hidden={!mobileMenuOpen}
       >
-        <p className="capitalize font-['Poppins',_sans-serif] font-[600] leading-none not-italic relative shrink-0 text-[16px] text-nowrap text-white whitespace-pre">
-          obtenir un devis gratuit
-        </p>
-      </button>
-    </div>
+        <div
+          className="absolute inset-0 bg-black/40"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden
+        />
+        <div
+          className={`absolute top-0 right-0 w-full max-w-sm h-full bg-white shadow-xl flex flex-col transition-transform duration-300 ease-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
+          <div className="flex items-center justify-between p-4 border-b border-slate-200">
+            <a href="/" onClick={() => setMobileMenuOpen(false)}>
+              <Group685 className="scale-90 origin-left" />
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-md text-[#191919] hover:bg-slate-100"
+              aria-label="Fermer le menu"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          <nav className="flex flex-col p-4 gap-1" aria-label="Menu mobile">
+            {navLinks.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+              >
+                {label}
+              </a>
+            ))}
+            <button
+              onClick={handleGetQuote}
+              className="sm:hidden mt-4 w-full bg-[#1c3957] hover:bg-[#2a4f6b] text-white font-['Poppins',sans-serif] font-semibold text-base py-3 px-4 rounded capitalize"
+            >
+              obtenir un devis gratuit
+            </button>
+          </nav>
+        </div>
+      </div>
+    </>
   );
 }
-

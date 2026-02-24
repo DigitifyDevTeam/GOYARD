@@ -141,7 +141,7 @@ export default function Blog() {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#1c3957] via-[#2a4f6b] to-[#1c3957] text-white py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#1c3957] via-[#2a4f6b] to-[#1c3957] text-white py-12 sm:py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjwvc3ZnPg==')] opacity-10"></div>
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -149,11 +149,11 @@ export default function Blog() {
             <div className="inline-block mb-4 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
               <span className="text-sm font-medium text-[#CC922F]">Blog & Actualités</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
               Conseils & Astuces
               <span className="block text-[#CC922F] mt-2">pour votre déménagement</span>
             </h1>
-            <p className="text-xl text-gray-200 mb-12 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-200 mb-8 sm:mb-12 max-w-2xl mx-auto">
               Découvrez nos guides complets, astuces pratiques et dernières actualités pour réussir votre déménagement en toute sérénité.
             </p>
             
@@ -200,23 +200,23 @@ export default function Blog() {
       </section>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* Featured Posts */}
         {selectedCategory === "Tous" && featuredPosts.length > 0 && (
-          <section className="mb-20">
-            <div className="flex items-center gap-3 mb-8">
+          <section className="mb-12 sm:mb-16 lg:mb-20">
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
               <div className="h-1 w-12 bg-gradient-to-r from-[#CC922F] to-[#1c3957] rounded-full"></div>
-              <h2 className="text-3xl font-bold text-gray-900">Articles à la une</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Articles à la une</h2>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
               {featuredPosts.slice(0, 2).map((post) => (
                 <article
                   key={post.id}
                   onClick={() => post.slug && navigate(`/blog/${post.slug}`)}
-                  className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                  className="group relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
                 >
-                  <div className="relative h-80 overflow-hidden">
+                  <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
                     <img
                       src={post.image}
                       alt={post.title}
@@ -230,8 +230,8 @@ export default function Blog() {
                     </div>
                   </div>
                   
-                  <div className="p-8">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#1c3957] transition-colors line-clamp-2">
+                  <div className="p-5 sm:p-6 lg:p-8">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#1c3957] transition-colors line-clamp-2">
                       {post.title}
                     </h3>
                     <p className="text-gray-600 mb-6 line-clamp-3">{post.excerpt}</p>
@@ -263,12 +263,12 @@ export default function Blog() {
 
         {/* Regular Posts */}
         <section>
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8">
             <div className="h-1 w-12 bg-gradient-to-r from-[#1c3957] to-[#CC922F] rounded-full"></div>
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
               {selectedCategory === "Tous" ? "Tous les articles" : `Articles : ${selectedCategory}`}
             </h2>
-            <span className="ml-auto text-gray-500 font-medium">
+            <span className="ml-auto text-sm sm:text-base text-gray-500 font-medium">
               {filteredPosts.length} {filteredPosts.length > 1 ? "articles" : "article"}
             </span>
           </div>
@@ -282,7 +282,7 @@ export default function Blog() {
               <p className="text-gray-600">Essayez de modifier vos critères de recherche</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {regularPosts.map((post) => (
                 <article
                   key={post.id}
@@ -334,8 +334,8 @@ export default function Blog() {
         </section>
 
         {/* Newsletter Section */}
-        <section className="mt-20">
-          <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-12 rounded-3xl text-center">
+        <section className="mt-12 sm:mt-16 lg:mt-20">
+          <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center">
             <motion.div
               className="inline-flex items-center gap-2 mb-6"
               animate={{ rotate: [0, 5, -5, 0] }}
@@ -348,7 +348,7 @@ export default function Blog() {
               Restez informé de nos derniers articles
             </h2>
             
-            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+            <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
               Inscrivez-vous à notre newsletter pour recevoir nos meilleurs conseils et astuces directement dans votre boîte mail.
             </p>
             

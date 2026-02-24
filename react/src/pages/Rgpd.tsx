@@ -8,19 +8,19 @@ export default function Rgpd() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-20">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <h1 className="text-5xl font-bold mb-6 font-['Poppins',sans-serif]">
+        <section className="bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-4 sm:mb-6 font-['Poppins',sans-serif]">
               Politique de Protection des Données (RGPD)
             </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+            <p className="text-base sm:text-lg lg:text-xl text-white/90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
               Vos données personnelles sont protégées conformément au Règlement Général sur la Protection des Données
             </p>
           </div>
         </section>
 
         {/* RGPD Content */}
-        <section className="py-16 px-8">
+        <section className="py-10 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
           
           <div className="space-y-8 text-gray-700">

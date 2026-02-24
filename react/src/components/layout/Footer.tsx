@@ -1,6 +1,6 @@
 function Group685() {
   return (
-    <div className="h-[32.102px] relative w-[259.486px]">
+    <div className="h-7 w-40 lg:h-[32.102px] lg:w-[259.486px] relative">
       <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 260 33">
         <g id="Group 683">
           <path d="M11.4678 32H0V20.6484L8.59473 18.835L11.4678 32ZM32 32H16.6016L13.5029 17.7998L32 13.8975V32ZM8.11914 16.6514L0 18.3643V0H4.48633L8.11914 16.6514ZM32 11.6133L13.0264 15.6162L9.61914 0H32V11.6133Z" fill="var(--fill-0, #CC922F)" id="Subtract" />
@@ -54,14 +54,14 @@ function Group685() {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#1C2E42] text-white py-16">
-      <div className="max-w-[1920px] mx-auto px-[210px]">
+    <footer className="w-full bg-[#1C2E42] text-white py-10 md:py-12 lg:py-16">
+      <div className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-[210px]">
         {/* Top Section */}
-        <div className="grid grid-cols-4 gap-16 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10 md:mb-12 lg:mb-16">
           {/* Logo and Contact Column */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <Group685 />
-            <div className="flex flex-col gap-3 text-[15px]">
+            <div className="flex flex-col gap-3 text-sm lg:text-[15px]">
               <p>donec@guivarche-demenagement.fr</p>
               <p>+33 76 65 87 98 76</p>
               <p>123 Avenue des Champs-Élysées, 75008 Paris</p>
@@ -71,7 +71,7 @@ export default function Footer() {
           {/* Column 1 - Pages */}
           <div className="flex flex-col gap-6">
             <h3 className="text-[15px] opacity-65 tracking-[-0.1px]">Accès Rapide</h3>
-            <div className="flex flex-col gap-4 text-[17px] tracking-[-0.2px]">
+            <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
               <a href="/" className="hover:opacity-70 transition-opacity">Accueil</a>
               <a href="/solution" className="hover:opacity-70 transition-opacity">Solution</a>
               <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
@@ -83,7 +83,7 @@ export default function Footer() {
           {/* Column 2 - Recent Articles */}
           <div className="flex flex-col gap-6">
             <h3 className="text-[15px] opacity-65 tracking-[-0.1px]">Articles Récents</h3>
-            <div className="flex flex-col gap-4 text-[17px] tracking-[-0.2px]">
+            <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
               <a href="/blog/guide-complet-demenagement-reussi" className="hover:opacity-70 transition-opacity">Guide complet pour un déménagement réussi</a>
               <a href="/blog/comment-emballer-objets-fragiles" className="hover:opacity-70 transition-opacity">Comment emballer vos objets fragiles</a>
               <a href="/blog/demenagement-ecologique-solutions-durables" className="hover:opacity-70 transition-opacity">Déménagement écologique : nos solutions durables</a>
@@ -93,7 +93,7 @@ export default function Footer() {
           {/* Column 3 - Legal */}
           <div className="flex flex-col gap-6">
             <h3 className="text-[15px] opacity-65 tracking-[-0.1px]">Informations</h3>
-            <div className="flex flex-col gap-4 text-[17px] tracking-[-0.2px]">
+            <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
               <a href="/mentions-legales" className="hover:opacity-70 transition-opacity">Mentions Légales</a>
               <a href="/rgpd" className="hover:opacity-70 transition-opacity">RGPD</a>
               <a href="/contact" className="hover:opacity-70 transition-opacity">Nous Contacter</a>
@@ -105,9 +105,9 @@ export default function Footer() {
         <div className="h-[1px] bg-[#292F41] mb-8"></div>
 
         {/* Bottom Section */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           {/* Copyright and Legal Links */}
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
             <p className="text-[15px] opacity-65 tracking-[-0.1px]">
               © 2025 Copyright, All Right Reserved, <span className="underline">Guivarche Déménagement</span>
             </p>
