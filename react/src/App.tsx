@@ -1907,7 +1907,7 @@ function AppContent() {
                   onClick={handleBackToQuote}
                   className="flex items-center gap-2"
                 >
-                  <ArrowLeft className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                  <ArrowLeft className="w-4 h-4" style={{ color: '#CC922F' }} />
                   RETOUR
                 </Button>
 
@@ -1968,7 +1968,7 @@ function AppContent() {
                   {/* Pack cartons */}
                   <div className="flex items-start gap-3 sm:gap-4 py-3 sm:py-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-5 h-5 sm:w-6 sm:h-6 style={{ color: '#CC922F' }}" />
+                      <Package className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -1988,7 +1988,7 @@ function AppContent() {
                   {/* Prix flexible */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                      <Clock className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2007,7 +2007,7 @@ function AppContent() {
                   {/* Démontage/remontage */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Scissors className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                      <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2024,7 +2024,7 @@ function AppContent() {
                   {/* Emballage fragile */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                      <Shield className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2041,7 +2041,7 @@ function AppContent() {
                   {/* Emballage cartons */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2057,7 +2057,7 @@ function AppContent() {
                   {/* Autorisation stationnement */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Truck className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                      <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2075,7 +2075,7 @@ function AppContent() {
                   {/* Transport vêtements */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Shirt className="w-6 h-6 style={{ color: '#CC922F' }}" />
+                      <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900 mb-1">
@@ -2113,7 +2113,7 @@ function AppContent() {
                   onClick={handleBackToInfo}
                   className="flex items-center gap-2"
                 >
-                  <ArrowLeft className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                  <ArrowLeft className="w-4 h-4" style={{ color: '#CC922F' }} />
                   RETOUR
                 </Button>
               </div>
@@ -2198,38 +2198,108 @@ function AppContent() {
                   {/* Right half - "Services inclus" on same line as "Devis personnalisé" */}
                   <div className="flex flex-col justify-center md:pl-6 space-y-4">
                     <div className="border-t border-slate-200 pt-4 md:border-t-0 md:pt-0 md:pt-[3.75rem]">
-                      <div className="font-medium text-slate-900 mb-3">Services inclus</div>
+                      <div className="font-medium text-slate-900 mb-3">Prestations incluses</div>
                       <div className="space-y-2">
                         <div className="flex items-center text-xs text-slate-600">
-                          <Check className="w-3 h-3 mr-2 style={{ color: '#CC922F' }}" />
-                          Démontage et remontage des meubles
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Chargement - Transport, mise en place du Mobilier
                         </div>
                         <div className="flex items-center text-xs text-slate-600">
-                          <Check className="w-3 h-3 mr-2 style={{ color: '#CC922F' }}" />
-                          Emballage et déballage
-                        </div>
-                        <div className="flex items-center text-xs text-slate-600">
-                          <Check className="w-3 h-3 mr-2 style={{ color: '#CC922F' }}" />
-                          Protection des sols et murs
-                        </div>
-                      </div>
-                    </div>
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          protection du mobilier sous couvertures
 
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Protection de la literie sous housses
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Protection de la HI-FI et de l'électronique
+
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Emballage des vêtements sur cintres en penderies
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Débranchement et branchement de l'électroménager
+                          </div>
+                          <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Protection des éléments fragiles
+                          </div>
+                        {/* Option 1, 2, 6, 7 → Prestations incluses (quand sélectionnées) */}
+                        {options.packCartons && (
+                          <div className="flex items-center text-xs text-slate-600">
+                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                            Pack cartons, bulle et adhésif (expédié sous 48h)
+                          </div>
+                        )}
+                        {options.prixFlexible && (
+                          <div className="flex items-center text-xs text-slate-600">
+                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                            Prix flexible (flexible sur 5 jours)
+                          </div>
+                        )}
+                        {options.emballageCartons && (
+                          <div className="flex items-center text-xs text-slate-600">
+                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                            Emballage des cartons de l'inventaire
+                          </div>
+                        )}
+                        {options.autorisationStationnement && (
+                          <div className="flex items-center text-xs text-slate-600">
+                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                            Démarches autorisation de stationnement
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Prestations extra - options 3, 4, 5 quand sélectionnées */}
+                      {(options.prixFlexible || options.demontageRemontage || options.emballageFragile) && (
+                        <div className="mt-4 pt-4 border-t border-slate-100">
+                          <div className="font-medium text-slate-900 mb-3">Prestations extra</div>
+                          <div className="space-y-2">
+                            {options.prixFlexible && (
+                              <div className="flex items-center text-xs text-slate-600">
+                                <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                                Prix flexible (flexible sur 5 jours)
+                              </div>
+                            )}
+                            {options.demontageRemontage && (
+                              <div className="flex items-center text-xs text-slate-600">
+                                <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                                Démontage et remontage du mobilier
+                              </div>
+                            )}
+                            {options.emballageFragile && (
+                              <div className="flex items-center text-xs text-slate-600">
+                                <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                                Emballage du fragile (vaisselle, tableaux, bibelots)
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="space-y-3 text-sm border-t border-slate-100 pt-4 pb-2">
                       <div className="flex items-center">
-                        <Heart className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <Heart className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
                         <span className="text-slate-700">+100 000 clients satisfaits depuis 2011</span>
                       </div>
                       <div className="flex items-center">
-                        <Users className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <Users className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
                         <span className="text-slate-700">Déménageurs professionnels suivis</span>
                       </div>
                       <div className="flex items-center">
-                        <Phone className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <Phone className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
                         <span className="text-slate-700">Service client 7j/7 de 9h à 18h</span>
                       </div>
                       <div className="flex items-center">
-                        <Shield className="w-4 h-4 style={{ color: '#CC922F' }} mr-2 flex-shrink-0" />
+                        <Shield className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
                         <span className="text-slate-700">Assurance incluse</span>
                       </div>
                     </div>
@@ -2237,7 +2307,7 @@ function AppContent() {
                     <div className="h-10 shrink-0" aria-hidden="true" />
 
                     <Button className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white py-3">
-                      RÉSERVER
+                      RECEVOIR MON DEVIS
                     </Button>
 
                     <Button variant="link" className="w-full text-primary text-sm p-0">
@@ -2267,7 +2337,7 @@ function AppContent() {
                   onClick={handleBackToAddresses}
                   className="flex items-center gap-2"
                 >
-                  <ArrowLeft className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                  <ArrowLeft className="w-4 h-4" style={{ color: '#CC922F' }} />
                   RETOUR
                 </Button>
 
@@ -2527,20 +2597,7 @@ function AppContent() {
                 </div>
 
                 
-                {/* Final Quote Section */}
-                <div className="text-center mb-8">
-                  <p className="text-sm text-slate-600 mb-6">
-                    Recevoir le devis avec les modifications et options supplémentaires que j'ai ajouté
-                  </p>
-
-                  <Button
-                    onClick={handleSubmitOptions}
-                    className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white px-12 py-3 rounded-lg"
-                  >
-                    RECEVOIR MON DEVIS
-                  </Button>
-                </div>
-
+                
               </div>
 
 
@@ -2996,7 +3053,7 @@ function AppContent() {
 
                   {/* Search Bar */}
                   <div className="relative mb-6">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 style={{ color: '#CC922F' }} w-4 h-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
                     <Input
                       type="text"
                       placeholder="Chercher dans la liste complète..."
@@ -3049,7 +3106,7 @@ function AppContent() {
                               disabled={!roomQuantity}
                               className="w-8 h-8 p-0"
                             >
-                              <Minus className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                              <Minus className="w-4 h-4" style={{ color: '#CC922F' }} />
                             </Button>
                             <span className="text-lg font-medium min-w-[2rem] text-center">
                               {roomQuantity}
@@ -3060,7 +3117,7 @@ function AppContent() {
                               onClick={() => updateQuantity(item.name, 1)}
                               className="w-8 h-8 p-0"
                             >
-                              <Plus className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                              <Plus className="w-4 h-4" style={{ color: '#CC922F' }} />
                             </Button>
                           </div>
                         </div>
@@ -5207,7 +5264,7 @@ function AppContent() {
                       onClick={handleBackToCleaning}
                       className="flex items-center gap-2"
                     >
-                      <ArrowLeft className="w-4 h-4 style={{ color: '#CC922F' }}" />
+                      <ArrowLeft className="w-4 h-4" style={{ color: '#CC922F' }} />
                       RETOUR
                     </Button>
                     <Button

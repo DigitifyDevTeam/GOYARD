@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "cobe": "^0.6.5"
+  "name": "brasenplus",
+  "private": true,
+  "description": "Root workspace – frontend (react) + backend (Python)",
+  "scripts": {
+    "sonar": "python scripts/sonar_analyze_and_report.py",
+    "sonar:fetch": "python scripts/sonar_analyze_and_report.py --fetch-only"
   }
 }
