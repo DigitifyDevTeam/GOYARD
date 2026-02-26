@@ -196,7 +196,7 @@ const PDFReport: React.FC<PDFReportProps> = ({
                   <div key={roomName} className="mb-4 p-3 bg-white rounded border border-blue-200">
                     <h4 className="font-medium text-gray-700 mb-2 capitalize">{roomName}</h4>
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                      {Object.entries(objects).filter(([_, quantity]) => quantity > 0).map(([objectName, quantity]) => (
+                      {Object.entries(objects).filter(([, quantity]) => quantity > 0).map(([objectName, quantity]) => (
                         <div key={objectName} className="flex justify-between py-1 border-b border-gray-100">
                           <span className="text-gray-600">{objectName}</span>
                           <span className="font-medium text-gray-800">{quantity}</span>
@@ -233,7 +233,7 @@ const PDFReport: React.FC<PDFReportProps> = ({
                           <div className="grid grid-cols-2 gap-1">
                             {Object.entries(methodData.roomAnalysisResults?.[image.roomId] || {})
                               .map(([objectName, val]): [string, number] => [objectName, typeof val === 'number' ? val : (val?.quantity ?? 0)])
-                              .filter(([_, q]) => q > 0)
+                              .filter(([, q]) => q > 0)
                               .map(([objectName, quantity]) => (
                                 <div key={objectName} className="flex justify-between text-xs py-1">
                                   <span className="text-gray-600">{objectName}</span>
@@ -280,7 +280,7 @@ const PDFReport: React.FC<PDFReportProps> = ({
                     <h4 className="font-medium text-gray-800 mb-2">Objets spéciaux sélectionnés</h4>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       {Object.entries(methodData.specialObjectQuantities)
-                        .filter(([_, quantity]) => quantity > 0)
+                        .filter(([, quantity]) => quantity > 0)
                         .map(([objectName, quantity]) => (
                           <div key={objectName} className="flex justify-between py-1 border-b border-orange-100">
                             <span className="text-gray-600">{objectName}</span>

@@ -23,7 +23,7 @@ const Index = () => {
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
-  const [_surfaceArea, setSurfaceArea] = useState<number>(0);
+  const [, setSurfaceArea] = useState<number>(0);
   const { toast } = useToast();
 
   const handleGetStarted = () => {

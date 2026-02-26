@@ -36,7 +36,6 @@ import {
   RefreshCw,
   Headphones,
   Scissors,
-  Shirt,
   Maximize2,
   Trash2,
   Zap,
@@ -139,14 +138,14 @@ function AppContent() {
   const [distanceText, setDistanceText] = useState<string>("");
   const [distanceLoading, setDistanceLoading] = useState<boolean>(false);
   const [options, setOptions] = useState({
-    packCartons: false,
+    packCartons: true,       // option 1 - included by default
     dateFlexible: false,
-    prixFlexible: false,
+    prixFlexible: true,      // option 2 - included by default
     demontageRemontage: false,
     emballageFragile: false,
     emballageCartons: false,
-    autorisationStationnement: false,
-    transportVetements: false,
+    autorisationStationnement: true,  // option 6 - included by default
+    transportVetements: true,         // option 7 - included by default
   });
   const [formData, setFormData] = useState({
     address: "",
@@ -1965,46 +1964,7 @@ function AppContent() {
                 </h2>
 
                 <div className="space-y-4 sm:space-y-6">
-                  {/* Pack cartons */}
-                  <div className="flex items-start gap-3 sm:gap-4 py-3 sm:py-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-slate-900 mb-1">
-                        Vous souhaitez qu'on vous fournisse un pack cartons, bulle et adhésif ?
-                      </h3>
-                      <p className="text-sm text-slate-600 mb-2">
-                        Votre pack, expédié sous 48h, contiendra : 10 cartons standards, 5 cartons
-                        livres, 1 film bulles, 1 rouleau adhésif
-                      </p>
-                    </div>
-                    <Switch
-                      checked={options.packCartons}
-                      onCheckedChange={() => toggleOption("packCartons")}
-                    />
-                  </div>
-
-                  {/* Prix flexible */}
-                  <div className="flex items-start gap-4 py-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-slate-900 mb-1">
-                        Vous êtes flexible sur la date de la prestation ?
-                      </h3>
-                      <p className="text-sm text-slate-600">
-                        Économiser sur le prix de votre déménagement en étant flexible sur 14 jours
-                      </p>
-                    </div>
-                    <Switch
-                      checked={options.prixFlexible}
-                      onCheckedChange={() => toggleOption("prixFlexible")}
-                    />
-                  </div>
-
-                  {/* Démontage/remontage */}
+                  {/* Démontage/remontage (option 3 - payante) */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
@@ -2021,7 +1981,7 @@ function AppContent() {
                     />
                   </div>
 
-                  {/* Emballage fragile */}
+                  {/* Emballage fragile (option 4 - payante) */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Shield className="w-6 h-6" style={{ color: '#CC922F' }} />
@@ -2038,7 +1998,7 @@ function AppContent() {
                     />
                   </div>
 
-                  {/* Emballage cartons */}
+                  {/* Emballage cartons (option 5 - payante) */}
                   <div className="flex items-start gap-4 py-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
@@ -2051,42 +2011,6 @@ function AppContent() {
                     <Switch
                       checked={options.emballageCartons}
                       onCheckedChange={() => toggleOption("emballageCartons")}
-                    />
-                  </div>
-
-                  {/* Autorisation stationnement */}
-                  <div className="flex items-start gap-4 py-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-slate-900 mb-1">
-                        L'autorisation de stationnement pour le camion est recommandée et parfois même
-                        obligatoire dans certaines communes. Vous souhaitez que nous fassions les
-                        démarches pour vous ?
-                      </h3>
-                    </div>
-                    <Switch
-                      checked={options.autorisationStationnement}
-                      onCheckedChange={() => toggleOption("autorisationStationnement")}
-                    />
-                  </div>
-
-                  {/* Transport vêtements */}
-                  <div className="flex items-start gap-4 py-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-slate-900 mb-1">
-                        Il existe une solution pratique pour transporter vos vêtements sans les
-                        froisser. Vous souhaitez qu'on utilise des penderies pour transporter vos
-                        vêtements sur cintres ?
-                      </h3>
-                    </div>
-                    <Switch
-                      checked={options.transportVetements}
-                      onCheckedChange={() => toggleOption("transportVetements")}
                     />
                   </div>
                 </div>
@@ -2230,44 +2154,30 @@ function AppContent() {
                           <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
                           Protection des éléments fragiles
                           </div>
-                        {/* Option 1, 2, 6, 7 → Prestations incluses (quand sélectionnées) */}
-                        {options.packCartons && (
-                          <div className="flex items-center text-xs text-slate-600">
-                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
-                            Pack cartons, bulle et adhésif (expédié sous 48h)
-                          </div>
-                        )}
-                        {options.prixFlexible && (
-                          <div className="flex items-center text-xs text-slate-600">
-                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
-                            Prix flexible (flexible sur 5 jours)
-                          </div>
-                        )}
-                        {options.emballageCartons && (
-                          <div className="flex items-center text-xs text-slate-600">
-                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
-                            Emballage des cartons de l'inventaire
-                          </div>
-                        )}
-                        {options.autorisationStationnement && (
-                          <div className="flex items-center text-xs text-slate-600">
-                            <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
-                            Démarches autorisation de stationnement
-                          </div>
-                        )}
+                        {/* Options 1, 2, 6, 7 → toujours incluses par défaut */}
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Pack cartons, bulle et adhésif (expédié sous 48h)
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Prix flexible (flexible sur 5 jours)
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Démarches autorisation de stationnement
+                        </div>
+                        <div className="flex items-center text-xs text-slate-600">
+                          <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                          Transport des vêtements sur cintres (pendery)
+                        </div>
                       </div>
 
-                      {/* Prestations extra - options 3, 4, 5 quand sélectionnées */}
-                      {(options.prixFlexible || options.demontageRemontage || options.emballageFragile) && (
+                      {/* Prestations extra - options 3, 4, 5 (payantes) quand sélectionnées */}
+                      {(options.demontageRemontage || options.emballageFragile || options.emballageCartons) && (
                         <div className="mt-4 pt-4 border-t border-slate-100">
                           <div className="font-medium text-slate-900 mb-3">Prestations extra</div>
                           <div className="space-y-2">
-                            {options.prixFlexible && (
-                              <div className="flex items-center text-xs text-slate-600">
-                                <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
-                                Prix flexible (flexible sur 5 jours)
-                              </div>
-                            )}
                             {options.demontageRemontage && (
                               <div className="flex items-center text-xs text-slate-600">
                                 <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
@@ -2278,6 +2188,12 @@ function AppContent() {
                               <div className="flex items-center text-xs text-slate-600">
                                 <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
                                 Emballage du fragile (vaisselle, tableaux, bibelots)
+                              </div>
+                            )}
+                            {options.emballageCartons && (
+                              <div className="flex items-center text-xs text-slate-600">
+                                <Check className="w-3 h-3 mr-2" style={{ color: '#CC922F' }} />
+                                Emballage des cartons de l'inventaire
                               </div>
                             )}
                           </div>
@@ -2357,53 +2273,7 @@ function AppContent() {
                 </h2>
 
                 <div className="space-y-4 sm:space-y-6">
-                  {/* Option 1: Pack Cartons */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Vous souhaitez qu'on vous fournisse un pack cartons, bulle et adhésif? Votre pack, expédié sous 48h, contiendra: 10 cartons standards, 5 cartons livres, 1 film bulles, 1 rouleau adhésif
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.packCartons}
-                          onChange={(e) => setOptions(prev => ({ ...prev, packCartons: e.target.checked }))}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Option 3: Prix Flexible */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <ArrowDown className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Vous êtes flexible sur la date de la prestation? Economiser sur le prix de votre déménagement en étant flexible sur 5 jours
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.prixFlexible}
-                          onChange={(e) => setOptions(prev => ({ ...prev, prixFlexible: e.target.checked }))}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Option 4: Démontage Remontage */}
+                  {/* Option 3: Démontage Remontage (payante) */}
                   <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
@@ -2426,7 +2296,7 @@ function AppContent() {
                     </div>
                   </div>
 
-                  {/* Option 5: Emballage Fragile */}
+                  {/* Option 4: Emballage Fragile (payante) */}
                   <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
@@ -2455,7 +2325,7 @@ function AppContent() {
                     </div>
                   </div>
 
-                  {/* Option 6: Emballage Cartons */}
+                  {/* Option 5: Emballage Cartons (payante) */}
                   <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
@@ -2477,52 +2347,6 @@ function AppContent() {
                               emballageFragile: e.target.checked ? false : prev.emballageFragile
                             }))
                           }}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Option 7: Autorisation Stationnement */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Truck className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        L'autorisation de stationnement pour le camion est recommandé et parfois même obligatoire dans certaines communes. Vous souhaitez que nous fassions les démarches pour vous?
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.autorisationStationnement}
-                          onChange={(e) => setOptions(prev => ({ ...prev, autorisationStationnement: e.target.checked }))}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Option 8: Transport Vêtements */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Shirt className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Il existe une solution pratique pour transporter vos vêtement sans les froisser. Vous souhaitez qu'on utilise des penderies pour transporter vos vêtements sur cintres?
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.transportVetements}
-                          onChange={(e) => setOptions(prev => ({ ...prev, transportVetements: e.target.checked }))}
                           className="sr-only peer"
                         />
                         <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>

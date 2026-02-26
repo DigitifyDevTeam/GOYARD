@@ -194,7 +194,6 @@ function Group727() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group726() {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-start left-[1013px] top-[135px]">
@@ -566,7 +565,6 @@ function Frame720() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group1() {
   return (
     <svg
@@ -844,7 +842,6 @@ function Group752() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group747() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[16.25%] mt-[76px] place-items-start relative">
@@ -856,7 +853,6 @@ export function _Group747() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group748() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[33.438%] mt-[calc(50%+13px)] place-items-start relative">
@@ -870,7 +866,6 @@ export function _Group748() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group749() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[50.625%] mt-[calc(50%+13px)] place-items-start relative">
@@ -883,7 +878,6 @@ export function _Group749() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group750() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[67.813%] mt-[calc(50%+13px)] place-items-start relative">
@@ -4297,7 +4291,6 @@ function Group753() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group685() {
   return (
     <div className="h-[32.102px] relative w-[259.486px]">
@@ -4530,7 +4523,6 @@ function Group741() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Group742() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[16.25%] mt-[125px] place-items-start relative">
@@ -4656,7 +4648,6 @@ function LogoLinkedin() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function _Social() {
   return (
     <div
@@ -4674,8 +4665,8 @@ export function _Social() {
 const venteFlashData = [
   {
     id: 1,
-    depart: "Paris 15e",
-    arrivee: "Lyon 3e",
+    depart: "Paris",
+    arrivee: "Lyon",
     description: "Studio 25m² — Déménagement express avec 2 déménageurs, véhicule 12m³ inclus.",
     prix: 349,
     prixOriginal: 589,
@@ -4683,8 +4674,8 @@ const venteFlashData = [
   },
   {
     id: 2,
-    depart: "Marseille 6e",
-    arrivee: "Nice Centre",
+    depart: "Marseille",
+    arrivee: "Paris",
     description: "T2 45m² — Formule complète : emballage, transport et installation.",
     prix: 499,
     prixOriginal: 820,
@@ -4692,26 +4683,26 @@ const venteFlashData = [
   },
   {
     id: 3,
-    depart: "Toulouse",
-    arrivee: "Bordeaux",
-    description: "T3 65m² — Équipe de 3, camion 20m³, protection meubles premium.",
+    depart: "Paris",
+    arrivee: "Barcelona",
+    description: "T3 65m² — Déménagement France–Espagne, équipe de 3, camion 20m³.",
     prix: 679,
     prixOriginal: 1150,
     badge: "-41%",
   },
   {
     id: 4,
-    depart: "Lille Centre",
-    arrivee: "Bruxelles",
-    description: "Studio 30m² — Déménagement international, formalités douanières incluses.",
+    depart: "Madrid",
+    arrivee: "Paris",
+    description: "Studio 30m² — Déménagement international France–Espagne, formalités incluses.",
     prix: 599,
     prixOriginal: 980,
     badge: "-39%",
   },
   {
     id: 5,
-    depart: "Nantes",
-    arrivee: "Rennes",
+    depart: "Paris",
+    arrivee: "Toulouse",
     description: "T2 50m² — Transport soigné avec assurance tous risques incluse.",
     prix: 389,
     prixOriginal: 650,
@@ -4719,27 +4710,27 @@ const venteFlashData = [
   },
   {
     id: 6,
-    depart: "Strasbourg",
-    arrivee: "Metz",
-    description: "T4 80m² — Équipe de 4, démontage/remontage meubles compris.",
+    depart: "Valencia",
+    arrivee: "Paris",
+    description: "T4 80m² — Déménagement Espagne–France, équipe de 4, démontage/remontage meubles compris.",
     prix: 799,
     prixOriginal: 1320,
     badge: "-39%",
   },
   {
     id: 7,
-    depart: "Lyon 7e",
-    arrivee: "Grenoble",
-    description: "Studio 20m² — Petit déménagement rapide, idéal étudiant.",
+    depart: "Paris",
+    arrivee: "Bordeaux",
+    description: "Studio 20m² — Déménagement express, idéal étudiant.",
     prix: 249,
     prixOriginal: 420,
     badge: "-41%",
   },
   {
     id: 8,
-    depart: "Montpellier",
-    arrivee: "Perpignan",
-    description: "T3 70m² — Pack sérénité avec emballage fragile et suivi GPS.",
+    depart: "Nice",
+    arrivee: "Paris",
+    description: "T3 70m² — Pack sérénité Côte d'Azur–Paris, emballage fragile et suivi GPS.",
     prix: 549,
     prixOriginal: 890,
     badge: "-38%",
