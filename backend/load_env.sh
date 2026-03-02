@@ -16,12 +16,21 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 set -a
-while IFS='=' read -r key value; do
-    # Skip empty lines and comments
-    [[ -z "$key" || "$key" == \#* ]] && continue
-    # Trim leading/trailing whitespace from key
+while IFS= read -r line || [ -n "$line" ]; do
+    # Strip CR (Windows line endings) and skip empty lines
+    line="${line%$'\r'}"
+    [[ -z "$line" ]] && continue
+    # Skip comment lines
+    [[ "$line" == \#* ]] && continue
+    # Skip lines without '=' (invalid format)
+    [[ "$line" != *=* ]] && continue
+    # Split on first '=' only
+    key="${line%%=*}"
+    value="${line#*=}"
+    # Trim whitespace from key; skip if key is empty after trim
     key="$(echo "$key" | xargs)"
-    # Export the variable (value keeps everything after the first '=')
+    [[ -z "$key" ]] && continue
+    # Export the variable
     export "$key=$value"
 done < "$ENV_FILE"
 set +a
