@@ -2,6 +2,7 @@ import svgPaths from "./svg-jmcfzlx209";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Header from "../components/layout/Header";
+import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
 import imgRectangle821 from "../assets/78a4471b4fbaf9a72a64dbc0d232cff16ca8bab6.png";
 import imgImage from "../assets/a08557cc181bebb85532ccb043d997bfde25a6c4.png";
@@ -389,7 +390,7 @@ function Frame693({ onGetQuote }: { onGetQuote: () => void }) {
   );
 }
 
-function Group692({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+function Group692({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <div className="absolute contents left-[532px] top-[363px]">
       <div className="absolute bg-white h-[60px] left-[532px] rounded-[6px] top-[363px] w-[856px]">
@@ -397,13 +398,14 @@ function Group692({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           aria-hidden="true"
           className="absolute border border-slate-200 border-solid inset-0 pointer-events-none rounded-[6px] shadow-[0px_64px_18px_0px_rgba(200,193,193,0),0px_41px_16px_0px_rgba(200,193,193,0.01),0px_23px_14px_0px_rgba(200,193,193,0.05),0px_10px_10px_0px_rgba(200,193,193,0.09),0px_3px_6px_0px_rgba(200,193,193,0.1)]"
         />
-        <input
-          type="text"
-          value={address}
-          onChange={onAddressChange}
-          placeholder="Adresse de départ"
-          className="absolute inset-0 bg-transparent border-none outline-none px-[47px] py-[20px] font-['Poppins',_sans-serif] font-[500] text-[16px] text-[#020618] placeholder:text-[#90a1b9] placeholder:capitalize rounded-[6px] focus:ring-2 focus:ring-[#1c3957] focus:ring-opacity-50"
-        />
+        <div className="absolute inset-0 px-[47px] py-[18px] flex items-center min-w-0 overflow-visible">
+          <AddressAutocomplete
+            value={address}
+            onChange={onAddressChange}
+            placeholder="Adresse de départ"
+            className="w-full min-w-0 bg-transparent border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 font-['Poppins',_sans-serif] font-[500] text-[16px] text-[#020618] placeholder:text-[#90a1b9] placeholder:capitalize h-full"
+          />
+        </div>
       </div>
       <VuesaxBoldLocation1 />
       <Frame693 onGetQuote={onGetQuote} />
@@ -411,7 +413,7 @@ function Group692({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
   );
 }
 
-function Group716({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+function Group716({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <div className="absolute contents left-[532px] top-[363px]">
       <Group692 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
@@ -419,7 +421,7 @@ function Group716({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
   );
 }
 
-function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <div className="absolute contents left-0 top-0">
       <div className="absolute h-[499px] left-0 top-0 w-[1920px]">
@@ -487,7 +489,7 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
   );
 }
 
-function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <>
       {/* Desktop hero (>= lg) */}
@@ -505,16 +507,15 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
             Commencez par l'introduction de votre adresse de départ
           </p>
           <div className="w-full max-w-lg flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6" style={{ "--fill-0": "#CC922F", "--stroke-0": "#CC922F" } as React.CSSProperties}>
+            <div className="relative flex-1 min-w-0 sm:min-w-[220px]">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 z-10 pointer-events-none" style={{ "--fill-0": "#CC922F", "--stroke-0": "#CC922F" } as React.CSSProperties}>
                 <VuesaxBoldLocation />
               </div>
-              <input
-                type="text"
+              <AddressAutocomplete
                 value={address}
                 onChange={onAddressChange}
                 placeholder="Adresse de départ"
-                className="w-full bg-white border border-slate-200 rounded-lg pl-11 pr-4 py-3.5 font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-[#020618] placeholder:text-[#90a1b9] focus:ring-2 focus:ring-[#1c3957] focus:ring-opacity-50 outline-none shadow-md"
+                className="w-full min-w-0 bg-white border border-slate-200 rounded-lg pl-11 pr-4 py-3.5 font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-[#020618] placeholder:text-[#90a1b9] focus:ring-2 focus:ring-[#1c3957] focus:ring-opacity-50 outline-none shadow-md"
               />
             </div>
             <button
@@ -4207,27 +4208,37 @@ function LogoInstagram() {
   );
 }
 
-function LogoLinkedin() {
+function LogoTiktok() {
   return (
     <div
-      className="[grid-area:1_/_1] ml-[88.889%] mt-[5.263%] relative size-[18px]"
-      data-name="logo-linkedin"
+      className="[grid-area:1_/_1] ml-[74%] mt-[5.263%] relative size-[18px]"
+      data-name="logo-tiktok"
     >
       <svg
         className="block size-full"
-        fill="none"
+        fill="var(--fill-0, white)"
         preserveAspectRatio="none"
-        viewBox="0 0 18 18"
+        viewBox="0 0 24 24"
       >
-        <g id="logo-linkedin">
-          <path
-            clipRule="evenodd"
-            d={svgPaths.p11450b00}
-            fill="var(--fill-0, white)"
-            fillRule="evenodd"
-            id="Shape"
-          />
-        </g>
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+      </svg>
+    </div>
+  );
+}
+
+function LogoPagejaune() {
+  return (
+    <div
+      className="[grid-area:1_/_1] ml-[88%] mt-[5.263%] relative size-[18px]"
+      data-name="logo-pagejaune"
+    >
+      <svg
+        className="block size-full"
+        fill="var(--fill-0, white)"
+        preserveAspectRatio="none"
+        viewBox="0 0 24 24"
+      >
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
       </svg>
     </div>
   );
@@ -4242,7 +4253,8 @@ export function _Social() {
       <LogoTwitter />
       <LogoFacebook />
       <LogoInstagram />
-      <LogoLinkedin />
+      <LogoTiktok />
+      <LogoPagejaune />
     </div>
   );
 }
@@ -4499,16 +4511,22 @@ function VenteFlash() {
   );
 }
 
+const HOME_DEPARTURE_ADDRESS_KEY = "homeDepartureAddress";
+
 export default function Home() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
 
   const handleGetQuote = () => {
+    sessionStorage.setItem("cameFromHome", "true");
+    if (departureAddress.trim()) {
+      sessionStorage.setItem(HOME_DEPARTURE_ADDRESS_KEY, departureAddress.trim());
+    }
     navigate("/tunnel/mes-coordonnees");
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepartureAddress(e.target.value);
+  const handleAddressChange = (value: string) => {
+    setDepartureAddress(value);
   };
 
   return (

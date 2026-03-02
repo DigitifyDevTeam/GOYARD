@@ -26,7 +26,8 @@ imageio-ffmpeg==0.6.0
 pillow-heif>=1.1.0
 drf-yasg==1.21.11
 
-# Gmail OAuth email sending
+# Gmail OAuth email sending (required for "envoyer le devis" / send quote PDF by email)
+# Without these, production will raise: No module named 'googleapiclient'
 google-api-python-client>=2.100.0
 google-auth>=2.23.0
 google-auth-httplib2>=0.1.1

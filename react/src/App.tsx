@@ -130,6 +130,33 @@ function AppContent() {
     }
   }, []);
 
+  // Pre-fill or clear address when coming from home page (obtenir un devis gratuit)
+  useEffect(() => {
+    if (location.pathname !== "/tunnel/mes-coordonnees") return;
+    const cameFromHome = sessionStorage.getItem("cameFromHome");
+    const homeAddress = sessionStorage.getItem("homeDepartureAddress");
+    sessionStorage.removeItem("cameFromHome");
+    sessionStorage.removeItem("homeDepartureAddress");
+
+    if (cameFromHome) {
+      if (homeAddress && homeAddress.trim()) {
+        setFormData(prev => ({ ...prev, address: homeAddress.trim() }));
+        setAddressData(prev => ({
+          ...prev,
+          departure: { ...prev.departure, address: homeAddress.trim() },
+        }));
+        FormDataManager.saveFormData({ address: homeAddress.trim() });
+      } else {
+        setFormData(prev => ({ ...prev, address: "" }));
+        setAddressData(prev => ({
+          ...prev,
+          departure: { ...prev.departure, address: "" },
+        }));
+        FormDataManager.saveFormData({ address: "" });
+      }
+    }
+  }, [location.pathname]);
+
   const [propertyValue, setPropertyValue] = useState(27000);
   const [selectedGuarantee, setSelectedGuarantee] = useState("1000");
   const [, setLastCalculationId] = useState<number | null>(null);

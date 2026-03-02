@@ -8,7 +8,6 @@ import {
   Share2,
   Facebook,
   Twitter,
-  Linkedin,
   Link2,
   ChevronRight,
   CheckCircle,
@@ -1192,8 +1191,9 @@ export default function BlogArticle() {
       case "twitter":
         window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, "_blank");
         break;
-      case "linkedin":
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, "_blank");
+      case "tiktok":
+        navigator.clipboard.writeText(url);
+        alert("Lien copié ! Collez-le dans TikTok pour partager.");
         break;
       case "copy":
         navigator.clipboard.writeText(url);
@@ -1330,12 +1330,25 @@ export default function BlogArticle() {
                         <span>Twitter</span>
                       </button>
                       <button
-                        onClick={() => handleShare("linkedin")}
+                        onClick={() => handleShare("tiktok")}
                         className="flex items-center gap-3 w-full px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                       >
-                        <Linkedin className="w-5 h-5 text-blue-700" />
-                        <span>LinkedIn</span>
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                        </svg>
+                        <span>TikTok</span>
                       </button>
+                      <a
+                        href="https://www.pagesjaunes.fr/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 w-full px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        <span>Pages Jaunes</span>
+                      </a>
                       <button
                         onClick={() => handleShare("copy")}
                         className="flex items-center gap-3 w-full px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"

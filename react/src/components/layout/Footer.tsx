@@ -184,9 +184,14 @@ export default function Footer() {
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="white" />
               </svg>
             </a>
-            <a href="https://www.linkedin.com/company/guivarche" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="LinkedIn">
-              <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 18 18">
-                <path clipRule="evenodd" d="M0.75 0H17.25C17.6625 0 18 0.3375 18 0.75V17.25C18 17.6625 17.6625 18 17.25 18H0.75C0.3375 18 0 17.6625 0 17.25V0.75C0 0.3375 0.3375 0 0.75 0ZM2.6625 15.3375H5.325V6.75H2.6625V15.3375ZM4.0125 5.5875C3.15 5.5875 2.475 4.9125 2.475 4.05C2.475 3.1875 3.15 2.5125 4.0125 2.5125C4.875 2.5125 5.55 3.1875 5.55 4.05C5.55 4.875 4.875 5.5875 4.0125 5.5875ZM12.675 15.3375H15.3V10.6125C15.3 8.2875 14.8125 6.525 12.1125 6.525C10.8375 6.525 9.9375 7.2375 9.6 7.9125H9.5625V6.75H7.0125V15.3375H9.675V11.1C9.675 9.975 9.9 8.8875 11.2875 8.8875C12.675 8.8875 12.675 10.1625 12.675 11.175V15.3375Z" fill="white" fillRule="evenodd" />
+            <a href="https://www.tiktok.com/@guivarche_demenagement" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="TikTok">
+              <svg className="w-[18px] h-[18px]" fill="white" viewBox="0 0 24 24">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+            <a href="https://www.pagesjaunes.fr/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Pages Jaunes">
+              <svg className="w-[18px] h-[18px]" fill="white" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
               </svg>
             </a>
           </div>
