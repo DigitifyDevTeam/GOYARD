@@ -1,4 +1,4 @@
-import React, { useRef, useImperativeHandle, forwardRef } from 'react';
+import { useRef, useImperativeHandle, forwardRef } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { List, Camera, Maximize2 } from 'lucide-react';
@@ -78,7 +78,6 @@ const PDFReport = forwardRef<PDFReportHandles, PDFReportProps>(({
   quoteData,
   addressData,
   optionsData,
-  propertyValue
 }, ref) => {
   const reportRef = useRef<HTMLDivElement>(null);
 
@@ -161,13 +160,6 @@ const PDFReport = forwardRef<PDFReportHandles, PDFReportProps>(({
   useImperativeHandle(ref, () => ({
     exportPDF,
   }));
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR'
-    }).format(amount);
-  };
 
   const formatDate = (dateString: string) => {
     if (!dateString) return 'Non spécifiée';
