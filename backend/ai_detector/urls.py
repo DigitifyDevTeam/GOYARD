@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from . import room_analysis_views
 from . import duplicate_detection
+from demenagement import views as demenagement_views
 
 app_name = 'ai_model'
 
@@ -48,4 +49,6 @@ urlpatterns = [
     # AI Detection Results
     path('ai-results/', views.get_ai_detection_results, name='get_ai_detection_results'),
     
+    # Devis PDF email (alias for demenagement app)
+    path('quote/send-pdf/', demenagement_views.send_quote_pdf, name='send_quote_pdf'),
 ]

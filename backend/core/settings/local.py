@@ -119,4 +119,24 @@ AI_MODEL_PATH = BASE_DIR / 'ai_detector' / 'ai_model'
 os.makedirs(AI_MODEL_PATH, exist_ok=True)
 
 # Google Maps API
-GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', 'AIzaSyBxtvdAKLEDoTLkVew4B2eFlH79SgYcHtU')
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', 'AIzaSyBxEwJCEXnv2MhSU6dSmaMPm-2Y52kpCJ0')
+
+# Gmail OAuth for sending devis PDFs (local dev defaults use your Guivarche credentials)
+# In production, values should come from environment via load_env.sh
+GMAIL_SENDER_EMAIL = os.environ.get('GMAIL_SENDER_EMAIL', 'contact@guivarchedemenagement.fr')
+GMAIL_OAUTH_CLIENT_ID = os.environ.get(
+    'GMAIL_OAUTH_CLIENT_ID',
+    '195545924500-g1l2ok583r60hc3au8se7tntlgrllc2c.apps.googleusercontent.com',
+)
+GMAIL_OAUTH_CLIENT_SECRET = os.environ.get(
+    'GMAIL_OAUTH_CLIENT_SECRET',
+    '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',
+)
+GMAIL_OAUTH_REFRESH_TOKEN = os.environ.get(
+    'GMAIL_OAUTH_REFRESH_TOKEN',
+    '1//04E2BIpFi3XKWCgYIARAAGAQSNwF-L9IrDSDOIkDw6A0cwfrS9XGsUJuyvNdR8XJLxqyfRChiSUQ8nO2l8Yw6fKjU5HWtnOCV6bk',
+)
+GMAIL_OAUTH_TOKEN_URI = os.environ.get(
+    'GMAIL_OAUTH_TOKEN_URI',
+    'https://oauth2.googleapis.com/token',
+)

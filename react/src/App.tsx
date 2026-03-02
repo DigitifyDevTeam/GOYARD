@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
 import ScrollToTop from "./components/ScrollToTop";
-import PDFReport from "./components/PDFReport";
+import PDFReport, { type PDFReportHandles } from "./components/PDFReport";
 import { FormDataManager } from "./utils/formDataManager";
 import HomePage from "./pages/HomeDesigned";
 import Contact from "./pages/Contact";
@@ -156,6 +156,9 @@ function AppContent() {
     phone: "",
   });
   const [clientId, setClientId] = useState<number | null>(null);
+  const [sendingDevis, setSendingDevis] = useState(false);
+  const [devisSent, setDevisSent] = useState(false);
+  const pdfReportRef = useRef<PDFReportHandles | null>(null);
 
   const [selectedRoom, setSelectedRoom] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -504,7 +507,10 @@ function AppContent() {
 
       const result = await response.json();
       console.log('Superficie calculation result:', result);
-      if (result.calculation_id != null) setLastCalculationId(result.calculation_id);
+      if (result.calculation_id != null) {
+        setLastCalculationId(result.calculation_id);
+        localStorage.setItem('lastCalculationId', result.calculation_id.toString());
+      }
       setDeclaredVolumeM3(totalVolume);
       setDeclaredVolumeMethod('surface');
       localStorage.setItem('declaredVolumeM3', String(totalVolume));
@@ -1033,7 +1039,10 @@ function AppContent() {
 
       if (result.success) {
         console.log('Address data submitted successfully:', result);
-        if (result.data?.id != null) setLastAddressId(result.data.id);
+        if (result.data?.id != null) {
+          setLastAddressId(result.data.id);
+          localStorage.setItem('lastAddressId', result.data.id.toString());
+        }
         const origin = addressData.departure.address?.trim();
         const dest = addressData.arrival.address?.trim();
         if (origin && dest) {
@@ -1100,7 +1109,106 @@ function AppContent() {
   };
 
   const handleSubmitOptions = async () => {
+    setDevisSent(false);
     navigate("/tunnel/devis");
+  };
+
+  const handleSendDevis = async () => {
+    // 1) Export the PDF for email (no auto-download here)
+    if (!pdfReportRef.current) {
+      alert("Erreur lors de la génération du PDF. L'email n'a pas été envoyé.");
+      return;
+    }
+
+    let pdfBase64: string | null = null;
+    let pdfFilename: string | null = null;
+
+    try {
+      const result = await pdfReportRef.current.exportPDF();
+      if (!result) {
+        alert("Erreur lors de la génération du PDF. L'email n'a pas été envoyé.");
+        return;
+      }
+      const { blob, filename } = result;
+      pdfFilename = filename;
+
+      const dataUrl: string = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      const parts = dataUrl.split(',');
+      pdfBase64 = parts.length > 1 ? parts[1] : parts[0];
+    } catch (err) {
+      console.error("Error generating PDF before sending devis:", err);
+      alert("Erreur lors de la génération du PDF. L'email n'a pas été envoyé.");
+      return;
+    }
+
+    const resolvedClientId = clientId ?? (() => {
+      const stored = localStorage.getItem('clientId');
+      return stored ? Number.parseInt(stored) : null;
+    })();
+
+    if (!resolvedClientId) {
+      alert('Erreur : informations client manquantes. Veuillez recommencer.');
+      return;
+    }
+
+    setSendingDevis(true);
+    setDevisSent(false);
+
+    try {
+      const storedCalcId = localStorage.getItem('lastCalculationId');
+
+      const payload: Record<string, any> = {
+        client_id: resolvedClientId,
+        demontage_remontage: options.demontageRemontage,
+        emballage_fragile: options.emballageFragile,
+        emballage_cartons: options.emballageCartons,
+      };
+
+      if (storedCalcId) {
+        payload.calculation_id = Number.parseInt(storedCalcId);
+      }
+      if (declaredVolumeM3 != null && !Number.isNaN(declaredVolumeM3)) {
+        payload.volume_m3 = declaredVolumeM3;
+      }
+      if (distanceKm != null) {
+        payload.distance_km = distanceKm;
+      }
+      if (addressData.departure.options.portageDistanceM > 0) {
+        payload.portage_depart_m = addressData.departure.options.portageDistanceM;
+      }
+      if (addressData.arrival.options.portageDistanceM > 0) {
+        payload.portage_arrival_m = addressData.arrival.options.portageDistanceM;
+      }
+
+      if (pdfBase64 && pdfFilename) {
+        payload.pdf_base64 = pdfBase64;
+        payload.pdf_filename = pdfFilename;
+      }
+
+      const response = await fetch('/api/quote/send-pdf/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setDevisSent(true);
+      } else {
+        alert('Erreur lors de l\'envoi du devis : ' + (result.error || 'Erreur inconnue'));
+      }
+    } catch (error) {
+      console.error('Error sending devis:', error);
+      alert('Erreur lors de l\'envoi du devis. Veuillez réessayer.');
+    } finally {
+      setSendingDevis(false);
+    }
   };
 
   const toggleOption = (optionKey: keyof typeof options) => {
@@ -2019,14 +2127,14 @@ function AppContent() {
               {/* Final Quote Section */}
               <div className="text-center mb-8">
                 <p className="text-sm text-slate-600 mb-6">
-                  Recevoir le devis avec les modifications et options supplémentaires que j'ai ajouté
+                  Valider ma demande avec les options sélectionnées et passer au récapitulatif
                 </p>
 
                 <Button
                   onClick={handleSubmitOptions}
                   className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white px-12 py-3 rounded-lg"
                 >
-                  RECEVOIR MON DEVIS
+                  DEMANDER MON DEVIS
                 </Button>
               </div>
 
@@ -2058,7 +2166,7 @@ function AppContent() {
                         Devis personnalisé
                       </div>
                       <div className="text-sm text-slate-600">
-                        Un conseiller vous contactera avec votre devis détaillé
+                        Un conseiller vous recontactera par e-mail ou par téléphone avec votre devis détaillé
                       </div>
                     </div>
 
@@ -2068,7 +2176,7 @@ function AppContent() {
                         <span className="mx-1">→</span>
                         <span className="font-medium text-slate-700">{addressData.arrival.address}</span>
                       </div>
-                      <p className="text-xs text-slate-500">Sélectionnez vos options ci-dessous puis cliquez sur &quot;Recevoir mon devis&quot; pour être recontacté.</p>
+                      <p className="text-xs text-slate-500">Sélectionnez vos options ci-dessous puis cliquez sur &quot;Demander mon devis&quot; pour recevoir le récapitulatif par e-mail et être recontacté.</p>
                     </div>
 
                     <div className="space-y-4 text-sm">
@@ -2222,9 +2330,28 @@ function AppContent() {
 
                     <div className="h-10 shrink-0" aria-hidden="true" />
 
-                    <Button className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white py-3">
-                      RECEVOIR MON DEVIS
-                    </Button>
+                    {devisSent ? (
+                      <div className="w-full bg-green-600 text-white py-3 rounded-lg text-center font-medium flex items-center justify-center gap-2">
+                        <Check className="w-5 h-5" />
+                        Récapitulatif envoyé par e-mail !
+                      </div>
+                    ) : (
+                      <Button
+                        className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white py-3"
+                        onClick={handleSendDevis}
+                        disabled={sendingDevis}
+                      >
+                        {sendingDevis ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Envoi en cours...
+                          </span>
+                        ) : 'DEMANDER MON DEVIS'}
+                      </Button>
+                    )}
 
                     <Button variant="link" className="w-full text-primary text-sm p-0">
                       J'ai un code client
@@ -2428,6 +2555,7 @@ function AppContent() {
               {/* PDF Report Section */}
               <div className="mt-12">
                 <PDFReport
+                  ref={pdfReportRef}
                   clientData={{
                     nom: formData.name || '',
                     prenom: formData.firstName || '',
@@ -2437,7 +2565,7 @@ function AppContent() {
                   }}
                   methodData={{
                     method: lastUsedMethod || selectedMethod || 'list',
-                    volume_m3: undefined,
+                    volume_m3: declaredVolumeM3 != null && !Number.isNaN(declaredVolumeM3) ? declaredVolumeM3 : undefined,
                     surface_area: selectedMethod === 'surface' ? parseFloat(surfaceArea) : undefined,
                     roomObjectQuantities: roomObjectQuantities,
                     uploadedImages: uploadedImages,
@@ -2447,8 +2575,8 @@ function AppContent() {
                   quoteData={{
                     final_price: 0,
                     base_price_transport: undefined,
-                    volume_m3: undefined,
-                    distance_km: undefined,
+                    volume_m3: declaredVolumeM3 != null && !Number.isNaN(declaredVolumeM3) ? declaredVolumeM3 : undefined,
+                    distance_km: distanceKm != null ? distanceKm : undefined,
                     etage_total: undefined,
                     ascenseur_total: undefined,
                     demi_etage_total: undefined,

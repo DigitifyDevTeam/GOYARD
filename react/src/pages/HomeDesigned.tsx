@@ -1336,75 +1336,36 @@ function Group27() {
 }
 
 function Frame23() {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://elfsightcdn.com/platform.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <>
-    {/* Desktop testimonials */}
-    <div className="hidden lg:block h-[662px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
-      <Group20 />
-      <div
-        className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[1565px] top-[416px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]"
-        style={
-          {
-            "--transform-inner-width": "43.984375",
-            "--transform-inner-height": "44",
-          } as React.CSSProperties
-        }
-      >
-        <div className="flex-none rotate-[270deg]">
-          <Group9 />
-        </div>
-      </div>
-      <Group27 />
-      <div
-        className="absolute inset-[7.1%_36.72%_84.77%_40.1%]"
-        data-name="path"
-      >
-        <div
-          className="absolute inset-[-9.22%_-0.13%_-9.27%_-0.14%]"
-          style={
-            {
-              "--stroke-0": "rgba(204, 146, 47, 1)",
-            } as React.CSSProperties
-          }
-        >
-          <svg
-            className="block size-full"
-            fill="none"
-            preserveAspectRatio="none"
-            viewBox="0 0 447 64"
-          >
-            <path
-              d={svgPaths.p2d77cf80}
-              id="path"
-              opacity="0.2"
-              stroke="var(--stroke-0, #CC922F)"
-              strokeWidth="10"
-            />
-          </svg>
-        </div>
-      </div>
-    </div>
-    {/* Mobile testimonials */}
-    <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto text-center">
-        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black mb-3">
+    {/* Desktop: section title + Google Reviews widget */}
+    <div className="hidden lg:block w-full max-w-[1920px] bg-white py-12">
+      <div className="text-center">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
           Ce que nos clients disent de nous !
         </h2>
-        <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-[#62748e] mb-8">
-          Des témoignages authentiques qui parlent d'eux-mêmes
-        </p>
-        <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory -mx-4 px-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="snap-center shrink-0 w-[240px] sm:w-[280px]">
-              <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-                <img src={imgImage5} alt="" className="w-full h-48 sm:h-56 object-cover" />
-              </div>
-            </div>
-          ))}
-        </div>
-        <a href="https://g.page" className="inline-flex items-center gap-2 mt-6 bg-[#197bff] text-white font-['Inter',_sans-serif] font-[600] text-sm px-6 py-3 rounded hover:bg-blue-600 transition-colors uppercase tracking-wider">
-          Donnez-nous votre avis sur Google
-        </a>
+      </div>
+      <div className="mt-8 flex justify-center">
+        <div className="elfsight-app-16aa4635-6e1e-41c5-b062-7e28b4080e4c" data-elfsight-app-lazy />
+      </div>
+    </div>
+    {/* Mobile: section title + Google Reviews widget */}
+    <div className="lg:hidden w-full bg-white py-10 sm:py-12 px-4 sm:px-6">
+      <div className="max-w-2xl mx-auto text-center">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
+          Ce que nos clients disent de nous !
+        </h2>
+      </div>
+      <div className="mt-6 flex justify-center">
+        <div className="elfsight-app-16aa4635-6e1e-41c5-b062-7e28b4080e4c w-full" data-elfsight-app-lazy />
       </div>
     </div>
     </>

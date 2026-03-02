@@ -31,7 +31,7 @@ os.environ.setdefault('DB_HOST', 'localhost')
 os.environ.setdefault('DB_PORT', '3306')
 os.environ.setdefault('ALLOWED_HOSTS', 'goyard-demenagement.fr,www.goyard-demenagement.fr')
 os.environ.setdefault('CORS_ALLOWED_ORIGINS', 'https://goyard-demenagement.fr,https://www.goyard-demenagement.fr')
-os.environ.setdefault('GOOGLE_MAPS_API_KEY', 'AIzaSyBxtvdAKLEDoTLkVew4B2eFlH79SgYcHtU')
+os.environ.setdefault('GOOGLE_MAPS_API_KEY', 'AIzaSyBxEwJCEXnv2MhSU6dSmaMPm-2Y52kpCJ0')
 
 from django.core.wsgi import get_wsgi_application
 

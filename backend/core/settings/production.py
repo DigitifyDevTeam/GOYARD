@@ -130,3 +130,11 @@ os.makedirs(AI_MODEL_PATH, exist_ok=True)
 
 # Google Maps API - must be set in production
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+
+# Gmail OAuth for sending devis PDFs
+# In production, prefer env var but fall back to the Guivarche sender if missing
+GMAIL_SENDER_EMAIL = os.environ.get('GMAIL_SENDER_EMAIL', 'contact@guivarchedemenagement.fr')
+GMAIL_OAUTH_CLIENT_ID = os.environ.get('GMAIL_OAUTH_CLIENT_ID', '')
+GMAIL_OAUTH_CLIENT_SECRET = os.environ.get('GMAIL_OAUTH_CLIENT_SECRET', '')
+GMAIL_OAUTH_REFRESH_TOKEN = os.environ.get('GMAIL_OAUTH_REFRESH_TOKEN', '')
+GMAIL_OAUTH_TOKEN_URI = os.environ.get('GMAIL_OAUTH_TOKEN_URI', 'https://oauth2.googleapis.com/token')

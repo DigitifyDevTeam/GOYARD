@@ -17,15 +17,13 @@ def generate_quote_pdf(quote_data):
     
     # Custom styles
     styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(
-        name='Title',
-        fontSize=18,
-        leading=22,
-        alignment=1,  # Center aligned
-        spaceAfter=20,
-        textColor=colors.HexColor('#1c3957')  # Dark blue
-    ))
-    
+
+    styles['Title'].fontSize = 18
+    styles['Title'].leading = 22
+    styles['Title'].alignment = 1
+    styles['Title'].spaceAfter = 20
+    styles['Title'].textColor = colors.HexColor('#1c3957')
+
     styles.add(ParagraphStyle(
         name='Header',
         fontSize=12,
@@ -33,13 +31,10 @@ def generate_quote_pdf(quote_data):
         spaceAfter=6,
         textColor=colors.HexColor('#1c3957')
     ))
-    
-    styles.add(ParagraphStyle(
-        name='Normal',
-        fontSize=10,
-        leading=12,
-        spaceAfter=6
-    ))
+
+    styles['Normal'].fontSize = 10
+    styles['Normal'].leading = 12
+    styles['Normal'].spaceAfter = 6
     
     # Build the PDF content
     elements = []

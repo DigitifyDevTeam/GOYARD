@@ -1,28 +1,33 @@
 #!/bin/bash
-# Production environment for goyard-demenagement.fr
-# Usage: source load_env.sh
+# Production environment loader for goyard-demenagement.fr
+# Usage:
+#   chmod +x load_env.sh    (once)
+#   source load_env.sh       (each time you start the server)
+#
+# Reads KEY=VALUE pairs from .env in the same directory and exports them.
 
-# Django
-export DJANGO_SETTINGS_MODULE=core.settings.production
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="${SCRIPT_DIR}/.env"
+
+if [ ! -f "$ENV_FILE" ]; then
+    echo "ERROR: .env file not found at ${ENV_FILE}"
+    echo "Copy .env.example to .env and fill in your values."
+    return 1 2>/dev/null || exit 1
+fi
+
+set -a
+while IFS='=' read -r key value; do
+    # Skip empty lines and comments
+    [[ -z "$key" || "$key" == \#* ]] && continue
+    # Trim leading/trailing whitespace from key
+    key="$(echo "$key" | xargs)"
+    # Export the variable (value keeps everything after the first '=')
+    export "$key=$value"
+done < "$ENV_FILE"
+set +a
+
+# Always set these derived variables
 export DJANGO_ENV=production
-export PYTHONPATH="${PYTHONPATH}:$(pwd)"
-export DJANGO_SECRET_KEY="J0UNZwQmnaSWOKQlfaumdKsmqwIF63iE5peYeWT8FFeTKGxtAatphQDswe0pJjttOlA"
+export PYTHONPATH="${PYTHONPATH}:${SCRIPT_DIR}"
 
-# MySQL/MariaDB Database Configuration
-export DB_NAME=121iq1_guivarchebd
-export DB_USER=121iq1_uivarchea
-export DB_PASSWORD="hMN1Zb4FnvTTfXg!"
-export DB_HOST=localhost
-export DB_PORT=3306
-
-# Allowed hosts
-export ALLOWED_HOSTS=goyard-demenagement.fr,www.goyard-demenagement.fr
-
-# CORS (no trailing slashes)
-export CORS_ALLOW_ALL_ORIGINS=False
-export CORS_ALLOWED_ORIGINS=https://goyard-demenagement.fr,https://www.goyard-demenagement.fr
-
-# Google Maps API key
-export GOOGLE_MAPS_API_KEY="AIzaSyBxtvdAKLEDoTLkVew4B2eFlH79SgYcHtU"
-
-echo "Environment variables loaded for production"
+echo "Environment variables loaded from ${ENV_FILE} for production"

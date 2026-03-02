@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { List, Camera, Maximize2 } from 'lucide-react';
 
-interface PDFReportProps {
+export interface PDFReportProps {
   clientData: {
     nom: string;
     prenom: string;
@@ -68,18 +68,23 @@ interface PDFReportProps {
   propertyValue: number;
 }
 
-const PDFReport: React.FC<PDFReportProps> = ({
+export interface PDFReportHandles {
+  exportPDF: () => Promise<{ blob: Blob; filename: string } | null>;
+}
+
+const PDFReport = forwardRef<PDFReportHandles, PDFReportProps>(({
   clientData,
   methodData,
   quoteData,
   addressData,
   optionsData,
   propertyValue
-}) => {
+}, ref) => {
   const reportRef = useRef<HTMLDivElement>(null);
 
   const generatePDF = async () => {
-    if (!reportRef.current) return;
+    // Used only by the visible \"Télécharger le devis en PDF\" button
+    if (!reportRef.current) return null;
 
     try {
       const canvas = await html2canvas(reportRef.current, {
@@ -107,12 +112,55 @@ const PDFReport: React.FC<PDFReportProps> = ({
         heightLeft -= pageHeight;
       }
 
-      pdf.save(`devis-${clientData.nom}-${clientData.prenom}-${new Date().toISOString().split('T')[0]}.pdf`);
+      const filename = `devis-${clientData.nom}-${clientData.prenom}-${new Date().toISOString().split('T')[0]}.pdf`;
+      pdf.save(filename);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Erreur lors de la génération du PDF');
     }
   };
+
+  const exportPDF = async () => {
+    if (!reportRef.current) return null;
+
+    try {
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const filename = `devis-${clientData.nom}-${clientData.prenom}-${new Date().toISOString().split('T')[0]}.pdf`;
+      const blob = pdf.output('blob') as Blob;
+      return { blob, filename };
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      return null;
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    exportPDF,
+  }));
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('fr-FR', {
@@ -148,10 +196,13 @@ const PDFReport: React.FC<PDFReportProps> = ({
         className="bg-white p-8 space-y-8"
         style={{ minWidth: '210mm' }}
       >
-        {/* Header */}
-        <div className="text-center border-b-2 border-blue-600 pb-4">
-          <h1 className="text-3xl font-bold text-gray-800">DEVIS DE DÉMÉNAGEMENT</h1>
-          <p className="text-gray-600 mt-2">Établi le {new Date().toLocaleDateString('fr-FR')}</p>
+        {/* Header – Récapitulatif (recap), not final devis */}
+        <div className="text-center border-b-2 border-[#1C2E42] pb-5">
+          <h1 className="text-2xl font-bold text-[#1C2E42]">RÉCAPITULATIF DE VOTRE DEMANDE DE DEVIS</h1>
+          <p className="text-gray-500 mt-2 text-sm">Document généré le {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <p className="text-gray-600 mt-3 text-sm max-w-xl mx-auto leading-relaxed">
+            Ce document récapitule les informations que vous avez renseignées.
+          </p>
         </div>
 
         {/* Client Information */}
@@ -344,127 +395,45 @@ const PDFReport: React.FC<PDFReportProps> = ({
         {/* Options */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2">
-            OPTIONS SÉLECTIONNÉES
+            Options supplémentaires sélectionnées
           </h2>
-          <div className="space-y-2">
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Pack cartons (fourniture de matériel)</span>
-              <span className="font-medium">{optionsData.packCartons ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Date flexible (report jusqu'à 72h avant)</span>
-              <span className="font-medium">{optionsData.dateFlexible ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Prix flexible (flexibilité sur 5 jours)</span>
-              <span className="font-medium">{optionsData.prixFlexible ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Démontage/Remontage</span>
-              <span className="font-medium">{optionsData.demontageRemontage ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Emballage fragile</span>
-              <span className="font-medium">{optionsData.emballageFragile ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Emballage cartons (inventaire)</span>
-              <span className="font-medium">{optionsData.emballageCartons ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Autorisation de stationnement</span>
-              <span className="font-medium">{optionsData.autorisationStationnement ? 'Oui' : 'Non'}</span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b">
-              <span>Transport vêtements (penderies)</span>
-              <span className="font-medium">{optionsData.transportVetements ? 'Oui' : 'Non'}</span>
-            </div>
-            {propertyValue > 0 && (
+          <div className="space-y-2 text-sm">
+            {optionsData.demontageRemontage && (
               <div className="flex justify-between items-center py-2 border-b">
-                <span>Assurance ({formatCurrency(propertyValue)} de biens)</span>
-                <span className="font-medium">{formatCurrency(optionsData.assurance)}</span>
+                <span>Démontage / remontage du mobilier</span>
+                <span className="font-medium">Oui</span>
               </div>
             )}
-            {Object.keys(optionsData.cleaningQuantities).length > 0 && (
-              <div className="py-2 border-b">
-                {Object.entries(optionsData.cleaningQuantities).map(([service, quantity]) => (
-                  <div key={service} className="flex justify-between text-sm">
-                    <span>{service}</span>
-                    <span>{quantity}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Quote Details */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2">
-            DÉTAIL DU DEVIS
-          </h2>
-          <div className="space-y-2">
-            {quoteData.base_price_transport && (
+            {optionsData.emballageFragile && (
               <div className="flex justify-between items-center py-2 border-b">
-                <span>Prix de base transport</span>
-                <span className="font-medium">{formatCurrency(quoteData.base_price_transport)}</span>
+                <span>Emballage du fragile (vaisselle, tableaux, bibelots)</span>
+                <span className="font-medium">Oui</span>
               </div>
             )}
-            {quoteData.etage_total && quoteData.etage_total > 0 && (
+            {optionsData.emballageCartons && (
               <div className="flex justify-between items-center py-2 border-b">
-                <span>Supplément étages</span>
-                <span className="font-medium">{formatCurrency(quoteData.etage_total)}</span>
+                <span>Emballage des cartons déclarés dans l'inventaire</span>
+                <span className="font-medium">Oui</span>
               </div>
             )}
-            {quoteData.ascenseur_total && quoteData.ascenseur_total > 0 && (
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>Supplément absence d'ascenseur</span>
-                <span className="font-medium">{formatCurrency(quoteData.ascenseur_total)}</span>
-              </div>
+            {!optionsData.demontageRemontage &&
+             !optionsData.emballageFragile &&
+             !optionsData.emballageCartons && (
+              <p className="text-gray-600">
+                Aucune option supplémentaire sélectionnée.
+              </p>
             )}
-            {quoteData.demi_etage_total != null && quoteData.demi_etage_total > 0 && (
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>Demi-étage</span>
-                <span className="font-medium">{formatCurrency(quoteData.demi_etage_total)}</span>
-              </div>
-            )}
-            {quoteData.escale_total && quoteData.escale_total > 0 && (
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>Escales</span>
-                <span className="font-medium">{formatCurrency(quoteData.escale_total)}</span>
-              </div>
-            )}
-            {quoteData.portage_total && quoteData.portage_total > 0 && (
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>Portage</span>
-                <span className="font-medium">{formatCurrency(quoteData.portage_total)}</span>
-              </div>
-            )}
-            {optionsData.assurance > 0 && (
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>Assurance</span>
-                <span className="font-medium">{formatCurrency(optionsData.assurance)}</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Total */}
-        <div className="bg-blue-50 p-6 rounded-lg border-2 border-blue-200">
-          <div className="flex justify-between items-center">
-            <span className="text-2xl font-bold text-gray-800">TOTAL DU DEVIS</span>
-            <span className="text-3xl font-bold text-blue-600">{formatCurrency(quoteData.final_price)}</span>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-600 border-t pt-4">
-          <p>Devis valable 30 jours à compter de la date d'émission</p>
-          <p className="mt-2">Pour toute question, contactez-nous au [numéro de téléphone]</p>
+        <div className="text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
+          <p>Ce récapitulatif ne constitue pas un devis ferme. Un conseiller vous recontactera pour finaliser votre demande.</p>
+          <p className="mt-2">Contact : 09 74 50 50 47 </p>
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default PDFReport;

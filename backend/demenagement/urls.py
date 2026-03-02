@@ -26,6 +26,9 @@ urlpatterns = [
     path('superficie/data/', views.get_superficie_calculations, name='get_superficie_calculations'),
     path('volume-calculation/', views.get_volume_calculation, name='get_volume_calculation'),
     
+    # Send devis PDF by email
+    path('quote/send-pdf/', views.send_quote_pdf, name='send_quote_pdf'),
+
     # Address endpoints
     path('address/', views.create_address, name='create_address'),
     path('address/<int:address_id>/', views.get_address, name='get_address'),

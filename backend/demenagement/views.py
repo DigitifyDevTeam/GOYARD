@@ -1,3 +1,8 @@
+import base64
+import logging
+import traceback
+from datetime import datetime
+from io import BytesIO
 from typing import Optional
 
 from rest_framework.decorators import api_view
@@ -20,6 +25,8 @@ from ai_detector.pricing import (
     get_escale_price,
     DEMI_ETAGE_PRICE_EUR,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
@@ -1272,3 +1279,269 @@ def delete_address(request, address_id):
             'success': False,
             'message': 'Adresse non trouvée'
         }, status=status.HTTP_404_NOT_FOUND)
+
+
+# ==================== SEND QUOTE PDF BY EMAIL ====================
+
+@api_view(['POST'])
+def send_quote_pdf(request):
+    """
+    Email the final devis PDF (generated client-side) to the client via Gmail OAuth.
+
+    Body (JSON):
+      - client_id (required)
+      - calculation_id (optional – ManualSelection / superficie record)
+      - volume_m3 (optional fallback if no calculation_id)
+      - demontage_remontage (bool), emballage_fragile (bool), emballage_cartons (bool)
+      - valeur_bien_eur (float, optional)
+      - portage_depart_m, portage_arrival_m, portage_escale_m (float, optional)
+      - pdf_base64 (required) - base64-encoded PDF bytes from frontend
+      - pdf_filename (optional) - suggested filename for attachment
+    """
+    try:
+        data = request.data or {}
+        client_id = data.get('client_id')
+
+        if not client_id:
+            return Response({
+                'success': False,
+                'error': 'client_id is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # ── 1. Resolve client ───────────────────────────────────────────
+        try:
+            client = ClientInformation.objects.get(id=client_id)
+        except ClientInformation.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': f'Client with id={client_id} not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # ── 2. Resolve latest address ───────────────────────────────────
+        addr = Address.objects.filter(client_info=client).order_by('-created_at').first()
+        if not addr:
+            return Response({
+                'success': False,
+                'error': 'No address found for this client'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # ── 3. Compute distance via Google Distance Matrix ──────────────
+        origin_address = addr.adresse_depart
+        destination_address = addr.adresse_arrivee
+        distance_km = None
+        if origin_address and destination_address:
+            distance_km = _google_distance_matrix_km(origin_address, destination_address)
+        if distance_km is None and data.get('distance_km') is not None:
+            try:
+                distance_km = float(data['distance_km'])
+            except (TypeError, ValueError):
+                pass
+        if distance_km is None:
+            return Response({
+                'success': False,
+                'error': 'Could not compute distance between addresses'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        if distance_km < 0:
+            distance_km = 0.0
+
+        # ── 4. Resolve volume ───────────────────────────────────────────
+        volume_m3 = None
+        calculation_id = data.get('calculation_id')
+        if data.get('volume_m3') is not None:
+            try:
+                volume_m3 = float(data['volume_m3'])
+                if volume_m3 <= 0:
+                    raise ValueError()
+            except (TypeError, ValueError):
+                volume_m3 = None
+
+        if volume_m3 is None and calculation_id is not None:
+            try:
+                selection = ManualSelection.objects.get(id=calculation_id)
+                volume_m3 = float(selection.total_volume)
+            except ManualSelection.DoesNotExist:
+                pass
+
+        if volume_m3 is None or volume_m3 <= 0:
+            sel = ManualSelection.objects.filter(client_info=client).order_by('-created_at').first()
+            if sel and sel.total_volume > 0:
+                volume_m3 = float(sel.total_volume)
+
+        if volume_m3 is None or volume_m3 <= 0:
+            return Response({
+                'success': False,
+                'error': 'Could not determine volume. Provide volume_m3 or calculation_id.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # ── 5. Base price from volume x distance matrix ─────────────────
+        price_breakdown = get_price_breakdown(volume_m3, distance_km)
+        base_price = price_breakdown['price_eur']
+
+        # ── 6. Floor / elevator pricing ─────────────────────────────────
+        etage_depart = addr.etage_depart
+        etage_arrivee = addr.etage_arrivee
+        ascenseur_depart = addr.ascenseur_depart
+        ascenseur_arrivee = addr.ascenseur_arrivee
+        has_stopover = bool(addr.has_stopover)
+        escale_etage = addr.escale_etage or None
+        escale_ascenseur = addr.escale_ascenseur or None
+        demi_etage_depart = bool(getattr(addr, 'demi_etage_depart', False))
+        demi_etage_arrivee = bool(getattr(addr, 'demi_etage_arrivee', False))
+
+        monte_meuble_depart = bool((addr.options_depart or {}).get('monte_meuble', False))
+        monte_meuble_arrivee = bool((addr.options_arrivee or {}).get('monte_meuble', False))
+        monte_meuble_escale = bool((addr.escale_options or {}).get('monte_meuble', False)) if has_stopover else False
+
+        def _calc_loc(vol, etage, ascenseur, monte_meuble):
+            if monte_meuble:
+                return get_etage_price(vol, etage or 'RDC'), 0.0
+            elif ascenseur and ascenseur != 'Non':
+                return 0.0, get_ascenseur_extra(vol, ascenseur, etage or 'RDC')
+            else:
+                return get_etage_price(vol, etage or 'RDC'), 0.0
+
+        etage_dep_p, asc_dep_p = _calc_loc(volume_m3, etage_depart, ascenseur_depart, monte_meuble_depart)
+        etage_arr_p, asc_arr_p = _calc_loc(volume_m3, etage_arrivee, ascenseur_arrivee, monte_meuble_arrivee)
+        etage_esc_p, asc_esc_p = (0.0, 0.0)
+        if has_stopover:
+            etage_esc_p, asc_esc_p = _calc_loc(volume_m3, escale_etage, escale_ascenseur, monte_meuble_escale)
+
+        etage_total = etage_dep_p + etage_arr_p + etage_esc_p
+        ascenseur_total = asc_dep_p + asc_arr_p + asc_esc_p
+
+        demi_etage_total = 0.0
+        if demi_etage_depart:
+            demi_etage_total += DEMI_ETAGE_PRICE_EUR
+        if demi_etage_arrivee:
+            demi_etage_total += DEMI_ETAGE_PRICE_EUR
+
+        # ── 7. Options ──────────────────────────────────────────────────
+        valeur_bien_eur = 0
+        try:
+            v = data.get('valeur_bien_eur')
+            if v is not None:
+                valeur_bien_eur = float(v)
+        except (TypeError, ValueError):
+            pass
+        assurance_price = get_assurance_valeur_bien_price(valeur_bien_eur)
+
+        demontage = bool(data.get('demontage_remontage'))
+        emb_fragile = bool(data.get('emballage_fragile'))
+        emb_cartons = bool(data.get('emballage_cartons'))
+        demontage_price = get_demontage_remontage_price(volume_m3, distance_km, demontage)
+        emb_fragile_price = get_emballage_fragile_price(volume_m3, emb_fragile)
+        emb_cartons_price = get_emballage_cartons_price(volume_m3, emb_cartons)
+
+        # ── 8. Portage ──────────────────────────────────────────────────
+        portage_dep = portage_arr = portage_esc = 0.0
+        try:
+            v = data.get('portage_depart_m')
+            if v is not None:
+                portage_dep = float(v)
+            v = data.get('portage_arrival_m')
+            if v is not None:
+                portage_arr = float(v)
+            v = data.get('portage_escale_m')
+            if v is not None and has_stopover:
+                portage_esc = float(v)
+        except (TypeError, ValueError):
+            pass
+        portage_total = get_portage_price(volume_m3, max(portage_dep, portage_arr, portage_esc))
+
+        # ── 9. Escale ───────────────────────────────────────────────────
+        stopover_count = 1 if has_stopover else 0
+        escale_total = get_escale_price(stopover_count)
+
+        # ── 10. Final price ─────────────────────────────────────────────
+        options_total = (assurance_price + demontage_price + emb_fragile_price
+                         + emb_cartons_price + portage_total + escale_total)
+        final_price = base_price + etage_total + ascenseur_total + demi_etage_total + options_total
+
+        # ── 11. Build quote_data for PDF generator ──────────────────────
+        ref = f'GV-{client.id}-{datetime.now().strftime("%Y%m%d%H%M")}'
+        quote_data = {
+            'reference': ref,
+            'client_name': f'{client.prenom} {client.nom}',
+            'client_email': client.email,
+            'client_phone': client.phone,
+            'adresse_depart': origin_address,
+            'adresse_arrivee': destination_address,
+            'distance_km': distance_km,
+            'volume_m3': volume_m3,
+            'base_price_transport': round(base_price, 2),
+            'etage_total': round(etage_total, 2),
+            'ascenseur_total': round(ascenseur_total, 2),
+            'demi_etage_total': round(demi_etage_total, 2),
+            'portage_total': round(portage_total, 2),
+            'escale_total': round(escale_total, 2),
+            'assurance_valeur_bien': round(assurance_price, 2),
+            'demontage_remontage': round(demontage_price, 2),
+            'emballage_fragile': round(emb_fragile_price, 2),
+            'final_price': round(final_price, 2),
+        }
+
+        # ── 12. Decode client-provided PDF and send email ───────────────
+        pdf_base64 = data.get('pdf_base64')
+        safe_name = f'{client.nom}-{client.prenom}'.replace(' ', '-')
+        default_filename = f'devis-{safe_name}-{datetime.now().strftime("%Y-%m-%d")}.pdf'
+        pdf_filename = data.get('pdf_filename') or default_filename
+
+        if not pdf_base64:
+            return Response({
+                'success': False,
+                'error': 'pdf_base64 is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            pdf_bytes = base64.b64decode(pdf_base64)
+        except Exception:
+            return Response({
+                'success': False,
+                'error': 'Invalid pdf_base64 data'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        pdf_buffer = BytesIO(pdf_bytes)
+
+        from .gmail_service import send_devis_email, send_admin_devis_notification
+        from django.conf import settings
+
+        send_devis_email(
+            recipient_email=client.email,
+            recipient_name=f'{client.prenom} {client.nom}',
+            pdf_buffer=pdf_buffer,
+            pdf_filename=pdf_filename,
+        )
+
+        admin_email = getattr(settings, 'ADMIN_EMAIL', None) or settings.GMAIL_SENDER_EMAIL
+        admin_pdf_buffer = BytesIO(pdf_bytes)
+        send_admin_devis_notification(
+            admin_email=admin_email,
+            client_name=f'{client.prenom} {client.nom}',
+            client_email=client.email,
+            client_phone=client.phone or '',
+            adresse_depart=origin_address,
+            adresse_arrivee=destination_address,
+            distance_km=distance_km,
+            volume_m3=volume_m3,
+            final_price=final_price,
+            reference=ref,
+            pdf_buffer=admin_pdf_buffer,
+            pdf_filename=pdf_filename,
+        )
+
+        logger.info('[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR)', client.email, admin_email, ref, final_price)
+
+        return Response({
+            'success': True,
+            'message': f'Devis envoyé à {client.email}',
+            'reference': ref,
+            'final_price': round(final_price, 2),
+        }, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        traceback.print_exc()
+        logger.error('[send_quote_pdf] Error: %s', e)
+        return Response({
+            'success': False,
+            'error': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
