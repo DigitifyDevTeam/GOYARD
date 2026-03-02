@@ -121,6 +121,14 @@ function AppContent() {
         address: existingData.address || '',
         date: existingData.date || prev.date
       }));
+      // Sync saved address into addressData so "Au départ" is pre-filled on tunnel/adresses
+      const savedAddress = existingData.address?.trim();
+      if (savedAddress) {
+        setAddressData(prev => ({
+          ...prev,
+          departure: { ...prev.departure, address: savedAddress },
+        }));
+      }
     }
 
     // Check if user has already submitted form (has clientId)
@@ -436,6 +444,12 @@ function AppContent() {
 
         // Mark form as completed for route protection
         FormDataManager.markFormSubmitted(result.data.id);
+
+        // Sync form address into addressData so "Au départ" is pre-filled on tunnel/adresses
+        setAddressData((prev) => ({
+          ...prev,
+          departure: { ...prev.departure, address: formData.address.trim() },
+        }));
 
         navigate("/tunnel/choix-volume");
       } else {
