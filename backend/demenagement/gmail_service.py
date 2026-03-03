@@ -1,12 +1,11 @@
 """
 Send emails via Gmail API using OAuth2 refresh_token credentials.
-Supports PDF file attachments for sending devis quotes.
+Used to send devis confirmations and admin notifications (without attachments).
 """
 import base64
 import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.application import MIMEApplication
 
 from django.conf import settings
 from google.oauth2.credentials import Credentials
@@ -28,15 +27,13 @@ def _get_gmail_service():
     return build('gmail', 'v1', credentials=creds)
 
 
-def send_devis_email(recipient_email: str, recipient_name: str, pdf_buffer, pdf_filename: str):
+def send_devis_email(recipient_email: str, recipient_name: str):
     """
-    Send a professional devis email with the PDF attached.
+    Send a professional devis confirmation email to the client.
 
     Args:
         recipient_email: The client's email address.
         recipient_name: The client's display name.
-        pdf_buffer: A BytesIO buffer containing the PDF bytes (seeked to 0).
-        pdf_filename: The filename for the attachment (e.g. "devis-dupont.pdf").
     """
     sender = settings.GMAIL_SENDER_EMAIL
     if not sender:
@@ -99,11 +96,6 @@ def send_devis_email(recipient_email: str, recipient_name: str, pdf_buffer, pdf_
     html_part = MIMEText(html_body, 'html', 'utf-8')
     msg.attach(html_part)
 
-    pdf_bytes = pdf_buffer.read()
-    pdf_attachment = MIMEApplication(pdf_bytes, _subtype='pdf')
-    pdf_attachment.add_header('Content-Disposition', 'attachment', filename=pdf_filename)
-    msg.attach(pdf_attachment)
-
     raw_message = base64.urlsafe_b64encode(msg.as_bytes()).decode('utf-8')
 
     service = _get_gmail_service()
@@ -127,12 +119,10 @@ def send_admin_devis_notification(
     volume_m3: float,
     final_price: float,
     reference: str,
-    pdf_buffer,
-    pdf_filename: str,
 ):
     """
     Send an admin notification email when a client requests a devis.
-    Includes client summary and PDF attachment.
+    Includes client and quote summary.
 
     Args:
         admin_email: Admin email (e.g. contact@guivarchedemenagement.fr)
@@ -140,8 +130,6 @@ def send_admin_devis_notification(
         adresse_depart, adresse_arrivee: Addresses
         distance_km, volume_m3, final_price: Quote summary
         reference: Quote reference (e.g. GV-123-202503021430)
-        pdf_buffer: BytesIO with PDF bytes (seeked to 0)
-        pdf_filename: Attachment filename
     """
     sender = settings.GMAIL_SENDER_EMAIL
     if not sender:
@@ -199,7 +187,8 @@ def send_admin_devis_notification(
                   </td>
                 </tr>
               </table>
-              <p style="margin: 12px 0 24px; font-size: 13px; color: #6b7280;">{distance_km:.0f} km · {volume_m3:.1f} m³</p>
+              <p style="margin: 12px 0 4px; font-size: 13px; color: #6b7280;">{distance_km:.0f} km · {volume_m3:.1f} m³</p>
+              <p style="margin: 0 0 24px; font-size: 14px; color: #111; font-weight: 600;">Estimation TTC : {final_price:.2f} €</p>
 
               <!-- CTA -->
               <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 8px;">
@@ -223,11 +212,6 @@ def send_admin_devis_notification(
 
     html_part = MIMEText(html_body, 'html', 'utf-8')
     msg.attach(html_part)
-
-    pdf_bytes = pdf_buffer.read()
-    pdf_attachment = MIMEApplication(pdf_bytes, _subtype='pdf')
-    pdf_attachment.add_header('Content-Disposition', 'attachment', filename=pdf_filename)
-    msg.attach(pdf_attachment)
 
     raw_message = base64.urlsafe_b64encode(msg.as_bytes()).decode('utf-8')
 

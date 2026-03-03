@@ -1281,12 +1281,12 @@ def delete_address(request, address_id):
         }, status=status.HTTP_404_NOT_FOUND)
 
 
-# ==================== SEND QUOTE PDF BY EMAIL ====================
+# ==================== SEND QUOTE SUMMARY BY EMAIL ====================
 
 @api_view(['POST'])
 def send_quote_pdf(request):
     """
-    Email the final devis PDF (generated client-side) to the client via Gmail OAuth.
+    Email the final devis summary to the client and admin via Gmail OAuth.
 
     Body (JSON):
       - client_id (required)
@@ -1295,8 +1295,8 @@ def send_quote_pdf(request):
       - demontage_remontage (bool), emballage_fragile (bool), emballage_cartons (bool)
       - valeur_bien_eur (float, optional)
       - portage_depart_m, portage_arrival_m, portage_escale_m (float, optional)
-      - pdf_base64 (required) - base64-encoded PDF bytes from frontend
-      - pdf_filename (optional) - suggested filename for attachment
+      - pdf_base64 (optional) - base64-encoded PDF bytes from frontend (ignored)
+      - pdf_filename (optional) - suggested filename for attachment (ignored)
     """
     try:
         data = request.data or {}
@@ -1457,50 +1457,12 @@ def send_quote_pdf(request):
                          + emb_cartons_price + portage_total + escale_total)
         final_price = base_price + etage_total + ascenseur_total + demi_etage_total + options_total
 
-        # ── 11. Build quote_data for PDF generator ──────────────────────
+        # ── 11. Build quote reference ───────────────────────────────────
         ref = f'GV-{client.id}-{datetime.now().strftime("%Y%m%d%H%M")}'
-        quote_data = {
-            'reference': ref,
-            'client_name': f'{client.prenom} {client.nom}',
-            'client_email': client.email,
-            'client_phone': client.phone,
-            'adresse_depart': origin_address,
-            'adresse_arrivee': destination_address,
-            'distance_km': distance_km,
-            'volume_m3': volume_m3,
-            'base_price_transport': round(base_price, 2),
-            'etage_total': round(etage_total, 2),
-            'ascenseur_total': round(ascenseur_total, 2),
-            'demi_etage_total': round(demi_etage_total, 2),
-            'portage_total': round(portage_total, 2),
-            'escale_total': round(escale_total, 2),
-            'assurance_valeur_bien': round(assurance_price, 2),
-            'demontage_remontage': round(demontage_price, 2),
-            'emballage_fragile': round(emb_fragile_price, 2),
-            'final_price': round(final_price, 2),
-        }
 
-        # ── 12. Decode client-provided PDF and send email ───────────────
-        pdf_base64 = data.get('pdf_base64')
-        safe_name = f'{client.nom}-{client.prenom}'.replace(' ', '-')
-        default_filename = f'devis-{safe_name}-{datetime.now().strftime("%Y-%m-%d")}.pdf'
-        pdf_filename = data.get('pdf_filename') or default_filename
-
-        if not pdf_base64:
-            return Response({
-                'success': False,
-                'error': 'pdf_base64 is required'
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            pdf_bytes = base64.b64decode(pdf_base64)
-        except Exception:
-            return Response({
-                'success': False,
-                'error': 'Invalid pdf_base64 data'
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        pdf_buffer = BytesIO(pdf_bytes)
+        # ── 12. (Legacy) Client-provided PDF fields (currently unused) ──
+        # pdf_base64 / pdf_filename may still be sent by older frontends but
+        # are now ignored: no PDF is generated or attached to outgoing emails.
 
         from .gmail_service import send_devis_email, send_admin_devis_notification
         from django.conf import settings
@@ -1508,12 +1470,9 @@ def send_quote_pdf(request):
         send_devis_email(
             recipient_email=client.email,
             recipient_name=f'{client.prenom} {client.nom}',
-            pdf_buffer=pdf_buffer,
-            pdf_filename=pdf_filename,
         )
 
         admin_email = getattr(settings, 'ADMIN_EMAIL', None) or settings.GMAIL_SENDER_EMAIL
-        admin_pdf_buffer = BytesIO(pdf_bytes)
         send_admin_devis_notification(
             admin_email=admin_email,
             client_name=f'{client.prenom} {client.nom}',
@@ -1525,8 +1484,6 @@ def send_quote_pdf(request):
             volume_m3=volume_m3,
             final_price=final_price,
             reference=ref,
-            pdf_buffer=admin_pdf_buffer,
-            pdf_filename=pdf_filename,
         )
 
         logger.info('[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR)', client.email, admin_email, ref, final_price)
