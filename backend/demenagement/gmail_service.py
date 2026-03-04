@@ -344,6 +344,142 @@ def send_admin_devis_notification(
 </body>
 </html>"""
 
+    # Override with legacy-inspired layout but keep full new content
+    html_body = f"""\
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0; padding:0; background:#f5f6f8; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; color:#111827;">
+  <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="max-width:640px; margin:0 auto; padding:32px 16px;">
+    <tr>
+      <td>
+        <!-- Header (old style) -->
+        <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background:#1C2E42; border-radius:16px 16px 0 0;">
+          <tr>
+            <td style="padding:28px 24px; text-align:center;">
+              <h1 style="margin:0 0 10px; font-size:26px; font-weight:700; color:#ffffff;">
+                Go<span style="background:#CC922F; color:#1C2E42; padding:4px 10px; border-radius:4px; margin-left:4px; font-weight:700;">YARD</span>
+              </h1>
+              <span style="display:inline-block; margin:0 0 12px; padding:6px 14px; border-radius:999px; background:#CC922F; color:#1C2E42; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Nouvelle demande</span>
+              <h2 style="margin:0 0 4px; font-size:20px; font-weight:600; color:#ffffff;">Demande de devis reçue</h2>
+              <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.85);">{reference}</p>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Main card -->
+        <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background:#ffffff; border-radius:0 0 16px 16px; box-shadow:0 10px 30px rgba(15,23,42,0.16); border:1px solid #e5e7eb; border-top:none;">
+          <tr>
+            <td style="padding:24px 24px 8px;">
+              <p style="margin:0 0 14px; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4b5563; font-weight:700;">Récapitulatif de la demande</p>
+
+              <!-- Recap box (client + trajet) -->
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border-radius:12px; border:1px solid #e5e7eb; background:#ffffff;">
+                <tr>
+                  <td style="padding:18px 20px; border-bottom:1px solid #e5e7eb;">
+                    <table role="presentation" width="100%%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <!-- Client -->
+                        <td style="vertical-align:top; width:50%%; padding-right:12px;">
+                          <p style="margin:0 0 8px; font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:#9ca3af; font-weight:700;">Client</p>
+                          <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111827;">{client_name}</p>
+                          <p style="margin:0 0 4px; font-size:13px; color:#4b5563;">
+                            <a href="mailto:{client_email}" style="color:#1C2E42; text-decoration:none;">{client_email}</a>
+                          </p>
+                          <p style="margin:0 0 2px; font-size:13px; color:#4b5563;">{client_phone or 'Téléphone non renseigné'}</p>
+                        </td>
+                        <!-- Trajet -->
+                        <td style="vertical-align:top; width:50%%; padding-left:12px; border-left:1px solid #e5e7eb;">
+                          <p style="margin:0 0 8px; font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:#9ca3af; font-weight:700;">Trajet</p>
+                          <p style="margin:0 0 6px; font-size:13px; color:#111827;"><strong>Départ</strong> : {adresse_depart or '—'}</p>
+                          <p style="margin:0 0 8px; font-size:13px; color:#111827;"><strong>Arrivée</strong> : {adresse_arrivee or '—'}</p>
+                          <p style="margin:0; font-size:12px; color:#6b7280;">
+                            Distance : <strong>{distance_km:.0f} km</strong> · Volume déclaré : <strong>{volume_m3:.1f} m³</strong>
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- Price + method row -->
+                <tr>
+                  <td style="padding:10px 20px; background:#f9fafb; border-radius:0 0 12px 12px;">
+                    <p style="margin:0 0 4px; font-size:13px; color:#111827; font-weight:700;">
+                      {final_price:.2f} €
+                    </p>
+                    <p style="margin:0; font-size:12px; color:{method_style['accent']}; font-weight:600;">
+                      {method_style['icon']} Méthode : {method_label}
+                      <span style="display:block; margin-top:2px; font-size:11px; font-weight:400; color:#4b5563;">{method_output_safe}</span>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Detail + options section -->
+          <tr>
+            <td style="padding:8px 24px 24px;">
+              <p style="margin:16px 0 12px; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4b5563; font-weight:700;">Détail du contact & du trajet</p>
+
+              <!-- Options & contraintes (same content as new template) -->
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border-radius:12px; border:1px solid #e5e7eb; background:#fafafa; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px; border-bottom:1px solid #e5e7eb;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:0.12em; font-weight:700;">Options payantes</p>
+                    <p style="margin:0; font-size:12px; color:#374151;">
+                      <span style="display:inline-block; padding:4px 10px; border-radius:999px; margin:0 6px 6px 0; font-size:12px; font-weight:600; {badge_oui if demontage else badge_non}">Démontage / remontage : {yes_no(demontage)}</span>
+                      <span style="display:inline-block; padding:4px 10px; border-radius:999px; margin:0 6px 6px 0; font-size:12px; font-weight:600; {badge_oui if emb_fragile else badge_non}">Emballage fragile : {yes_no(emb_fragile)}</span>
+                      <span style="display:inline-block; padding:4px 10px; border-radius:999px; margin:0 6px 6px 0; font-size:12px; font-weight:600; {badge_oui if emb_cartons else badge_non}">Emballage cartons : {yes_no(emb_cartons)}</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:14px 20px; border-bottom:1px solid #e5e7eb; background:#ffffff;">
+                    <p style="margin:0 0 6px; font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:0.12em; font-weight:700;">Accès & portage</p>
+                    <p style="margin:0 0 4px; font-size:12px; color:#374151;">
+                      Monte-meuble:     Départ: <strong>{yes_no(monte_meuble_depart)}</strong> · Arrivée : <strong>{yes_no(monte_meuble_arrivee)}</strong> · Escale : <strong>{yes_no(monte_meuble_escale) if has_stopover else 'Non'}</strong>
+                    </p>
+                    <p style="margin:0; font-size:12px; color:#374151;">
+                      Portage :     Départ : <strong>{portage_dep_label}</strong>  · Arrivée : <strong>{portage_arr_label}</strong> · Escale : <strong>{portage_esc_label}</strong>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:14px 20px; background:#f9fafb; border-radius:0 0 12px 12px;">
+                    <p style="margin:0 0 4px; font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:0.12em; font-weight:700;">Autres éléments</p>
+                    <p style="margin:0 0 2px; font-size:12px; color:#374151;">
+                      Demi-étage :    Départ : <strong>{yes_no(demi_etage_depart)}</strong> · Arrivée : <strong>{yes_no(demi_etage_arrivee)}</strong> · Escale : <strong>{yes_no(has_stopover)}</strong>
+                    </p>
+                    <p style="margin:0; font-size:12px; color:#374151;">
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA -->
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border-radius:10px; background:#fef3c7; border:1px solid #fbbf24;">
+                <tr>
+                  <td style="padding:14px 18px; text-align:left;">
+                    <p style="margin:0; font-size:13px; color:#92400e; font-weight:600;">
+                      → Recontacter le client par e-mail ou téléphone pour finaliser le devis.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <p style="margin:20px 0 0; text-align:center; font-size:11px; color:#9ca3af;">Guivarche Déménagement · Notification automatique</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>"""
+
     html_part = MIMEText(html_body, 'html', 'utf-8')
     msg.attach(html_part)
 

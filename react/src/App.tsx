@@ -2383,7 +2383,7 @@ function AppContent() {
                       {/* Prestations extra - options 3, 4, 5 (payantes) quand sélectionnées */}
                       {(options.demontageRemontage || options.emballageFragile || options.emballageCartons) && (
                         <div className="mt-4 pt-4 border-t border-slate-100">
-                          <div className="font-medium text-slate-900 mb-3">Prestations extra</div>
+                          <div className="font-medium text-slate-900 mb-3">Prestations en extra</div>
                           <div className="space-y-2">
                             {options.demontageRemontage && (
                               <div className="flex items-center text-xs text-slate-600">

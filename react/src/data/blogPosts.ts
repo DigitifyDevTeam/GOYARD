@@ -109,4 +109,4 @@ export const blogPosts = [
   },
 ];
 
-export const categories = ["Tous", "Conseils", "Astuces", "Organisation", "Environnement", "Famille", "Finance", "Juridique", "Notre Travaux"];
+export const categories = ["Tous", "Conseils", "Astuces", "Organisation", "Environnement", "Famille", "Finance", "Juridique", "Nos Travaux"];
