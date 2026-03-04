@@ -50,7 +50,7 @@ def submit_client_information(request):
             "cours_a_traverser": false
         },
         "has_stopover": false,
-        "adresse_arrivee": "456 Avenue Victor Hugo, 75016 Paris",
+        "adresse_arrivee": "25 Rue de Cîteaux, 75012 Paris, France",
         "etage_arrivee": "RDC",
         "ascenseur_arrivee": "Non",
         "options_arrivee": {
@@ -1052,7 +1052,7 @@ def create_address(request):
             "cours_a_traverser": true
         },
         "has_stopover": true,
-        "escale_adresse": "456 Avenue des Champs, 75008 Paris",
+        "escale_adresse": "25 Rue de Cîteaux, 75012 Paris, France",
         "escale_etage": "2",
         "escale_ascenseur": "1 personne",
         "escale_options": {
@@ -1484,6 +1484,19 @@ def send_quote_pdf(request):
             volume_m3=volume_m3,
             final_price=final_price,
             reference=ref,
+            valeur_bien_eur=valeur_bien_eur,
+            demontage=demontage,
+            emb_fragile=emb_fragile,
+            emb_cartons=emb_cartons,
+            monte_meuble_depart=monte_meuble_depart,
+            monte_meuble_arrivee=monte_meuble_arrivee,
+            has_stopover=has_stopover,
+            monte_meuble_escale=monte_meuble_escale,
+            portage_dep=portage_dep,
+            portage_arr=portage_arr,
+            portage_esc=portage_esc,
+            demi_etage_depart=demi_etage_depart,
+            demi_etage_arrivee=demi_etage_arrivee,
         )
 
         logger.info('[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR)', client.email, admin_email, ref, final_price)

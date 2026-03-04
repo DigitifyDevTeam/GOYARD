@@ -19,7 +19,11 @@ def get_google_api_key():
 def google_places_autocomplete(request):
     """
     Proxy for Google Places Autocomplete API.
-    Query params: input (required), types (optional, default address), language (optional, default fr).
+    Query params: input (required), types (optional, default address),
+    language (optional, default fr), components (optional).
+    By default, results are restricted to:
+    France (FR), Belgium (BE), United Kingdom/England (GB),
+    Luxembourg (LU), Germany (DE).
     """
     api_key = get_google_api_key()
     if not api_key:
@@ -29,11 +33,14 @@ def google_places_autocomplete(request):
     if not query_input or len(query_input) < 2:
         return JsonResponse({'predictions': [], 'status': 'OK'})
 
+    components = request.GET.get('components') or 'country:fr|country:be|country:gb|country:lu|country:de'
+
     params = {
         'input': query_input,
         'key': api_key,
         'types': request.GET.get('types', 'address'),
         'language': request.GET.get('language', 'fr'),
+        'components': components,
     }
     url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?' + urllib.parse.urlencode(params)
 

@@ -206,7 +206,7 @@ export const AddressForm = ({ clientId, onSuccess }: AddressFormProps) => {
                 id="escale_adresse"
                 value={formData.escale_adresse}
                 onChange={(e) => setFormData({ ...formData, escale_adresse: e.target.value })}
-                placeholder="456 Avenue des Champs, 75008 Paris"
+                placeholder="25 Rue de Cîteaux, 75012 Paris, France"
                 required={formData.has_stopover}
               />
             </div>

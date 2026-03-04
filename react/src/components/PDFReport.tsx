@@ -421,7 +421,7 @@ const PDFReport = forwardRef<PDFReportHandles, PDFReportProps>(({
         {/* Footer */}
         <div className="text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
           <p>Ce récapitulatif ne constitue pas un devis ferme. Un conseiller vous recontactera pour finaliser votre demande.</p>
-          <p className="mt-2">Contact : 09 74 50 50 47 </p>
+          <p className="mt-2">Contact : +33 7 46 32 66 78 </p>
         </div>
       </div>
     </div>

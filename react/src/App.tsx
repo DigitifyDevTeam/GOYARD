@@ -68,6 +68,7 @@ import {
 import { Slider } from "./components/ui/slider";
 import { Switch } from "./components/ui/switch";
 import { ImageWithFallback } from "./components/figma/ImageWithFallback";
+import Footer from "./components/layout/Footer";
 
 function AppContent() {
   const navigate = useNavigate();
@@ -84,6 +85,7 @@ function AppContent() {
     if (path === "/tunnel/ai-results") return "ai-results";
     if (path === "/tunnel/adresses") return "addresses";
     if (path === "/tunnel/devis") return "quote";
+    if (path === "/tunnel/devis/confirmation") return "quote-confirmation";
     if (path === "/tunnel/info") return "info";
     if (path === "/tunnel/options") return "options";
     return "form";
@@ -1241,6 +1243,7 @@ function AppContent() {
 
       if (result.success) {
         setDevisSent(true);
+        navigate("/tunnel/devis/confirmation");
       } else {
         alert('Erreur lors de l\'envoi du devis : ' + (result.error || 'Erreur inconnue'));
       }
@@ -1911,7 +1914,62 @@ function AppContent() {
     { date: "jeu. 04/09", price: "1631.07 €", selected: false },
   ];
 
-  // Show quote page, info page and options page differently - full width
+  // Dedicated confirmation page after sending quote
+  if (currentPage === "quote-confirmation") {
+    return (
+      <div className="bg-slate-50 min-h-screen flex flex-col">
+        {/* Header */}
+        <header className="bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div className="flex items-center">
+              <button
+                onClick={() => navigate("/")}
+                className="text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer"
+              >
+                Go
+                <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-3 py-2 rounded ml-1">
+                  YARD
+                </span>
+              </button>
+            </div>
+            <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
+              <Phone className="w-4 h-4 mr-2" style={{ color: '#CC922F' }} />
+              <span className="text-sm font-medium">
+                +33 7 46 32 66 78
+              </span>
+              <span className="text-xs ml-2 opacity-90">
+                Numéro non surtaxé
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 px-6 py-8 sm:px-10 sm:py-12 text-center max-w-xl">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-9 h-9 sm:w-11 sm:h-11 text-emerald-600" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 mb-3">
+              Votre demande de devis a bien été envoyée
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 mb-6">
+              Merci de votre confiance. Un conseiller vous contactera très prochainement pour finaliser votre
+              déménagement.
+            </p>
+            <Button
+              className="w-full sm:w-auto bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
+              onClick={() => navigate("/")}
+            >
+              Retour à l&apos;accueil
+            </Button>
+          </div>
+        </div>
+
+        <Footer />
+      </div>
+    );
+  }
+
   if (
     currentPage === "quote" ||
     currentPage === "info" ||
@@ -1936,7 +1994,7 @@ function AppContent() {
             <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
               <Phone className="w-4 h-4 mr-2" style={{ color: '#CC922F' }} />
               <span className="text-sm font-medium">
-                09 74 50 50 47
+                +33 7 46 32 66 78
               </span>
               <span className="text-xs ml-2 opacity-90">
                 Numéro non surtaxé
@@ -2369,8 +2427,6 @@ function AppContent() {
                       </div>
                     </div>
 
-                    <div className="h-10 shrink-0" aria-hidden="true" />
-
                     {devisSent ? (
                       <div className="w-full bg-green-600 text-white py-3 rounded-lg text-center font-medium flex items-center justify-center gap-2">
                         <Check className="w-5 h-5" />
@@ -2393,10 +2449,6 @@ function AppContent() {
                         ) : 'DEMANDER MON DEVIS'}
                       </Button>
                     )}
-
-                    <Button variant="link" className="w-full text-primary text-sm p-0">
-                      J'ai un code client
-                    </Button>
 
                     <Button
                       variant="link"
@@ -2436,89 +2488,91 @@ function AppContent() {
 
               {/* Options Section */}
               <div id="options-section" className="mb-8 sm:mb-12">
-                <h2 className="text-lg sm:text-xl font-semibold text-slate-900 text-center mb-6 sm:mb-8">
+                <h2 className="text-[2.75rem] leading-tight font-semibold text-slate-900 text-center mb-6 sm:mb-8">
                   Choisissez vos options
                 </h2>
 
-                <div className="space-y-4 sm:space-y-6">
-                  {/* Option 3: Démontage Remontage (payante) */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
+                <div className="border border-slate-200 rounded-xl bg-white shadow-sm p-4 sm:p-6">
+                  <div className="space-y-4 sm:space-y-6">
+                    {/* Option 3: Démontage Remontage (payante) */}
+                    <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Scissors className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous souhaitez qu'on s'occupe du démontage et du remontage du mobilier quand c'est nécessaire?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.demontageRemontage}
+                            onChange={(e) => setOptions(prev => ({ ...prev, demontageRemontage: e.target.checked }))}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Vous souhaitez qu'on s'occupe du démontage et du remontage du mobilier quand c'est nécessaire?
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.demontageRemontage}
-                          onChange={(e) => setOptions(prev => ({ ...prev, demontageRemontage: e.target.checked }))}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
 
-                  {/* Option 4: Emballage Fragile (payante) */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                    {/* Option 4: Emballage Fragile (payante) */}
+                    <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous préférez nous confier l'emballage du fragile (vaisselles, tableaux, bibelots)?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.emballageFragile}
+                            onChange={(e) => {
+                              setOptions(prev => ({ 
+                                ...prev, 
+                                emballageFragile: e.target.checked,
+                                emballageCartons: e.target.checked ? false : prev.emballageCartons
+                              }))
+                            }}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Vous préférez nous confier l'emballage du fragile (vaisselles, tableaux, bibelots)?
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.emballageFragile}
-                          onChange={(e) => {
-                            setOptions(prev => ({ 
-                              ...prev, 
-                              emballageFragile: e.target.checked,
-                              emballageCartons: e.target.checked ? false : prev.emballageCartons
-                            }))
-                          }}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
-                    </div>
-                  </div>
 
-                  {/* Option 5: Emballage Cartons (payante) */}
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        Vous souhaitez qu'on emballe les cartons déclarés dans l'inventaire ?
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={options.emballageCartons}
-                          onChange={(e) => {
-                            setOptions(prev => ({ 
-                              ...prev, 
-                              emballageCartons: e.target.checked,
-                              emballageFragile: e.target.checked ? false : prev.emballageFragile
-                            }))
-                          }}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
-                      </label>
+                    {/* Option 5: Emballage Cartons (payante) */}
+                    <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Package className="w-6 h-6" style={{ color: '#CC922F' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                          Vous souhaitez qu'on emballe les cartons déclarés dans l'inventaire ?
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={options.emballageCartons}
+                            onChange={(e) => {
+                              setOptions(prev => ({ 
+                                ...prev, 
+                                emballageCartons: e.target.checked,
+                                emballageFragile: e.target.checked ? false : prev.emballageFragile
+                              }))
+                            }}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1c3957]"></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2682,7 +2736,7 @@ function AppContent() {
           <div className="flex items-center bg-[#1c3957] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex-shrink-0">
             <Phone className="w-5 h-5 mr-2" style={{ color: '#CC922F' }} />
             <span className="text-sm sm:text-base font-medium">
-              09 74 50 50 47
+              +33 7 46 32 66 78
             </span>
             <span className="text-xs sm:text-sm ml-1 sm:ml-2 opacity-90 hidden sm:inline">
               Numéro non surtaxé
@@ -2749,10 +2803,11 @@ function AppContent() {
                         Date de déménagement préférée
                       </Label>
                       <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10" style={{ color: '#CC922F' }} />
                         <Input
                           id="date"
                           type="date"
+                          min={new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                           value={formData.date}
                           onChange={(e) =>
                             handleInputChange("date", e.target.value)
@@ -2760,15 +2815,6 @@ function AppContent() {
                           className="pl-10 bg-slate-50 border-slate-200 cursor-pointer"
                           style={{ colorScheme: 'light' }}
                         />
-                        {/* Custom date picker button */}
-                        <button
-                          type="button"
-                          onClick={() => (document.getElementById('date') as HTMLInputElement)?.showPicker()}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-[#CC922F]/10 rounded transition-colors"
-                          title="Sélectionner une date"
-                        >
-                          <Calendar className="w-4 h-4" style={{ color: '#CC922F' }} />
-                        </button>
                       </div>
                     </div>
 
@@ -5438,6 +5484,11 @@ export default function App() {
           </RouteGuard>
         } />
         <Route path="/tunnel/devis" element={
+          <RouteGuard>
+            <AppContent />
+          </RouteGuard>
+        } />
+        <Route path="/tunnel/devis/confirmation" element={
           <RouteGuard>
             <AppContent />
           </RouteGuard>

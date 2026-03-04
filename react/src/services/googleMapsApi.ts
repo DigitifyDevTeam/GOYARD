@@ -31,6 +31,10 @@ export async function getPlacePredictions(input: string): Promise<PlacePredictio
     input: input.trim(),
     types: 'address',
     language: 'fr',
+    // Restrict suggestions to specific countries:
+    // France (FR), Belgium (BE), United Kingdom/England (GB),
+    // Luxembourg (LU), Germany (DE)
+    components: 'country:fr|country:be|country:gb|country:lu|country:de',
   });
 
   try {

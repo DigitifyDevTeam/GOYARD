@@ -16,6 +16,7 @@ import imgLogoDidomiPng from "../assets/3c0a284d49ffbfd1086bdb506d30c9aab84f0f53
 import img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic from "../assets/67595fbf992984e9ed9dbc8317fb35438187dcd8.png";
 import imgMidiLibrePng from "../assets/a9ebad2e02ff8cd3779f21f2156198dd44f1986d.png";
 import imgCrownIcon from "../assets/edbffb2abf1ff0a9723271fa1cfe45c636a1e4f7.png";
+import { blogPosts } from "../data/blogPosts";
 
 function Group721() {
   return (
@@ -38,12 +39,12 @@ function Group721() {
   );
 }
 
-function Group724() {
+function Group724({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[312px] top-[463px]">
       <div className="absolute contents left-[312px] top-[463px]">
         <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[333px] not-italic text-[#a6773e] text-[14px] text-nowrap top-[463px] whitespace-pre">
-          27 janvier 2025
+          {post?.date ?? "27 janvier 2025"}
         </p>
         <div className="absolute flex h-[16px] items-center justify-center left-[312px] top-[463px] w-[16.53px]">
           <div className="flex-none scale-y-[-100%]">
@@ -80,7 +81,7 @@ function Group724() {
       </div>
       <div className="absolute contents left-[449px] top-[463px]">
         <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[469px] not-italic text-[#a6773e] text-[14px] text-nowrap top-[463px] whitespace-pre">
-          20 MINS
+          {post?.readTime ?? "20 MINS"}
         </p>
         <div className="absolute flex h-[16px] items-center justify-center left-[449px] top-[463px] w-[16.53px]">
           <div className="flex-none scale-y-[-100%]">
@@ -119,11 +120,11 @@ function Group724() {
   );
 }
 
-function Group728() {
+function Group728({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[183px]">
       <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1323px] not-italic text-[#cc922f] text-[14px] text-nowrap top-[183px] whitespace-pre">
-        27 janvier 2025
+        {post?.date ?? "27 janvier 2025"}
       </p>
       <div className="absolute flex h-[16px] items-center justify-center left-[1302px] top-[183px] w-[16.53px]">
         <div className="flex-none scale-y-[-100%]">
@@ -1882,9 +1883,9 @@ function Group756() {
       <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
         <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-[1920px]" />
         <Frame2147226883 />
-        <div className="[grid-area:1_/_1] flex flex-col font-['Poppins',_sans-serif] font-[600] h-[80.924px] justify-center ml-[974.5px] mt-[110.197px] not-italic relative text-[51px] text-black text-center translate-x-[-50%] translate-y-[-50%] w-[985px]">
-          <h2 className="leading-[62px]">
-            Les société qui nous ont fait confiance
+        <div className="[grid-area:1_/_1] flex flex-col font-['Poppins',_sans-serif] font-[600] h-[80.924px] justify-center ml-[974.5px] mt-[110.197px] not-italic relative text-[48px] text-black text-center translate-x-[-50%] translate-y-[-50%] w-[985px]">
+          <h2 className="leading-[58px] whitespace-nowrap">
+            Les sociétés qui nous ont fait confiance
           </h2>
         </div>
         <div
@@ -1903,8 +1904,8 @@ function Group756() {
       </div>
       {/* Mobile/Tablet companies (< lg) */}
       <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
-        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black text-center mb-8 sm:mb-10 leading-tight">
-          Les société qui nous ont fait confiance
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-xl sm:text-2xl text-black text-center mb-8 sm:mb-10 leading-tight whitespace-nowrap">
+          Les sociétés qui nous ont fait confiance
         </h2>
         <div className="max-w-3xl mx-auto overflow-x-auto pb-4">
           <div className="min-w-[600px] h-[63px] mx-auto">
@@ -3115,12 +3116,14 @@ function Group758() {
   );
 }
 
-function Frame711() {
+function Frame711({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-center leading-[0] left-[312px] top-[610px]">
-      <Group709 />
-      <Group710 />
-      <Group758 />
+      <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
+        <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
+          {post?.category ?? "Conseils"}
+        </p>
+      </div>
     </div>
   );
 }
@@ -3163,31 +3166,31 @@ function DribbbleLightPreview3() {
   );
 }
 
-function Page4() {
+function Page4({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
-    <div
+    <a
+      href={post ? `/blog/${post.slug}` : "#"}
       className="absolute contents inset-[65.87%_50.29%_30.76%_48.38%]"
       data-name="Page-1"
+      aria-label="Lire l'article"
     >
       <DribbbleLightPreview3 />
-    </div>
+    </a>
   );
 }
 
-function Group759() {
+function Group759({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[312px] top-[463px]">
-      <Group724 />
-      <h3 className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[312px] not-italic text-[24px] text-black text-nowrap top-[496px] whitespace-pre">
-        Mauris malesuada condimentum elementum.
+      <Group724 post={post} />
+      <h3 className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[312px] not-italic text-[24px] text-black top-[496px] w-[617px] line-clamp-2">
+        {post?.title ?? "Mauris malesuada condimentum elementum."}
       </h3>
-      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[312px] not-italic text-[#62748e] text-[16px] top-[538px] w-[617px]">
-        Duis elementum orci odio, a ullamcorper purus sagittis
-        porttitor. Cras quis lacinia velit. Donec varius augue
-        nec faucibus fringilla.
+      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[312px] not-italic text-[#62748e] text-[16px] top-[538px] w-[617px] line-clamp-3">
+        {post?.excerpt ?? "Duis elementum orci odio, a ullamcorper purus sagittis porttitor. Cras quis lacinia velit. Donec varius augue nec faucibus fringilla."}
       </p>
-      <Frame711 />
-      <Page4 />
+      <Frame711 post={post} />
+      <Page4 post={post} />
     </div>
   );
 }
@@ -3221,11 +3224,11 @@ function Icon3() {
   );
 }
 
-function Group761() {
+function Group761({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1439px] top-[183px]">
       <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1459px] not-italic text-[#cc922f] text-[14px] text-nowrap top-[183px] whitespace-pre">
-        20 MINS
+        {post?.readTime ?? "20 MINS"}
       </p>
       <div className="absolute flex h-[16px] items-center justify-center left-[1439px] top-[183px] w-[16.53px]">
         <div className="flex-none scale-y-[-100%]">
@@ -3236,11 +3239,11 @@ function Group761() {
   );
 }
 
-function Group762() {
+function Group762({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[183px]">
-      <Group728 />
-      <Group761 />
+      <Group728 post={post} />
+      <Group761 post={post} />
     </div>
   );
 }
@@ -3299,56 +3302,57 @@ function Group765() {
   );
 }
 
-function Frame717() {
+function Frame717({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-center leading-[0] left-[1302px] top-[349px] w-[129.541px]">
-      <Group763 />
-      <Group764 />
-      <Group765 />
+      <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
+        <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
+          {post?.category ?? "Conseils"}
+        </p>
+      </div>
     </div>
   );
 }
 
-function Group733() {
+function Group733({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[253px]">
-      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[1302px] not-italic text-[#62748e] text-[16px] top-[253px] w-[306px]">
-        Duis elementum orci odio, sagittis porttitor. Cras quis
-        lacinia velit. augue nec faucibus fringilla.
+      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[1302px] not-italic text-[#62748e] text-[16px] top-[253px] w-[306px] line-clamp-3">
+        {post?.excerpt ?? "Duis elementum orci odio, sagittis porttitor. Cras quis lacinia velit. augue nec faucibus fringilla."}
       </p>
-      <Frame717 />
+      <Frame717 post={post} />
     </div>
   );
 }
 
-function Group732() {
+function Group732({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[183px]">
-      <Group762 />
-      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1302px] not-italic text-[20px] text-black text-nowrap top-[216px] whitespace-pre">
-        Mauris malesuada condim...
+      <Group762 post={post} />
+      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1302px] not-italic text-[20px] text-black top-[216px] w-[306px] line-clamp-2">
+        {post?.title ? (post.title.length > 28 ? post.title.slice(0, 25) + "..." : post.title) : "Mauris malesuada condim..."}
       </p>
-      <Group733 />
+      <Group733 post={post} />
     </div>
   );
 }
 
-function Group734() {
+function Group734({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
-    <div className="absolute contents left-[972px] top-[183px]">
+    <a href={post ? `/blog/${post.slug}` : "#"} className="absolute contents left-[972px] top-[183px] block">
       <div className="absolute h-[214px] left-[972px] rounded-[20px] top-[183px] w-[306px]">
         <img
           alt=""
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
-          src={imgRectangle2}
+          src={post?.image ?? imgRectangle2}
         />
       </div>
       <div
         className="absolute bg-gradient-to-t from-[rgba(0,0,0,0.5)] inset-[24.21%_33.44%_47.49%_50.63%] rounded-[20px] to-[rgba(0,0,0,0)]"
         data-name="Gradient"
       />
-      <Group732 />
-    </div>
+      <Group732 post={post} />
+    </a>
   );
 }
 
@@ -3381,11 +3385,11 @@ function Icon4() {
   );
 }
 
-function Group766() {
+function Group766({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[431px]">
       <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1323px] not-italic text-[#cc922f] text-[14px] text-nowrap top-[431px] whitespace-pre">
-        27 janvier 2025
+        {post?.date ?? "27 janvier 2025"}
       </p>
       <div className="absolute flex h-[16px] items-center justify-center left-[1302px] top-[431px] w-[16.53px]">
         <div className="flex-none scale-y-[-100%]">
@@ -3425,11 +3429,11 @@ function Icon5() {
   );
 }
 
-function Group767() {
+function Group767({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1439px] top-[431px]">
       <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1459px] not-italic text-[#cc922f] text-[14px] text-nowrap top-[431px] whitespace-pre">
-        20 MINS
+        {post?.readTime ?? "20 MINS"}
       </p>
       <div className="absolute flex h-[16px] items-center justify-center left-[1439px] top-[431px] w-[16.53px]">
         <div className="flex-none scale-y-[-100%]">
@@ -3440,11 +3444,11 @@ function Group767() {
   );
 }
 
-function Group768() {
+function Group768({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[431px]">
-      <Group766 />
-      <Group767 />
+      <Group766 post={post} />
+      <Group767 post={post} />
     </div>
   );
 }
@@ -3501,81 +3505,86 @@ function Group771() {
   );
 }
 
-function Frame729() {
+function Frame729({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-center leading-[0] left-[1302px] top-[597px] w-[129.541px]">
-      <Group769 />
-      <Group770 />
-      <Group771 />
+      <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
+        <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
+          {post?.category ?? "Conseils"}
+        </p>
+      </div>
     </div>
   );
 }
 
-function Group772() {
+function Group772({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[501px]">
-      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[1302px] not-italic text-[#62748e] text-[16px] top-[501px] w-[306px]">
-        Duis elementum orci odio, sagittis porttitor. Cras quis
-        lacinia velit. augue nec faucibus fringilla.
+      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[1302px] not-italic text-[#62748e] text-[16px] top-[501px] w-[306px] line-clamp-3">
+        {post?.excerpt ?? "Duis elementum orci odio, sagittis porttitor. Cras quis lacinia velit. augue nec faucibus fringilla."}
       </p>
-      <Frame729 />
+      <Frame729 post={post} />
     </div>
   );
 }
 
-function Group773() {
+function Group773({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[1302px] top-[431px]">
-      <Group768 />
-      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1302px] not-italic text-[20px] text-black text-nowrap top-[464px] whitespace-pre">
-        Mauris malesuada condim...
+      <Group768 post={post} />
+      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[1302px] not-italic text-[20px] text-black top-[464px] w-[306px] line-clamp-2">
+        {post?.title ? (post.title.length > 28 ? post.title.slice(0, 25) + "..." : post.title) : "Mauris malesuada condim..."}
       </p>
-      <Group772 />
+      <Group772 post={post} />
     </div>
   );
 }
 
-function Group735() {
+function Group735({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
-    <div className="absolute contents left-[972px] top-[431px]">
+    <a href={post ? `/blog/${post.slug}` : "#"} className="absolute contents left-[972px] top-[431px] block">
       <div className="absolute h-[214px] left-[972px] rounded-[20px] top-[431px] w-[306px]">
         <img
           alt=""
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
-          src={imgRectangle3}
+          src={post?.image ?? imgRectangle3}
         />
       </div>
       <div
         className="absolute bg-gradient-to-t from-[rgba(0,0,0,0.5)] inset-[57.01%_33.44%_14.68%_50.63%] rounded-[20px] to-[rgba(0,0,0,0)]"
         data-name="Gradient"
       />
-      <Group773 />
-    </div>
+      <Group773 post={post} />
+    </a>
   );
 }
 
-function Group706() {
+function Group706({ posts }: { posts: typeof blogPosts }) {
+  const [post0, post1, post2] = posts;
   return (
     <div className="absolute contents left-1/2 top-[183px] translate-x-[-50%]">
-      <div className="absolute h-[244px] left-[312px] rounded-[20px] top-[183px] w-[636px]">
-        <img
-          alt=""
-          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
-          src={imgRectangle1}
+      <div className="absolute contents left-1/2 top-[183px] translate-x-[-50%]">
+        <a href={post0 ? `/blog/${post0.slug}` : "#"} className="absolute block inset-0 left-[312px] top-[183px] h-[244px] w-[636px] rounded-[20px] z-10" aria-label={post0?.title} />
+        <div className="absolute h-[244px] left-[312px] rounded-[20px] top-[183px] w-[636px]">
+          <img
+            alt=""
+            className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
+            src={post0?.image ?? imgRectangle1}
+          />
+        </div>
+        <div
+          className="absolute bg-gradient-to-t from-[rgba(0,0,0,0.5)] inset-[24.21%_50.63%_43.52%_16.25%] rounded-[20px] to-[rgba(0,0,0,0)]"
+          data-name="Gradient"
         />
+        <Group759 post={post0} />
       </div>
-      <div
-        className="absolute bg-gradient-to-t from-[rgba(0,0,0,0.5)] inset-[24.21%_50.63%_43.52%_16.25%] rounded-[20px] to-[rgba(0,0,0,0)]"
-        data-name="Gradient"
-      />
-      <Group759 />
-      <Group734 />
-      <Group735 />
+      <Group734 post={post1} />
+      <Group735 post={post2} />
     </div>
   );
 }
 
-function Group707() {
+function Group707({ posts }: { posts: typeof blogPosts }) {
   return (
     <div className="absolute contents left-0 top-0">
       <div className="absolute bg-white h-[756px] left-0 top-0 w-[1920px]" />
@@ -3617,7 +3626,7 @@ function Group707() {
           Nos actualités
         </h2>
       </div>
-      <Group706 />
+      <Group706 posts={posts} />
     </div>
   );
 }
@@ -3674,20 +3683,26 @@ function Page5() {
 function Group736() {
   return (
     <div className="absolute contents left-[calc(50%+0.453px)] top-[677px] translate-x-[-50%]">
-      <p className="[text-underline-position:from-font] absolute decoration-solid font-['Poppins',_sans-serif] font-[500] leading-[62px] left-[945px] not-italic text-[18px] text-black text-center text-nowrap top-[677px] translate-x-[-50%] underline whitespace-pre">
+      <a href="/blog" className="[text-underline-position:from-font] absolute decoration-solid font-['Poppins',_sans-serif] font-[500] leading-[62px] left-[945px] not-italic text-[18px] text-black text-center text-nowrap top-[677px] translate-x-[-50%] underline whitespace-pre hover:opacity-80">
         Voir tous les articles
-      </p>
+      </a>
       <Page5 />
     </div>
   );
 }
+
+const topBlogPosts = [
+  blogPosts[0],
+  blogPosts[1],
+  blogPosts.find((p) => p.slug === "demenagement-longue-distance") ?? blogPosts[2],
+];
 
 function Frame701() {
   return (
     <>
       {/* Desktop blog section */}
       <div className="hidden lg:block h-[756px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
-        <Group707 />
+        <Group707 posts={topBlogPosts} />
         <Group736 />
       </div>
       {/* Mobile blog section */}
@@ -3700,17 +3715,14 @@ function Frame701() {
             Conseils, astuces et actualités du déménagement
           </p>
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-            {[
-              { img: imgRectangle2, title: "Guide complet pour un déménagement réussi", date: "27 janvier 2025" },
-              { img: imgRectangle3, title: "Comment emballer vos objets fragiles", date: "27 janvier 2025" },
-            ].map((post, i) => (
-              <div key={i} className="bg-white rounded-xl shadow-md overflow-hidden text-left">
-                <img src={post.img} alt="" className="w-full h-40 sm:h-48 object-cover" />
+            {topBlogPosts.map((post) => (
+              <a key={post.id} href={`/blog/${post.slug}`} className="bg-white rounded-xl shadow-md overflow-hidden text-left block hover:opacity-95 transition-opacity">
+                <img src={post.image} alt="" className="w-full h-40 sm:h-48 object-cover" />
                 <div className="p-4 sm:p-5">
                   <p className="font-['Inter',_sans-serif] font-[600] text-xs text-[#CC922F] mb-2">{post.date}</p>
                   <h3 className="font-['Poppins',_sans-serif] font-[600] text-base sm:text-lg text-black leading-snug">{post.title}</h3>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
           <a href="/blog" className="inline-block mt-6 font-['Poppins',_sans-serif] font-[500] text-sm text-black underline">
@@ -4102,8 +4114,8 @@ function Group741() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[74.763%] place-items-start relative">
       <div className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[40px] ml-0 mt-0 not-italic relative text-[17px] text-white tracking-[-0.2px] w-[330px]">
-        <p className="mb-0">donec@guivarche-demenagement.fr</p>
-        <p>+33 76 65 87 98 76</p>
+        <p className="mb-0">contact@guivarchedemenagement.fr</p>
+        <p>+33 7 46 32 66 78</p>
       </div>
     </div>
   );
