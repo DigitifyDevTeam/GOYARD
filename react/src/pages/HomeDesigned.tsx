@@ -162,14 +162,6 @@ function Group728({ post }: { post?: (typeof blogPosts)[0] }) {
   );
 }
 
-function Group722() {
-  return (
-    <p className="capitalize font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-      ultrices
-    </p>
-  );
-}
-
 function Group727() {
   return (
     <div
@@ -3062,60 +3054,6 @@ function Group757() {
   );
 }
 
-function Frame709() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="capitalize font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        ultrices
-      </p>
-    </div>
-  );
-}
-
-function Group709() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame709 />
-    </div>
-  );
-}
-
-function Frame710() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        Mauris
-      </p>
-    </div>
-  );
-}
-
-function Group710() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame710 />
-    </div>
-  );
-}
-
-function Frame712() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        Nullam nulla
-      </p>
-    </div>
-  );
-}
-
-function Group758() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame712 />
-    </div>
-  );
-}
-
 function Frame711({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-center leading-[0] left-[312px] top-[610px]">
@@ -3244,60 +3182,6 @@ function Group762({ post }: { post?: (typeof blogPosts)[0] }) {
     <div className="absolute contents left-[1302px] top-[183px]">
       <Group728 post={post} />
       <Group761 post={post} />
-    </div>
-  );
-}
-
-function Frame713() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="capitalize font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        ultrices
-      </p>
-    </div>
-  );
-}
-
-function Group763() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame713 />
-    </div>
-  );
-}
-
-function Frame714() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        Mauris
-      </p>
-    </div>
-  );
-}
-
-function Group764() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame714 />
-    </div>
-  );
-}
-
-function Frame716() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        Nullam nulla
-      </p>
-    </div>
-  );
-}
-
-function Group765() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame716 />
     </div>
   );
 }
@@ -3449,58 +3333,6 @@ function Group768({ post }: { post?: (typeof blogPosts)[0] }) {
     <div className="absolute contents left-[1302px] top-[431px]">
       <Group766 post={post} />
       <Group767 post={post} />
-    </div>
-  );
-}
-
-function Frame718() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <Group722 />
-    </div>
-  );
-}
-
-function Group769() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame718 />
-    </div>
-  );
-}
-
-function Frame727() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        Mauris
-      </p>
-    </div>
-  );
-}
-
-function Group770() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame727 />
-    </div>
-  );
-}
-
-function Frame728() {
-  return (
-    <div className="[grid-area:1_/_1] bg-indigo-100 box-border content-stretch flex gap-[10px] items-center justify-center ml-0 mt-0 px-[9px] py-[3px] relative rounded-[14px]">
-      <p className="font-['Inter',_sans-serif] font-[600] leading-[normal] not-italic relative shrink-0 text-[#1c3957] text-[14px] text-nowrap whitespace-pre">
-        Nullam nulla
-      </p>
-    </div>
-  );
-}
-
-function Group771() {
-  return (
-    <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0">
-      <Frame728 />
     </div>
   );
 }

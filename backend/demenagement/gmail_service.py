@@ -6,6 +6,7 @@ import base64
 import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from typing import Optional
 
 from django.conf import settings
 from google.oauth2.credentials import Credentials
@@ -128,8 +129,8 @@ def send_admin_devis_notification(
     portage_esc: float,
     demi_etage_depart: bool,
     demi_etage_arrivee: bool,
-    volume_method: str | None = None,
-    method_output: str | None = None,
+    volume_method: Optional[str] = None,
+    method_output: Optional[str] = None,
 ):
     """
     Send an admin notification email when a client requests un devis.
