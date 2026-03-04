@@ -128,6 +128,8 @@ def send_admin_devis_notification(
     portage_esc: float,
     demi_etage_depart: bool,
     demi_etage_arrivee: bool,
+    volume_method: str | None = None,
+    method_output: str | None = None,
 ):
     """
     Send an admin notification email when a client requests un devis.
@@ -165,6 +167,40 @@ def send_admin_devis_notification(
     badge_oui = "background: #fef3c7; color: #b45309; border: 1px solid #fcd34d;"
     badge_non = "background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;"
 
+    # Method colors for admin reflex (distinct per method)
+    METHOD_STYLES = {
+        'manual': {
+            'bg': '#eff6ff',
+            'border': '#3b82f6',
+            'accent': '#1d4ed8',
+            'label': 'Sélection manuelle',
+            'icon': '📋',
+        },
+        'ai': {
+            'bg': '#f5f3ff',
+            'border': '#8b5cf6',
+            'accent': '#6d28d9',
+            'label': 'Analyse IA',
+            'icon': '🤖',
+        },
+        'superficie': {
+            'bg': '#ecfdf5',
+            'border': '#10b981',
+            'accent': '#047857',
+            'label': 'Calcul superficie',
+            'icon': '📐',
+        },
+    }
+    method_style = METHOD_STYLES.get(volume_method or '', {
+        'bg': '#f8fafc',
+        'border': '#94a3b8',
+        'accent': '#64748b',
+        'label': 'Non déterminé',
+        'icon': '❓',
+    })
+    method_label = method_style['label']
+    method_output_safe = (method_output or '—').replace('<', '&lt;').replace('>', '&gt;')
+
     html_body = f"""\
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
@@ -183,11 +219,28 @@ def send_admin_devis_notification(
               <h2 style="color: #fff; margin: 0; font-size: 20px; font-weight: 600;">Demande de devis reçue</h2>
               <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0; font-size: 14px; font-weight: 500;">{reference}</p>
             </td>
+            </tr>
+        </table>
+
+        <!-- Method badge (color-coded for admin reflex) -->
+        <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="margin-top: 16px;">
+          <tr>
+            <td style="padding: 0;">
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background: {method_style['bg']}; border: 2px solid {method_style['border']}; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;">
+                <tr>
+                  <td style="padding: 20px 24px; border-left: 6px solid {method_style['border']};">
+                    <p style="margin: 0 0 8px; font-size: 10px; color: {method_style['accent']}; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">Méthode utilisée</p>
+                    <p style="margin: 0 0 12px; font-size: 18px; color: {method_style['accent']}; font-weight: 700;">{method_style['icon']} {method_label}</p>
+                    <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #334155; word-wrap: break-word;">{method_output_safe}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
           </tr>
         </table>
 
         <!-- Content card -->
-        <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background: #fff; border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; border-top: none;">
+        <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background: #fff; border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; border-top: none; margin-top: 16px;">
           <tr>
             <td style="padding: 0;">
               <!-- Client card -->
@@ -283,6 +336,7 @@ def send_admin_devis_notification(
         </table>
 
         <p style="margin: 24px 0 0; text-align: center; font-size: 12px; color: #94a3b8;">Guivarche Déménagement · Notification automatique</p>
+        <p style="margin: 8px 0 0; text-align: center; font-size: 11px; color: #cbd5e1;"><span style="color: #3b82f6;">●</span> Liste · <span style="color: #8b5cf6;">●</span> IA · <span style="color: #10b981;">●</span> Surface</p>
       </td>
     </tr>
   </table>

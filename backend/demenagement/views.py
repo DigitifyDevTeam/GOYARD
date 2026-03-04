@@ -1344,9 +1344,18 @@ def send_quote_pdf(request):
         if distance_km < 0:
             distance_km = 0.0
 
-        # ── 4. Resolve volume ───────────────────────────────────────────
+        # ── 4. Resolve volume and method info ─────────────────────────────
         volume_m3 = None
+        selection = None
         calculation_id = data.get('calculation_id')
+
+        # Always fetch selection when we have calculation_id (for method + output)
+        if calculation_id is not None:
+            try:
+                selection = ManualSelection.objects.get(id=calculation_id)
+            except ManualSelection.DoesNotExist:
+                pass
+
         if data.get('volume_m3') is not None:
             try:
                 volume_m3 = float(data['volume_m3'])
@@ -1355,17 +1364,44 @@ def send_quote_pdf(request):
             except (TypeError, ValueError):
                 volume_m3 = None
 
-        if volume_m3 is None and calculation_id is not None:
-            try:
-                selection = ManualSelection.objects.get(id=calculation_id)
-                volume_m3 = float(selection.total_volume)
-            except ManualSelection.DoesNotExist:
-                pass
+        if volume_m3 is None and selection is not None:
+            volume_m3 = float(selection.total_volume)
 
         if volume_m3 is None or volume_m3 <= 0:
             sel = ManualSelection.objects.filter(client_info=client).order_by('-created_at').first()
             if sel and sel.total_volume > 0:
                 volume_m3 = float(sel.total_volume)
+                if selection is None:
+                    selection = sel
+
+        # Build method and method_output for admin email (color-coded)
+        volume_method = None
+        method_output = None
+        if selection:
+            volume_method = selection.method
+            if selection.method == 'superficie':
+                surf = selection.surface_area or 0
+                calc = selection.calculated_volumes or {}
+                vh = calc.get('vhouse', 0)
+                vf = calc.get('vfurniture', 0)
+                method_output = f"{surf:.0f} m² → Volume maison: {vh:.0f} m³, Mobilier: {vf:.0f} m³"
+            elif selection.method in ('manual', 'ai'):
+                parts = []
+                rs = selection.room_selections or {}
+                for room, objs in rs.items():
+                    if isinstance(objs, dict):
+                        items = [f"{k}×{v}" if v != 1 else k for k, v in objs.items() if v]
+                        if items:
+                            parts.append(f"{room}: {', '.join(items)}")
+                ho = selection.heavy_objects or {}
+                heavy_items = [f"{k}×{v}" if v != 1 else k for k, v in ho.items() if v]
+                if heavy_items:
+                    parts.append(f"Lourds: {', '.join(heavy_items)}")
+                co = selection.custom_objects or {}
+                custom_items = list(co.keys()) if co else []
+                if custom_items:
+                    parts.append(f"Personnalisés: {', '.join(custom_items)}")
+                method_output = " · ".join(parts) if parts else f"{selection.total_objects_count} objets, {volume_m3:.1f} m³"
 
         if volume_m3 is None or volume_m3 <= 0:
             return Response({
@@ -1497,6 +1533,8 @@ def send_quote_pdf(request):
             portage_esc=portage_esc,
             demi_etage_depart=demi_etage_depart,
             demi_etage_arrivee=demi_etage_arrivee,
+            volume_method=volume_method,
+            method_output=method_output,
         )
 
         logger.info('[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR)', client.email, admin_email, ref, final_price)
