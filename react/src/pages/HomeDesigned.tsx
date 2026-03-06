@@ -4,9 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Header from "../components/layout/Header";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
+import InteractiveImageBentoGallery from "../components/bento-gallery";
 import imgRectangle821 from "../assets/78a4471b4fbaf9a72a64dbc0d232cff16ca8bab6.png";
-import imgImage from "../assets/a08557cc181bebb85532ccb043d997bfde25a6c4.png";
-import imgImage1 from "../assets/3ba9f289e20cfebf84ddf13c68b6ab14a8f07b8f.png";
 import imgBitmap from "../assets/f28110a1436ee8e0ca7d7a38c08908c88e716b38.png";
 import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.png";
 import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.png";
@@ -1033,57 +1032,64 @@ function Frame2147226601() {
   );
 }
 
-function BoldVideoAudioSoundPlay() {
-  return (
-    <div
-      className="absolute left-[16px] size-[24px] top-[16px]"
-      data-name="Bold / Video, Audio, Sound / Play"
-    >
-      <svg
-        className="block size-full"
-        fill="none"
-        preserveAspectRatio="none"
-        viewBox="0 0 24 24"
-      >
-        <g id="Bold / Video, Audio, Sound / Play">
-          <path
-            d={svgPaths.p27441000}
-            fill="var(--fill-0, black)"
-            id="Polygon 1"
-          />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-function Frame1116607116() {
-  return (
-    <div className="absolute bg-white left-[calc(50%-4.708px)] rounded-[155.556px] size-[56px] top-[calc(50%+11px)] translate-x-[-50%] translate-y-[-50%]">
-      <div
-        aria-hidden="true"
-        className="absolute border-[1.556px] border-neutral-200 border-solid inset-0 pointer-events-none rounded-[155.556px]"
-      />
-      <BoldVideoAudioSoundPlay />
-    </div>
-  );
-}
-
 function Frame2085665084() {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const openModal = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowVideoModal(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setShowVideoModal(false);
+  }, []);
+
   return (
-    <div className="h-[322px] overflow-clip relative rounded-[32px] shrink-0 w-full">
+    <>
       <div
-        className="absolute h-[322px] left-[-24.05%] right-[-23.91%] top-1/2 translate-y-[-50%]"
-        data-name="image"
+        className="h-[322px] overflow-clip relative rounded-[32px] shrink-0 w-full cursor-pointer"
+        onClick={openModal}
       >
-        <img
-          alt=""
-          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          src={imgImage}
+        <video
+          className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
+          src="/video2.mp4"
+          poster="/photo2.jpeg"
+          muted
+          loop
+          playsInline
         />
+        <button
+          type="button"
+          onClick={openModal}
+          aria-label="Lire la vidéo"
+          className="absolute z-10 bg-white left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1c3957] focus:ring-offset-2 cursor-pointer"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
       </div>
-      <Frame1116607116 />
-    </div>
+
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+          onClick={closeModal}
+        >
+          <div
+            className="w-full max-w-xl overflow-hidden rounded-2xl bg-black shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              src="/video2.mp4"
+              poster="/photo2.jpeg"
+              controls
+              autoPlay
+              className="block h-auto w-full"
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -1095,57 +1101,66 @@ function Frame2085666148() {
   );
 }
 
-function BoldVideoAudioSoundPlay1() {
-  return (
-    <div
-      className="absolute left-[16px] size-[24px] top-[16px]"
-      data-name="Bold / Video, Audio, Sound / Play"
-    >
-      <svg
-        className="block size-full"
-        fill="none"
-        preserveAspectRatio="none"
-        viewBox="0 0 24 24"
-      >
-        <g id="Bold / Video, Audio, Sound / Play">
-          <path
-            d={svgPaths.p27441000}
-            fill="var(--fill-0, black)"
-            id="Polygon 1"
-          />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-function Frame1116607117() {
-  return (
-    <div className="absolute bg-white left-[calc(50%-4.708px)] rounded-[155.556px] size-[56px] top-[calc(50%+11px)] translate-x-[-50%] translate-y-[-50%]">
-      <div
-        aria-hidden="true"
-        className="absolute border-[1.556px] border-neutral-200 border-solid inset-0 pointer-events-none rounded-[155.556px]"
-      />
-      <BoldVideoAudioSoundPlay1 />
-    </div>
-  );
-}
-
 function Frame2085665085() {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const openModal = () => {
+    setShowVideoModal(true);
+  };
+
+  const closeModal = () => {
+    setShowVideoModal(false);
+  };
+
+  const handleButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    openModal();
+  };
+
   return (
-    <div className="h-[322px] overflow-clip relative rounded-[32px] shrink-0 w-full">
+    <>
       <div
-        className="absolute h-[322px] left-[-24.05%] right-[-23.91%] top-1/2 translate-y-[-50%]"
-        data-name="image"
+        className="h-[322px] overflow-clip relative rounded-[32px] shrink-0 w-full cursor-pointer"
+        onClick={openModal}
       >
-        <img
-          alt=""
-          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          src={imgImage1}
+        <video
+          className="absolute inset-0 max-w-none object-cover size-full"
+          src="/Video1.mp4"
+          poster="/photo1.jpeg"
+          muted
+          loop
+          playsInline
         />
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 shadow-lg hover:bg-white transition-colors"
+        >
+          <span className="sr-only">Lire / arrêter la vidéo</span>
+          <span className="ml-0.5 inline-block border-l-8 border-y-[6px] border-l-[#1c3957] border-y-transparent" />
+        </button>
       </div>
-      <Frame1116607117 />
-    </div>
+
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+          onClick={closeModal}
+        >
+          <div
+            className="w-full max-w-xl overflow-hidden rounded-2xl bg-black shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              src="/Video1.mp4"
+              poster="/photo1.jpeg"
+              controls
+              autoPlay
+              className="block h-auto w-full"
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -1420,9 +1435,8 @@ function ContentRight() {
         <p className="leading-[44px]">1</p>
       </div>
       <p className="absolute font-['Poppins',_sans-serif] font-[600] inset-[24.89%_50.78%_61.6%_19.9%] leading-[32px] opacity-70 text-[#020618] text-[19px] tracking-[-0.2px]">
-        Indiquez simplement votre adresse de départ et
-        d'arrivée, ainsi que les conditions de votre logement
-        (étages, accès, ascenseur, etc.).
+        Remplissez le formulaire:  Indiquez les informations
+        de votre déménagement.
       </p>
     </div>
   );
@@ -1441,10 +1455,8 @@ function ContentRight1() {
         <p className="leading-[44px]">2</p>
       </div>
       <p className="absolute font-['Poppins',_sans-serif] font-[600] inset-[46.13%_50.47%_40.37%_20.21%] leading-[32px] opacity-70 text-[#020618] text-[19px] tracking-[-0.2px]">
-        Ajoutez vos mobilier soit en les sélectionnant dans
-        notre liste classique, soit grâce à notre outil IA qui
-        identifie vos meubles à partir de photos prises avec
-        votre smartphone.
+        Recevez votre estimation : Nous vous envoyons un
+        tarif clair et personnalisé.
       </p>
     </div>
   );
@@ -1463,9 +1475,8 @@ function ContentRight2() {
         <p className="leading-[44px]">3</p>
       </div>
       <p className="absolute font-['Poppins',_sans-serif] font-[600] inset-[67.37%_50.36%_19.13%_20.31%] leading-[32px] opacity-70 text-[#020618] text-[19px] tracking-[-0.2px]">
-        Consultez directement en ligne un devis détaillé et mis
-        à jour en temps réel, basé sur vos données et votre
-        inventaire.
+        Réservez votre déménagement : Validez simplement
+        votre date au prix annoncé.
       </p>
     </div>
   );
@@ -1536,18 +1547,18 @@ function Frame702() {
           <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
             <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
               <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">1</div>
-              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Estimez votre volume</h3>
-              <p className="text-sm text-gray-600">Par liste d'objets, surface ou photos IA</p>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Remplissez le formulaire</h3>
+              <p className="text-sm text-gray-600">Indiquez les informations de votre déménagement.</p>
             </div>
             <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
               <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">2</div>
-              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Renseignez vos adresses</h3>
-              <p className="text-sm text-gray-600">Départ, arrivée et escales éventuelles</p>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Recevez votre estimation</h3>
+              <p className="text-sm text-gray-600">Nous vous envoyons un tarif clair et personnalisé.</p>
             </div>
             <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
               <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">3</div>
-              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Choisissez vos options</h3>
-              <p className="text-sm text-gray-600">Emballage, démontage, cartons et plus</p>
+              <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Réservez votre déménagement</h3>
+              <p className="text-sm text-gray-600">Validez simplement votre date au prix annoncé.</p>
             </div>
             <div className="flex flex-col items-center text-center p-5 sm:p-6 bg-gray-50 rounded-xl">
               <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">4</div>
@@ -1573,7 +1584,7 @@ function Frame694() {
   return (
     <div className="bg-white box-border content-stretch flex gap-[10px] items-center justify-center px-[10px] py-[12px] relative rounded-[4px] shadow-[0px_27px_8px_0px_rgba(251,116,163,0),0px_17px_7px_0px_rgba(251,116,163,0.01),0px_10px_6px_0px_rgba(251,116,163,0.05),0px_4px_4px_0px_rgba(251,116,163,0.09),0px_1px_2px_0px_rgba(251,116,163,0.1)] shrink-0">
       <p className="capitalize font-['Poppins',_sans-serif] font-[600] leading-none not-italic relative shrink-0 text-[16px] text-black text-nowrap tracking-[0.32px] whitespace-pre">
-        Planifier mon déménagement
+        Demander un devis
       </p>
     </div>
   );
@@ -1582,7 +1593,9 @@ function Frame694() {
 function Frame715() {
   return (
     <div className="absolute content-stretch flex gap-[10px] items-start left-[1013px] top-[135px]">
-      <Frame694 />
+      <a href="/tunnel/mes-coordonnees" className="block">
+        <Frame694 />
+      </a>
     </div>
   );
 }
@@ -1621,9 +1634,8 @@ function Frame722() {
           </div>
         </div>
       </div>
-      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[500] leading-[1.4] left-[22px] not-italic text-[17px] text-nowrap text-white top-[141px] whitespace-pre">
-        Nulla eu lacus mollis turpis facilisis malesuada. In
-        finibus, velit ac sodales ultrices
+      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[500] leading-[1.4] left-[22px] not-italic text-[17px] text-white top-[141px] w-[664px]">
+        Votre déménagement simplifié, sécurisé et maîtrisé de A à Z.
       </p>
       <p className="absolute capitalize font-['Poppins',_sans-serif] font-[600] leading-[1.4] left-[22px] not-italic text-[35px] text-white top-[18px] w-[664px]">
         Des professionnels à votre service, où que vous soyez
@@ -1682,206 +1694,81 @@ function Group719() {
           <h3 className="font-['Poppins',_sans-serif] font-[600] text-xl sm:text-2xl lg:text-3xl text-white mb-3 sm:mb-4 relative z-10 leading-snug">
             Des professionnels à votre service, où que vous soyez
           </h3>
-          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-white/80 relative z-10">
-            Nulla eu lacus mollis turpis facilisis malesuada. In finibus, velit ac sodales ultrices
+          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-white/80 relative z-10 mb-5">
+            Votre déménagement simplifié, sécurisé et maîtrisé de A à Z.
           </p>
+          <a
+            href="/tunnel/mes-coordonnees"
+            className="inline-flex items-center justify-center bg-white text-[#1c3957] font-['Poppins',_sans-serif] font-[600] text-base px-6 py-3 rounded-md shadow-sm hover:opacity-90 transition-opacity relative z-10"
+          >
+            Demander un devis
+          </a>
         </div>
       </div>
     </>
   );
 }
 
-function Frame2147226883() {
-  return (
-    <div className="[grid-area:1_/_1] h-[63px] ml-[312px] mt-[222px] relative w-[1296px]">
-      <svg
-        className="block size-full"
-        fill="none"
-        preserveAspectRatio="none"
-        viewBox="0 0 1296 63"
-      >
-        <g clipPath="url(#clip0_1_762)" id="Frame 2147226883">
-          <g id="Group 754">
-            <path
-              clipRule="evenodd"
-              d={svgPaths.p32823000}
-              fill="var(--fill-0, black)"
-              fillRule="evenodd"
-              id="Vector"
-            />
-            <path
-              clipRule="evenodd"
-              d={svgPaths.p352c5e00}
-              fill="var(--fill-0, black)"
-              fillRule="evenodd"
-              id="Vector_2"
-            />
-          </g>
-          <path
-            d={svgPaths.p155eb700}
-            fill="var(--fill-0, #E30613)"
-            id="Vector_3"
-          />
-          <path
-            clipRule="evenodd"
-            d={svgPaths.pf6c1d00}
-            fill="var(--fill-0, #255398)"
-            fillRule="evenodd"
-            id="Vector_4"
-          />
-          <g id="Group">
-            <path
-              clipRule="evenodd"
-              d={svgPaths.p28a2c600}
-              fill="var(--fill-0, #12ABDB)"
-              fillRule="evenodd"
-              id="Vector_5"
-            />
-            <path
-              clipRule="evenodd"
-              d={svgPaths.p119e8e00}
-              fill="var(--fill-0, #0070AD)"
-              fillRule="evenodd"
-              id="Vector_6"
-            />
-          </g>
-          <g clipPath="url(#clip1_1_762)" id="electrolux-5">
-            <path
-              d={svgPaths.p3196d300}
-              fill="var(--fill-0, #002D62)"
-              id="path3363"
-            />
-            <path
-              d={svgPaths.p2a5bd900}
-              fill="var(--fill-0, #002D62)"
-              id="path3365"
-            />
-            <path
-              d={svgPaths.p31042800}
-              fill="var(--fill-0, #002D62)"
-              id="path3367"
-            />
-            <path
-              d={svgPaths.p17773100}
-              fill="var(--fill-0, #002D62)"
-              id="path3369"
-            />
-            <path
-              d={svgPaths.p7345480}
-              fill="var(--fill-0, #002D62)"
-              id="path3371"
-            />
-            <path
-              d={svgPaths.p1980e500}
-              fill="var(--fill-0, #002D62)"
-              id="path3373"
-            />
-            <path
-              d={svgPaths.p1d84f300}
-              fill="var(--fill-0, #002D62)"
-              id="path3375"
-            />
-            <path
-              d={svgPaths.p243f1600}
-              fill="var(--fill-0, #002D62)"
-              id="path3377"
-            />
-            <path
-              d={svgPaths.p3b8dfd00}
-              fill="var(--fill-0, #002D62)"
-              id="path3379"
-            />
-            <path
-              d={svgPaths.p15d5ff00}
-              fill="var(--fill-0, #002D62)"
-              id="path3381"
-            />
-            <path
-              d={svgPaths.p1582a880}
-              fill="var(--fill-0, #002D62)"
-              id="path3383"
-            />
-          </g>
-          <g clipPath="url(#clip2_1_762)" id="groupama">
-            <path
-              d={svgPaths.p702c900}
-              fill="var(--fill-0, #346337)"
-              id="Vector_7"
-            />
-            <path
-              d={svgPaths.p2f2f7d00}
-              fill="var(--fill-0, #D35D35)"
-              id="Vector_8"
-            />
-            <path
-              d={svgPaths.p3a477e80}
-              fill="var(--fill-0, white)"
-              id="Vector_9"
-            />
-            <path
-              d={svgPaths.p12217e00}
-              fill="var(--fill-0, #C4D64E)"
-              id="Vector_10"
-            />
-            <path
-              d={svgPaths.p3160e200}
-              fill="var(--fill-0, white)"
-              id="Vector_11"
-            />
-            <path
-              d={svgPaths.p26325200}
-              fill="var(--fill-0, white)"
-              id="Vector_12"
-            />
-          </g>
-          <g id="Group_2">
-            <path
-              d={svgPaths.p17dd67c0}
-              fill="var(--fill-0, #00AEDB)"
-              id="Vector_13"
-            />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_1_762">
-            <rect fill="white" height="63" width="1296" />
-          </clipPath>
-          <clipPath id="clip1_1_762">
-            <rect
-              fill="white"
-              height="48"
-              transform="translate(1154.88 7.5)"
-              width="212"
-            />
-          </clipPath>
-          <clipPath id="clip2_1_762">
-            <rect
-              fill="white"
-              height="48"
-              transform="translate(1453.88 7.5)"
-              width="175"
-            />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
 function Group756() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [carouselStarted, setCarouselStarted] = useState(false);
+  const marqueeLogos = [...trustedLogos, ...trustedLogos];
+
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.2, rootMargin: "0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) {
+      setCarouselStarted(false);
+      return;
+    }
+    const t = setTimeout(() => setCarouselStarted(true), 2000);
+    return () => clearTimeout(t);
+  }, [isInView]);
+
   return (
     <>
-      {/* Desktop companies (>= lg) */}
-      <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
-        <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-[1920px]" />
-        <Frame2147226883 />
-        <div className="[grid-area:1_/_1] flex flex-col font-['Poppins',_sans-serif] font-[600] h-[80.924px] justify-center ml-[974.5px] mt-[110.197px] not-italic relative text-[48px] text-black text-center translate-x-[-50%] translate-y-[-50%] w-[985px]">
+      {/* Desktop companies (>= lg) - logo carousel inside white area */}
+      <div
+        ref={gridRef}
+        className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0"
+      >
+        <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-[1920px] flex flex-col items-center justify-center overflow-hidden pt-20">
+          <div className="relative w-full max-w-[1272px] mx-auto overflow-hidden px-4 mt-14">
+            <div className={`logo-marquee-track flex items-center gap-12 py-4 w-max ${carouselStarted ? "" : "logo-marquee-paused"}`}>
+              {marqueeLogos.map((logo, i) => (
+                <div
+                  key={`${logo.src}-${i}`}
+                  className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="h-full w-full object-contain object-center"
+                    style={logo.scale ? { transform: `scale(${logo.scale})` } : undefined}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="[grid-area:1_/_1] flex flex-col font-['Poppins',_sans-serif] font-[600] h-[80.924px] justify-center ml-[974.5px] mt-[110.197px] not-italic relative text-[48px] text-black text-center translate-x-[-50%] translate-y-[-50%] w-[985px] pointer-events-none">
           <h2 className="leading-[58px] whitespace-nowrap">
             Les sociétés qui nous ont fait confiance
           </h2>
         </div>
         <div
-          className="[grid-area:1_/_1] h-[70.26px] ml-[757px] mt-[74.956px] relative w-[445px]"
+          className="[grid-area:1_/_1] h-[70.26px] ml-[757px] mt-[74.956px] relative w-[445px] pointer-events-none"
           data-name="path"
         >
           <div
@@ -1917,6 +1804,97 @@ function Group756() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
+
+const trustedLogos = [
+  { src: "/logos/Fedex-logo.png", alt: "FedEx" },
+  { src: "/logos/sorbonne.svg", alt: "Sorbonne", scale: 0.85 },
+  { src: "/logos/sephora.svg", alt: "Sephora" },
+  { src: "/logos/Dior_Logo.svg.png", alt: "Dior" },
+  { src: "/logos/IXINA-Logo_BLEU_CMJN.jpg", alt: "Ixina" },
+  { src: "/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg", alt: "BWT Alpine F1 Team" },
+  { src: "/logos/Longchamps.jpg", alt: "Longchamp" },
+  { src: "/logos/Pinsent_Masons_logo.svg", alt: "Pinsent Masons" },
+  { src: "/logos/espot.jpg", alt: "Espot", scale: 1.25 },
+  { src: "/logos/Polene.jpg", alt: "Polène", scale: 1.5 },
+  { src: "/logos/le-tanneur.png", alt: "Le Tanneur", scale: 1.2 },
+  { src: "/logos/Givenchy.png", alt: "Givenchy" },
+  { src: "/logos/meurice.jpg", alt: "Le Meurice", scale: 1.2 },
+  { src: "/logos/gallery-dept.png", alt: "Gallery Dept", scale: 1.55 },
+  { src: "/logos/Hilton.png", alt: "Hilton", scale: 1.5 },
+];
+
+function Group756Logos() {
+  const marqueeLogos = [...trustedLogos, ...trustedLogos];
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [carouselStarted, setCarouselStarted] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.2, rootMargin: "0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) {
+      setCarouselStarted(false);
+      return;
+    }
+    const t = setTimeout(() => setCarouselStarted(true), 2000);
+    return () => clearTimeout(t);
+  }, [isInView]);
+
+  return (
+    <>
+      <style>{`
+        @keyframes logo-marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .logo-marquee-track {
+          animation: logo-marquee 35s linear infinite;
+        }
+        .logo-marquee-track-mobile {
+          animation: logo-marquee 40s linear infinite;
+        }
+        .logo-marquee-track.logo-marquee-paused,
+        .logo-marquee-track-mobile.logo-marquee-paused {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+      <section ref={sectionRef} className="w-full bg-white">
+        {/* Mobile/Tablet (< lg) - only 5 logos visible */}
+        <div className="lg:hidden w-full py-10 sm:py-14 px-4 sm:px-6 overflow-hidden">
+          {/* Visible area = exactly 5 logos: 5×140px + 4×32px = 828px (base), 5×160 + 4×32 = 928px (sm) */}
+          <div className="relative mx-auto w-[828px] sm:w-[928px] overflow-hidden">
+            <div className={`logo-marquee-track-mobile flex items-center gap-8 py-4 w-max ${carouselStarted ? "" : "logo-marquee-paused"}`}>
+            {marqueeLogos.map((logo, i) => (
+              <div
+                key={`${logo.src}-m-${i}`}
+                className="flex h-[56px] w-[140px] flex-shrink-0 items-center justify-center overflow-hidden sm:h-[64px] sm:w-[160px]"
+              >
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-full w-full object-contain object-center"
+                  style={logo.scale ? { transform: `scale(${logo.scale})` } : undefined}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
@@ -3529,6 +3507,92 @@ const topBlogPosts = [
   blogPosts.find((p) => p.slug === "demenagement-longue-distance") ?? blogPosts[2],
 ];
 
+const galleryImageItems = [
+  {
+    id: 1,
+    title: "Déménagement résidentiel",
+    desc: "Équipe professionnelle et matériel adapté pour votre logement.",
+    url: "/gallery/img1.jpeg",
+    span: "md:col-span-2 md:row-span-2",
+  },
+  {
+    id: 2,
+    title: "Cartons et emballage",
+    desc: "Préparation soignée pour un transport en toute sécurité.",
+    url: "/gallery/img2.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 3,
+    title: "",
+    desc: "",
+    url: "/gallery/img3.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 4,
+    title: "Camions et véhicules",
+    desc: "Flotte moderne pour tous types de volumes.",
+    url: "/gallery/img4.jpeg",
+    span: "md:row-span-2",
+  },
+  {
+    id: 5,
+    title: "Nouveau chez vous",
+    desc: "Installation et déballage jusqu’au dernier carton.",
+    url: "/gallery/img5.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 6,
+    title: "Bureaux et entreprises",
+    desc: "Déménagements corporate et relocations.",
+    url: "/gallery/img6.jpeg",
+    span: "md:col-span-2 md:row-span-1",
+  },
+  { id: 7, title: "", desc: "", url: "/gallery/4.jpeg", span: "md:row-span-1" },
+  { id: 8, title: "", desc: "", url: "/gallery/fg.jpeg", span: "md:row-span-1" },
+  { id: 9, title: "", desc: "", url: "/gallery/j.jpeg", span: "md:row-span-1" },
+  { id: 10, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg", span: "md:row-span-1" },
+  { id: 11, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg", span: "md:row-span-1" },
+  { id: 12, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-j04%20at%2000.05.07.jpeg", span: "md:row-span-1" },
+  { id: 13, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.14.jpeg", span: "md:row-span-1" },
+  { id: 14, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.13.jpeg", span: "md:row-span-1" },
+  { id: 15, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.18.06.jpeg", span: "md:row-span-1" },
+  { id: 16, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.065jpeg.jpeg", span: "md:row-span-1" },
+  { id: 17, title: "", desc: "", url: "/gallery/WhatsApp%20Image%20200026-03-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
+  { id: 18, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.46.jpeg", span: "md:row-span-1" },
+  { id: 19, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.06.jpeg", span: "md:row-span-1" },
+  { id: 20, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.jpeg", span: "md:row-span-1" },
+  { id: 21, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.47.jpeg", span: "md:row-span-1" },
+  { id: 22, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
+  { id: 23, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.07.jpeg", span: "md:row-span-1" },
+  { id: 24, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.45.jpeg", span: "md:row-span-1" },
+  { id: 25, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%2055at%2000.05.46.jpeg", span: "md:row-span-1" },
+  { id: 26, title: "", desc: "", url: "/gallery/WhatsApp%20Image%206862026-03-04%20at%2000.06.05.jpeg", span: "md:row-span-1" },
+  { id: 27, title: "", desc: "", url: "/gallery/WhatsApp%201Image%202026-03-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
+  { id: 28, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-jpeg.jpeg", span: "md:row-span-1" },
+  { id: 29, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-500-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
+  { id: 30, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-0-04%20at%2000.07.05.jpeg", span: "md:row-span-1" },
+  { id: 31, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.07.jpeg", span: "md:row-span-1" },
+  { id: 32, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.55.51.jpeg", span: "md:row-span-1" },
+  { id: 33, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.46.54.jpeg", span: "md:row-span-1" },
+  { id: 34, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.10.15.jpeg", span: "md:row-span-1" },
+  { id: 35, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg", span: "md:row-span-1" },
+];
+
+function GallerySection() {
+  return (
+    <div className="w-full antialiased [--background:theme(colors.slate.50)] [--foreground:theme(colors.slate.900)] [--muted-foreground:theme(colors.slate.600)] [--card:white] [--ring:theme(colors.slate.950)]">
+      <InteractiveImageBentoGallery
+        imageItems={galleryImageItems}
+        title="Notre Gallery"
+        description="Découvrez nos missions en images : déménagements résidentiels, corporate et logistique. Glissez pour explorer, cliquez pour agrandir."
+      />
+    </div>
+  );
+}
+
 function Frame701() {
   return (
     <>
@@ -4387,6 +4451,8 @@ export default function Home() {
       <VenteFlash />
       <Group719 />
       <Group756 />
+      <Group756Logos />
+      <GallerySection />
       <Content01 />
       <Frame721 />
       <Frame700 />

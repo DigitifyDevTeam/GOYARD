@@ -403,12 +403,9 @@ def send_admin_devis_notification(
                     </table>
                   </td>
                 </tr>
-                <!-- Price + method row -->
+                <!-- Méthode row (no price) -->
                 <tr>
                   <td style="padding:10px 20px; background:#f9fafb; border-radius:0 0 12px 12px;">
-                    <p style="margin:0 0 4px; font-size:13px; color:#111827; font-weight:700;">
-                      {final_price:.2f} €
-                    </p>
                     <p style="margin:0; font-size:12px; color:{method_style['accent']}; font-weight:600;">
                       {method_style['icon']} Méthode : {method_label}
                       <span style="display:block; margin-top:2px; font-size:11px; font-weight:400; color:#4b5563;">{method_output_safe}</span>

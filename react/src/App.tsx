@@ -408,11 +408,13 @@ function AppContent() {
       return;
     }
 
-    // Validate date (must be in the future)
+    // Validate date (must be today or in the future)
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(formData.date);
-    if (selectedDate <= today) {
-      alert('La date de déménagement doit être dans le futur (après aujourd\'hui)');
+    selectedDate.setHours(0, 0, 0, 0);
+    if (selectedDate < today) {
+      alert('La date de déménagement doit être aujourd\'hui ou dans le futur');
       return;
     }
 
@@ -2807,7 +2809,7 @@ function AppContent() {
                         <Input
                           id="date"
                           type="date"
-                          min={new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                          min={new Date().toISOString().split('T')[0]}
                           value={formData.date}
                           onChange={(e) =>
                             handleInputChange("date", e.target.value)

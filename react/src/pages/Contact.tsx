@@ -105,7 +105,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-[#1C3957] mb-2 text-lg font-['Poppins',sans-serif]">Email</h3>
-                      <a href="mailto:contact@guivarchedemenagement.fr" className="text-gray-600 text-lg hover:text-[#CC922F] transition-colors font-['Poppins',sans-serif]">
+                      <a href="mailto:contact@guivarchedemenagement.fr" className="text-gray-600 text-lg break-all hover:text-[#CC922F] transition-colors font-['Poppins',sans-serif]">
                         contact@guivarchedemenagement.fr
                       </a>
                     </div>
@@ -122,8 +122,7 @@ export default function Contact() {
                     <div>
                       <h3 className="font-semibold text-[#1C3957] mb-2 text-lg font-['Poppins',sans-serif]">Adresse</h3>
                       <p className="text-gray-600 text-lg font-['Poppins',sans-serif]">
-                        Paris, Île-de-France<br />
-                        France
+                      25 Rue de Cîteaux, 75012 Paris, France<br />
                       </p>
                     </div>
                   </div>
