@@ -5,7 +5,6 @@ import Header from "../components/layout/Header";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
 import InteractiveImageBentoGallery from "../components/bento-gallery";
-import imgRectangle821 from "../assets/78a4471b4fbaf9a72a64dbc0d232cff16ca8bab6.png";
 import imgBitmap from "../assets/f28110a1436ee8e0ca7d7a38c08908c88e716b38.png";
 import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.png";
 import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.png";
@@ -425,8 +424,8 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           <div className="absolute inset-0 overflow-hidden">
             <img
               alt=""
-              className="absolute h-full left-[53.9%] max-w-none top-0 w-[46.21%]"
-              src={imgRectangle821}
+              className="absolute right-0 top-0 h-full w-[28%] object-cover object-right"
+              src="/hero.jpeg"
             />
           </div>
         </div>
@@ -491,7 +490,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
       {/* Mobile/Tablet hero (< lg) */}
       <div className="lg:hidden relative w-full bg-[#f0eeef] overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <img src={imgRectangle821} alt="" className="w-full h-full object-cover object-right" />
+          <img src="/hero.jpeg" alt="" className="w-full h-full object-cover object-right" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
           <h1 className="capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.5] text-2xl sm:text-4xl text-black mb-4 sm:mb-6 max-w-lg">{`Votre déménagement simple & intelligent`}</h1>
@@ -525,17 +524,17 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 
 function Frame720() {
   return (
-    <div className="h-[80px] sm:h-[100px] lg:h-[132px] relative shrink-0 w-full">
+    <div className="h-[100px] sm:h-[120px] lg:h-[160px] relative shrink-0 w-full">
       <svg
         className="block size-full"
         fill="none"
         preserveAspectRatio="none"
-        viewBox="0 0 1920 132"
+        viewBox="0 0 1920 160"
       >
         <g clipPath="url(#clip0_1_950)" id="Frame 720">
           <rect
             fill="var(--fill-0, #1C3957)"
-            height="132"
+            height="160"
             id="Rectangle 824"
             width="1920"
           />
@@ -548,10 +547,44 @@ function Frame720() {
         </g>
         <defs>
           <clipPath id="clip0_1_950">
-            <rect fill="white" height="132" width="1920" />
+            <rect fill="white" height="160" width="1920" />
           </clipPath>
         </defs>
       </svg>
+      <div className="hidden lg:block relative shrink-0 w-[1920px]">
+        <div className="absolute inset-0 flex items-end justify-center gap-[80px] px-[210px] pb-[50px]">
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[70px] w-[80px]">
+                <CrownIcon />
+              </div>
+            </div>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">{`23 ans d'éxpérience`}</p>
+          </div>
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[76px] w-[75px]">
+                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
+                  <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" id="Vector" />
+                </svg>
+              </div>
+            </div>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780 déménagement par mois</p>
+          </div>
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[70px] w-[80px]"><Group751 /></div>
+            </div>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">22 camions à disposition</p>
+          </div>
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <Component024 />
+            </div>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">+500 avis positifs</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -572,6 +605,24 @@ export function _Group1() {
           stroke="var(--stroke-0, white)"
         />
       </g>
+    </svg>
+  );
+}
+
+function CrownIcon() {
+  return (
+    <svg
+      className="block size-full"
+      fill="none"
+      preserveAspectRatio="none"
+      viewBox="0 0 76 56"
+    >
+      <path
+        clipRule="evenodd"
+        d="M38 4L48 24L58 20L54 52H22L18 20L28 24L38 4Z"
+        fill="var(--fill-0, #CC922F)"
+        fillRule="evenodd"
+      />
     </svg>
   );
 }
@@ -882,8 +933,8 @@ export function _Group750() {
 function Group745() {
   return (
     <>
-      {/* Desktop: keep original layout (lg and above) */}
-      <div className="hidden lg:block relative shrink-0 w-[1920px]">
+      {/* Desktop: keep original layout (lg and above) - hidden, not deleted */}
+      <div className="hidden relative shrink-0 w-[1920px]">
         <div className="bg-white h-[286px] w-full" />
         <div className="absolute inset-0 flex items-end justify-center gap-[80px] px-[210px] pb-[50px]">
           <div className="h-[160px] w-[250px] flex items-center justify-center self-start mt-[60px]">
@@ -964,7 +1015,7 @@ function Frame23() {
   return (
     <>
     {/* Desktop: section title + Google Reviews widget */}
-    <div className="hidden lg:block w-full max-w-[1920px] bg-white py-12">
+    <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
       <div className="text-center">
         <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
           Ce que nos clients disent de nous !
@@ -975,7 +1026,7 @@ function Frame23() {
       </div>
     </div>
     {/* Mobile: section title + Google Reviews widget */}
-    <div className="lg:hidden w-full bg-white py-10 sm:py-12 px-4 sm:px-6">
+    <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
           Ce que nos clients disent de nous !
@@ -3586,7 +3637,7 @@ function GallerySection() {
     <div className="w-full antialiased [--background:theme(colors.slate.50)] [--foreground:theme(colors.slate.900)] [--muted-foreground:theme(colors.slate.600)] [--card:white] [--ring:theme(colors.slate.950)]">
       <InteractiveImageBentoGallery
         imageItems={galleryImageItems}
-        title="Notre Gallery"
+        title="Notre Gallerie"
         description="Découvrez nos missions en images : déménagements résidentiels, corporate et logistique. Glissez pour explorer, cliquez pour agrandir."
       />
     </div>

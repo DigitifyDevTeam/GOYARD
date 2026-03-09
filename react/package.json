@@ -57,6 +57,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.3.8",
+    "react-elfsight-widget": "^1.1.2",
     "react-hook-form": "^7.55.0",
     "react-resizable-panels": "^2.1.7",
     "react-router-dom": "^7.9.3",
