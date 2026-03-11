@@ -197,94 +197,6 @@ export function _Group726() {
 }
 
 
-function Group711() {
-  return (
-    <div className="h-[317px] relative w-[500.652px]">
-      <div className="absolute inset-[-85.17%_-53.93%]">
-        <svg
-          className="block size-full"
-          fill="none"
-          preserveAspectRatio="none"
-          viewBox="0 0 1041 857"
-        >
-          <g id="Group 711">
-            <g
-              filter="url(#filter0_f_1_984)"
-              id="Summertime Sadness"
-              opacity="0.3"
-            >
-              <path
-                d={svgPaths.pe8dc80}
-                fill="var(--fill-0, #1C3957)"
-              />
-            </g>
-            <g
-              filter="url(#filter1_f_1_984)"
-              id="Summertime Sadness_2"
-            >
-              <path
-                d={svgPaths.p1a554200}
-                fill="var(--fill-0, #00D18F)"
-                fillOpacity="0.16"
-              />
-            </g>
-          </g>
-          <defs>
-            <filter
-              colorInterpolationFilters="sRGB"
-              filterUnits="userSpaceOnUse"
-              height="842.627"
-              id="filter0_f_1_984"
-              width="842.627"
-              x="-3.95947e-05"
-              y="14.3728"
-            >
-              <feFlood
-                floodOpacity="0"
-                result="BackgroundImageFix"
-              />
-              <feBlend
-                in="SourceGraphic"
-                in2="BackgroundImageFix"
-                mode="normal"
-                result="shape"
-              />
-              <feGaussianBlur
-                result="effect1_foregroundBlur_1_984"
-                stdDeviation="135"
-              />
-            </filter>
-            <filter
-              colorInterpolationFilters="sRGB"
-              filterUnits="userSpaceOnUse"
-              height="842.627"
-              id="filter1_f_1_984"
-              width="842.627"
-              x="198.025"
-              y="-1.17945e-05"
-            >
-              <feFlood
-                floodOpacity="0"
-                result="BackgroundImageFix"
-              />
-              <feBlend
-                in="SourceGraphic"
-                in2="BackgroundImageFix"
-                mode="normal"
-                result="shape"
-              />
-              <feGaussianBlur
-                result="effect1_foregroundBlur_1_984"
-                stdDeviation="135"
-              />
-            </filter>
-          </defs>
-        </svg>
-      </div>
-    </div>
-  );
-}
-
 function Group715() {
   return (
     <div className="absolute inset-[31.86%_33.7%_62.01%_64.43%]">
@@ -320,7 +232,7 @@ function Group743() {
   return (
     <div className="absolute contents left-[calc(50%+0.5px)] top-[71px] translate-x-[-50%]">
       <Group715 />
-      <h1 className="absolute capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.6] left-[calc(50%+0.5px)] not-italic text-[53px] text-black text-center top-[71px] translate-x-[-50%] w-[731px]">{`Votre déménagement simple & intelligent`}</h1>
+      <h1 className="absolute capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.6] left-[calc(50%+0.5px)] not-italic text-[53px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">{`Votre déménagement simple & intelligent`}</h1>
     </div>
   );
 }
@@ -415,64 +327,23 @@ function Group716({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <div className="absolute contents left-0 top-0">
-      <div className="absolute h-[499px] left-0 top-0 w-[1920px]">
+      <div className="absolute h-[600px] left-0 top-0 w-[1920px]">
         <div
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
         >
-          <div className="absolute bg-[#f0eeef] inset-0" />
-          <div className="absolute inset-0 overflow-hidden">
-            <img
-              alt=""
-              className="absolute right-0 top-0 h-full w-[28%] object-cover object-right"
-              src="/hero.jpeg"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-0 top-[256.17px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]"
-        style={
-          {
-            "--transform-inner-width": "500.640625",
-            "--transform-inner-height": "317",
-          } as React.CSSProperties
-        }
-      >
-        <div className="flex-none rotate-[90deg]">
-          <Group711 />
-        </div>
-      </div>
-      <div
-        className="absolute inset-[34.87%_35.57%_54.31%_49.12%]"
-        data-name="path"
-      >
-        <div
-          className="absolute inset-[-9.1%_-0.3%_-9.22%_-0.32%]"
-          style={
-            {
-              "--stroke-0": "rgba(204, 146, 47, 1)",
-            } as React.CSSProperties
-          }
-        >
-          <svg
-            className="block size-full"
-            fill="none"
-            preserveAspectRatio="none"
-            viewBox="0 0 296 64"
-          >
-            <path
-              d={svgPaths.p21a2ac40}
-              id="path"
-              opacity="0.2"
-              stroke="var(--stroke-0, #CC922F)"
-              strokeWidth="10"
-            />
-          </svg>
+          {/* Full-width hero image: recommended dimension 1920x600 */}
+          <img
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/hero.jpeg"
+          />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/55" />
         </div>
       </div>
       <Group743 />
-      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[500] leading-none left-[calc(50%-294px)] not-italic text-[20px] text-black text-nowrap top-[261px] whitespace-pre">
+      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[500] leading-none left-[calc(50%-294px)] not-italic text-[20px] text-white/80 text-nowrap top-[261px] whitespace-pre">
         Commencez par l'introduction de votre adresse de départ
       </p>
       <Group716 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
@@ -484,17 +355,18 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
   return (
     <>
       {/* Desktop hero (>= lg) */}
-      <div className="hidden lg:block h-[499px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+      <div className="hidden lg:block h-[600px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
         <Group744 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
       </div>
       {/* Mobile/Tablet hero (< lg) */}
-      <div className="lg:hidden relative w-full bg-[#f0eeef] overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <img src="/hero.jpeg" alt="" className="w-full h-full object-cover object-right" />
+      <div className="lg:hidden relative w-full overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="/hero.jpeg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/55" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
-          <h1 className="capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.5] text-2xl sm:text-4xl text-black mb-4 sm:mb-6 max-w-lg">{`Votre déménagement simple & intelligent`}</h1>
-          <p className="capitalize font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-black mb-6 sm:mb-8">
+          <h1 className="capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.5] text-2xl sm:text-4xl text-white mb-4 sm:mb-6 max-w-lg">{`Votre déménagement simple & intelligent`}</h1>
+          <p className="capitalize font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-white/80 mb-6 sm:mb-8">
             Commencez par l'introduction de votre adresse de départ
           </p>
           <div className="w-full max-w-lg flex flex-col sm:flex-row gap-3">
@@ -569,7 +441,7 @@ function Frame720() {
                 </svg>
               </div>
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780 déménagement par mois</p>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780  déménagements par mois</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
@@ -900,7 +772,7 @@ export function _Group748() {
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[33.438%] mt-[calc(50%+13px)] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[27.5px] not-italic relative text-[#161c2d] text-[0px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
         <p className="leading-[44px]">
-          <span className="text-[24px]">{`780 déménagement `}</span>
+          <span className="text-[24px]">{`780 déménagements `}</span>
           <span className="text-[16px]">par mois</span>
         </p>
       </div>
@@ -949,7 +821,7 @@ function Group745() {
                 </svg>
               </div>
             </div>
-            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780 déménagement par mois</p>
+            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780 déménagements par mois</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
@@ -982,7 +854,7 @@ function Group745() {
                   <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" />
                 </svg>
               </div>
-              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">780 déménagement par mois</p>
+              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">780 déménagements par mois</p>
             </div>
             <div className="flex flex-col items-center gap-3 sm:gap-4">
               <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
@@ -1230,7 +1102,7 @@ function Frame2085666150() {
         50+
       </p>
       <p className="font-['General_Sans:Regular',_sans-serif] relative shrink-0 text-[16px] text-[rgba(19,19,19,0.6)] w-full">
-        Position
+      Témoignages
       </p>
     </div>
   );
@@ -4506,7 +4378,7 @@ export default function Home() {
       <GallerySection />
       <Content01 />
       <Frame721 />
-      <Frame700 />
+      {false && <Frame700 />}
       <Frame701 />
       <Group753 />
       <Group719 />

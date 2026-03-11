@@ -209,7 +209,7 @@ export default function Contact() {
                   </a>
 
                   {/* Pages Jaunes */}
-                  <a href="https://www.pagesjaunes.fr/" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
+                  <a href="https://www.pagesjaunes.fr/pros/64768014" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#FFD700] rounded-full flex items-center justify-center">
                       <svg className="w-7 h-7 text-[#333]" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>

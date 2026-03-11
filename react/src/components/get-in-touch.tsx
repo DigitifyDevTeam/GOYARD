@@ -36,7 +36,7 @@ export const ProfessionalConnect = () => {
       ),
       gradient: 'from-amber-500 to-yellow-600',
       shadowColor: 'rgba(245, 158, 11, 0.5)',
-      link: 'https://www.pagesjaunes.fr/',
+      link: 'https://www.pagesjaunes.fr/pros/64768014',
       description: 'Business Directory'
     },
     {
