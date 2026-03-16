@@ -1508,7 +1508,8 @@ def send_quote_pdf(request):
             recipient_name=f'{client.prenom} {client.nom}',
         )
 
-        admin_email = getattr(settings, 'ADMIN_EMAIL', None) or settings.GMAIL_SENDER_EMAIL
+        # Admin recap is always sent to the dedicated contact address
+        admin_email = "Contact@guivarche-demenagement.fr"
         send_admin_devis_notification(
             admin_email=admin_email,
             client_name=f'{client.prenom} {client.nom}',

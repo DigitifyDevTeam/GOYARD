@@ -1093,7 +1093,7 @@ const articles: Record<string, any> = {
             },
             {
               subtitle: "Indemnisation et délais",
-              text: "Les délais d'indemnisation varient selon la formule d'assurance et la complexité du sinistre. DÉLAIS Guivarche : Pour l'assurance ad valorem et tous risques Guivarche : expertise sous 5-7 jours si nécessaire, proposition d'indemnisation sous 15 jours pour les dossiers simples, paiement sous 10 jours après acceptation. Pour les sinistres complexes nécessitant expertise contradictoire : 1 à 2 mois. Notre engagement : transparence totale sur l'avancement de votre dossier, un interlocuteur dédié pour chaque sinistre, aucun frais administratif de dossier. Nous traitons en moyenne 95% des sinistres à l'amiable sans procédure judiciaire.",
+              text: "Les délais d'indemnisation varient selon la formule d'assurance et la complexité du sinistre. DÉLAIS Guivarche : Pour l'assurance ad valorem et tous risques Guivarche : expertise sous 5-7 jours si nécessaire, proposition d'indemnisation sous 15 jours pour les dossiers simples, versement de l'indemnité sous 10 jours après acceptation. Pour les sinistres complexes nécessitant expertise contradictoire : 1 à 2 mois. Notre engagement : transparence totale sur l'avancement de votre dossier, un interlocuteur dédié pour chaque sinistre, aucun frais administratif de dossier. Nous traitons en moyenne 95% des sinistres à l'amiable sans procédure judiciaire.",
             },
           ],
         },

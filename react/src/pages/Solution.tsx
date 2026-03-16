@@ -209,7 +209,7 @@ export default function Solution() {
       step: "Étape 3",
       title: "Sélection des options",
       content: "Choisissez parmi nos services complémentaires : emballage, démontage, cartons, stockage et protection des objets fragiles.",
-      image: "https://images.unsplash.com/photo-1600518464441-9154a4dea21b?w=800&h=600&fit=crop"
+      image: "/gallery/img4.jpeg"
     },
     {
       step: "Étape 4",

@@ -31,7 +31,7 @@ export default function MentionsLegales() {
                 <p className="text-lg font-medium">Guivarche Déménagement</p>
                 <p>Adresse : 25 Rue de Cîteaux, 75012 Paris, France</p>
                 <p>Téléphone : +33 7 46 32 66 78</p>
-                <p>Email : contact@guivarchedemenagement.fr</p>
+                <p>Email : contact@guivarch-demenagement.fr</p>
               </div>
             </section>
 
@@ -62,8 +62,8 @@ export default function MentionsLegales() {
                 Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois 
                 contenir des inexactitudes, des omissions ou des lacunes. Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, 
                 merci de bien vouloir le signaler par email à l'adresse{" "}
-                <a href="mailto:contact@guivarchedemenagement.fr" className="text-[#CC922F] hover:underline">
-                  contact@guivarchedemenagement.fr
+                <a href="mailto:contact@guivarche-demenagement.fr" className="text-[#CC922F] hover:underline">
+                  contact@guivarche-demenagement.fr
                 </a>, en décrivant le problème de la manière la plus précise possible 
                 (page posant problème, action déclenchante, type d'ordinateur et de navigateur utilisé, etc.).
               </p>
@@ -81,8 +81,8 @@ export default function MentionsLegales() {
                 Conformément aux dispositions de la loi n° 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés, 
                 vous disposez d'un droit d'accès, de modification, de rectification et de suppression des données qui vous concernent. 
                 Pour exercer ce droit, vous pouvez nous contacter par email à l'adresse{" "}
-                <a href="mailto:contact@guivarchedemenagement.fr" className="text-[#CC922F] hover:underline">
-                  contact@guivarchedemenagement.fr
+                <a href="mailto:contact@guivarche-demenagement.fr" className="text-[#CC922F] hover:underline">
+                  contact@guivarche-demenagement.fr
                 </a>.
               </p>
             </section>

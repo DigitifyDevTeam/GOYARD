@@ -12,6 +12,7 @@ import Solution from "./pages/Solution";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import FAQ from "./pages/FAQ";
+import Tarification from "./pages/Tarification";
 import {
   Phone,
   MapPin,
@@ -5451,6 +5452,7 @@ export default function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/tarification" element={<Tarification />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />
         <Route path="/tunnel/mes-coordonnees" element={<AppContent />} />

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 function Group685() {
   return (
     <div className="h-7 w-40 lg:h-[32.102px] lg:w-[259.486px] relative">
@@ -53,6 +55,14 @@ function Group685() {
 }
 
 export default function Footer() {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <footer className="w-full bg-[#1C2E42] text-white">
       <div className="max-w-[1920px] mx-auto">
@@ -64,7 +74,7 @@ export default function Footer() {
           <div className="flex flex-col gap-6 lg:gap-8">
             <Group685 />
             <div className="flex flex-col gap-3 text-sm lg:text-[15px]">
-              <p>contact@guivarchedemenagement.fr</p>
+              <p>Contact@guivarche-demenagement.fr</p>
               <p>+33 7 46 32 66 78</p>
               <p>25 Rue de Cîteaux, 75012 Paris, France</p>
             </div>
@@ -78,6 +88,7 @@ export default function Footer() {
               <a href="/solution" className="hover:opacity-70 transition-opacity">Solution</a>
               <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
               <a href="/faq" className="hover:opacity-70 transition-opacity">FAQ</a>
+              <a href="/tarification" className="hover:opacity-70 transition-opacity">Tarification</a>
               <a href="/contact" className="hover:opacity-70 transition-opacity">Contact</a>
             </div>
           </div>
@@ -100,19 +111,7 @@ export default function Footer() {
               <a href="/rgpd" className="hover:opacity-70 transition-opacity">RGPD</a>
               <div className="flex flex-col gap-3 items-start">
                 <a href="/contact" className="hover:opacity-70 transition-opacity">Nous Contacter</a>
-                <a
-                  href="https://www.google.com/search?hl=fr-TN&gl=tn&q=Guivarche+D%C3%A9m%C3%A9nagement,+25+Rue+de+C%C3%AEteaux,+75012+Paris,+France&ludocid=449127112689032564&lsig=AB86z5WRT9msHEVSPtou8m9KcU8X#lrd=0x47e67304c6ac24e3:0x63b9ebabad39d74,1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 hover:opacity-70 transition-opacity"
-                  aria-label="Voir nos avis Google"
-                >
-                  <img
-                    src="/google_review.png"
-                    alt="Google Reviews - Avis clients"
-                    className="h-14 w-auto object-contain sm:h-16 md:h-20"
-                  />
-                </a>
+                <div className="elfsight-app-94f468c1-4f93-46f0-a5d3-dcee026001cf" data-elfsight-app-lazy />
                 <a
                   href="https://www.trustpilot.com"
                   target="_blank"

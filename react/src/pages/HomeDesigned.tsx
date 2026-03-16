@@ -1,10 +1,12 @@
 import svgPaths from "./svg-jmcfzlx209";
+import { ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Header from "../components/layout/Header";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
 import InteractiveImageBentoGallery from "../components/bento-gallery";
+import TarificationSection from "../components/TarificationSection";
 import imgBitmap from "../assets/f28110a1436ee8e0ca7d7a38c08908c88e716b38.png";
 import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.png";
 import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.png";
@@ -232,7 +234,10 @@ function Group743() {
   return (
     <div className="absolute contents left-[calc(50%+0.5px)] top-[71px] translate-x-[-50%]">
       <Group715 />
-      <h1 className="absolute capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.6] left-[calc(50%+0.5px)] not-italic text-[53px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">{`Votre déménagement simple & intelligent`}</h1>
+      <h1 className="absolute font-['Poppins',_sans-serif] font-[800] leading-[1.2] left-[calc(50%+0.5px)] not-italic text-[50px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">
+        <span className="block">Guivarche Déménagement</span>
+        <span className="block">L’exigence des grands déménageurs</span>
+      </h1>
     </div>
   );
 }
@@ -272,7 +277,7 @@ function VuesaxBoldLocation() {
 function VuesaxBoldLocation1() {
   return (
     <div
-      className="absolute left-[545px] size-[25px] top-[381px]"
+      className="absolute left-[545px] size-[25px] top-[477px]"
       data-name="vuesax/bold/location"
     >
       <VuesaxBoldLocation />
@@ -284,7 +289,7 @@ function Frame693({ onGetQuote }: { onGetQuote: () => void }) {
   return (
     <button 
       onClick={onGetQuote}
-      className="absolute bg-[#1c3957] box-border content-stretch flex gap-[10px] items-center justify-center left-[1162px] px-[10px] py-[12px] rounded-[4px] shadow-[0px_27px_8px_0px_rgba(251,116,163,0),0px_17px_7px_0px_rgba(251,116,163,0.01),0px_10px_6px_0px_rgba(251,116,163,0.05),0px_4px_4px_0px_rgba(251,116,163,0.09),0px_1px_2px_0px_rgba(251,116,163,0.1)] top-[373px] cursor-pointer hover:bg-[#2a4f6b] transition-colors duration-200"
+      className="absolute bg-[#1c3957] box-border content-stretch flex gap-[10px] items-center justify-center left-[1162px] px-[10px] py-[12px] rounded-[4px] shadow-[0px_27px_8px_0px_rgba(251,116,163,0),0px_17px_7px_0px_rgba(251,116,163,0.01),0px_10px_6px_0px_rgba(251,116,163,0.05),0px_4px_4px_0px_rgba(251,116,163,0.09),0px_1px_2px_0px_rgba(251,116,163,0.1)] top-[468px] cursor-pointer hover:bg-[#2a4f6b] transition-colors duration-200"
     >
       <p className="capitalize font-['Poppins',_sans-serif] font-[600] leading-none not-italic relative shrink-0 text-[16px] text-nowrap text-white whitespace-pre">
         obtenir un devis gratuit
@@ -295,8 +300,8 @@ function Frame693({ onGetQuote }: { onGetQuote: () => void }) {
 
 function Group692({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
-    <div className="absolute contents left-[532px] top-[363px]">
-      <div className="absolute bg-white h-[60px] left-[532px] rounded-[6px] top-[363px] w-[856px]">
+    <div className="absolute contents left-[532px] top-[460px]">
+      <div className="absolute bg-white h-[60px] left-[532px] rounded-[6px] top-[460px] w-[856px]">
         <div
           aria-hidden="true"
           className="absolute border border-slate-200 border-solid inset-0 pointer-events-none rounded-[6px] shadow-[0px_64px_18px_0px_rgba(200,193,193,0),0px_41px_16px_0px_rgba(200,193,193,0.01),0px_23px_14px_0px_rgba(200,193,193,0.05),0px_10px_10px_0px_rgba(200,193,193,0.09),0px_3px_6px_0px_rgba(200,193,193,0.1)]"
@@ -318,7 +323,7 @@ function Group692({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 
 function Group716({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
-    <div className="absolute contents left-[532px] top-[363px]">
+    <div className="absolute contents left-[532px] top-[460px]">
       <Group692 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
     </div>
   );
@@ -343,9 +348,31 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
         </div>
       </div>
       <Group743 />
-      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[500] leading-none left-[calc(50%-294px)] not-italic text-[20px] text-white/80 text-nowrap top-[261px] whitespace-pre">
-        Commencez par l'introduction de votre adresse de départ
+      <p className="absolute font-['Poppins',_sans-serif] font-[500] leading-snug left-[calc(50%-360px)] not-italic text-[18px] text-white/80 top-[275px] whitespace-pre-line w-[720px]">
+        Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée pour un déménagement en toute confiance.
       </p>
+      {/* Desktop hero badges: rating + fast quote */}
+      <div className="absolute left-[calc(50%-294px)] top-[375px] flex items-center gap-4">
+        <div className="flex items-center gap-3 bg-[#111827]/80 text-white px-5 py-2.5 rounded-full shadow-lg backdrop-blur-sm">
+          <div className="flex items-center gap-1 text-[#FBBF24] text-[14px]">
+            <span>★★★★★</span>
+          </div>
+          <span className="font-['Poppins',_sans-serif] font-[700] text-[14px] tracking-tight">
+            4.9/5
+          </span>
+          <span className="font-['Poppins',_sans-serif] font-[500] text-[13px] text-white/80">
+            254 avis Google
+          </span>
+        </div>
+        <div className="flex items-center gap-2 bg-[#111827]/80 text-white px-5 py-2.5 rounded-full shadow-lg backdrop-blur-sm">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400 text-[11px] text-emerald-400">
+            ✓
+          </span>
+          <span className="font-['Poppins',_sans-serif] font-[600] text-[14px] whitespace-nowrap">
+            Devis sous 24h
+          </span>
+        </div>
+      </div>
       <Group716 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
     </div>
   );
@@ -365,11 +392,34 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           <div className="absolute inset-0 bg-black/55" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
-          <h1 className="capitalize font-['Poppins',_sans-serif] font-[800] leading-[1.5] text-2xl sm:text-4xl text-white mb-4 sm:mb-6 max-w-lg">{`Votre déménagement simple & intelligent`}</h1>
-          <p className="capitalize font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-white/80 mb-6 sm:mb-8">
-            Commencez par l'introduction de votre adresse de départ
+          <h1 className="font-['Poppins',_sans-serif] font-[800] leading-tight text-2xl sm:text-4xl text-white mb-6 sm:mb-8 max-w-xl">
+            <span className="block">Guivarche Déménagement</span>
+            <span className="block">L’exigence des grands déménageurs</span>
+          </h1>
+          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-white/80 mb-8 sm:mb-10 max-w-xl">
+            Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée pour un déménagement en toute confiance.
           </p>
-          <div className="w-full max-w-lg flex flex-col sm:flex-row gap-3">
+          {/* Mobile hero badges: rating + fast quote */}
+          <div className="mb-8 sm:mb-10 flex flex-col sm:flex-row items-center gap-3">
+            <div className="flex items-center gap-2 bg-[#111827]/80 text-white px-4 py-2 rounded-full shadow-md backdrop-blur-sm">
+              <span className="text-[#FBBF24] text-sm">★★★★★</span>
+              <span className="font-['Poppins',_sans-serif] font-[700] text-[13px]">
+                4.9/5
+              </span>
+              <span className="font-['Poppins',_sans-serif] font-[500] text-[12px] text-white/80">
+                254 avis Google
+              </span>
+            </div>
+            <div className="flex items-center gap-2 bg-[#111827]/80 text-white px-4 py-2 rounded-full shadow-md backdrop-blur-sm">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400 text-[11px] text-emerald-400">
+                ✓
+              </span>
+              <span className="font-['Poppins',_sans-serif] font-[600] text-[13px] whitespace-nowrap">
+                Devis sous 24h
+              </span>
+            </div>
+          </div>
+          <div className="w-full max-w-lg flex flex-col sm:flex-row gap-4 mt-2">
             <div className="relative flex-1 min-w-0 sm:min-w-[220px]">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 z-10 pointer-events-none" style={{ "--fill-0": "#CC922F", "--stroke-0": "#CC922F" } as React.CSSProperties}>
                 <VuesaxBoldLocation />
@@ -451,9 +501,9 @@ function Frame720() {
           </div>
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <Component024 />
+              <ShieldCheck className="size-[70px] text-[#CC922F]" strokeWidth={2} />
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">+500 avis positifs</p>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">0 Litige </p>
           </div>
         </div>
       </div>
@@ -495,26 +545,6 @@ function CrownIcon() {
         fill="var(--fill-0, #CC922F)"
         fillRule="evenodd"
       />
-    </svg>
-  );
-}
-
-function Component024() {
-  return (
-    <svg
-      className="block size-full"
-      fill="none"
-      preserveAspectRatio="none"
-      viewBox="0 0 77 76"
-    >
-      <g id="024">
-        <path
-          d={svgPaths.p1229b400}
-          id="path"
-          stroke="var(--stroke-0, #CC922F)"
-          strokeWidth="5"
-        />
-      </g>
     </svg>
   );
 }
@@ -802,78 +832,6 @@ export function _Group750() {
   );
 }
 
-function Group745() {
-  return (
-    <>
-      {/* Desktop: keep original layout (lg and above) - hidden, not deleted */}
-      <div className="hidden relative shrink-0 w-[1920px]">
-        <div className="bg-white h-[286px] w-full" />
-        <div className="absolute inset-0 flex items-end justify-center gap-[80px] px-[210px] pb-[50px]">
-          <div className="h-[160px] w-[250px] flex items-center justify-center self-start mt-[60px]">
-            <img src={imgCrownIcon} alt="Crown icon" className="h-full w-full object-contain" />
-          </div>
-          <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap absolute left-[312px] bottom-[50px]">{`23 ans d'éxpérience`}</p>
-          <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[76px] w-[75px]">
-                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
-                  <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" id="Vector" />
-                </svg>
-              </div>
-            </div>
-            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780 déménagements par mois</p>
-          </div>
-          <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[70px] w-[80px]"><Group751 /></div>
-            </div>
-            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">22 camions à disposition</p>
-          </div>
-          <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <Component024 />
-            </div>
-            <p className="font-sans font-[800] text-[#161c2d] text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">+500 avis positifs</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile & Tablet: responsive grid - all four stats same structure */}
-      <div className="lg:hidden w-full bg-white py-8 sm:py-12 px-4 sm:px-6">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-start">
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
-                <img src={imgCrownIcon} alt="Crown icon" className="h-full w-full object-contain" />
-              </div>
-              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">{`23 ans d'éxpérience`}</p>
-            </div>
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
-                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
-                  <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" />
-                </svg>
-              </div>
-              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">780 déménagements par mois</p>
-            </div>
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
-                <Group751 />
-              </div>
-              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">22 camions à disposition</p>
-            </div>
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
-                <Component024 />
-              </div>
-              <p className="font-sans font-[800] text-[#161c2d] text-sm sm:text-base text-center tracking-[-0.5px] leading-tight">+500 avis positifs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
 
 function Frame23() {
   useEffect(() => {
@@ -894,7 +852,7 @@ function Frame23() {
         </h2>
       </div>
       <div className="mt-8 flex justify-center">
-        <div className="elfsight-app-16aa4635-6e1e-41c5-b062-7e28b4080e4c" data-elfsight-app-lazy />
+      <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
       </div>
     </div>
     {/* Mobile: section title + Google Reviews widget */}
@@ -905,7 +863,7 @@ function Frame23() {
         </h2>
       </div>
       <div className="mt-6 flex justify-center">
-        <div className="elfsight-app-16aa4635-6e1e-41c5-b062-7e28b4080e4c w-full" data-elfsight-app-lazy />
+      <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
       </div>
     </div>
     </>
@@ -970,7 +928,7 @@ function Frame2085665084() {
   return (
     <>
       <div
-        className="h-[322px] overflow-clip relative rounded-[32px] shrink-0 w-full cursor-pointer"
+        className="h-[210px] overflow-clip relative rounded-[24px] shrink-0 w-full cursor-pointer"
         onClick={openModal}
       >
         <video
@@ -1018,7 +976,7 @@ function Frame2085665084() {
 
 function Frame2085666148() {
   return (
-    <div className="absolute bg-white box-border content-stretch flex flex-col gap-[32px] items-center left-[221px] pb-[19px] pt-[16px] px-[16px] rounded-[40px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] top-0 w-[331.417px]">
+    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[265px] top-0 w-[260px]">
       <Frame2085665084 />
     </div>
   );
@@ -1043,7 +1001,7 @@ function Frame2085665085() {
   return (
     <>
       <div
-        className="h-[322px] overflow-clip relative rounded-[32px] shrink-0 w-full cursor-pointer"
+        className="h-[210px] overflow-clip relative rounded-[24px] shrink-0 w-full cursor-pointer"
         onClick={openModal}
       >
         <video
@@ -1087,10 +1045,79 @@ function Frame2085665085() {
   );
 }
 
+function Frame2085665086() {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const openModal = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowVideoModal(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setShowVideoModal(false);
+  }, []);
+
+  return (
+    <>
+      <div
+        className="h-[210px] overflow-clip relative rounded-[24px] shrink-0 w-full cursor-pointer"
+        onClick={openModal}
+      >
+        <video
+          className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
+          src="/video3.mp4"
+          poster="/photo3.jpeg"
+          muted
+          loop
+          playsInline
+        />
+        <button
+          type="button"
+          onClick={openModal}
+          aria-label="Lire la vidéo"
+          className="absolute z-10 bg-white left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1c3957] focus:ring-offset-2 cursor-pointer"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+      </div>
+
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+          onClick={closeModal}
+        >
+          <div
+            className="w-full max-w-xl overflow-hidden rounded-2xl bg-black shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              src="/video3.mp4"
+              poster="/photo3.jpeg"
+              controls
+              autoPlay
+              className="block h-auto w-full"
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 function Frame2085666152() {
   return (
-    <div className="absolute bg-white box-border content-stretch flex flex-col gap-[32px] items-center left-0 pb-[19px] pt-[16px] px-[16px] rounded-[40px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] top-[198px] w-[331.417px]">
+    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[130px] top-[140px] w-[260px]">
       <Frame2085665085 />
+    </div>
+  );
+}
+
+function Frame2085666153() {
+  return (
+    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[0] top-[280px] w-[260px]">
+      <Frame2085665086 />
     </div>
   );
 }
@@ -1145,7 +1172,7 @@ function Frame2085666146() {
 
 function Frame2085666151() {
   return (
-    <div className="absolute bg-white box-border content-stretch flex gap-[16px] items-start left-[370px] p-[20px] rounded-[30px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] top-[403px]">
+    <div className="absolute bg-white box-border content-stretch flex gap-[16px] items-start left-[380px] p-[20px] rounded-[30px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] top-[380px]">
       <Frame2085666150 />
       <Frame2085666146 />
     </div>
@@ -1157,6 +1184,7 @@ function Frame2147226882() {
     <div className="absolute h-[546.237px] left-[1067.98px] top-[49px] w-[560px]">
       <Frame2085666148 />
       <Frame2085666152 />
+      <Frame2085666153 />
       <Frame2085666151 />
     </div>
   );
@@ -1487,6 +1515,17 @@ function Frame702() {
               <div className="w-14 h-14 bg-[#CC922F] rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">4</div>
               <h3 className="font-['Poppins',_sans-serif] font-[600] text-lg text-[#1c3957] mb-2">Recevez votre devis</h3>
               <p className="text-sm text-gray-600">Instantané, transparent, sans surprise</p>
+            </div>
+          </div>
+          <div className="flex gap-3 mt-8 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4">
+            <div className="min-w-[260px] flex-none snap-center bg-white p-2.5 rounded-2xl shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
+              <Frame2085665085 />
+            </div>
+            <div className="min-w-[260px] flex-none snap-center bg-white p-2.5 rounded-2xl shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
+              <Frame2085665084 />
+            </div>
+            <div className="min-w-[260px] flex-none snap-center bg-white p-2.5 rounded-2xl shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
+              <Frame2085665086 />
             </div>
           </div>
           <div className="text-center mt-8">
@@ -3440,15 +3479,15 @@ const galleryImageItems = [
   },
   {
     id: 2,
-    title: "Cartons et emballage",
-    desc: "Préparation soignée pour un transport en toute sécurité.",
+    title: "Monte-meuble",
+    desc: "Utilisation d’un monte-meuble pour accéder aux étages élevés en toute sécurité.",
     url: "/gallery/img2.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 3,
-    title: "",
-    desc: "",
+    title: "Protection du mobilier",
+    desc: "Protection intégrale de vos meubles pendant le transport.",
     url: "/gallery/img3.jpeg",
     span: "md:row-span-1",
   },
@@ -3473,35 +3512,232 @@ const galleryImageItems = [
     url: "/gallery/img6.jpeg",
     span: "md:col-span-2 md:row-span-1",
   },
-  { id: 7, title: "", desc: "", url: "/gallery/4.jpeg", span: "md:row-span-1" },
-  { id: 8, title: "", desc: "", url: "/gallery/fg.jpeg", span: "md:row-span-1" },
-  { id: 9, title: "", desc: "", url: "/gallery/j.jpeg", span: "md:row-span-1" },
-  { id: 10, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg", span: "md:row-span-1" },
-  { id: 11, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg", span: "md:row-span-1" },
-  { id: 12, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-j04%20at%2000.05.07.jpeg", span: "md:row-span-1" },
-  { id: 13, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.14.jpeg", span: "md:row-span-1" },
-  { id: 14, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.13.jpeg", span: "md:row-span-1" },
-  { id: 15, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.18.06.jpeg", span: "md:row-span-1" },
-  { id: 16, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.065jpeg.jpeg", span: "md:row-span-1" },
-  { id: 17, title: "", desc: "", url: "/gallery/WhatsApp%20Image%20200026-03-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
-  { id: 18, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.46.jpeg", span: "md:row-span-1" },
-  { id: 19, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.06.jpeg", span: "md:row-span-1" },
-  { id: 20, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.jpeg", span: "md:row-span-1" },
-  { id: 21, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.47.jpeg", span: "md:row-span-1" },
-  { id: 22, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
-  { id: 23, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.07.jpeg", span: "md:row-span-1" },
-  { id: 24, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.45.jpeg", span: "md:row-span-1" },
-  { id: 25, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%2055at%2000.05.46.jpeg", span: "md:row-span-1" },
-  { id: 26, title: "", desc: "", url: "/gallery/WhatsApp%20Image%206862026-03-04%20at%2000.06.05.jpeg", span: "md:row-span-1" },
-  { id: 27, title: "", desc: "", url: "/gallery/WhatsApp%201Image%202026-03-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
-  { id: 28, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-jpeg.jpeg", span: "md:row-span-1" },
-  { id: 29, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-500-04%20at%2000.07.06.jpeg", span: "md:row-span-1" },
-  { id: 30, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-0-04%20at%2000.07.05.jpeg", span: "md:row-span-1" },
-  { id: 31, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.07.jpeg", span: "md:row-span-1" },
-  { id: 32, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.55.51.jpeg", span: "md:row-span-1" },
-  { id: 33, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.46.54.jpeg", span: "md:row-span-1" },
-  { id: 34, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.10.15.jpeg", span: "md:row-span-1" },
-  { id: 35, title: "", desc: "", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg", span: "md:row-span-1" },
+  {
+    id: 7,
+    title: "Manutention sécurisée",
+    desc: "Prise en charge des charges lourdes en toute sécurité.",
+    url: "/gallery/4.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 8,
+    title: "Chargement du camion",
+    desc: "Optimisation de l’espace de chargement pour réduire les trajets.",
+    url: "/gallery/fg.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 9,
+    title: "Équipe de déménageurs",
+    desc: "Professionnels formés pour un accompagnement de A à Z.",
+    url: "/gallery/j.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 10,
+    title: "Préparation de nuit",
+    desc: "Interventions en horaires adaptés à vos contraintes.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 11,
+    title: "Contrôle de l’inventaire",
+    desc: "Suivi précis de vos biens à chaque étape.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 12,
+    title: "Emballage sur mesure",
+    desc: "Solutions d’emballage adaptées aux objets fragiles.",
+    url: "/gallery/WhatsApp%20Image%202026-03-j04%20at%2000.05.07.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 13,
+    title: "Chargement coordonné",
+    desc: "Organisation millimétrée du chargement du camion.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.14.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 14,
+    title: "Equipe sur le terrain",
+    desc: "Intervention rapide et efficace sur site.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.13.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 15,
+    title: "Arrivée à destination",
+    desc: "Livraison de vos biens dans les délais convenus.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.18.06.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 16,
+    title: "Protection renforcée",
+    desc: "Utilisation de matériel de protection haut de gamme.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.065jpeg.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 17,
+    title: "Logistique de nuit",
+    desc: "Opérations planifiées en horaires décalés.",
+    url: "/gallery/WhatsApp%20Image%20200026-03-04%20at%2000.07.06.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 18,
+    title: "Démontage du mobilier",
+    desc: "Démontage et remontage complet de votre mobilier.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.46.jpeg",
+    span: "md:row-span-1",
+  },
+ 
+  {
+    id: 20,
+    title: "Transport en cours",
+    desc: "Suivi de votre déménagement sur de longues distances.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 21,
+    title: "Préparation du départ",
+    desc: "Derniers contrôles avant le départ du camion.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.47.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 22,
+    title: "Coordination d’équipe",
+    desc: "Travail d’équipe pour un déménagement fluide.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.06.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 23,
+    title: "Prise en charge complète",
+    desc: "Gestion du projet de déménagement de bout en bout.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.07.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 24,
+    title: "Accès difficile",
+    desc: "Solutions adaptées pour les accès complexes.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.45.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 25,
+    title: "Chargement minutieux",
+    desc: "Disposition optimisée des cartons et du mobilier.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%2055at%2000.05.46.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 26,
+    title: "Protection des sols",
+    desc: "Mise en place de protections pour préserver vos sols.",
+    url: "/gallery/WhatsApp%20Image%206862026-03-04%20at%2000.06.05.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 27,
+    title: "Chargement de nuit",
+    desc: "Opérations nocturnes pour limiter les contraintes.",
+    url: "/gallery/WhatsApp%201Image%202026-03-04%20at%2000.07.06.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 28,
+    title: "Préparation du matériel",
+    desc: "Vérification du matériel avant chaque mission.",
+    url: "/gallery/WhatsApp%20Image%202026-jpeg.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 29,
+    title: "Organisation du stock",
+    desc: "Gestion et préparation des fournitures de déménagement.",
+    url: "/gallery/WhatsApp%20Image%202026-500-04%20at%2000.07.06.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 30,
+    title: "Préparation des cartons",
+    desc: "Conditionnement des effets personnels avec soin.",
+    url: "/gallery/WhatsApp%20Image%202026-0-04%20at%2000.07.05.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 31,
+    title: "Suivi du chantier",
+    desc: "Supervision continue des opérations de déménagement.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.07.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 32,
+    title: "Déménagement résidentiel",
+    desc: "Accompagnement des familles dans chaque étape du projet.",
+    url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.55.51.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 33,
+    title: "Déménagement urbain",
+    desc: "Interventions en plein cœur de la ville.",
+    url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.46.54.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 34,
+    title: "Installation sur site",
+    desc: "Mise en place du mobilier dans vos nouveaux locaux.",
+    url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.10.15.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 35,
+    title: "Derniers réglages",
+    desc: "Vérifications finales pour un déménagement réussi.",
+    url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 36,
+    title: "Déménagement entreprise",
+    desc: "Transfert d’entreprise planifié pour limiter l’interruption de votre activité.",
+    url: "/gallery/D%C3%A9m%C3%A9nagement%20entreprise.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 37,
+    title: "Déménagement groupé",
+    desc: "Solution économique de déménagement groupé en partage de camion.",
+    url: "/gallery/D%C3%A9m%C3%A9nagement%20group%C3%A9.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 38,
+    title: "Déménagement international",
+    desc: "Organisation complète de vos déménagements internationaux.",
+    url: "/gallery/D%C3%A9m%C3%A9nagement%20international.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 39,
+    title: "Déménagement longue distance",
+    desc: "Solutions adaptées pour les déménagements longue distance en France et en Europe.",
+    url: "/gallery/D%C3%A9m%C3%A9nagement%20longue%20distance.jpeg",
+    span: "md:row-span-1",
+  },
+  
 ];
 
 function GallerySection() {
@@ -3933,7 +4169,7 @@ function Group741() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[74.763%] place-items-start relative">
       <div className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[40px] ml-0 mt-0 not-italic relative text-[17px] text-white tracking-[-0.2px] w-[330px]">
-        <p className="mb-0">contact@guivarchedemenagement.fr</p>
+        <p className="mb-0">contact@guivarche-demenagement.fr</p>
         <p>+33 7 46 32 66 78</p>
       </div>
     </div>
@@ -4368,7 +4604,7 @@ export default function Home() {
       <Header onGetQuote={handleGetQuote} />
       <Frame719 onGetQuote={handleGetQuote} address={departureAddress} onAddressChange={handleAddressChange} />
       <Frame720 />
-      <Group745 />
+      <div className="h-8 bg-white"></div>
       <Frame23 />
       <Frame702 />
       <VenteFlash />
@@ -4376,6 +4612,7 @@ export default function Home() {
       <Group756 />
       <Group756Logos />
       <GallerySection />
+      <TarificationSection />
       <Content01 />
       <Frame721 />
       {false && <Frame700 />}

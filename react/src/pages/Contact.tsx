@@ -105,8 +105,8 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-[#1C3957] mb-2 text-lg font-['Poppins',sans-serif]">Email</h3>
-                      <a href="mailto:contact@guivarchedemenagement.fr" className="text-gray-600 text-lg break-all hover:text-[#CC922F] transition-colors font-['Poppins',sans-serif]">
-                        contact@guivarchedemenagement.fr
+                      <a href="mailto:contact@guivarche-demenagement.fr" className="text-gray-600 text-lg break-all hover:text-[#CC922F] transition-colors font-['Poppins',sans-serif]">
+                        Contact@guivarche-demenagement.fr
                       </a>
                     </div>
                   </div>

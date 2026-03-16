@@ -50,8 +50,8 @@ const faqData: Record<string, FAQCategory> = {
         answer: "Oui, tous nos devis sont entièrement gratuits et sans aucun engagement de votre part. Vous pouvez demander plusieurs devis pour comparer nos offres. Nous nous déplaçons à votre domicile pour une estimation précise si nécessaire."
       },
       {
-        question: "Quels sont les modes de paiement acceptés ?",
-        answer: "Nous acceptons les paiements par virement bancaire, chèque, carte bancaire et espèces. Un acompte peut être demandé à la réservation, le solde étant réglé à la fin de la prestation. Nous vous fournissons une facture détaillée."
+        question: "Comment fonctionne la réservation ?",
+        answer: "La réservation se fait en quelques étapes simples : recevez votre devis personnalisé, confirmez votre choix par email ou téléphone, et validez les détails de votre déménagement. Vous recevrez une confirmation écrite avec toutes les informations nécessaires pour le jour J."
       },
       {
         question: "Y a-t-il des frais cachés ?",
@@ -414,27 +414,27 @@ export default function FAQ() {
                   images={[
                     {
                       id: "1",
-                      src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=800&fit=crop",
+                      src: "/gallery/Déménagement entreprise.jpeg",
                       alt: "Déménagement professionnel",
                     },
                     {
                       id: "2", 
-                      src: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=800&fit=crop",
+                      src: "/gallery/WhatsApp Image 2026-03-05 at 15.46.54.jpeg",
                       alt: "Équipe de déménageurs",
                     },
                     {
                       id: "3",
-                      src: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=600&h=800&fit=crop", 
+                      src: "/gallery/Monte Meuble.jpeg", 
                       alt: "Camion de déménagement",
                     },
                     {
                       id: "4",
-                      src: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&h=800&fit=crop",
+                      src: "/gallery/img5.jpeg",
                       alt: "Emballage sécurisé",
                     },
                     {
                       id: "5",
-                      src: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&h=800&fit=crop",
+                      src: "/gallery/img6.jpeg",
                       alt: "Livraison à domicile",
                     },
                   ]}
