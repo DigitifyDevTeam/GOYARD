@@ -6,18 +6,6 @@ interface HeaderProps {
   onGetQuote?: () => void;
 }
 
-const navLinks = [
-  { href: "/", label: "Accueil" },
-  { href: "/solution", label: "Solution" },
-  { href: "/en-construction", label: "Déménagement particulier" },
-  { href: "/en-construction", label: "Déménagement entreprise" },
-  { href: "/zones", label: "ZONE" },
-  { href: "/blog", label: "Blog" },
-  // "Outils" is handled separately with a mega menu
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-];
-
 export default function Header({ onGetQuote }: HeaderProps) {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

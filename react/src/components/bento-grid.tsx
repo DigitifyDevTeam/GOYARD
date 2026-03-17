@@ -49,9 +49,9 @@ const BentoCard = ({
     {/* Full-bleed background image */}
     <div className="absolute inset-0">{background}</div>
 
-    {/* Gradient overlay for text readability */}
+    {/* Gradient overlay for text readability - stronger on hover */}
     <div
-      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/25"
+      className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-black/5 transition-colors duration-300 group-hover:from-black/80 group-hover:via-black/60 group-hover:to-black/40"
       aria-hidden
     />
 

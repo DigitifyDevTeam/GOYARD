@@ -12,14 +12,11 @@ import {
   ChevronUp,
   Zap,
   ArrowRight,
-  Check,
   Lightbulb,
   CalendarCheck,
   Scissors,
   Clock,
   Box,
-  Layers,
-  Star,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import Header from "../components/layout/Header";

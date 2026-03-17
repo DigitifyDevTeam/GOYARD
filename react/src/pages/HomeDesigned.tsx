@@ -16,7 +16,6 @@ import imgDigitalCollectionThumbnailHandlerAshx from "../assets/53b766c44171f937
 import imgLogoDidomiPng from "../assets/3c0a284d49ffbfd1086bdb506d30c9aab84f0f53.png";
 import img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic from "../assets/67595fbf992984e9ed9dbc8317fb35438187dcd8.png";
 import imgMidiLibrePng from "../assets/a9ebad2e02ff8cd3779f21f2156198dd44f1986d.png";
-import imgCrownIcon from "../assets/edbffb2abf1ff0a9723271fa1cfe45c636a1e4f7.png";
 import { blogPosts } from "../data/blogPosts";
 
 function Group721() {
@@ -475,39 +474,7 @@ function Frame720() {
         </defs>
       </svg>
       <div className="hidden lg:block relative shrink-0 w-[1920px]">
-        <div className="absolute inset-0 flex items-end justify-center gap-[80px] px-[210px] pb-[50px]">
-          <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[70px] w-[80px]">
-                <CrownIcon />
-              </div>
-            </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">{`23 ans d'éxpérience`}</p>
-          </div>
-          <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[76px] w-[75px]">
-                {/* Page Jaune style icon, using brand color */}
-                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
-                  {/* Rounded square background */}
-                  <rect
-                    x="4"
-                    y="6"
-                    width="67"
-                    height="64"
-                    rx="14"
-                    fill="var(--fill-0, #CC922F)"
-                  />
-                  {/* Stylised “J” mark */}
-                  <path
-                    d="M28 20C28 18.343 29.343 17 31 17H44C45.657 17 47 18.343 47 20C47 21.657 45.657 23 44 23H36V42C36 47.523 32.418 51 27 51C24.791 51 23 49.209 23 47C23 44.791 24.791 43 27 43C28.105 43 29 43.895 29 45C29 46.105 28.105 47 27 47C26.448 47 26 47.448 26 48C26 48.552 26.448 49 27 49C30.314 49 32 46.761 32 42V23H31C29.343 23 28 21.657 28 20Z"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-            </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">5 étoiles</p>
-          </div>
+        <div className="absolute inset-0 flex items-end justify-center gap-[160px] px-[210px] pb-[50px]">
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
               <div className="h-[70px] w-[80px]"><Group751 /></div>
@@ -516,9 +483,31 @@ function Frame720() {
           </div>
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[76px] w-[75px]">
+                <img
+                  src="/pages-jaunes.svg"
+                  alt="Pages Jaunes - 5 étoiles"
+                  className="block h-full w-full object-contain"
+                />
+              </div>
+            </div>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">
+              5 étoiles
+            </p>
+          </div>
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
               <ShieldCheck className="size-[70px] text-[#CC922F]" strokeWidth={2} />
             </div>
             <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">0 Litige 2025-2026</p>
+          </div>
+          <div className="flex flex-col items-center gap-[20px]">
+            <div className="h-[70px] w-[80px] flex items-center justify-center">
+              <div className="h-[70px] w-[80px]">
+                <CrownIcon />
+              </div>
+            </div>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">4,8 / Excellent</p>
           </div>
         </div>
       </div>
@@ -804,7 +793,7 @@ export function _Group747() {
   return (
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[16.25%] mt-[76px] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[107.5px] not-italic relative text-[#161c2d] text-[24px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
-        <p className="leading-[44px]">{`23 ans d'éxpérience`}</p>
+        <p className="leading-[44px]">4,8 / Excellent</p>
       </div>
       <Group752 />
     </div>
@@ -4623,7 +4612,7 @@ export default function Home() {
       <Frame702 />
       <VenteFlash />
       {/* Services section with Bento grid */}
-      <section className="w-full bg-white py-12 sm:py-16 lg:py-20 opacity-90">
+      <section className="w-full bg-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-10">
             <p className="text-xs sm:text-sm font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.2em] text-[#CC922F] mb-2">

@@ -88,7 +88,7 @@ export default function Footer() {
               <a href="/solution" className="hover:opacity-70 transition-opacity">Solution</a>
               <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
               <a href="/faq" className="hover:opacity-70 transition-opacity">FAQ</a>
-              <a href="/tarification" className="hover:opacity-70 transition-opacity">Tarification</a>
+              <a href="/tarif" className="hover:opacity-70 transition-opacity">Tarification</a>
               <a href="/contact" className="hover:opacity-70 transition-opacity">Contact</a>
             </div>
           </div>
@@ -120,7 +120,7 @@ export default function Footer() {
                   aria-label="Voir nos avis Trustpilot"
                 >
                   <img
-                    src="/trust.png"
+                    src="/trustpilot.svg"
                     alt="Trustpilot - Avis clients"
                     className="h-20 w-auto object-contain sm:h-24 md:h-28 lg:h-32"
                   />
