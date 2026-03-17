@@ -13,6 +13,7 @@ import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import FAQ from "./pages/FAQ";
 import Tarification from "./pages/Tarification";
+import EnConstruction from "./pages/EnConstruction";
 import {
   Phone,
   MapPin,
@@ -5449,6 +5450,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/solution" element={<Solution />} />
+        <Route path="/en-construction" element={<EnConstruction />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />

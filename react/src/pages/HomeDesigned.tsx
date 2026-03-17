@@ -7,6 +7,7 @@ import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
 import InteractiveImageBentoGallery from "../components/bento-gallery";
 import TarificationSection from "../components/TarificationSection";
+import { BentoDemo } from "../components/demo1";
 import imgBitmap from "../assets/f28110a1436ee8e0ca7d7a38c08908c88e716b38.png";
 import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.png";
 import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.png";
@@ -4608,6 +4609,23 @@ export default function Home() {
       <Frame23 />
       <Frame702 />
       <VenteFlash />
+      {/* Services section with Bento grid */}
+      <section className="w-full bg-white py-12 sm:py-16 lg:py-20 opacity-90">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10">
+            <p className="text-xs sm:text-sm font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.2em] text-[#CC922F] mb-2">
+              Services
+            </p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1C3957] font-['Poppins',sans-serif]">
+              Nos services de déménagement
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
+              Des solutions claires et adaptées pour chaque étape de votre déménagement, que vous soyez un particulier ou une entreprise.
+            </p>
+          </div>
+          <BentoDemo />
+        </div>
+      </section>
       <Group719 />
       <Group756 />
       <Group756Logos />

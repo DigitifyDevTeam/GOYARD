@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Calculator, BadgeEuro, Layers3, MapPin, Route, Globe2 } from "lucide-react";
 
 interface HeaderProps {
   onGetQuote?: () => void;
@@ -9,15 +9,20 @@ interface HeaderProps {
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "/solution", label: "Solution" },
+  { href: "/en-construction", label: "Déménagement particulier" },
+  { href: "/en-construction", label: "Déménagement entreprise" },
+  { href: "/zones", label: "ZONE" },
   { href: "/blog", label: "Blog" },
+  // "Outils" is handled separately with a mega menu
   { href: "/faq", label: "FAQ" },
-  { href: "/tarification", label: "Tarification" },
   { href: "/contact", label: "Contact" },
 ];
 
 export default function Header({ onGetQuote }: HeaderProps) {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [outilOpen, setOutilOpen] = useState(false);
+  const [zonesOpen, setZonesOpen] = useState(false);
 
   const handleGetQuote = () => {
     setMobileMenuOpen(false);
@@ -46,12 +51,177 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 />
               </a>
               {/* Desktop nav - hidden on mobile */}
-              <nav className="hidden lg:flex items-center gap-12 xl:gap-16 2xl:gap-20 font-[600] text-[#191919]" aria-label="Navigation principale">
-                {navLinks.map(({ href, label }) => (
-                  <a key={href} href={href} className={linkClass}>
-                    {label}
-                  </a>
-                ))}
+              <nav className="hidden lg:flex flex-wrap items-center gap-x-10 gap-y-2 xl:gap-x-14 2xl:gap-x-16 font-[600] text-[#191919] max-w-[980px]" aria-label="Navigation principale">
+                <a href="/" className={linkClass}>
+                  Accueil
+                </a>
+                <a href="/solution" className={linkClass}>
+                  Solution
+                </a>
+                <a href="/en-construction" className={linkClass}>
+                  Déménagement particulier
+                </a>
+                <a href="/en-construction" className={linkClass}>
+                  Déménagement entreprise
+                </a>
+
+                {/* Zones mega menu */}
+                <div
+                  className="relative mx-2"
+                  onMouseEnter={() => setZonesOpen(true)}
+                  onMouseLeave={() => setZonesOpen(false)}
+                >
+                  <button
+                    type="button"
+                    className={`${linkClass} flex items-center gap-1`}
+                    aria-haspopup="true"
+                    aria-expanded={zonesOpen}
+                  >
+                    ZONE
+                    <span className="text-xs mt-[1px]">▾</span>
+                  </button>
+                  {zonesOpen && (
+                    <div className="absolute left-1/2 top-full z-40 mt-3 w-[600px] -translate-x-1/2 rounded-2xl bg-white shadow-xl border border-slate-100 px-6 py-4">
+                      <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500 mb-3">
+                        Zones d&apos;intervention
+                      </p>
+                      <div className="flex gap-4 justify-between">
+                        <a
+                          href="/en-construction"
+                          className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CC922F]/10 text-[#CC922F]">
+                              <MapPin className="h-4 w-4" />
+                            </div>
+                            <span className="font-['Poppins',sans-serif] font-semibold text-[13px] text-[#191919]">
+                              Île-de-France
+                            </span>
+                          </div>
+                          <span className="font-['Poppins',sans-serif] text-[11px] text-slate-500 leading-snug">
+                            Proximité Parisienne
+                          </span>
+                        </a>
+                        <a
+                          href="/en-construction"
+                          className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CC922F]/10 text-[#CC922F]">
+                              <Route className="h-4 w-4" />
+                            </div>
+                            <span className="font-['Poppins',sans-serif] font-semibold text-[13px] text-[#191919] whitespace-nowrap">
+                              Déménagement National
+                            </span>
+                          </div>
+                          <span className="font-['Poppins',sans-serif] text-[11px] text-slate-500 leading-snug">
+                            Toute la France
+                          </span>
+                        </a>
+                        <a
+                          href="/en-construction"
+                          className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CC922F]/10 text-[#CC922F]">
+                              <Globe2 className="h-4 w-4" />
+                            </div>
+                            <span className="font-['Poppins',sans-serif] font-semibold text-[13px] text-[#191919]">
+                              International
+                            </span>
+                          </div>
+                          <span className="font-['Poppins',sans-serif] text-[11px] text-slate-500 leading-snug">
+                            Europe &amp; Monde
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <a href="/blog" className={linkClass}>
+                  Blog
+                </a>
+
+                {/* Outil mega menu */}
+                <div
+                  className="relative"
+                  onMouseEnter={() => setOutilOpen(true)}
+                  onMouseLeave={() => setOutilOpen(false)}
+                >
+                  <button
+                    type="button"
+                    className={`${linkClass} flex items-center gap-1`}
+                    aria-haspopup="true"
+                    aria-expanded={outilOpen}
+                  >
+                    Outils
+                    <span className="text-xs mt-[1px]">▾</span>
+                  </button>
+                  {outilOpen && (
+                    <div className="absolute left-1/2 top-full z-40 mt-3 w-[520px] -translate-x-1/2 rounded-2xl bg-white shadow-xl border border-slate-100 px-6 py-4">
+                      <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500 mb-3">
+                        Outils en ligne
+                      </p>
+                      <div className="grid grid-cols-3 gap-4">
+                        <a
+                          href="/tunnel/mes-coordonnees"
+                          className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CC922F]/10 text-[#CC922F]">
+                              <Calculator className="h-4 w-4" />
+                            </div>
+                            <span className="font-['Poppins',sans-serif] font-semibold text-[13px] text-[#191919]">
+                              Calculateur de volume
+                            </span>
+                          </div>
+                          <span className="font-['Poppins',sans-serif] text-[11px] text-slate-500 leading-snug">
+                            Estimez le volume de votre déménagement en m³.
+                          </span>
+                        </a>
+                        <a
+                          href="/tarification"
+                          className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CC922F]/10 text-[#CC922F]">
+                              <BadgeEuro className="h-4 w-4" />
+                            </div>
+                            <span className="font-['Poppins',sans-serif] font-semibold text-[13px] text-[#191919]">
+                              Tarifs
+                            </span>
+                          </div>
+                          <span className="font-['Poppins',sans-serif] text-[11px] text-slate-500 leading-snug">
+                            Simulez le prix de votre déménagement.
+                          </span>
+                        </a>
+                        <a
+                          href="/formules-demenagement"
+                          className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CC922F]/10 text-[#CC922F]">
+                              <Layers3 className="h-4 w-4" />
+                            </div>
+                            <span className="font-['Poppins',sans-serif] font-semibold text-[13px] text-[#191919]">
+                              Formules de déménagement
+                            </span>
+                          </div>
+                          <span className="font-['Poppins',sans-serif] text-[11px] text-slate-500 leading-snug">
+                            Comparez les formules Éco, Standard, Prestige.
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <a href="/faq" className={linkClass}>
+                  FAQ
+                </a>
+                <a href="/contact" className={linkClass}>
+                  Contact
+                </a>
               </nav>
             </div>
 
@@ -115,16 +285,119 @@ export default function Header({ onGetQuote }: HeaderProps) {
             </button>
           </div>
           <nav className="flex flex-col p-4 gap-1" aria-label="Menu mobile">
-            {navLinks.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
-              >
-                {label}
-              </a>
-            ))}
+            <a
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              Accueil
+            </a>
+            <a
+              href="/solution"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              Solution
+            </a>
+            <a
+              href="/deménagement-particulier"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              DÉMÉNAGEMENT PARTICULIER
+            </a>
+            <a
+              href="/deménagement-entreprise"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              DÉMÉNAGEMENT ENTREPRISE
+            </a>
+            {/* Mobile "Zones" section with sub-links */}
+            <div className="mt-1 mb-2">
+              <p className="px-4 pt-3 pb-1 text-xs font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                Zones
+              </p>
+              <div className="flex flex-col gap-1 pl-4">
+                <a
+                  href="/en-construction"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                >
+                  <MapPin className="h-4 w-4 text-[#CC922F]" />
+                  Île-de-France · Proximité Parisienne
+                </a>
+                <a
+                  href="/en-construction"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                >
+                  <Route className="h-4 w-4 text-[#CC922F]" />
+                  Déménagement National · Toute la France
+                </a>
+                <a
+                  href="/en-construction"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                >
+                  <Globe2 className="h-4 w-4 text-[#CC922F]" />
+                  International · Europe &amp; Monde
+                </a>
+              </div>
+            </div>
+            <a
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              Blog
+            </a>
+            {/* Mobile "Outils" section with sub-links */}
+            <div className="mt-1 mb-2">
+              <p className="px-4 pt-3 pb-1 text-xs font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                Outils
+              </p>
+              <div className="flex flex-col gap-1 pl-4">
+                <a
+                  href="/tunnel/mes-coordonnees"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                >
+                  <Calculator className="h-4 w-4 text-[#CC922F]" />
+                  Calculer votre volume avec notre outil IA
+                </a>
+                <a
+                  href="/tarification"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                >
+                  <BadgeEuro className="h-4 w-4 text-[#CC922F]" />
+                  Tarifs
+                </a>
+                <a
+                  href="/formules-demenagement"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                >
+                  <Layers3 className="h-4 w-4 text-[#CC922F]" />
+                  Formules de déménagement
+                </a>
+              </div>
+            </div>
+            <a
+              href="/faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              FAQ
+            </a>
+            <a
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
+            >
+              Contact
+            </a>
             <button
               onClick={handleGetQuote}
               className="sm:hidden mt-4 w-full bg-[#1c3957] hover:bg-[#2a4f6b] text-white font-['Poppins',sans-serif] font-semibold text-base py-3 px-4 rounded "

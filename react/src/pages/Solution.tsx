@@ -178,10 +178,7 @@ const movingFaqs = [
     question: "Quelles sont les options supplémentaires disponibles ?",
     answer: "Nous proposons l'emballage, le démontage/remontage de meubles, la fourniture de cartons, le stockage temporaire et la protection des objets fragiles."
   },
-  {
-    question: "Le paiement est-il sécurisé ?",
-    answer: "Oui, toutes nos transactions sont cryptées et sécurisées. Nous utilisons les standards bancaires les plus élevés pour protéger vos données."
-  },
+  // Question sur le paiement supprimée conformément aux nouvelles consignes
   {
     question: "Que faire en cas de problème ?",
     answer: "Notre service client est disponible pour vous accompagner. Vous pouvez nous contacter par téléphone, email ou via le formulaire de contact."
@@ -219,8 +216,8 @@ export default function Solution() {
     },
     {
       step: "Étape 5",
-      title: "Réservation sécurisée",
-      content: "Validez votre réservation avec paiement sécurisé. Recevez votre confirmation et tous les détails par email.",
+      title: "Validation de votre projet",
+      content: "Validez votre réservation en ligne et recevez votre confirmation avec tous les détails par email.",
       image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop"
     }
   ];
@@ -233,8 +230,8 @@ export default function Solution() {
     },
     {
       icon: <Shield className="w-8 h-8" />,
-      title: "Paiement sécurisé",
-      description: "Transactions protégées et conformes aux normes bancaires les plus strictes."
+      title: "Accompagnement dédié",
+      description: "Une équipe disponible pour répondre à vos questions et suivre votre projet de bout en bout."
     },
     {
       icon: <Truck className="w-8 h-8" />,
@@ -250,7 +247,7 @@ export default function Solution() {
 
   const stats = [
     { icon: <UserPlus />, value: 5000, label: "Clients satisfaits", suffix: "+" },
-    { icon: <Truck />, value: 8000, label: "Déménagements réalisés", suffix: "+" },
+    { icon: <Truck />, value: 950, label: "Déménagements réalisés par année", suffix: "+" },
     { icon: <Star />, value: 98, label: "Satisfaction client", suffix: "%" },
     { icon: <MapPin />, value: 50, label: "Villes desservies", suffix: "+" },
   ];
