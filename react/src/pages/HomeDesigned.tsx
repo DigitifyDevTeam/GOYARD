@@ -487,24 +487,38 @@ function Frame720() {
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
               <div className="h-[76px] w-[75px]">
+                {/* Page Jaune style icon, using brand color */}
                 <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 75 76">
-                  <path clipRule="evenodd" d={svgPaths.p1755e980} fill="var(--fill-0, #CC922F)" fillRule="evenodd" id="Vector" />
+                  {/* Rounded square background */}
+                  <rect
+                    x="4"
+                    y="6"
+                    width="67"
+                    height="64"
+                    rx="14"
+                    fill="var(--fill-0, #CC922F)"
+                  />
+                  {/* Stylised “J” mark */}
+                  <path
+                    d="M28 20C28 18.343 29.343 17 31 17H44C45.657 17 47 18.343 47 20C47 21.657 45.657 23 44 23H36V42C36 47.523 32.418 51 27 51C24.791 51 23 49.209 23 47C23 44.791 24.791 43 27 43C28.105 43 29 43.895 29 45C29 46.105 28.105 47 27 47C26.448 47 26 47.448 26 48C26 48.552 26.448 49 27 49C30.314 49 32 46.761 32 42V23H31C29.343 23 28 21.657 28 20Z"
+                    fill="white"
+                  />
                 </svg>
               </div>
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">780  déménagements par mois</p>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">5 étoiles</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
               <div className="h-[70px] w-[80px]"><Group751 /></div>
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">22 camions à disposition</p>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">950 déménagements par mois</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[70px] w-[80px] flex items-center justify-center">
               <ShieldCheck className="size-[70px] text-[#CC922F]" strokeWidth={2} />
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">0 Litige </p>
+            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">0 Litige 2025-2026</p>
           </div>
         </div>
       </div>
@@ -540,11 +554,10 @@ function CrownIcon() {
       preserveAspectRatio="none"
       viewBox="0 0 76 56"
     >
+      {/* Trustpilot-style star icon, using project accent color */}
       <path
-        clipRule="evenodd"
-        d="M38 4L48 24L58 20L54 52H22L18 20L28 24L38 4Z"
+        d="M38 2L44.9 21.1H65L48.5 32.9L55.4 52L38 40.2L20.6 52L27.5 32.9L11 21.1H31.1L38 2Z"
         fill="var(--fill-0, #CC922F)"
-        fillRule="evenodd"
       />
     </svg>
   );
@@ -816,7 +829,7 @@ export function _Group749() {
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[50.625%] mt-[calc(50%+13px)] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[27.5px] not-italic relative text-[#161c2d] text-[24px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
         <p className="leading-[44px]">
-          22 camions à disposition
+          950 déménagements par mois
         </p>
       </div>
     </div>

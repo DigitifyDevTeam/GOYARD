@@ -13,6 +13,7 @@ import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import FAQ from "./pages/FAQ";
 import Tarification from "./pages/Tarification";
+import FormulesDemenagement from "./pages/FormulesDemenagement";
 import EnConstruction from "./pages/EnConstruction";
 import {
   Phone,
@@ -5455,6 +5456,7 @@ export default function App() {
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/tarification" element={<Tarification />} />
+        <Route path="/formules-demenagement" element={<FormulesDemenagement />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />
         <Route path="/tunnel/mes-coordonnees" element={<AppContent />} />

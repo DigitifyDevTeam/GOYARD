@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, X, Phone, Calculator, BadgeEuro, Layers3, MapPin, Route, Globe2 } from "lucide-react";
 
@@ -23,6 +23,44 @@ export default function Header({ onGetQuote }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [outilOpen, setOutilOpen] = useState(false);
   const [zonesOpen, setZonesOpen] = useState(false);
+  const zonesTimeoutRef = useRef<number | null>(null);
+  const outilsTimeoutRef = useRef<number | null>(null);
+
+  const openZones = () => {
+    if (zonesTimeoutRef.current !== null) {
+      window.clearTimeout(zonesTimeoutRef.current);
+      zonesTimeoutRef.current = null;
+    }
+    setZonesOpen(true);
+  };
+
+  const closeZonesWithDelay = () => {
+    if (zonesTimeoutRef.current !== null) {
+      window.clearTimeout(zonesTimeoutRef.current);
+    }
+    zonesTimeoutRef.current = window.setTimeout(() => {
+      setZonesOpen(false);
+      zonesTimeoutRef.current = null;
+    }, 150);
+  };
+
+  const openOutils = () => {
+    if (outilsTimeoutRef.current !== null) {
+      window.clearTimeout(outilsTimeoutRef.current);
+      outilsTimeoutRef.current = null;
+    }
+    setOutilOpen(true);
+  };
+
+  const closeOutilsWithDelay = () => {
+    if (outilsTimeoutRef.current !== null) {
+      window.clearTimeout(outilsTimeoutRef.current);
+    }
+    outilsTimeoutRef.current = window.setTimeout(() => {
+      setOutilOpen(false);
+      outilsTimeoutRef.current = null;
+    }, 150);
+  };
 
   const handleGetQuote = () => {
     setMobileMenuOpen(false);
@@ -68,8 +106,8 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 {/* Zones mega menu */}
                 <div
                   className="relative mx-2"
-                  onMouseEnter={() => setZonesOpen(true)}
-                  onMouseLeave={() => setZonesOpen(false)}
+                  onMouseEnter={openZones}
+                  onMouseLeave={closeZonesWithDelay}
                 >
                   <button
                     type="button"
@@ -145,8 +183,8 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 {/* Outil mega menu */}
                 <div
                   className="relative"
-                  onMouseEnter={() => setOutilOpen(true)}
-                  onMouseLeave={() => setOutilOpen(false)}
+                  onMouseEnter={openOutils}
+                  onMouseLeave={closeOutilsWithDelay}
                 >
                   <button
                     type="button"
@@ -180,7 +218,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/tarification"
+                          href="/formules-demenagement"
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -196,7 +234,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/formules-demenagement"
+                          href="/tarification"
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -367,7 +405,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                   Calculer votre volume avec notre outil IA
                 </a>
                 <a
-                  href="/tarification"
+                  href="/formules-demenagement"
                   onClick={() => setMobileMenuOpen(false)}
                   className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
                 >
@@ -375,7 +413,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                   Tarifs
                 </a>
                 <a
-                  href="/formules-demenagement"
+                  href="/tarification"
                   onClick={() => setMobileMenuOpen(false)}
                   className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
                 >
