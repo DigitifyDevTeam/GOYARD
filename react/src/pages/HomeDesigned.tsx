@@ -1826,127 +1826,7 @@ function Bg() {
           </svg>
         </div>
       </div>
-      <BoxAddSvgrepoCom1 />
-      <div
-        className="[grid-area:1_/_1] ml-[1072px] mt-[473px] overflow-clip relative size-[68px]"
-        data-name="ai-icon"
-      >
-        <div className="size-[68px]">
-          <Group717 />
-        </div>
-      </div>
-      <div
-        className="[grid-area:1_/_1] ml-[1392px] mt-[473px] overflow-clip relative size-[68px]"
-        data-name="surface-icon"
-      >
-        <div className="size-[68px]">
-          <SurfaceIcon />
-        </div>
-      </div>
-      <div
-        className="[grid-area:1_/_1] h-[189px] ml-[278px] mt-[366px] relative w-[332px]"
-        data-name="Mithosis"
-      >
-        <div
-          className="absolute inset-[-139.68%_-79.52%]"
-          style={
-            {
-              "--fill-0": "rgba(204, 146, 47, 1)",
-            } as React.CSSProperties
-          }
-        >
-          <svg
-            className="block size-full"
-            fill="none"
-            preserveAspectRatio="none"
-            viewBox="0 0 860 717"
-          >
-            <g filter="url(#filter0_f_1_966)" id="Mithosis">
-              <path
-                d={svgPaths.p2bf44f40}
-                fill="var(--fill-0, #CC922F)"
-              />
-            </g>
-            <defs>
-              <filter
-                colorInterpolationFilters="sRGB"
-                filterUnits="userSpaceOnUse"
-                height="717"
-                id="filter0_f_1_966"
-                width="860"
-                x="0"
-                y="0"
-              >
-                <feFlood
-                  floodOpacity="0"
-                  result="BackgroundImageFix"
-                />
-                <feBlend
-                  in="SourceGraphic"
-                  in2="BackgroundImageFix"
-                  mode="normal"
-                  result="shape"
-                />
-                <feGaussianBlur
-                  result="effect1_foregroundBlur_1_966"
-                  stdDeviation="132"
-                />
-              </filter>
-            </defs>
-          </svg>
-        </div>
-      </div>
-      <div
-        className="[grid-area:1_/_1] ml-[183px] mt-[326px] relative size-[413px]"
-        data-name="Subtract"
-      >
-        <div className="absolute inset-[-76.029%]">
-          <svg
-            className="block size-full"
-            fill="none"
-            preserveAspectRatio="none"
-            viewBox="0 0 1041 1041"
-          >
-            <g
-              filter="url(#filter0_f_1_754)"
-              id="Subtract"
-              opacity="0.5"
-            >
-              <path
-                d={svgPaths.p37bbbb00}
-                fill="var(--fill-0, #FF78A7)"
-                fillOpacity="0.6"
-              />
-            </g>
-            <defs>
-              <filter
-                colorInterpolationFilters="sRGB"
-                filterUnits="userSpaceOnUse"
-                height="1041"
-                id="filter0_f_1_754"
-                width="1041"
-                x="0"
-                y="0"
-              >
-                <feFlood
-                  floodOpacity="0"
-                  result="BackgroundImageFix"
-                />
-                <feBlend
-                  in="SourceGraphic"
-                  in2="BackgroundImageFix"
-                  mode="normal"
-                  result="shape"
-                />
-                <feGaussianBlur
-                  result="effect1_foregroundBlur_1_754"
-                  stdDeviation="157"
-                />
-              </filter>
-            </defs>
-          </svg>
-        </div>
-      </div>
+      
       <div
         className="[grid-area:1_/_1] h-[771px] ml-0 mt-0 w-[714px]"
         data-name="BG Copy"
@@ -2028,12 +1908,35 @@ function Content01() {
             </div>
           </div>
         </div>
-        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[820px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[250px]">Saisie manuelle organisée</h3>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[820px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[250px]">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
-        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1140px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[250px]">Scan intelligent par IA</h3>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1140px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[250px]">Prenez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
-        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1460px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[250px]">Estimation par surface</h3>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1460px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[250px]">Renseignez vos m² et obtenez une estimation rapide du volume.</p>
+        <div className="[grid-area:1_/_1] ml-[820px] mt-[400px] relative flex gap-20 w-[900px]">
+          <div className="flex-1">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="overflow-clip relative size-[52px] shrink-0">
+                <Group718 />
+              </div>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-[20px] leading-[26px] text-[#161c2d] tracking-[-0.5px]">Saisie manuelle organisée</h3>
+            </div>
+            <p className="font-['Poppins',_sans-serif] font-[500] text-[16px] leading-[26px] text-[#161c2d] opacity-70 tracking-[-0.2px]">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="size-[52px] shrink-0">
+                <Group717 />
+              </div>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-[20px] leading-[26px] text-[#161c2d] tracking-[-0.5px]">Scan intelligent par IA</h3>
+            </div>
+            <p className="font-['Poppins',_sans-serif] font-[500] text-[16px] leading-[26px] text-[#161c2d] opacity-70 tracking-[-0.2px]">Prenez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="size-[52px] shrink-0">
+                <SurfaceIcon />
+              </div>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-[20px] leading-[26px] text-[#161c2d] tracking-[-0.5px]">Estimation par surface</h3>
+            </div>
+            <p className="font-['Poppins',_sans-serif] font-[500] text-[16px] leading-[26px] text-[#161c2d] opacity-70 tracking-[-0.2px]">Renseignez vos m² et obtenez une estimation rapide du volume.</p>
+          </div>
+        </div>
         <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[820px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">Déclarez vos affaires en toute simplicité, rapidité et précision</h2>
         <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[820px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">3 méthodes simples pour estimer votre déménagement.</p>
       </div>
@@ -2054,26 +1957,32 @@ function Content01() {
           <p className="font-['Poppins',_sans-serif] font-[500] text-base text-[#161c2d] opacity-70 mb-8 sm:mb-10">
             3 méthodes simples pour estimer votre déménagement.
           </p>
-          <div className="grid sm:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-3 gap-8">
             <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
-              <div className="w-12 h-12 mb-4">
-                <Group717 />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 shrink-0 overflow-clip relative">
+                  <Group718 />
+                </div>
+                <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d]">Saisie manuelle</h3>
               </div>
-              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Saisie manuelle</h3>
               <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Sélectionnez vos objets depuis une liste claire et organisée.</p>
             </div>
             <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
-              <div className="w-12 h-12 mb-4">
-                <Group717 />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 shrink-0">
+                  <Group717 />
+                </div>
+                <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d]">Scan par IA</h3>
               </div>
-              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Scan par IA</h3>
               <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Prenez une photo, l'IA détecte et estime en temps réel.</p>
             </div>
             <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
-              <div className="w-12 h-12 mb-4">
-                <SurfaceIcon />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 shrink-0">
+                  <SurfaceIcon />
+                </div>
+                <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d]">Estimation par m²</h3>
               </div>
-              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Estimation par m²</h3>
               <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Renseignez vos m² et obtenez une estimation rapide du volume.</p>
             </div>
           </div>
