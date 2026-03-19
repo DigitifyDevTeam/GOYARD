@@ -768,6 +768,8 @@ def create_superficie_calculation(request):
         # Extract superficie calculation data
         client_info_id = data.get('client_info')
         surface_area = data.get('surface_area')
+        logement_type = data.get('logement_type')
+        anciennete_logement = data.get('anciennete_logement')
         calculated_volumes = data.get('calculated_volumes', {})
         heavy_objects = data.get('heavy_objects', {})
         custom_heavy_objects = data.get('custom_heavy_objects', {})
@@ -814,6 +816,8 @@ def create_superficie_calculation(request):
             client_info=client_info,
             method='superficie',
             surface_area=surface_area,
+            logement_type=logement_type,
+            anciennete_logement=anciennete_logement,
             calculated_volumes={
                 'vhouse': vhouse,
                 'vfurniture': vfurniture,
@@ -1384,7 +1388,14 @@ def send_quote_pdf(request):
                 calc = selection.calculated_volumes or {}
                 vh = calc.get('vhouse', 0)
                 vf = calc.get('vfurniture', 0)
-                method_output = f"{surf:.0f} m² → Volume maison: {vh:.0f} m³, Mobilier: {vf:.0f} m³"
+                logement_type = getattr(selection, 'logement_type', None) or ''
+                anciennete_logement = getattr(selection, 'anciennete_logement', None) or ''
+                extra = ""
+                if logement_type or anciennete_logement:
+                    logement_label = {'aerien': 'Aérien', 'normal': 'Normal', 'charge': 'Chargé'}.get(logement_type, logement_type or '—')
+                    anciennete_label = {'0_2': '0–2 ans', '2_5': '2–5 ans', '5_plus': 'Plus de 5 ans'}.get(anciennete_logement, anciennete_logement or '—')
+                    extra = f" · Logement: {logement_label} · Ancienneté: {anciennete_label}"
+                method_output = f"{surf:.0f} m² → Volume maison: {vh:.0f} m³, Mobilier: {vf:.0f} m³{extra}"
             elif selection.method in ('manual', 'ai'):
                 parts = []
                 rs = selection.room_selections or {}
@@ -1536,6 +1547,7 @@ def send_quote_pdf(request):
             demi_etage_arrivee=demi_etage_arrivee,
             volume_method=volume_method,
             method_output=method_output,
+            date_demenagement=getattr(client, 'date_demenagement', None),
         )
 
         logger.info('[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR)', client.email, admin_email, ref, final_price)

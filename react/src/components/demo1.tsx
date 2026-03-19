@@ -51,7 +51,7 @@ const features = [
     background: (
       <img
         className="absolute inset-0 h-full w-full object-cover"
-        src="/gallery/Monte Meuble.jpeg"
+        src="/gallery/monte_meuble.jpeg"
         alt="Garde-meubles"
       />
     ),

@@ -84,10 +84,10 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 <a href="/solution" className={linkClass}>
                   Solution
                 </a>
-                <a href="/en-construction" className={linkClass}>
+                <a href="/demenagement-particulier" className={linkClass}>
                   Déménagement particulier
                 </a>
-                <a href="/en-construction" className={linkClass}>
+                <a href="/demenagement-entreprise" className={linkClass}>
                   Déménagement entreprise
                 </a>
 
@@ -113,7 +113,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                       </p>
                       <div className="flex gap-4 justify-between">
                         <a
-                          href="/en-construction"
+                          href="/ile-de-france"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/en-construction"
+                          href="/demenagement-national"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/en-construction"
+                          href="/international"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -326,14 +326,14 @@ export default function Header({ onGetQuote }: HeaderProps) {
               Solution
             </a>
             <a
-              href="/deménagement-particulier"
+              href="/demenagement-particulier"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >
               DÉMÉNAGEMENT PARTICULIER
             </a>
             <a
-              href="/deménagement-entreprise"
+              href="/demenagement-entreprise"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >

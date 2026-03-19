@@ -171,6 +171,36 @@ class ManualSelection(models.Model):
         verbose_name="Surface (m²)",
         help_text="Surface du logement en mètres carrés"
     )
+
+    LOGEMENT_TYPE_CHOICES = [
+        ('aerien', 'Aérien'),
+        ('normal', 'Normal'),
+        ('charge', 'Chargé'),
+    ]
+
+    ANCIENNETE_LOGEMENT_CHOICES = [
+        ('0_2', '0–2 ans'),
+        ('2_5', '2–5 ans'),
+        ('5_plus', 'Plus de 5 ans'),
+    ]
+
+    logement_type = models.CharField(
+        max_length=20,
+        choices=LOGEMENT_TYPE_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Votre logement",
+        help_text="Aérien, normal ou chargé",
+    )
+
+    anciennete_logement = models.CharField(
+        max_length=20,
+        choices=ANCIENNETE_LOGEMENT_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Ancienneté dans le logement",
+        help_text="Depuis quand vous êtes dans ce logement",
+    )
     
     calculated_volumes = models.JSONField(
         default=dict,

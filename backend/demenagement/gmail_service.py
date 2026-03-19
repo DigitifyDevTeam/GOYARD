@@ -131,6 +131,7 @@ def send_admin_devis_notification(
     demi_etage_arrivee: bool,
     volume_method: Optional[str] = None,
     method_output: Optional[str] = None,
+    date_demenagement=None,
 ):
     """
     Send an admin notification email when a client requests un devis.
@@ -158,6 +159,7 @@ def send_admin_devis_notification(
     portage_dep_label = f"{portage_dep:.0f} m" if portage_dep and portage_dep > 0 else "—"
     portage_arr_label = f"{portage_arr:.0f} m" if portage_arr and portage_arr > 0 else "—"
     portage_esc_label = f"{portage_esc:.0f} m" if portage_esc and portage_esc > 0 else "—"
+    date_demenagement_label = date_demenagement.strftime("%d/%m/%Y") if date_demenagement else "—"
 
     msg = MIMEMultipart('mixed')
     msg['From'] = f'Guivarche Déménagement <{sender}>'
@@ -263,6 +265,7 @@ def send_admin_devis_notification(
                     <p style="margin: 0 0 8px; font-size: 11px; color: #1C3957; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Trajet</p>
                     <p style="margin: 0 0 6px; font-size: 13px; color: #64748b;"><strong>Départ</strong> · {adresse_depart or '—'}</p>
                     <p style="margin: 0 0 12px; font-size: 13px; color: #64748b;"><strong>Arrivée</strong> · {adresse_arrivee or '—'}</p>
+                    <p style="margin: 0 0 8px; font-size: 13px; color: #64748b;"><strong>Date du déménagement</strong> · {date_demenagement_label}</p>
                     <table role="presentation" cellspacing="0" cellpadding="0">
                       <tr>
                         <td style="padding: 6px 12px; background: #1C3957; border-radius: 8px; margin-right: 8px;">
@@ -395,9 +398,10 @@ def send_admin_devis_notification(
                           <p style="margin:0 0 8px; font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:#9ca3af; font-weight:700;">Trajet</p>
                           <p style="margin:0 0 6px; font-size:13px; color:#111827;"><strong>Départ</strong> : {adresse_depart or '—'}</p>
                           <p style="margin:0 0 8px; font-size:13px; color:#111827;"><strong>Arrivée</strong> : {adresse_arrivee or '—'}</p>
-                          <p style="margin:0; font-size:12px; color:#6b7280;">
+                          <p style="margin:0 0 4px; font-size:12px; color:#6b7280;">
                             Distance : <strong>{distance_km:.0f} km</strong> · Volume déclaré : <strong>{volume_m3:.1f} m³</strong>
                           </p>
+                          <p style="margin:0; font-size:12px; color:#6b7280;">Date du déménagement : <strong>{date_demenagement_label}</strong></p>
                         </td>
                       </tr>
                     </table>

@@ -8,7 +8,6 @@ import Footer from "../components/layout/Footer";
 import InteractiveImageBentoGallery from "../components/bento-gallery";
 import TarificationSection from "../components/TarificationSection";
 import { BentoDemo } from "../components/demo1";
-import imgBitmap from "../assets/f28110a1436ee8e0ca7d7a38c08908c88e716b38.png";
 import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.png";
 import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.png";
 import imgRectangle1 from "../assets/d41ef5adf9f05c54ecad13585f3b21dd4df4b048.png";
@@ -236,7 +235,7 @@ function Group743() {
       <Group715 />
       <h1 className="absolute font-['Poppins',_sans-serif] font-[800] leading-[1.2] left-[calc(50%+0.5px)] not-italic text-[50px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">
         <span className="block">Guivarche Déménagement</span>
-        <span className="block">L’exigence des grands déménageurs</span>
+        <span className="block text-[28px] font-[600] text-white/90 mt-2">L'exigence des grands déménageurs</span>
       </h1>
     </div>
   );
@@ -394,7 +393,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
           <h1 className="font-['Poppins',_sans-serif] font-[800] leading-tight text-2xl sm:text-4xl text-white mb-6 sm:mb-8 max-w-xl">
             <span className="block">Guivarche Déménagement</span>
-            <span className="block">L’exigence des grands déménageurs</span>
+            <span className="block text-lg sm:text-2xl font-[600] text-white/90 mt-2">L'exigence des grands déménageurs</span>
           </h1>
           <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-white/80 mb-8 sm:mb-10 max-w-xl">
             Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée pour un déménagement en toute confiance.
@@ -446,7 +445,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 
 function Frame720() {
   return (
-    <div className="h-[100px] sm:h-[120px] lg:h-[160px] relative shrink-0 w-full">
+    <div className="h-[72px] sm:h-[90px] lg:h-[120px] relative shrink-0 w-full">
       <svg
         className="block size-full"
         fill="none"
@@ -474,16 +473,16 @@ function Frame720() {
         </defs>
       </svg>
       <div className="hidden lg:block relative shrink-0 w-[1920px]">
-        <div className="absolute inset-0 flex items-end justify-center gap-[160px] px-[210px] pb-[50px]">
+        <div className="absolute inset-0 flex items-end justify-center gap-[120px] px-[160px] pb-[28px]">
           <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[70px] w-[80px]"><Group751 /></div>
+            <div className="h-[48px] w-[56px] flex items-center justify-center">
+              <div className="h-[48px] w-[56px]"><Group751 /></div>
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">950 déménagements par mois</p>
+            <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">950 déménagements par mois</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[76px] w-[75px]">
+            <div className="h-[48px] w-[56px] flex items-center justify-center">
+              <div className="h-[52px] w-[52px]">
                 <img
                   src="/pages-jaunes.svg"
                   alt="Pages Jaunes - 5 étoiles"
@@ -491,23 +490,23 @@ function Frame720() {
                 />
               </div>
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">
-              5 étoiles
+            <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">
+              5 étoiles sur Pages Jaunes
             </p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <ShieldCheck className="size-[70px] text-[#CC922F]" strokeWidth={2} />
+            <div className="h-[48px] w-[56px] flex items-center justify-center">
+              <ShieldCheck className="size-[48px] text-[#CC922F]" strokeWidth={2} />
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">0 Litige 2025-2026</p>
+            <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">0 Litige 2025-2026</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[70px] w-[80px] flex items-center justify-center">
-              <div className="h-[70px] w-[80px]">
+            <div className="h-[48px] w-[56px] flex items-center justify-center">
+              <div className="h-[48px] w-[56px]">
                 <CrownIcon />
               </div>
             </div>
-            <p className="font-sans font-[800] text-white text-[24px] text-center tracking-[-1.2px] leading-[44px] whitespace-nowrap">4,8 / Excellent</p>
+            <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">4,8 / Excellent sur TrustPilot</p>
           </div>
         </div>
       </div>
@@ -537,18 +536,11 @@ export function _Group1() {
 
 function CrownIcon() {
   return (
-    <svg
-      className="block size-full"
-      fill="none"
-      preserveAspectRatio="none"
-      viewBox="0 0 76 56"
-    >
-      {/* Trustpilot-style star icon, using project accent color */}
-      <path
-        d="M38 2L44.9 21.1H65L48.5 32.9L55.4 52L38 40.2L20.6 52L27.5 32.9L11 21.1H31.1L38 2Z"
-        fill="var(--fill-0, #CC922F)"
-      />
-    </svg>
+    <img
+      src="/trustpilot.svg"
+      alt="Trustpilot"
+      className="block size-full object-contain"
+    />
   );
 }
 
@@ -977,14 +969,6 @@ function Frame2085665084() {
   );
 }
 
-function Frame2085666148() {
-  return (
-    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[265px] top-0 w-[260px]">
-      <Frame2085665084 />
-    </div>
-  );
-}
-
 function Frame2085665085() {
   const [showVideoModal, setShowVideoModal] = useState(false);
 
@@ -1111,7 +1095,7 @@ function Frame2085665086() {
 
 function Frame2085666152() {
   return (
-    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[130px] top-[140px] w-[260px]">
+    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[130px] top-[105px] w-[260px]">
       <Frame2085665085 />
     </div>
   );
@@ -1125,59 +1109,10 @@ function Frame2085666153() {
   );
 }
 
-function Frame2085666150() {
-  return (
-    <div className="content-stretch flex flex-col gap-[8px] items-start leading-[normal] not-italic relative shrink-0 w-[92px]">
-      <p className="font-['Poppins',_sans-serif] font-[600] relative shrink-0 text-[#131313] text-[32px] w-full">
-        50+
-      </p>
-      <p className="font-['General_Sans:Regular',_sans-serif] relative shrink-0 text-[16px] text-[rgba(19,19,19,0.6)] w-full">
-      Témoignages
-      </p>
-    </div>
-  );
-}
-
-function Component25() {
-  return (
-    <div
-      className="relative shrink-0 size-[24px]"
-      data-name="024"
-    >
-      <div className="absolute inset-[-4.17%]">
-        <svg
-          className="block size-full"
-          fill="none"
-          preserveAspectRatio="none"
-          viewBox="0 0 26 26"
-        >
-          <g id="024">
-            <path
-              d={svgPaths.pb885230}
-              id="path"
-              stroke="var(--stroke-0, white)"
-              strokeWidth="2"
-            />
-          </g>
-        </svg>
-      </div>
-    </div>
-  );
-}
-
-function Frame2085666146() {
-  return (
-    <div className="bg-[#1c3957] box-border content-stretch flex gap-[10px] items-center overflow-clip p-[13px] relative rounded-[50px] shrink-0">
-      <Component25 />
-    </div>
-  );
-}
-
 function Frame2085666151() {
   return (
-    <div className="absolute bg-white box-border content-stretch flex gap-[16px] items-start left-[380px] p-[20px] rounded-[30px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] top-[380px]">
-      <Frame2085666150 />
-      <Frame2085666146 />
+    <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[270px] top-[280px] w-[260px]">
+      <Frame2085665084 />
     </div>
   );
 }
@@ -1185,7 +1120,6 @@ function Frame2085666151() {
 function Frame2147226882() {
   return (
     <div className="absolute h-[546.237px] left-[1067.98px] top-[49px] w-[560px]">
-      <Frame2085666148 />
       <Frame2085666152 />
       <Frame2085666153 />
       <Frame2085666151 />
@@ -1545,131 +1479,41 @@ function Frame702() {
   );
 }
 
-function Frame694() {
-  return (
-    <div className="bg-white box-border content-stretch flex gap-[10px] items-center justify-center px-[10px] py-[12px] relative rounded-[4px] shadow-[0px_27px_8px_0px_rgba(251,116,163,0),0px_17px_7px_0px_rgba(251,116,163,0.01),0px_10px_6px_0px_rgba(251,116,163,0.05),0px_4px_4px_0px_rgba(251,116,163,0.09),0px_1px_2px_0px_rgba(251,116,163,0.1)] shrink-0">
-      <p className="capitalize font-['Poppins',_sans-serif] font-[600] leading-none not-italic relative shrink-0 text-[16px] text-black text-nowrap tracking-[0.32px] whitespace-pre">
-        Demander un devis
-      </p>
-    </div>
-  );
-}
-
-function Frame715() {
-  return (
-    <div className="absolute content-stretch flex gap-[10px] items-start left-[1013px] top-[135px]">
-      <a href="/tunnel/mes-coordonnees" className="block">
-        <Frame694 />
-      </a>
-    </div>
-  );
-}
-
-function Frame722() {
-  return (
-    <div className="[grid-area:1_/_1] h-[190px] ml-[312px] mt-[27px] overflow-clip relative shadow-[0px_101px_28px_0px_rgba(166,166,166,0),0px_65px_26px_0px_rgba(166,166,166,0.01),0px_36px_22px_0px_rgba(166,166,166,0.05),0px_16px_16px_0px_rgba(166,166,166,0.09),0px_4px_9px_0px_rgba(166,166,166,0.1)] w-[1296px]">
-      <div className="absolute bg-[#1c3957] h-[190px] left-1/2 rounded-[10px] top-0 translate-x-[-50%] w-[1296px]" />
-      <div
-        className="absolute flex h-[calc(1px*((var(--transform-inner-width)*0.07403329759836197)+(var(--transform-inner-height)*0.9972557425498962)))] items-center justify-center left-[-132px] top-[-372px] w-[calc(1px*((var(--transform-inner-height)*0.07403329759836197)+(var(--transform-inner-width)*0.9972557425498962)))]"
-        style={
-          {
-            "--transform-inner-width": "971.890625",
-            "--transform-inner-height": "971.890625",
-          } as React.CSSProperties
-        }
-      >
-        <div className="flex-none rotate-[4.246deg]">
-          <div
-            className="relative size-[971.898px]"
-            data-name="Subtract"
-          >
-            <svg
-              className="block size-full"
-              fill="none"
-              preserveAspectRatio="none"
-              viewBox="0 0 972 972"
-            >
-              <path
-                d={svgPaths.p15c85a00}
-                fill="var(--fill-0, white)"
-                id="Subtract"
-                opacity="0.06"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[500] leading-[1.4] left-[22px] not-italic text-[17px] text-white top-[141px] w-[664px]">
-        Votre déménagement simplifié, sécurisé et maîtrisé de A à Z.
-      </p>
-      <p className="absolute capitalize font-['Poppins',_sans-serif] font-[600] leading-[1.4] left-[22px] not-italic text-[35px] text-white top-[18px] w-[664px]">
-        Des professionnels à votre service, où que vous soyez
-      </p>
-      <div
-        className="absolute left-[923px] size-[641px] top-[-277px]"
-        data-name="Subtract"
-      >
-        <svg
-          className="block size-full"
-          fill="none"
-          preserveAspectRatio="none"
-          viewBox="0 0 641 641"
-        >
-          <path
-            d={svgPaths.p13140500}
-            fill="url(#paint0_linear_1_799)"
-            id="Subtract"
-          />
-          <defs>
-            <linearGradient
-              gradientUnits="userSpaceOnUse"
-              id="paint0_linear_1_799"
-              x1="536.5"
-              x2="-84"
-              y1="-57"
-              y2="607.5"
-            >
-              <stop stopColor="white" />
-              <stop
-                offset="0.634664"
-                stopColor="white"
-                stopOpacity="0"
-              />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      <Frame715 />
-    </div>
-  );
-}
-
-function Group719() {
+function Group719({ onGetQuote }: { onGetQuote: () => void }) {
   return (
     <>
-      {/* Desktop CTA (>= lg) */}
-      <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
-        <div className="[grid-area:1_/_1] bg-white h-[242px] ml-0 mt-0 w-[1920px]" />
-        <Frame722 />
-      </div>
-      {/* Mobile/Tablet CTA (< lg) */}
-      <div className="lg:hidden w-full bg-white py-8 sm:py-12 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto bg-[#1c3957] rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 overflow-hidden relative">
-          <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5" />
-          <h3 className="font-['Poppins',_sans-serif] font-[600] text-xl sm:text-2xl lg:text-3xl text-white mb-3 sm:mb-4 relative z-10 leading-snug">
-            Des professionnels à votre service, où que vous soyez
-          </h3>
-          <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-base text-white/80 relative z-10 mb-5">
-            Votre déménagement simplifié, sécurisé et maîtrisé de A à Z.
-          </p>
-          <a
-            href="/tunnel/mes-coordonnees"
-            className="inline-flex items-center justify-center bg-white text-[#1c3957] font-['Poppins',_sans-serif] font-[600] text-base px-6 py-3 rounded-md shadow-sm hover:opacity-90 transition-opacity relative z-10"
-          >
-            Demander un devis
-          </a>
+      {/* CTA (Solution page style) */}
+      <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 font-['Poppins',sans-serif]">
+              Prêt à déménager en toute sérénité ?
+            </h2>
+
+            <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+              Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. Obtenez votre devis gratuit
+              maintenant !
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                type="button"
+                onClick={onGetQuote}
+                className="inline-flex items-center justify-center bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
+              >
+                Obtenir un devis gratuit
+              </button>
+
+              <a
+                href="/contact"
+                className="inline-flex items-center justify-center border border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
+              >
+                Nous contacter
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }
@@ -1984,11 +1828,19 @@ function Bg() {
       </div>
       <BoxAddSvgrepoCom1 />
       <div
-        className="[grid-area:1_/_1] ml-[1220px] mt-[473px] overflow-clip relative size-[68px]"
+        className="[grid-area:1_/_1] ml-[1072px] mt-[473px] overflow-clip relative size-[68px]"
         data-name="ai-icon"
       >
         <div className="size-[68px]">
           <Group717 />
+        </div>
+      </div>
+      <div
+        className="[grid-area:1_/_1] ml-[1392px] mt-[473px] overflow-clip relative size-[68px]"
+        data-name="surface-icon"
+      >
+        <div className="size-[68px]">
+          <SurfaceIcon />
         </div>
       </div>
       <div
@@ -2147,50 +1999,82 @@ function Group717() {
   );
 }
 
+function SurfaceIcon() {
+  return (
+    <svg className="block size-full" fill="none" viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet">
+      <path d="M12 30V54H52V30" stroke="#1D293D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 30L32 8L58 30" stroke="#1D293D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 46H42" stroke="#CC922F" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M22 42V50" stroke="#CC922F" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M42 42V50" stroke="#CC922F" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M32 22V40" stroke="#CC922F" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M28 22H36" stroke="#CC922F" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M28 40H36" stroke="#CC922F" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function Content01() {
   return (
     <>
       {/* Desktop features */}
       <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0" data-name="Content 01">
         <Bg />
-        <div className="[grid-area:1_/_1] h-[771px] ml-0 mt-0 relative w-[714px]" data-name="Bitmap">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <img alt="" className="absolute h-[111.67%] left-[-11.34%] max-w-none top-[-11.28%] w-[123.84%]" src={imgBitmap} />
+        <div className="[grid-area:1_/_1] ml-[30px] mt-[90px] relative" data-name="Bitmap">
+          <div className="bg-white p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
+            <div className="h-[490px] w-[500px] overflow-hidden rounded-[24px] relative">
+              <img alt="" className="w-full h-full object-cover" src="/ai.jpeg" />
+              <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+            </div>
           </div>
         </div>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[838px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[330px]">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
-        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[838px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[330px]">Saisie manuelle organisée</h3>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1302px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[306px]">Téléchargez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
-        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1302px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px]">Scan intelligent par IA</h3>
-        <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[752px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">Déclarez vos affaires en toute simplicité, rapidité et précision</h2>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[752px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">Deux méthodes simples pour estimer votre déménagement.</p>
+        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[820px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[250px]">Saisie manuelle organisée</h3>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[820px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[250px]">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
+        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1140px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[250px]">Scan intelligent par IA</h3>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1140px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[250px]">Prenez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
+        <h3 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[800] leading-[32px] ml-[1460px] mt-[474px] not-italic relative text-[#161c2d] text-[21px] tracking-[-0.5px] w-[250px]">Estimation par surface</h3>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[29px] ml-[1460px] mt-[521px] not-italic opacity-70 relative text-[#161c2d] text-[17px] tracking-[-0.2px] w-[250px]">Renseignez vos m² et obtenez une estimation rapide du volume.</p>
+        <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[820px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">Déclarez vos affaires en toute simplicité, rapidité et précision</h2>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[820px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">3 méthodes simples pour estimer votre déménagement.</p>
       </div>
       {/* Mobile features */}
       <div className="lg:hidden w-full py-10 sm:py-14 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <div className="mb-8 sm:mb-10">
-            <img src={imgBitmap} alt="" className="w-full h-48 sm:h-64 object-cover rounded-xl mb-6 sm:mb-8" />
+            <div className="bg-white p-2.5 sm:p-3 rounded-2xl shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] mb-8 sm:mb-10">
+              <div className="relative overflow-hidden rounded-xl">
+                <img src="/ai.jpeg" alt="" className="w-full h-40 sm:h-56 object-cover" />
+                <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+              </div>
+            </div>
           </div>
           <h2 className="font-['Poppins',_sans-serif] font-normal text-2xl sm:text-3xl text-[#161c2d] tracking-tight leading-snug mb-4">
             Déclarez vos affaires en toute simplicité, rapidité et précision
           </h2>
           <p className="font-['Poppins',_sans-serif] font-[500] text-base text-[#161c2d] opacity-70 mb-8 sm:mb-10">
-            Deux méthodes simples pour estimer votre déménagement.
+            3 méthodes simples pour estimer votre déménagement.
           </p>
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-3 gap-5">
             <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
               <div className="w-12 h-12 mb-4">
                 <Group717 />
               </div>
-              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Saisie manuelle organisée</h3>
-              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Choisissez vos objets depuis une liste organisée (meubles, électroménagers, cartons, etc.)</p>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Saisie manuelle</h3>
+              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Sélectionnez vos objets depuis une liste claire et organisée.</p>
             </div>
             <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
               <div className="w-12 h-12 mb-4">
                 <Group717 />
               </div>
-              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Scan intelligent par IA</h3>
-              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Téléchargez une photo, l'IA détecte vos objets et calcule en temps réel.</p>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Scan par IA</h3>
+              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Prenez une photo, l'IA détecte et estime en temps réel.</p>
+            </div>
+            <div className="p-5 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="w-12 h-12 mb-4">
+                <SurfaceIcon />
+              </div>
+              <h3 className="font-['Poppins',_sans-serif] font-[800] text-lg text-[#161c2d] mb-2">Estimation par m²</h3>
+              <p className="font-['Poppins',_sans-serif] font-[500] text-sm text-[#161c2d] opacity-70">Renseignez vos m² et obtenez une estimation rapide du volume.</p>
             </div>
           </div>
         </div>
@@ -3474,6 +3358,20 @@ const topBlogPosts = [
 
 const galleryImageItems = [
   {
+    id: 10,
+    title: "Préparation de nuit",
+    desc: "Interventions en horaires adaptés à vos contraintes.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg",
+    span: "md:row-span-1",
+  },
+  {
+    id: 11,
+    title: "Contrôle de l’inventaire",
+    desc: "Suivi précis de vos biens à chaque étape.",
+    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg",
+    span: "md:row-span-1",
+  },
+  {
     id: 1,
     title: "Déménagement résidentiel",
     desc: "Équipe professionnelle et matériel adapté pour votre logement.",
@@ -3534,20 +3432,6 @@ const galleryImageItems = [
     title: "Équipe de déménageurs",
     desc: "Professionnels formés pour un accompagnement de A à Z.",
     url: "/gallery/j.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 10,
-    title: "Préparation de nuit",
-    desc: "Interventions en horaires adaptés à vos contraintes.",
-    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 11,
-    title: "Contrôle de l’inventaire",
-    desc: "Suivi précis de vos biens à chaque étape.",
-    url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg",
     span: "md:row-span-1",
   },
   {
@@ -3748,6 +3632,7 @@ function GallerySection() {
     <div className="w-full antialiased [--background:theme(colors.slate.50)] [--foreground:theme(colors.slate.900)] [--muted-foreground:theme(colors.slate.600)] [--card:white] [--ring:theme(colors.slate.950)]">
       <InteractiveImageBentoGallery
         imageItems={galleryImageItems}
+        uniformTiles
         title="Notre Gallerie"
         description="Découvrez nos missions en images : déménagements résidentiels, corporate et logistique. Glissez pour explorer, cliquez pour agrandir."
       />
@@ -4609,7 +4494,103 @@ export default function Home() {
       <Frame720 />
       <div className="h-8 bg-white"></div>
       <Frame23 />
-      <Frame702 />
+      {/* test - Comment ça marche ? + videos section */}
+      <section id="test" className="w-full bg-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+        {/* Left ombre / shade */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: "500px",
+            height: "500px",
+            left: "-150px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(198,210,255,0.45) 0%, rgba(198,210,255,0.15) 60%, transparent 70%)",
+            filter: "blur(60px)",
+          }}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-20 relative z-10">
+          {/* Left: Comment ça marche ? */}
+          <div className="flex-1 min-w-0">
+            <h2
+              className="font-['Poppins',sans-serif] font-semibold text-left mb-10 sm:mb-12 whitespace-nowrap"
+              style={{
+                fontSize: "51px",
+                lineHeight: "62px",
+                color: "#020618",
+              }}
+            >
+              Comment ça marche ?
+            </h2>
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <div className="flex items-center gap-6 sm:gap-8">
+                <span
+                  className="flex-shrink-0 text-[5rem] sm:text-[6rem] md:text-[7rem] font-bold font-['Poppins',sans-serif] leading-none select-none"
+                  style={{
+                    backgroundImage: "linear-gradient(to bottom, #1C3957 0%, #94a3b8 70%, #e2e8f0 100%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  1
+                </span>
+                <p
+                  className="font-['Poppins',sans-serif] font-semibold text-slate-600"
+                  style={{ fontSize: "19px", lineHeight: "32px" }}
+                >
+                  <span className="font-semibold text-slate-800">Remplissez le formulaire:</span> Indiquez les informations de votre déménagement.
+                </p>
+              </div>
+              <div className="flex items-center gap-6 sm:gap-8">
+                <span
+                  className="flex-shrink-0 text-[5rem] sm:text-[6rem] md:text-[7rem] font-bold font-['Poppins',sans-serif] leading-none select-none"
+                  style={{
+                    backgroundImage: "linear-gradient(to bottom, #1C3957 0%, #94a3b8 70%, #e2e8f0 100%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  2
+                </span>
+                <p
+                  className="font-['Poppins',sans-serif] font-semibold text-slate-600"
+                  style={{ fontSize: "19px", lineHeight: "32px" }}
+                >
+                  <span className="font-semibold text-slate-800">Recevez votre estimation :</span> Nous vous envoyons un tarif clair et personnalisé.
+                </p>
+              </div>
+              <div className="flex items-center gap-6 sm:gap-8">
+                <span
+                  className="flex-shrink-0 text-[5rem] sm:text-[6rem] md:text-[7rem] font-bold font-['Poppins',sans-serif] leading-none select-none"
+                  style={{
+                    backgroundImage: "linear-gradient(to bottom, #1C3957 0%, #94a3b8 70%, #e2e8f0 100%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  3
+                </span>
+                <p
+                  className="font-['Poppins',sans-serif] font-semibold text-slate-600"
+                  style={{ fontSize: "19px", lineHeight: "32px" }}
+                >
+                  <span className="font-semibold text-slate-800">Réservez votre déménagement :</span> Validez simplement votre date au prix annoncé.
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* Right: videos section scaled to fit */}
+          <div className="relative h-[468px] w-full max-w-[480px] shrink-0 mx-auto lg:mx-0" style={{ transform: "scale(0.930)", transformOrigin: "top right" }}>
+            <Frame2085666152 />
+            <Frame2085666153 />
+            <Frame2085666151 />
+          </div>
+        </div>
+      </section>
       <VenteFlash />
       {/* Services section with Bento grid */}
       <section className="w-full bg-white py-12 sm:py-16 lg:py-20">
@@ -4628,7 +4609,7 @@ export default function Home() {
           <BentoDemo />
         </div>
       </section>
-      <Group719 />
+      <Group719 onGetQuote={handleGetQuote} />
       <Group756 />
       <Group756Logos />
       <GallerySection />
@@ -4638,7 +4619,7 @@ export default function Home() {
       {false && <Frame700 />}
       <Frame701 />
       <Group753 />
-      <Group719 />
+      <Group719 onGetQuote={handleGetQuote} />
       <Footer />
     </div>
   );

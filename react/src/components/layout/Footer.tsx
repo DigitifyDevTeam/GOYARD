@@ -120,7 +120,7 @@ export default function Footer() {
                   aria-label="Voir nos avis Trustpilot"
                 >
                   <img
-                    src="/trustpilot.svg"
+                    src="/trust.png"
                     alt="Trustpilot - Avis clients"
                     className="h-20 w-auto object-contain sm:h-24 md:h-28 lg:h-32"
                   />

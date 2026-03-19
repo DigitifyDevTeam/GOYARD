@@ -172,7 +172,7 @@ class ManualSelectionSerializer(serializers.ModelSerializer):
         model = ManualSelection
         fields = [
             'id', 'client_info', 'room_selections', 'heavy_objects', 'custom_objects', 'custom_heavy_objects',
-            'method', 'surface_area', 'calculated_volumes',
+            'method', 'surface_area', 'logement_type', 'anciennete_logement', 'calculated_volumes',
             'total_volume', 'total_objects_count', 'base_price', 'final_price', 'status', 
             'created_at', 'updated_at'
         ]

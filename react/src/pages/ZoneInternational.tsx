@@ -1,0 +1,207 @@
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, CheckCircle2, Globe2, PackageCheck, ShieldCheck, Truck, FileText } from "lucide-react";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+
+export default function ZoneInternational() {
+  const navigate = useNavigate();
+  const primaryCta = () => navigate("/tunnel/mes-coordonnees");
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Header onGetQuote={primaryCta} />
+
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(900px_520px_at_18%_18%,rgba(204,146,47,0.22),transparent_60%),radial-gradient(900px_520px_at_82%_10%,rgba(25,25,25,0.10),transparent_55%)]" />
+          <div className="relative w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16">
+            <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+              <div className="lg:col-span-7">
+                <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
+                  <Globe2 className="h-4 w-4 text-[#CC922F]" />
+                  Déménagement international • Europe & monde
+                </div>
+                <h1 className="mt-4 font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
+                  Déménagement international : logistique + formalités, gérées proprement.
+                </h1>
+                <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
+                  À l’international, tout se joue sur l’anticipation : emballage, inventaire, coordination transport,
+                  et documents. On vous accompagne étape par étape.
+                </p>
+
+                <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
+                  {[
+                    "Coordination transport & délais",
+                    "Inventaire détaillé et suivi",
+                    "Options d’emballage renforcé",
+                    "Accompagnement sur les documents",
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
+                      <span className="text-sm sm:text-[15px] text-slate-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
+                  <button
+                    type="button"
+                    onClick={primaryCta}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition"
+                  >
+                    Obtenir mon devis
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/contact")}
+                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
+                  >
+                    Parler à un conseiller
+                  </button>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5">
+                <div className="rounded-3xl bg-white shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
+                  <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
+                    Ce que nous cadrons pour vous
+                  </p>
+                  <div className="mt-4 grid gap-3">
+                    {[
+                      { icon: <PackageCheck className="h-5 w-5" />, title: "Emballage renforcé", desc: "Protections adaptées au trajet et au mode de transport." },
+                      { icon: <FileText className="h-5 w-5" />, title: "Inventaire & documents", desc: "On vous aide à préparer les informations nécessaires." },
+                      { icon: <Truck className="h-5 w-5" />, title: "Coordination transport", desc: "Organisation des étapes pour un acheminement fluide." },
+                      { icon: <ShieldCheck className="h-5 w-5" />, title: "Assurance", desc: "Niveau de couverture cohérent avec la valeur de vos biens." },
+                    ].map((x) => (
+                      <div key={x.title} className="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/40 p-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#CC922F]/10 text-[#CC922F]">
+                          {x.icon}
+                        </div>
+                        <div>
+                          <div className="font-['Poppins',sans-serif] font-semibold text-[#191919] text-sm">
+                            {x.title}
+                          </div>
+                          <div className="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
+                            {x.desc}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-2xl bg-[#191919] text-white p-5">
+                    <p className="font-['Poppins',sans-serif] font-semibold text-sm">
+                      Conseil international
+                    </p>
+                    <p className="mt-1 text-xs sm:text-[13px] text-white/80 leading-relaxed">
+                      Pour un départ à l’étranger, prévoyez du délai (inventaire, papiers, transport). Démarrez le devis,
+                      puis on affine ensemble selon votre pays et vos contraintes.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14">
+          <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500">
+            Déroulé
+          </p>
+          <h2 className="mt-2 font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
+            Un process clair, pour éviter les mauvaises surprises.
+          </h2>
+          <div className="mt-8 grid md:grid-cols-3 gap-5">
+            {[
+              {
+                title: "Évaluation",
+                desc: "Volume, accès, destination, dates. On identifie les contraintes et le mode de transport.",
+              },
+              {
+                title: "Préparation",
+                desc: "Emballage, inventaire, documents. On vous guide pour une préparation propre.",
+              },
+              {
+                title: "Acheminement",
+                desc: "Transport, livraison, installation si option. Vous suivez l’avancement simplement.",
+              },
+            ].map((x) => (
+              <div key={x.title} className="rounded-3xl border border-slate-100 bg-white shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-6">
+                <div className="font-['Poppins',sans-serif] font-bold text-[#191919]">
+                  {x.title}
+                </div>
+                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                  {x.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="bg-slate-50/60 border-y border-slate-100">
+          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              <div className="lg:col-span-7">
+                <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
+                  Europe & monde
+                </h2>
+                <p className="mt-3 text-slate-600 leading-relaxed">
+                  Déménagement vers l’étranger (UE et hors UE) avec un accompagnement orienté “propreté” : inventaire,
+                  protections, coordination, informations utiles pour les démarches.
+                </p>
+                <div className="mt-6 grid sm:grid-cols-2 gap-3">
+                  {[
+                    "Particulier & entreprise",
+                    "Emballage renforcé & fragile",
+                    "Suivi et organisation par étapes",
+                    "Options d’assurance",
+                  ].map((x) => (
+                    <div key={x} className="flex items-start gap-2 rounded-2xl bg-white border border-slate-100 p-4">
+                      <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
+                      <span className="text-sm text-slate-700">{x}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:col-span-5">
+                <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
+                  <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
+                    Préparez votre devis international
+                  </p>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                    Démarrez maintenant, puis on adapte selon votre destination et vos contraintes (délais, documents).
+                  </p>
+                  <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                    <button
+                      type="button"
+                      onClick={primaryCta}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white hover:brightness-95 transition"
+                    >
+                      Démarrer mon devis
+                      <ArrowRight className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/contact")}
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
+                    >
+                      Être rappelé
+                    </button>
+                  </div>
+                  <p className="mt-4 text-xs text-slate-500">
+                    Organisation • Formalités • Transport coordonné
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
