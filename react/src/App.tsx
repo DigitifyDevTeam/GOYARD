@@ -3686,7 +3686,7 @@ function AppContent() {
                       <div className="space-y-6">
                         <div className="space-y-2">
                           <h3 className="text-base sm:text-lg font-semibold text-slate-900">
-                            Votre logement est-il plutôt :
+                            Votre logement est-il plutôt ?
                           </h3>
                           <p className="text-sm text-slate-600">
                             Ces informations nous aident à affiner l’estimation et à préparer l’intervention.

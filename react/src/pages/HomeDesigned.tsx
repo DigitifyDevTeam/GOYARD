@@ -340,7 +340,7 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           <img
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
-            src="/hero.jpeg"
+            src="/hero.png"
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/55" />
@@ -1419,7 +1419,7 @@ function Group701() {
   );
 }
 
-function Frame702() {
+export function Frame702() {
   return (
     <>
       {/* Desktop how-it-works */}
@@ -1472,6 +1472,11 @@ function Frame702() {
             >
               Planifier mon déménagement
             </button>
+
+
+
+
+            
           </div>
         </div>
       </div>
@@ -1777,7 +1782,7 @@ function Group718() {
   );
 }
 
-function BoxAddSvgrepoCom1() {
+export function BoxAddSvgrepoCom1() {
   return (
     <div
       className="[grid-area:1_/_1] ml-[752px] mt-[473px] overflow-clip relative size-[68px]"
@@ -3266,127 +3271,83 @@ const topBlogPosts = [
 ];
 
 const galleryImageItems = [
-  {
-    id: 10,
+  { id: 1, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/1.jpeg", span: "md:row-span-1" },
+  { id: 2, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/2.jpeg", span: "md:row-span-1" },
+  { id: 3, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/3.jpeg", span: "md:row-span-1" },
+  { id: 4, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/4.jpeg", span: "md:row-span-1" },
+  { id: 5, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/5.jpeg", span: "md:row-span-1" },
+  { id: 6, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/6.jpeg", span: "md:row-span-1" },
+  { id: 7, title: "Déménagement résidentiel", desc: "Équipe professionnelle et matériel adapté pour votre logement.", url: "/gallery/img1.jpeg", span: "md:col-span-2 md:row-span-2" },
+  { id: 8, title: "Monte-meuble", desc: "Utilisation d'un monte-meuble pour accéder aux étages élevés en toute sécurité.", url: "/gallery/img2.jpeg", span: "md:row-span-1" },
+  { id: 9, title: "Protection du mobilier", desc: "Protection intégrale de vos meubles pendant le transport.", url: "/gallery/img3.jpeg", span: "md:row-span-1" },
+  { id: 10, title: "Camions et véhicules", desc: "Flotte moderne pour tous types de volumes.", url: "/gallery/img4.jpeg", span: "md:row-span-2" },
+  { id: 11, title: "Nouveau chez vous", desc: "Installation et déballage jusqu'au dernier carton.", url: "/gallery/img5.jpeg", span: "md:row-span-1" },
+  { id: 12, title: "Bureaux et entreprises", desc: "Déménagements corporate et relocations.", url: "/gallery/img6.jpeg", span: "md:col-span-2 md:row-span-1" },
+    {
+    id: 13,
     title: "Préparation de nuit",
     desc: "Interventions en horaires adaptés à vos contraintes.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 11,
-    title: "Contrôle de l’inventaire",
+    id: 14,
+    title: "Contrôle de l'inventaire",
     desc: "Suivi précis de vos biens à chaque étape.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 1,
-    title: "Déménagement résidentiel",
-    desc: "Équipe professionnelle et matériel adapté pour votre logement.",
-    url: "/gallery/img1.jpeg",
-    span: "md:col-span-2 md:row-span-2",
-  },
-  {
-    id: 2,
-    title: "Monte-meuble",
-    desc: "Utilisation d’un monte-meuble pour accéder aux étages élevés en toute sécurité.",
-    url: "/gallery/img2.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 3,
-    title: "Protection du mobilier",
-    desc: "Protection intégrale de vos meubles pendant le transport.",
-    url: "/gallery/img3.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 4,
-    title: "Camions et véhicules",
-    desc: "Flotte moderne pour tous types de volumes.",
-    url: "/gallery/img4.jpeg",
-    span: "md:row-span-2",
-  },
-  {
-    id: 5,
-    title: "Nouveau chez vous",
-    desc: "Installation et déballage jusqu’au dernier carton.",
-    url: "/gallery/img5.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 6,
-    title: "Bureaux et entreprises",
-    desc: "Déménagements corporate et relocations.",
-    url: "/gallery/img6.jpeg",
-    span: "md:col-span-2 md:row-span-1",
-  },
-  {
-    id: 7,
-    title: "Manutention sécurisée",
-    desc: "Prise en charge des charges lourdes en toute sécurité.",
-    url: "/gallery/4.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 8,
+    id: 15,
     title: "Chargement du camion",
-    desc: "Optimisation de l’espace de chargement pour réduire les trajets.",
-    url: "/gallery/fg.jpeg",
-    span: "md:row-span-1",
-  },
-  {
-    id: 9,
-    title: "Équipe de déménageurs",
-    desc: "Professionnels formés pour un accompagnement de A à Z.",
+    desc: "Optimisation de l'espace de chargement pour réduire les trajets.",
     url: "/gallery/j.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 12,
+    id: 16,
     title: "Emballage sur mesure",
-    desc: "Solutions d’emballage adaptées aux objets fragiles.",
+    desc: "Solutions d'emballage adaptées aux objets fragiles.",
     url: "/gallery/WhatsApp%20Image%202026-03-j04%20at%2000.05.07.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 13,
+    id: 17,
     title: "Chargement coordonné",
     desc: "Organisation millimétrée du chargement du camion.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.14.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 14,
+    id: 18,
     title: "Equipe sur le terrain",
     desc: "Intervention rapide et efficace sur site.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.13.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 15,
+    id: 19,
     title: "Arrivée à destination",
     desc: "Livraison de vos biens dans les délais convenus.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.18.06.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 16,
+    id: 20,
     title: "Protection renforcée",
     desc: "Utilisation de matériel de protection haut de gamme.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.065jpeg.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 17,
+    id: 21,
     title: "Logistique de nuit",
     desc: "Opérations planifiées en horaires décalés.",
     url: "/gallery/WhatsApp%20Image%20200026-03-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 18,
+    id: 22,
     title: "Démontage du mobilier",
     desc: "Démontage et remontage complet de votre mobilier.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.46.jpeg",
@@ -3394,140 +3355,140 @@ const galleryImageItems = [
   },
  
   {
-    id: 20,
+    id: 24,
     title: "Transport en cours",
     desc: "Suivi de votre déménagement sur de longues distances.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 21,
+    id: 25,
     title: "Préparation du départ",
     desc: "Derniers contrôles avant le départ du camion.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.47.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 22,
+    id: 26,
     title: "Coordination d’équipe",
     desc: "Travail d’équipe pour un déménagement fluide.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 23,
+    id: 27,
     title: "Prise en charge complète",
     desc: "Gestion du projet de déménagement de bout en bout.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.07.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 24,
+    id: 28,
     title: "Accès difficile",
     desc: "Solutions adaptées pour les accès complexes.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.45.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 25,
+    id: 29,
     title: "Chargement minutieux",
     desc: "Disposition optimisée des cartons et du mobilier.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%2055at%2000.05.46.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 26,
+    id: 30,
     title: "Protection des sols",
     desc: "Mise en place de protections pour préserver vos sols.",
     url: "/gallery/WhatsApp%20Image%206862026-03-04%20at%2000.06.05.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 27,
+    id: 31,
     title: "Chargement de nuit",
     desc: "Opérations nocturnes pour limiter les contraintes.",
     url: "/gallery/WhatsApp%201Image%202026-03-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 28,
+    id: 32,
     title: "Préparation du matériel",
     desc: "Vérification du matériel avant chaque mission.",
     url: "/gallery/WhatsApp%20Image%202026-jpeg.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 29,
+    id: 33,
     title: "Organisation du stock",
     desc: "Gestion et préparation des fournitures de déménagement.",
     url: "/gallery/WhatsApp%20Image%202026-500-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 30,
+    id: 34,
     title: "Préparation des cartons",
     desc: "Conditionnement des effets personnels avec soin.",
     url: "/gallery/WhatsApp%20Image%202026-0-04%20at%2000.07.05.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 31,
+    id: 35,
     title: "Suivi du chantier",
     desc: "Supervision continue des opérations de déménagement.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.07.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 32,
+    id: 36,
     title: "Déménagement résidentiel",
     desc: "Accompagnement des familles dans chaque étape du projet.",
     url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.55.51.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 33,
+    id: 37,
     title: "Déménagement urbain",
     desc: "Interventions en plein cœur de la ville.",
     url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2015.46.54.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 34,
+    id: 38,
     title: "Installation sur site",
     desc: "Mise en place du mobilier dans vos nouveaux locaux.",
     url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.10.15.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 35,
+    id: 39,
     title: "Derniers réglages",
     desc: "Vérifications finales pour un déménagement réussi.",
     url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 36,
+    id: 40,
     title: "Déménagement entreprise",
     desc: "Transfert d’entreprise planifié pour limiter l’interruption de votre activité.",
     url: "/gallery/D%C3%A9m%C3%A9nagement%20entreprise.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 37,
+    id: 41,
     title: "Déménagement groupé",
     desc: "Solution économique de déménagement groupé en partage de camion.",
     url: "/gallery/D%C3%A9m%C3%A9nagement%20group%C3%A9.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 38,
+    id: 42,
     title: "Déménagement international",
     desc: "Organisation complète de vos déménagements internationaux.",
     url: "/gallery/D%C3%A9m%C3%A9nagement%20international.jpeg",
     span: "md:row-span-1",
   },
   {
-    id: 39,
+    id: 43,
     title: "Déménagement longue distance",
     desc: "Solutions adaptées pour les déménagements longue distance en France et en Europe.",
     url: "/gallery/D%C3%A9m%C3%A9nagement%20longue%20distance.jpeg",
@@ -4500,7 +4461,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <VenteFlash />
       {/* Services section with Bento grid */}
       <section className="w-full bg-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -4519,14 +4479,15 @@ export default function Home() {
         </div>
       </section>
       <Group719 onGetQuote={handleGetQuote} />
-      <Group756 />
-      <Group756Logos />
-      <GallerySection />
       <TarificationSection />
       <Content01 />
       <Frame721 />
+      <Group756 />
+      <Group756Logos />
       {false && <Frame700 />}
       <Frame701 />
+      <GallerySection />
+      <VenteFlash />
       <Group753 />
       <Group719 onGetQuote={handleGetQuote} />
       <Footer />
