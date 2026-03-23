@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Globe2, PackageCheck, ShieldCheck, Truck, FileText } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-
+import { InterventionMapInternational } from "../components/intervention-map";
 export default function ZoneInternational() {
   const navigate = useNavigate();
   const primaryCta = () => navigate("/tunnel/mes-coordonnees");
@@ -105,6 +105,34 @@ export default function ZoneInternational() {
           </div>
         </section>
 
+        {/* Zones d'intervention */}
+        <section className="mt-16">
+          <InterventionMapInternational />
+        </section>
+
+        {/* Desktop: section title + Google Reviews widget */}
+        <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
+          <div className="text-center">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
+              Ce que nos clients disent de nous !
+            </h2>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
+          </div>
+        </div>
+        {/* Mobile: section title + Google Reviews widget */}
+        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
+              Ce que nos clients disent de nous !
+            </h2>
+          </div>
+          <div className="mt-6 flex justify-center">
+            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
+          </div>
+        </div>
+
         <section className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14">
           <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500">
             Déroulé
@@ -194,6 +222,40 @@ export default function ZoneInternational() {
                     Organisation • Formalités • Transport coordonné
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+          
+        </section>
+
+        {/* CTA final */}
+        <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 font-['Poppins',sans-serif]">
+                Prêt à déménager en toute sérénité ?
+              </h2>
+
+              <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+                Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. Obtenez votre devis
+                gratuit maintenant !
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  type="button"
+                  onClick={primaryCta}
+                  className="inline-flex items-center justify-center bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
+                >
+                  Obtenir un devis gratuit
+                </button>
+
+                <a
+                  href="/contact"
+                  className="inline-flex items-center justify-center border border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
+                >
+                  Nous contacter
+                </a>
               </div>
             </div>
           </div>

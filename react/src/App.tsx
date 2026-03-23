@@ -78,6 +78,7 @@ import { Switch } from "./components/ui/switch";
 import { Checkbox } from "./components/ui/checkbox";
 import { ImageWithFallback } from "./components/figma/ImageWithFallback";
 import Footer from "./components/layout/Footer";
+import StickyContactButtons from "./components/StickyContactButtons";
 
 function AppContent() {
   const navigate = useNavigate();
@@ -496,6 +497,15 @@ function AppContent() {
   };
 
   const handleContinueFromSurface = async () => {
+    if (!logementType) {
+      alert("Veuillez sélectionner votre type de logement.");
+      return;
+    }
+    if (!ancienneteLogement) {
+      alert("Veuillez sélectionner depuis quand vous êtes dans ce logement.");
+      return;
+    }
+
     try {
       // Calculate volume using the new formula: Volume (m³) = Surface (m²) ÷ 2
       const area = parseFloat(surfaceArea);
@@ -2009,12 +2019,14 @@ function AppContent() {
             <div className="flex items-center">
               <button
                 onClick={() => navigate("/")}
-                className="text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer"
+                className="hover:opacity-80 transition-opacity cursor-pointer"
+                aria-label="Retour à l'accueil"
               >
-                Go
-                <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-3 py-2 rounded ml-1">
-                  YARD
-                </span>
+                <img
+                  src="/logo.svg"
+                  alt="Guivarche Déménagement"
+                  className="h-16 sm:h-24 lg:h-32 w-auto"
+                />
               </button>
             </div>
             <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
@@ -2068,12 +2080,14 @@ function AppContent() {
             <div className="flex items-center">
               <button
                 onClick={() => navigate("/")}
-                className="text-3xl font-bold text-slate-900 hover:opacity-80 transition-opacity cursor-pointer"
+                className="hover:opacity-80 transition-opacity cursor-pointer"
+                aria-label="Retour à l'accueil"
               >
-                Go
-                <span className="bg-gradient-to-r from-[#CC922F] to-[#1c3957] text-white px-3 py-2 rounded ml-1">
-                  YARD
-                </span>
+                <img
+                  src="/logo.svg"
+                  alt="Guivarche Déménagement"
+                  className="h-16 sm:h-24 lg:h-32 w-auto"
+                />
               </button>
             </div>
             <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
@@ -2376,22 +2390,6 @@ function AppContent() {
                             : '(calculé par inventaire)'}
                         </span>
                       </div>
-                      {(declaredVolumeMethod === 'surface' || logementType || ancienneteLogement) && (
-                        <>
-                          <div className="flex justify-between">
-                            <span className="text-slate-600">Votre logement</span>
-                            <span className="font-medium">
-                              {logementType === 'aerien' ? 'Aérien' : logementType === 'normal' ? 'Normal' : logementType === 'charge' ? 'Chargé' : '—'}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-slate-600">Ancienneté</span>
-                            <span className="font-medium">
-                              {ancienneteLogement === '0_2' ? '0–2 ans' : ancienneteLogement === '2_5' ? '2–5 ans' : ancienneteLogement === '5_plus' ? 'Plus de 5 ans' : '—'}
-                            </span>
-                          </div>
-                        </>
-                      )}
                       <div className="flex justify-between">
                         <span className="text-slate-600">Distance</span>
                         <span className="font-medium">
@@ -3959,7 +3957,12 @@ function AppContent() {
                         size="lg"
                         className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white hover:text-white flex-1 disabled:bg-slate-400"
                         onClick={handleContinueFromSurface}
-                        disabled={!surfaceArea || parseInt(surfaceArea) <= 0}
+                      disabled={
+                        !surfaceArea ||
+                        parseInt(surfaceArea) <= 0 ||
+                        !logementType ||
+                        !ancienneteLogement
+                      }
                       >
                         CONTINUER →
                       </Button>
@@ -5607,6 +5610,7 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <StickyContactButtons />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/ile-de-france" element={<ZoneIleDeFrance />} />

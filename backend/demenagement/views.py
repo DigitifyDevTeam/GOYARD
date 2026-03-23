@@ -1432,8 +1432,10 @@ def send_quote_pdf(request):
         has_stopover = bool(addr.has_stopover)
         escale_etage = addr.escale_etage or None
         escale_ascenseur = addr.escale_ascenseur or None
+        escale_adresse = addr.escale_adresse or None
         demi_etage_depart = bool(getattr(addr, 'demi_etage_depart', False))
         demi_etage_arrivee = bool(getattr(addr, 'demi_etage_arrivee', False))
+        demi_etage_escale = bool(getattr(addr, 'demi_etage_escale', False)) if has_stopover else False
 
         monte_meuble_depart = bool((addr.options_depart or {}).get('monte_meuble', False))
         monte_meuble_arrivee = bool((addr.options_arrivee or {}).get('monte_meuble', False))
@@ -1528,6 +1530,13 @@ def send_quote_pdf(request):
             client_phone=client.phone or '',
             adresse_depart=origin_address,
             adresse_arrivee=destination_address,
+            escale_adresse=escale_adresse,
+            etage_depart=etage_depart,
+            etage_arrivee=etage_arrivee,
+            escale_etage=escale_etage,
+            ascenseur_depart=ascenseur_depart,
+            ascenseur_arrivee=ascenseur_arrivee,
+            escale_ascenseur=escale_ascenseur,
             distance_km=distance_km,
             volume_m3=volume_m3,
             final_price=final_price,
@@ -1545,6 +1554,7 @@ def send_quote_pdf(request):
             portage_esc=portage_esc,
             demi_etage_depart=demi_etage_depart,
             demi_etage_arrivee=demi_etage_arrivee,
+            demi_etage_escale=demi_etage_escale,
             volume_method=volume_method,
             method_output=method_output,
             date_demenagement=getattr(client, 'date_demenagement', None),

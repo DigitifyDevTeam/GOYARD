@@ -103,7 +103,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     aria-haspopup="true"
                     aria-expanded={zonesOpen}
                   >
-                    ZONE
+                    Zone
                     <span className="text-xs mt-[1px]">▾</span>
                   </button>
                   {zonesOpen && (
@@ -260,12 +260,12 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 Devis en un clic
               </button>
               <a
-                href="tel:+33742366424"
+                href="tel:+33 1 89 70 33 24"
                 className="hidden sm:flex items-center gap-2 text-[#1c3957] hover:text-[#CC922F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base whitespace-nowrap transition-colors"
-                aria-label="Appeler le 07 42 36 64 24"
+                aria-label="Appeler le +33 1 89 70 33 24"
               >
                 <Phone className="w-4 h-4 shrink-0" />
-                <span>07 42 36 64 24</span>
+                <span>1 89 70 33 24</span>
               </a>
               <button
                 type="button"
