@@ -445,7 +445,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 
 function Frame720() {
   return (
-    <div className="h-[72px] sm:h-[90px] lg:h-[120px] relative shrink-0 w-full">
+    <div className="h-[60px] sm:h-[80px] lg:h-[100px] relative shrink-0 w-full">
       <svg
         className="block size-full"
         fill="none"

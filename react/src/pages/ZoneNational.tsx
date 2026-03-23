@@ -110,62 +110,93 @@ export default function ZoneNational() {
           <InterventionMapNational />
         </section>
 
-        {/* Desktop: section title + Google Reviews widget */}
-        <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-          <div className="text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
-          </div>
-        </div>
-        {/* Mobile: section title + Google Reviews widget */}
-        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-6 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
-          </div>
-        </div>
-
-        <section className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14">
-          <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500">
-            Ce qui est inclus
-          </p>
-          <h2 className="mt-2 font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-            Une prestation pensée pour les longues distances.
-          </h2>
-          <div className="mt-8 grid md:grid-cols-3 gap-5">
-            {[
-              {
-                title: "Préparation & timing",
-                desc: "On cale les dates, les étapes, et les contraintes (remise des clés, ascenseur, horaires).",
-              },
-              {
-                title: "Protection & arrimage",
-                desc: "Housses, couvertures, films, sangles. Tout est sécurisé pour éviter les chocs.",
-              },
-              {
-                title: "Livraison organisée",
-                desc: "Déchargement, placement, remontage si option. Vous récupérez un logement opérationnel.",
-              },
-            ].map((x) => (
-              <div key={x.title} className="rounded-3xl border border-slate-100 bg-white shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-6">
-                <div className="font-['Poppins',sans-serif] font-bold text-[#191919]">
-                  {x.title}
-                </div>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-                  {x.desc}
+{/* À propos – visual showcase */}
+<section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
+            {/* Top: heading + quote */}
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+              <div>
+                <span className="inline-block font-['Poppins',sans-serif] text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">
+                  À Propos
+                </span>
+                <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[44px] lg:leading-[1.15]">
+                  L'excellence au service
+                  <br className="hidden sm:block" /> de votre déménagement.
+                </h2>
+              </div>
+              <div className="flex gap-4 lg:gap-5 items-start lg:pt-6">
+                <svg
+                  className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 text-slate-200"
+                  viewBox="0 0 48 48"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M12.5 28.8c0-5.1 3.3-9.7 8.3-11.3l-.8-3.5C13.6 16 9 21.7 9 28.8c0 5.2 3.2 8.7 7.2 8.7 3.4 0 5.8-2.6 5.8-5.7 0-3-2.2-5.4-5.3-5.4-1.5 0-2.8.6-3.6 1.5-.2-4.5 2.4-8.6 6.5-10.2l-.8-3.5C13.4 16 9.2 21.4 9.2 28.2c0 .2 0 .4.1.6h3.2zm18.7 0c0-5.1 3.3-9.7 8.3-11.3l-.8-3.5c-6.4 2-11 7.7-11 14.8 0 5.2 3.2 8.7 7.2 8.7 3.4 0 5.8-2.6 5.8-5.7 0-3-2.2-5.4-5.3-5.4-1.5 0-2.8.6-3.6 1.5-.2-4.5 2.4-8.6 6.5-10.2l-.8-3.5C32.1 16 27.9 21.4 27.9 28.2c0 .2 0 .4.1.6h3.2z" />
+                </svg>
+                <p className="text-slate-600 text-[15px] sm:text-base leading-relaxed max-w-lg">
+                  <span className="font-semibold text-slate-800">
+                    Nous accompagnons chaque projet avec rigueur et bienveillance.
+                  </span>{" "}
+                  De la préparation au dernier carton posé, notre équipe met son
+                  savoir-faire au service d'un déménagement fluide, ponctuel et
+                  soigné — partout en Île-de-France.
                 </p>
               </div>
-            ))}
+            </div>
+
+            {/* Gallery row */}
+            <div className="mt-12 sm:mt-14 lg:mt-16">
+              {/* Mobile: simple 2x2 */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
+                {[
+                  { src: "/zones/fr1.jpg", alt: "Équipe de déménagement en action" },
+                  { src: "/zones/fr2.jpg", alt: "Nos locaux et équipements" },
+                  { src: "/zones/fr3.jpg", alt: "Monte-meuble en intervention" },
+                  { src: "/zones/fr4.jpg", alt: "Protection et chargement soigné" },
+                ].map((img) => (
+                  <div
+                    key={img.src}
+                    className="relative overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] sm:aspect-[4/5]"
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop: staggered heights like your reference */}
+              <div className="hidden lg:flex items-end gap-4">
+                {(() => {
+                  return [
+                    { src: "/zones/int1.jpg", alt: "Équipe de déménagement en action" },
+                    { src: "/zones/int2.jpg", alt: "Nos locaux et équipements" },
+                    { src: "/zones/int3.jpg", alt: "Monte-meuble en intervention" },
+                    { src: "/zones/int4.jpg", alt: "Protection et chargement soigné" },
+                  ].map((img) => {
+                    return (
+                      <div
+                        key={img.src}
+                        className="relative flex-1 overflow-hidden rounded-2xl sm:rounded-3xl h-[320px]"
+                      >
+                        <img
+                          src={img.src}
+                          alt={img.alt}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            </div>
           </div>
         </section>
+
 
         <section className="bg-slate-50/60 border-y border-slate-100">
           <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14">
@@ -227,6 +258,63 @@ export default function ZoneNational() {
           </div>
         </section>
 
+ 
+
+        <section className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14">
+          <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500">
+            Ce qui est inclus
+          </p>
+          <h2 className="mt-2 font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
+            Une prestation pensée pour les longues distances.
+          </h2>
+          <div className="mt-8 grid md:grid-cols-3 gap-5">
+            {[
+              {
+                title: "Préparation & timing",
+                desc: "On cale les dates, les étapes, et les contraintes (remise des clés, ascenseur, horaires).",
+              },
+              {
+                title: "Protection & arrimage",
+                desc: "Housses, couvertures, films, sangles. Tout est sécurisé pour éviter les chocs.",
+              },
+              {
+                title: "Livraison organisée",
+                desc: "Déchargement, placement, remontage si option. Vous récupérez un logement opérationnel.",
+              },
+            ].map((x) => (
+              <div key={x.title} className="rounded-3xl border border-slate-100 bg-white shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-6">
+                <div className="font-['Poppins',sans-serif] font-bold text-[#191919]">
+                  {x.title}
+                </div>
+                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                  {x.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+        {/* Desktop: section title + Google Reviews widget */}
+ <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
+          <div className="text-center">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
+              Ce que nos clients disent de nous !
+            </h2>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
+          </div>
+        </div>
+        {/* Mobile: section title + Google Reviews widget */}
+        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
+              Ce que nos clients disent de nous !
+            </h2>
+          </div>
+          <div className="mt-6 flex justify-center">
+            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
+          </div>
+        </div>
         {/* CTA final */}
         <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
           <div className="container mx-auto px-4 sm:px-6">
