@@ -172,10 +172,10 @@ export default function ZoneNational() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/zones/int1.jpg", alt: "Équipe de déménagement en action" },
-                    { src: "/zones/int2.jpg", alt: "Nos locaux et équipements" },
-                    { src: "/zones/int3.jpg", alt: "Monte-meuble en intervention" },
-                    { src: "/zones/int4.jpg", alt: "Protection et chargement soigné" },
+                    { src: "/zones/fr1.jpg", alt: "Équipe de déménagement en action" },
+                    { src: "/zones/fr2.jpg", alt: "Nos locaux et équipements" },
+                    { src: "/zones/fr3.jpg", alt: "Monte-meuble en intervention" },
+                    { src: "/zones/fr4.jpg", alt: "Protection et chargement soigné" },
                   ].map((img) => {
                     return (
                       <div

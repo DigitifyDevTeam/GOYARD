@@ -9,7 +9,7 @@ export default function StickyContactButtons() {
     .split("")
     .filter((ch) => ch >= "0" && ch <= "9")
     .join("");
-  const whatsappHref = `https://wa.me/+33746326678`;
+  const whatsappHref = `https://wa.me/${whatsappNumberDigits}`;
 
   const buttonClassName =
     "w-12 h-12 rounded-full bg-[#1c3957] hover:bg-[#2a4f6b] text-white shadow-lg border border-white/10 transition-colors flex items-center justify-center z-60";
