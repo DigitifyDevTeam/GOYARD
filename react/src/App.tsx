@@ -20,6 +20,7 @@ import DemenagementParticulier from "./pages/DemenagementParticulier";
 import ZoneIleDeFrance from "./pages/ZoneIleDeFrance";
 import ZoneNational from "./pages/ZoneNational";
 import ZoneInternational from "./pages/ZoneInternational";
+import NotFound from "./pages/NotFound";
 import {
   Phone,
   MapPin,
@@ -1231,6 +1232,98 @@ function AppContent() {
     setDevisSent(false);
 
     try {
+      const declaredMethod = declaredVolumeMethod ?? lastUsedMethod ?? selectedMethod;
+      const volumeMethodForEmail =
+        declaredMethod === 'list'
+          ? 'manual'
+          : declaredMethod === 'photo'
+            ? 'ai'
+            : declaredMethod === 'surface'
+              ? 'superficie'
+              : undefined;
+
+      const buildListMethodOutput = () => {
+        const parts: string[] = [];
+        Object.entries(roomObjectQuantities).forEach(([roomName, objects]) => {
+          const items = Object.entries(objects)
+            .filter(([, quantity]) => quantity > 0)
+            .map(([objectName, quantity]) =>
+              quantity === 1 ? objectName : `${objectName}×${quantity}`
+            );
+          if (items.length) {
+            parts.push(`${roomName}: ${items.join(', ')}`);
+          }
+        });
+
+        const heavyItems = Object.entries(specialObjectQuantities)
+          .filter(([, quantity]) => quantity > 0)
+          .map(([objectName, quantity]) =>
+            quantity === 1 ? objectName : `${objectName}×${quantity}`
+          );
+        if (heavyItems.length) {
+          parts.push(`Lourds: ${heavyItems.join(', ')}`);
+        }
+
+        return parts.length
+          ? parts.join(' · ')
+          : `Inventaire: ${declaredVolumeM3 != null && !Number.isNaN(declaredVolumeM3) ? `${declaredVolumeM3.toFixed(1)} m³` : ''}`;
+      };
+
+      const buildAiMethodOutput = () => {
+        const parts: string[] = [];
+        Object.entries(roomAnalysisResults).forEach(([roomName, objects]) => {
+          const items: string[] = [];
+          Object.entries(objects).forEach(([objectName, value]) => {
+            const quantity =
+              typeof value === 'number'
+                ? value
+                : typeof (value as any)?.quantity === 'number'
+                  ? (value as any).quantity
+                  : 0;
+
+            if (quantity > 0) {
+              items.push(quantity === 1 ? objectName : `${objectName}×${quantity}`);
+            }
+          });
+
+          if (items.length) {
+            parts.push(`${roomName}: ${items.join(', ')}`);
+          }
+        });
+
+        const heavyItems = Object.entries(specialObjectQuantities)
+          .filter(([, quantity]) => quantity > 0)
+          .map(([objectName, quantity]) =>
+            quantity === 1 ? objectName : `${objectName}×${quantity}`
+          );
+        if (heavyItems.length) {
+          parts.push(`Lourds: ${heavyItems.join(', ')}`);
+        }
+
+        if (parts.length) return parts.join(' · ');
+        if (analysisResults?.summary) return `Analyse IA: ${analysisResults.summary}`;
+        return 'Analyse IA';
+      };
+
+      const buildSurfaceMethodOutput = () => {
+        const area = surfaceArea ? Number(surfaceArea) : NaN;
+        const areaLabel = !Number.isNaN(area) && area > 0 ? `${area.toFixed(0)} m²` : 'm²';
+        const volumeLabel =
+          declaredVolumeM3 != null && !Number.isNaN(declaredVolumeM3)
+            ? `${Number(declaredVolumeM3).toFixed(1)} m³`
+            : '—';
+        return `Mon devis en fonction de la superficie : ${areaLabel} · Volume estimé : ${volumeLabel}`;
+      };
+
+      const methodOutputForEmail =
+        declaredMethod === 'photo'
+          ? buildAiMethodOutput()
+          : declaredMethod === 'list'
+            ? buildListMethodOutput()
+            : declaredMethod === 'surface'
+              ? buildSurfaceMethodOutput()
+              : undefined;
+
       const storedCalcId = localStorage.getItem('lastCalculationId');
 
       const payload: Record<string, any> = {
@@ -1238,6 +1331,9 @@ function AppContent() {
         demontage_remontage: options.demontageRemontage,
         emballage_fragile: options.emballageFragile,
         emballage_cartons: options.emballageCartons,
+        // Overrides for the email/PDF method block (prevents wrong "superficie" fallback).
+        ...(volumeMethodForEmail ? { volume_method: volumeMethodForEmail } : {}),
+        ...(methodOutputForEmail ? { method_output: methodOutputForEmail } : {}),
       };
 
       if (storedCalcId) {
@@ -5680,6 +5776,7 @@ export default function App() {
             <AppContent />
           </RouteGuard>
         } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

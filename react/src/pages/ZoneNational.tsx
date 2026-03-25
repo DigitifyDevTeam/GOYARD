@@ -55,7 +55,7 @@ export default function ZoneNational() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => navigate("/contact")}
+                    onClick={() => window.location.href = "tel:+33189703324"}
                     className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
                   >
                     Parler à un conseiller
@@ -139,7 +139,7 @@ export default function ZoneNational() {
                   </span>{" "}
                   De la préparation au dernier carton posé, notre équipe met son
                   savoir-faire au service d'un déménagement fluide, ponctuel et
-                  soigné — partout en Île-de-France.
+                  soigné — partout en France.
                 </p>
               </div>
             </div>

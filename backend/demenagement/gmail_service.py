@@ -257,7 +257,8 @@ def send_admin_devis_notification(
         'icon': '❓',
     })
     method_label = method_style['label']
-    method_output_safe = (method_output or '—').replace('<', '&lt;').replace('>', '&gt;')
+    # Escape for safe insertion into HTML (we build the full HTML email server-side).
+    method_output_safe = html_lib.escape(method_output or '—', quote=False)
     method_output_display = method_output_safe
     if volume_method == 'manual' and method_output:
         # Highlight "room names" (text before ':') in manual selection for readability, and display each room on a new line.

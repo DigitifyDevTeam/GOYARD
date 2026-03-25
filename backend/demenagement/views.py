@@ -1379,40 +1379,49 @@ def send_quote_pdf(request):
                     selection = sel
 
         # Build method and method_output for admin email (color-coded)
-        volume_method = None
-        method_output = None
+        # Frontend can provide overrides so the UI doesn't depend on which DB record is attached.
+        volume_method = data.get('volume_method') or None
+        method_output = data.get('method_output') or None
+
         if selection:
-            volume_method = selection.method
-            if selection.method == 'superficie':
-                surf = selection.surface_area or 0
-                calc = selection.calculated_volumes or {}
-                vh = calc.get('vhouse', 0)
-                vf = calc.get('vfurniture', 0)
-                logement_type = getattr(selection, 'logement_type', None) or ''
-                anciennete_logement = getattr(selection, 'anciennete_logement', None) or ''
-                extra = ""
-                if logement_type or anciennete_logement:
-                    logement_label = {'aerien': 'Aérien', 'normal': 'Normal', 'charge': 'Chargé'}.get(logement_type, logement_type or '—')
-                    anciennete_label = {'0_2': '0–2 ans', '2_5': '2–5 ans', '5_plus': 'Plus de 5 ans'}.get(anciennete_logement, anciennete_logement or '—')
-                    extra = f" · Logement: {logement_label} · Ancienneté: {anciennete_label}"
-                method_output = f"{surf:.0f} m² → Volume maison: {vh:.0f} m³, Mobilier: {vf:.0f} m³{extra}"
-            elif selection.method in ('manual', 'ai'):
-                parts = []
-                rs = selection.room_selections or {}
-                for room, objs in rs.items():
-                    if isinstance(objs, dict):
-                        items = [f"{k}×{v}" if v != 1 else k for k, v in objs.items() if v]
-                        if items:
-                            parts.append(f"{room}: {', '.join(items)}")
-                ho = selection.heavy_objects or {}
-                heavy_items = [f"{k}×{v}" if v != 1 else k for k, v in ho.items() if v]
-                if heavy_items:
-                    parts.append(f"Lourds: {', '.join(heavy_items)}")
-                co = selection.custom_objects or {}
-                custom_items = list(co.keys()) if co else []
-                if custom_items:
-                    parts.append(f"Personnalisés: {', '.join(custom_items)}")
-                method_output = " · ".join(parts) if parts else f"{selection.total_objects_count} objets, {volume_m3:.1f} m³"
+            # Only use selection.method when caller didn't provide an override.
+            if volume_method is None:
+                volume_method = selection.method
+
+            # Only auto-generate method_output when:
+            # - caller didn't provide an override, and
+            # - selection.method matches the final volume_method we will display.
+            if method_output is None and selection.method == volume_method:
+                if selection.method == 'superficie':
+                    surf = selection.surface_area or 0
+                    calc = selection.calculated_volumes or {}
+                    vh = calc.get('vhouse', 0)
+                    vf = calc.get('vfurniture', 0)
+                    logement_type = getattr(selection, 'logement_type', None) or ''
+                    anciennete_logement = getattr(selection, 'anciennete_logement', None) or ''
+                    extra = ""
+                    if logement_type or anciennete_logement:
+                        logement_label = {'aerien': 'Aérien', 'normal': 'Normal', 'charge': 'Chargé'}.get(logement_type, logement_type or '—')
+                        anciennete_label = {'0_2': '0–2 ans', '2_5': '2–5 ans', '5_plus': 'Plus de 5 ans'}.get(anciennete_logement, anciennete_logement or '—')
+                        extra = f" · Logement: {logement_label} · Ancienneté: {anciennete_label}"
+                    method_output = f"{surf:.0f} m² → Volume maison: {vh:.0f} m³, Mobilier: {vf:.0f} m³{extra}"
+                elif selection.method in ('manual', 'ai'):
+                    parts = []
+                    rs = selection.room_selections or {}
+                    for room, objs in rs.items():
+                        if isinstance(objs, dict):
+                            items = [f"{k}×{v}" if v != 1 else k for k, v in objs.items() if v]
+                            if items:
+                                parts.append(f"{room}: {', '.join(items)}")
+                    ho = selection.heavy_objects or {}
+                    heavy_items = [f"{k}×{v}" if v != 1 else k for k, v in ho.items() if v]
+                    if heavy_items:
+                        parts.append(f"Lourds: {', '.join(heavy_items)}")
+                    co = selection.custom_objects or {}
+                    custom_items = list(co.keys()) if co else []
+                    if custom_items:
+                        parts.append(f"Personnalisés: {', '.join(custom_items)}")
+                    method_output = " · ".join(parts) if parts else f"{selection.total_objects_count} objets, {volume_m3:.1f} m³"
 
         if volume_m3 is None or volume_m3 <= 0:
             return Response({

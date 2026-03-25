@@ -68,11 +68,11 @@ export function InterventionMapRegion({
   return (
     <section
       id="zones"
-      className="relative overflow-hidden bg-gradient-to-b from-white via-[#CC922F]/10 to-white py-16 px-4 sm:px-6 lg:px-8"
+      className="relative overflow-hidden bg-gradient py-16 px-4 sm:px-6 lg:px-8"
     >
       {/* Decorative background elements */}
-      <div className="absolute left-1/4 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-[#1C2E42]/10 blur-3xl" />
-      <div className="absolute right-1/4 bottom-0 h-96 w-96 translate-x-1/2 rounded-full bg-[#CC922F]/10 blur-3xl" />
+      <div className="absolute left-1/4 top-0 h-96 w-96 -translate-x-1/2 rounded-full" />
+      <div className="absolute right-1/4 bottom-0 h-96 w-96 translate-x-1/2 rounded-full" />
 
       <div className="relative mx-auto max-w-6xl">
         {/* Header */}
@@ -119,13 +119,14 @@ export function InterventionMapRegion({
   );
 }
 
+
 export function InterventionMapIleDeFrance() {
   return (
     <InterventionMapRegion
       mapLabel="Île-de-France"
       mapLat={48.8566}
       mapLng={2.3522}
-      mapZoom={11}
+      mapZoom={7}
       regionTitle="Île-de-France"
       regionSubtitle="Déménagement local & régional"
       headerDescription="Guivarche Déménagement intervient en Île-de-France pour des déménagements organisés, soignés et parfaitement cadrés."
@@ -142,9 +143,10 @@ export function InterventionMapNational() {
   return (
     <InterventionMapRegion
       mapLabel="France"
-      mapLat={48.8566}
-      mapLng={2.3522}
-      mapZoom={11}
+      mapLat={46.2321}
+      mapLng={2.2096}
+      mapZoom={4
+      }
       regionTitle="France"
       regionSubtitle="Déménagement national"
       headerDescription="Pour les longues distances, Guivarche Déménagement structure chaque étape afin de sécuriser vos biens et votre planning."
@@ -161,9 +163,9 @@ export function InterventionMapInternational() {
   return (
     <InterventionMapRegion
       mapLabel="Europe & monde"
-      mapLat={48.8566}
-      mapLng={2.3522}
-      mapZoom={11}
+      mapLat={53.0000}
+      mapLng={9.0000}
+      mapZoom={1}
       regionTitle="Europe & monde"
       regionSubtitle="Déménagement international"
       headerDescription="Guivarche Déménagement vous accompagne à l’international : organisation, protections et coordination des étapes."
