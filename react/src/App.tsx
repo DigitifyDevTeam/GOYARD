@@ -21,7 +21,6 @@ import ZoneIleDeFrance from "./pages/ZoneIleDeFrance";
 import ZoneNational from "./pages/ZoneNational";
 import ZoneInternational from "./pages/ZoneInternational";
 import NotFound from "./pages/NotFound";
-import Test from "./pages/test";
 import {
   Phone,
   MapPin,
@@ -5725,7 +5724,6 @@ export default function App() {
         <Route path="/formules-demenagement" element={<FormulesDemenagement />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />
-        <Route path="/test" element={<Test />} />
         <Route path="/tunnel/mes-coordonnees" element={<AppContent />} />
         <Route path="/tunnel/choix-volume" element={
           <RouteGuard>

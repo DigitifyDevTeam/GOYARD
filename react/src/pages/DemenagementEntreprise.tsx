@@ -21,6 +21,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import TarificationSection from "@/components/TarificationSection";
+import InteractiveImageBentoGallery from "@/components/bento-gallery";
 
 // ─── Professionnel Data ───────────────────────────────────────────
 
@@ -143,6 +145,23 @@ const proSectors = [
   "Retail",
   "Administration publique",
   "Industrie",
+];
+
+// ─── Gallery Data (Entreprise) ────────────────────────────────────
+
+const entrepriseGalleryItems = [
+  { id: 1, title: "Déménagement entreprise", desc: "Transfert complet de bureaux et mobilier professionnel.", url: "/gallery/D%C3%A9m%C3%A9nagement%20entreprise.jpeg", span: "md:col-span-2 md:row-span-2" },
+  { id: 2, title: "Déménagement groupé", desc: "Gestion logistique multi-sites pour les grandes structures.", url: "/gallery/D%C3%A9m%C3%A9nagement%20group%C3%A9.jpeg", span: "md:row-span-1" },
+  { id: 3, title: "Déménagement international", desc: "Transfert d'activité à l'international, douane et logistique incluses.", url: "/gallery/D%C3%A9m%C3%A9nagement%20international.jpeg", span: "md:row-span-1" },
+  { id: 4, title: "Longue distance", desc: "Solutions de transport longue distance pour vos équipements.", url: "/gallery/D%C3%A9m%C3%A9nagement%20longue%20distance.jpeg", span: "md:row-span-1" },
+  { id: 5, title: "Manutention professionnelle", desc: "Équipe spécialisée pour le mobilier de bureau et matériel lourd.", url: "/gallery/image2.jpeg", span: "md:row-span-1" },
+  { id: 6, title: "Flotte et logistique", desc: "Véhicules adaptés aux volumes professionnels.", url: "/gallery/img6.jpeg", span: "md:row-span-1" },
+  { id: 7, title: "Chargement sécurisé", desc: "Protection et conditionnement du matériel informatique.", url: "/gallery/WhatsApp%20Image%202026-03-18%20at%2000.59.48.jpeg", span: "md:row-span-1" },
+  { id: 8, title: "Installation sur site", desc: "Remise en place complète dans vos nouveaux locaux.", url: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.01.50.jpeg", span: "md:row-span-1" },
+  { id: 9, title: "Coordination d'équipe", desc: "Gestion de projet et supervision sur le terrain.", url: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.54.jpeg", span: "md:row-span-1" },
+  { id: 10, title: "Emballage professionnel", desc: "Conditionnement adapté aux équipements sensibles.", url: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg", span: "md:row-span-1" },
+  { id: 11, title: "Transfert de mobilier", desc: "Déplacement et réagencement de mobilier de bureau.", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.13.jpeg", span: "md:row-span-1" },
+  { id: 12, title: "Livraison et montage", desc: "Réception, montage et vérification dans les nouveaux espaces.", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.14.jpeg", span: "md:row-span-1" },
 ];
 
 // ─── Reusable Section Header ──────────────────────────────────────
@@ -325,7 +344,7 @@ export default function DemenagementEntreprise() {
 
       <main className="flex-1">
         {/* Hero Professionnel */}
-        <section className="relative bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-16 sm:py-20 lg:py-28 overflow-hidden">
+        <section className="relative bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white py-12 sm:py-16 lg:py-20 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute bottom-20 left-20 w-80 h-80 bg-[#CC922F] rounded-full blur-3xl" />
             <div className="absolute top-10 right-20 w-64 h-64 bg-white rounded-full blur-3xl" />
@@ -395,7 +414,7 @@ export default function DemenagementEntreprise() {
         </section>
 
         {/* Domaines d'intervention */}
-        <section className="bg-white py-12 sm:py-16 lg:py-20">
+        <section className="bg-white py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto px-4 sm:px-6">
             <SectionHeader
               icon={<Globe className="h-4 w-4" />}
@@ -435,27 +454,11 @@ export default function DemenagementEntreprise() {
           </div>
         </section>
 
-        {/* Offres Entreprises */}
-        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
-          <div className="container mx-auto px-4 sm:px-6">
-            <SectionHeader
-              icon={<Star className="h-4 w-4" />}
-              pill="Offres entreprises"
-              pillColor="navy"
-              title="Nos offres entreprises"
-              subtitle="Des formules pensées pour chaque taille d'organisation"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto items-stretch">
-              {proFormules.map((formule, index) => (
-                <PricingCard key={index} index={index} {...formule} />
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Tarification – contenu réutilisé depuis la page Tarification */}
+        <TarificationSection />
 
         {/* Notre méthode projet */}
-        <section className="bg-white py-12 sm:py-16 lg:py-20">
+        <section className="bg-white py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto px-4 sm:px-6">
             <SectionHeader
               icon={<Calendar className="h-4 w-4" />}
@@ -473,8 +476,16 @@ export default function DemenagementEntreprise() {
           </div>
         </section>
 
+        {/* Galerie entreprise */}
+        <InteractiveImageBentoGallery
+          imageItems={entrepriseGalleryItems}
+          uniformTiles
+          title="Guivarche déménagement en action"
+          description="Découvrez nos transferts d'entreprise en images : bureaux, entrepôts, matériel IT et installations sur site."
+        />
+
         {/* Engagements */}
-        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+        <section className="bg-gray-50 py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto px-4 sm:px-6">
             <SectionHeader
               icon={<Shield className="h-4 w-4" />}
@@ -510,7 +521,7 @@ export default function DemenagementEntreprise() {
         </section>
 
         {/* Ils nous ont fait confiance */}
-        <section className="bg-white py-12 sm:py-16 lg:py-20">
+        <section className="bg-white py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <SectionHeader
               icon={<Users className="h-4 w-4" />}
@@ -547,7 +558,7 @@ export default function DemenagementEntreprise() {
         </section>
 
         {/* CTA Professionnel */}
-        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+        <section className="bg-gray-50 py-8 sm:py-12 lg:py-16">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="bg-gradient-to-r from-[#1C3957] to-[#CC922F] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center relative overflow-hidden">
               <div className="absolute inset-0 opacity-10">
