@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
-import { 
-  Home, 
+import {
+  Home,
   Building2,
-  Clock, 
-  Shield, 
+  Clock,
+  Shield,
   Star,
   ArrowRight,
   Zap,
@@ -525,7 +525,7 @@ export default function particulier() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
         {/* ════════════════════════════════════════════════════════════
             SECTION 1 — DÉMÉNAGEMENT PARTICULIER
@@ -581,8 +581,8 @@ export default function particulier() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="bg-[#CC922F] hover:bg-[#b58228] text-white font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
                   onClick={() =>
                     (window.location.href = "/tunnel/mes-coordonnees")
@@ -596,9 +596,9 @@ export default function particulier() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button 
-                  variant="outline" 
-                  size="lg" 
+                <Button
+                  variant="outline"
+                  size="lg"
                   className="border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
                   onClick={() =>
                     document
@@ -727,12 +727,12 @@ export default function particulier() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
               {testimonials.map((t, index) => (
-              <motion.div
+                <motion.div
                   key={index}
                   className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-xl transition-all duration-300 relative"
                   initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.15 }}
                   whileHover={{ y: -5, transition: { duration: 0.3 } }}
                 >
@@ -761,7 +761,7 @@ export default function particulier() {
                       </p>
                     </div>
                   </div>
-              </motion.div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -773,7 +773,7 @@ export default function particulier() {
             <div className="bg-gradient-to-r from-[#CC922F] to-[#1C3957] text-white p-6 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl text-center relative overflow-hidden">
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute -top-20 -right-20 w-60 h-60 bg-white rounded-full blur-2xl" />
-            </div>
+              </div>
               <div className="relative z-10">
                 <motion.div
                   className="inline-flex items-center gap-2 mb-6"
@@ -849,19 +849,19 @@ export default function particulier() {
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center relative z-10">
-              <motion.div
+            <motion.div
               className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-6 sm:mb-8"
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <Building2 className="h-4 w-4 text-[#CC922F]" />
               <span className="text-sm font-medium text-white font-['Poppins',sans-serif]">
                 Déménagement professionnel
               </span>
-              </motion.div>
-              
+            </motion.div>
+
             <motion.h2
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-['Poppins',sans-serif]"
               initial={{ opacity: 0, y: 20 }}
@@ -904,8 +904,8 @@ export default function particulier() {
                   </div>
                   <p className="text-white/80 text-sm mt-1 font-['Poppins',sans-serif]">
                     {stat.label}
-              </p>
-            </div>
+                  </p>
+                </div>
               ))}
             </motion.div>
           </div>
@@ -1002,12 +1002,12 @@ export default function particulier() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {proEngagements.map((eng, index) => (
-              <motion.div
+                <motion.div
                   key={index}
                   className="flex items-center gap-4 bg-white p-5 rounded-xl shadow-md border border-gray-100 hover:border-[#CC922F]/30 transition-all duration-300"
                   initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{
                     y: -3,
@@ -1071,9 +1071,9 @@ export default function particulier() {
                 <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-white rounded-full blur-2xl" />
               </div>
               <div className="relative z-10">
-              <motion.div
-                className="inline-flex items-center gap-2 mb-6"
-                animate={{ rotate: [0, 5, -5, 0] }}
+                <motion.div
+                  className="inline-flex items-center gap-2 mb-6"
+                  animate={{ rotate: [0, 5, -5, 0] }}
                   transition={{
                     duration: 2,
                     repeat: Infinity,
@@ -1081,45 +1081,45 @@ export default function particulier() {
                   }}
                 >
                   <Building2 className="w-8 h-8" />
-              </motion.div>
-              
+                </motion.div>
+
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 font-['Poppins',sans-serif]">
                   Planifiez votre transfert
-              </h2>
-              <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+                </h2>
+                <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 max-w-2xl mx-auto font-['Poppins',sans-serif]">
                   Parlez à un chef de projet en moins de 24h
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                  <Button 
-                    size="lg" 
-                    className="bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
+                    <Button
+                      size="lg"
+                      className="bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
                       onClick={() => (window.location.href = "/contact")}
-                  >
+                    >
                       Demander un devis
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </motion.div>
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
                       onClick={() => (window.location.href = "/solution")}
-                  >
+                    >
                       Découvrir notre solution
                       <ChevronRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </motion.div>
+                    </Button>
+                  </motion.div>
+                </div>
               </div>
-            </div>
             </div>
           </div>
         </section>
