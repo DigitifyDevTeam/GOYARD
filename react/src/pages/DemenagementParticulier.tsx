@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   Home, 
-  Star,
   ArrowRight,
   Zap,
   Truck,
@@ -10,7 +9,6 @@ import {
   CheckCircle,
   FileText,
   Calendar,
-  Quote,
   Phone,
   ClipboardCheck,
 } from "lucide-react";
@@ -26,6 +24,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
+/*
 interface StatCounterProps {
   icon: React.ReactNode;
   value: number;
@@ -87,6 +86,7 @@ function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
     </motion.div>
   );
 }
+*/
 
 // ─── Particulier Data ─────────────────────────────────────────────
 
@@ -108,6 +108,7 @@ const particulierServices = [
   },
 ];
 
+/*
 const particulierFormules = [
   {
     name: "Essentiel",
@@ -141,6 +142,7 @@ const particulierFormules = [
     ],
   },
 ];
+*/
 
 const particulierSteps = [
   {
@@ -189,27 +191,6 @@ const particulierFaqs = [
     question: "Puis-je modifier la date après signature ?",
     answer:
       "Oui, sous réserve de disponibilité. Contactez votre conseiller dès que possible pour tout changement.",
-  },
-];
-
-const testimonials = [
-  {
-    rating: 5,
-    text: "Équipe très professionnelle, rien de cassé. Merci !",
-    author: "Sophie M.",
-    location: "Lyon",
-  },
-  {
-    rating: 5,
-    text: "Devis rapide, prix honnête. Je recommande.",
-    author: "Thomas B.",
-    location: "Paris",
-  },
-  {
-    rating: 5,
-    text: "Service clé en main parfait, zéro stress.",
-    author: "Lucie D.",
-    location: "Bordeaux",
   },
 ];
 
@@ -281,7 +262,7 @@ function StepCard({
   number,
   title,
   description,
-  icon,
+  icon: _icon,
   index,
 }: {
   number: string;
@@ -313,6 +294,50 @@ function StepCard({
         {description}
       </p>
     </motion.div>
+  );
+}
+
+function GoogleReviewsSection() {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]'))
+      return;
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  return (
+    <>
+      {/* Desktop: section title + Google Reviews widget */}
+      <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
+        <div className="text-center">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
+            Ce que nos clients disent de nous !
+          </h2>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <div
+            className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277"
+            data-elfsight-app-lazy
+          />
+        </div>
+      </div>
+      {/* Mobile: section title + Google Reviews widget */}
+      <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
+            Ce que nos clients disent de nous !
+          </h2>
+        </div>
+        <div className="mt-6 flex justify-center">
+          <div
+            className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full"
+            data-elfsight-app-lazy
+          />
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -521,58 +546,7 @@ export default function particulier() {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="bg-white py-8 sm:py-12 lg:py-16">
-          <div className="container mx-auto px-4 sm:px-6">
-            <SectionHeader
-              icon={<Quote className="h-4 w-4" />}
-              pill="Témoignages"
-              pillColor="gold"
-              title="Ce que disent nos clients"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-              {testimonials.map((t, index) => (
-              <motion.div
-                  key={index}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-xl transition-all duration-300 relative"
-                  initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.15 }}
-                  whileHover={{ y: -5, transition: { duration: 0.3 } }}
-                >
-                  <Quote className="w-8 h-8 text-[#CC922F]/20 absolute top-4 right-4" />
-                  <div className="flex gap-1 mb-4">
-                    {Array.from({ length: t.rating }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5 text-[#CC922F] fill-[#CC922F]"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 mb-6 font-['Poppins',sans-serif] italic leading-relaxed">
-                    "{t.text}"
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] flex items-center justify-center text-white font-bold text-sm font-['Poppins',sans-serif]">
-                      {t.author.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-[#1C3957] font-['Poppins',sans-serif] text-sm">
-                        {t.author}
-                      </p>
-                      <p className="text-gray-500 text-xs font-['Poppins',sans-serif]">
-                        {t.location}
-                      </p>
-                    </div>
-                  </div>
-              </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
+        <GoogleReviewsSection />
 
          
 

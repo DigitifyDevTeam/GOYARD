@@ -1,9 +1,9 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Building2,
   Clock,
   Shield,
-  Star,
   ArrowRight,
   Truck,
   Users,
@@ -25,12 +25,6 @@ import TarificationSection from "@/components/TarificationSection";
 import InteractiveImageBentoGallery from "@/components/bento-gallery";
 
 // ─── Professionnel Data ───────────────────────────────────────────
-
-const proStats = [
-  { icon: <Building2 />, value: 500, label: "Entreprises accompagnées", suffix: "+" },
-  { icon: <Star />, value: 98, label: "De satisfaction client", suffix: "%" },
-  { icon: <Clock />, value: 0, label: "D'interruption d'activité visée", suffix: "h" },
-];
 
 const proDomaines = [
   {
@@ -55,6 +49,7 @@ const proDomaines = [
   },
 ];
 
+/*
 const proFormules = [
   {
     name: "Standard",
@@ -91,6 +86,7 @@ const proFormules = [
     ],
   },
 ];
+*/
 
 const proSteps = [
   {
@@ -138,14 +134,6 @@ const proEngagements = [
   },
 ];
 
-const proSectors = [
-  "Banque",
-  "Assurance",
-  "Santé",
-  "Retail",
-  "Administration publique",
-  "Industrie",
-];
 
 // ─── Gallery Data (Entreprise) ────────────────────────────────────
 
@@ -209,6 +197,7 @@ function SectionHeader({
   );
 }
 
+/*
 // ─── Pricing Card ─────────────────────────────────────────────────
 
 function PricingCard({
@@ -294,6 +283,7 @@ function PricingCard({
     </motion.div>
   );
 }
+*/
 
 // ─── Step Card ────────────────────────────────────────────────────
 
@@ -332,6 +322,50 @@ function StepCard({
         {description}
       </p>
     </motion.div>
+  );
+}
+
+function GoogleReviewsSection() {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]'))
+      return;
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  return (
+    <>
+      {/* Desktop: section title + Google Reviews widget */}
+      <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
+        <div className="text-center">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
+            Ce que nos clients disent de nous !
+          </h2>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <div
+            className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277"
+            data-elfsight-app-lazy
+          />
+        </div>
+      </div>
+      {/* Mobile: section title + Google Reviews widget */}
+      <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
+            Ce que nos clients disent de nous !
+          </h2>
+        </div>
+        <div className="mt-6 flex justify-center">
+          <div
+            className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full"
+            data-elfsight-app-lazy
+          />
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -375,41 +409,6 @@ export default function DemenagementEntreprise() {
               <span className="text-[#CC922F]">sans interruption</span>{" "}
               d'activité
             </motion.h1>
-
-            <motion.p
-              className="text-base sm:text-lg lg:text-xl text-white/90 max-w-3xl mx-auto mb-8 font-['Poppins',sans-serif]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              PME, grands comptes, administrations — nous gérons la logistique
-              complète
-            </motion.p>
-
-            {/* Inline Stats */}
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              {proStats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white/10 border border-white/20 backdrop-blur-sm rounded-xl p-5 text-center"
-                >
-                  <div className="text-3xl sm:text-4xl font-bold text-[#CC922F] font-['Poppins',sans-serif]">
-                    +{stat.value}
-                    {stat.suffix}
-                  </div>
-                  <p className="text-white/80 text-sm mt-1 font-['Poppins',sans-serif]">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </motion.div>
           </div>
         </section>
 
@@ -530,32 +529,55 @@ export default function DemenagementEntreprise() {
               title="Ils nous ont fait confiance"
             />
 
-            <motion.div
-              className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              {proSectors.map((sector, index) => (
-                <motion.span
-                  key={index}
-                  className="px-5 py-2.5 bg-gradient-to-br from-[#1C3957] to-[#2a4f6b] text-white rounded-full text-sm font-medium font-['Poppins',sans-serif] shadow-md"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.08 }}
-                  whileHover={{
-                    scale: 1.08,
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  {sector}
-                </motion.span>
-              ))}
-            </motion.div>
+            <style>{`
+              @keyframes entreprise-marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .entreprise-marquee-track {
+                animation: entreprise-marquee 35s linear infinite;
+              }
+            `}</style>
+
+            <div className="relative w-full max-w-5xl mx-auto overflow-hidden">
+              <div className="entreprise-marquee-track flex items-center gap-12 py-4 w-max">
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Fedex-logo.png" alt="FedEx" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sorbonne.svg" alt="Sorbonne" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(0.85)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sephora.svg" alt="Sephora" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Dior_Logo.svg.png" alt="Dior" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/IXINA-Logo_BLEU_CMJN.jpg" alt="Ixina" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg" alt="BWT Alpine F1 Team" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Longchamps.jpg" alt="Longchamp" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Pinsent_Masons_logo.svg" alt="Pinsent Masons" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/espot.jpg" alt="Espot" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.25)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Polene.jpg" alt="Polène" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/le-tanneur.png" alt="Le Tanneur" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Givenchy.png" alt="Givenchy" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/meurice.jpg" alt="Le Meurice" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/gallery-dept.png" alt="Gallery Dept" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.55)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Hilton.png" alt="Hilton" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+                {/* Duplicated set for seamless loop */}
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Fedex-logo.png" alt="FedEx" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sorbonne.svg" alt="Sorbonne" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(0.85)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sephora.svg" alt="Sephora" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Dior_Logo.svg.png" alt="Dior" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/IXINA-Logo_BLEU_CMJN.jpg" alt="Ixina" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg" alt="BWT Alpine F1 Team" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Longchamps.jpg" alt="Longchamp" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Pinsent_Masons_logo.svg" alt="Pinsent Masons" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/espot.jpg" alt="Espot" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.25)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Polene.jpg" alt="Polène" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/le-tanneur.png" alt="Le Tanneur" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Givenchy.png" alt="Givenchy" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/meurice.jpg" alt="Le Meurice" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/gallery-dept.png" alt="Gallery Dept" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.55)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Hilton.png" alt="Hilton" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+              </div>
+            </div>
           </div>
         </section>
+
+        <GoogleReviewsSection />
 
         {/* CTA Professionnel */}
         <section className="bg-gray-50 py-8 sm:py-12 lg:py-16">
