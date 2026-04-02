@@ -1,55 +1,24 @@
-# Apache .htaccess for goyard-demenagement.fr
-# Source: react/public/ -> copied to dist/ on `npm run build`.
-# Deploy alongside index.html, assets/, etc.
+# Django (Gunicorn) + static React build. Test backend: curl -sS -m 5 http://127.0.0.1:8002/api/
+# If /api hangs: Gunicorn not running, wrong port, or host blocks mod_proxy in .htaccess (see OVH support).
+# Gunicorn port: backend/start_gunicorn.sh (default 8002). Match it below.
 
-# --- HTTPS redirect ---
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+Options -MultiViews
+
+# Tell Django the browser used HTTPS (required for SECURE_PROXY_SSL_HEADER in production)
+<IfModule mod_headers.c>
+  RequestHeader set X-Forwarded-Proto "https" env=HTTPS
 </IfModule>
 
-# --- Reverse proxy: /api, /admin, /static, /media -> Gunicorn (port 8002) ---
-# Requires: mod_proxy, mod_proxy_http, mod_rewrite.
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{REQUEST_URI} ^/(api|admin|static|media|swagger|redoc)(/|$)
-    RewriteRule ^(.*)$ http://127.0.0.1:8002/$1 [P,L]
-</IfModule>
+  RewriteEngine On
+  RewriteBase /
 
-# --- Routing: real files + SPA fallback ---
-<IfModule mod_rewrite.c>
-    RewriteEngine On
+  # Django — must use [P] (needs mod_proxy + mod_proxy_http + AllowOverride)
+  RewriteCond %{REQUEST_URI} ^/(api|admin|static|media|swagger|redoc)(/|$) [NC]
+  RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
 
-    # 1) Existing file or directory -> serve as-is
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L]
-
-    # 2) Client-side routes -> index.html
-    RewriteRule ^ index.html [L]
-</IfModule>
-
-# --- Security ---
-<FilesMatch "\.(env|pyc|py|sh|sqlite3|log)$">
-    Require all denied
-</FilesMatch>
-<Files "passenger_wsgi.py">
-    Require all denied
-</Files>
-<Files ".htaccess">
-    Require all denied
-</Files>
-
-# --- Caching (hashed assets in /assets/) ---
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType text/html "access plus 0 seconds"
-    ExpiresByType text/css "access plus 1 year"
-    ExpiresByType application/javascript "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
-    ExpiresByType image/webp "access plus 1 year"
-    ExpiresByType font/woff2 "access plus 1 year"
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
 </IfModule>

@@ -1,21 +1,19 @@
 #!/bin/bash
+# Production startup (foreground). Prefer start_gunicorn.sh or run_gunicorn_background.sh for typical hosting.
+set -e
+cd "$(dirname "$0")"
+source ./load_env.sh
 
-# Production startup script for Django application with Gunicorn
-
-# Set the Django settings module
 export DJANGO_SETTINGS_MODULE=core.settings.production
 
-# Collect static files
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput
 
-# Run database migrations
 echo "Running database migrations..."
-python manage.py migrate
+python3 manage.py migrate --noinput
 
-# Start Gunicorn server
 echo "Starting Gunicorn server..."
-gunicorn \
+exec python3 -m gunicorn \
     --bind 0.0.0.0:8002 \
     --workers 4 \
     --worker-class sync \

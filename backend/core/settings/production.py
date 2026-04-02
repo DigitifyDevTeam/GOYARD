@@ -21,12 +21,21 @@ DEBUG = False
 # Set ALLOWED_HOSTS from env (comma-separated) or default to empty (you must set it)
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()]
 if not ALLOWED_HOSTS:
-    # Default to goyard-demenagement.fr if not set in environment
-    ALLOWED_HOSTS = ['goyard-demenagement.fr', 'www.goyard-demenagement.fr']
+    # Defaults when .env is missing (prefer setting ALLOWED_HOSTS in .env per deployment)
+    ALLOWED_HOSTS = [
+        'goyard-demenagement.fr',
+        'www.goyard-demenagement.fr',
+        'guivarche-demenagement.fr',
+        'www.guivarche-demenagement.fr',
+    ]
 # Allow localhost/127.0.0.1 for health checks and curl from the server
 for host in ('127.0.0.1', 'localhost'):
     if host not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append(host)
+
+# Behind Apache (TLS) proxying to Gunicorn on HTTP
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 INSTALLED_APPS = [
@@ -117,8 +126,17 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
 if not CORS_ALLOWED_ORIGINS:
-    # Default to goyard-demenagement.fr if not set in environment
-    CORS_ALLOWED_ORIGINS = ['https://goyard-demenagement.fr', 'https://www.goyard-demenagement.fr']
+    CORS_ALLOWED_ORIGINS = [
+        'https://goyard-demenagement.fr',
+        'https://www.goyard-demenagement.fr',
+        'https://guivarche-demenagement.fr',
+        'https://www.guivarche-demenagement.fr',
+    ]
+
+# Browser POST/CSRF (admin, forms) — align with HTTPS origins; override via CSRF_TRUSTED_ORIGINS in .env
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
+if not CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS = list(CORS_ALLOWED_ORIGINS)
 
 # File upload settings
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
