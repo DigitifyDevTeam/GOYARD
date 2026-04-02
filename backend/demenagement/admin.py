@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ClientInformation, ManualSelection, Address
+from .models import ClientInformation, ManualSelection, Address, DevisQuoteNotification
 
 
 @admin.register(ClientInformation)
@@ -109,3 +109,20 @@ class AddressAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('client_info').order_by('-created_at')
+
+
+@admin.register(DevisQuoteNotification)
+class DevisQuoteNotificationAdmin(admin.ModelAdmin):
+    list_display = ['reference_code', 'address', 'get_client_name', 'final_price', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['reference_code', 'client__nom', 'client__prenom', 'client__email', 'client__phone']
+    readonly_fields = ['reference_code', 'created_at']
+    raw_id_fields = ['client', 'address']
+
+    def get_client_name(self, obj):
+        return f'{obj.client.prenom} {obj.client.nom}'
+    get_client_name.short_description = 'Client'
+    get_client_name.admin_order_field = 'client__nom'
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('client', 'address').order_by('-created_at')

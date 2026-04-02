@@ -81,6 +81,10 @@ import { ImageWithFallback } from "./components/figma/ImageWithFallback";
 import Footer from "./components/layout/Footer";
 import StickyContactButtons from "./components/StickyContactButtons";
 
+/** Numéro affiché dans l’en-tête du tunnel (mes-coordonnées, devis, etc.) — lien d’appel */
+const TUNNEL_SUPPORT_PHONE_HREF = "tel:+33189703324";
+const TUNNEL_SUPPORT_PHONE_DISPLAY = "+33 1 89 70 33 24";
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -2125,15 +2129,15 @@ function AppContent() {
                 />
               </button>
             </div>
-            <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
+            <a
+              href={TUNNEL_SUPPORT_PHONE_HREF}
+              className="inline-flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full no-underline hover:bg-[#2a4f6b] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2"
+              aria-label={`Appeler au ${TUNNEL_SUPPORT_PHONE_DISPLAY}`}
+            >
               <Phone className="w-4 h-4 mr-2" style={{ color: '#CC922F' }} />
-              <span className="text-sm font-medium">
-                +33 7 46 32 66 78
-              </span>
-              <span className="text-xs ml-2 opacity-90">
-                Numéro non surtaxé
-              </span>
-            </div>
+              <span className="text-sm font-medium">{TUNNEL_SUPPORT_PHONE_DISPLAY}</span>
+              <span className="text-xs ml-2 opacity-90">Numéro non surtaxé</span>
+            </a>
           </div>
         </header>
 
@@ -2186,15 +2190,15 @@ function AppContent() {
                 />
               </button>
             </div>
-            <div className="flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full">
+            <a
+              href={TUNNEL_SUPPORT_PHONE_HREF}
+              className="inline-flex items-center bg-[#1c3957] text-white px-4 py-2 rounded-full no-underline hover:bg-[#2a4f6b] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2"
+              aria-label={`Appeler au ${TUNNEL_SUPPORT_PHONE_DISPLAY}`}
+            >
               <Phone className="w-4 h-4 mr-2" style={{ color: '#CC922F' }} />
-              <span className="text-sm font-medium">
-                +33 7 46 32 66 78
-              </span>
-              <span className="text-xs ml-2 opacity-90">
-                Numéro non surtaxé
-              </span>
-            </div>
+              <span className="text-sm font-medium">{TUNNEL_SUPPORT_PHONE_DISPLAY}</span>
+              <span className="text-xs ml-2 opacity-90">Numéro non surtaxé</span>
+            </a>
           </div>
         </header>
 
@@ -2842,8 +2846,11 @@ function AppContent() {
               </div>
 
 
-              {/* PDF Report Section */}
-              <div className="mt-12">
+              {/* PDF (hors écran — nécessaire pour l’export e-mail ; plus affiché sous la grille des prestations) */}
+              <div
+                className="fixed left-[-9999px] top-0 z-0 w-[210mm] max-w-[100vw] pointer-events-none"
+                aria-hidden="true"
+              >
                 <PDFReport
                   ref={pdfReportRef}
                   clientData={{
@@ -2930,15 +2937,17 @@ function AppContent() {
               Déménagement professionnel pour tous
             </p>
           </div>
-          <div className="flex items-center bg-[#1c3957] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex-shrink-0">
+          <a
+            href={TUNNEL_SUPPORT_PHONE_HREF}
+            className="inline-flex items-center bg-[#1c3957] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full flex-shrink-0 no-underline hover:bg-[#2a4f6b] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2"
+            aria-label={`Appeler au ${TUNNEL_SUPPORT_PHONE_DISPLAY}`}
+          >
             <Phone className="w-5 h-5 mr-2" style={{ color: '#CC922F' }} />
-            <span className="text-sm sm:text-base font-medium">
-              +33 7 46 32 66 78
-            </span>
+            <span className="text-sm sm:text-base font-medium">{TUNNEL_SUPPORT_PHONE_DISPLAY}</span>
             <span className="text-xs sm:text-sm ml-1 sm:ml-2 opacity-90 hidden sm:inline">
               Numéro non surtaxé
             </span>
-          </div>
+          </a>
         </div>
       </header>
 

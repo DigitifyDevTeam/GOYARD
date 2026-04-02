@@ -8,7 +8,7 @@ from typing import Optional
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ClientInformation, ManualSelection, Address
+from .models import ClientInformation, ManualSelection, Address, DevisQuoteNotification
 from .serializers import ClientInformationSerializer, ManualSelectionSerializer, AddressSerializer
 
 # Import volume calculation and pricing from ai_detector
@@ -1515,8 +1515,8 @@ def send_quote_pdf(request):
                          + emb_cartons_price + portage_total + escale_total)
         final_price = base_price + etage_total + ascenseur_total + demi_etage_total + options_total
 
-        # ── 11. Build quote reference ───────────────────────────────────
-        ref = f'GV-{client.id}-{datetime.now().strftime("%Y%m%d%H%M")}'
+        # ── 11. Persist quote reference (gv + DDMMYY + HHMM + Address id = réservation) ─
+        _quote_row, ref = DevisQuoteNotification.create_with_reference(client, final_price, addr)
 
         # ── 12. (Legacy) Client-provided PDF fields (currently unused) ──
         # pdf_base64 / pdf_filename may still be sent by older frontends but

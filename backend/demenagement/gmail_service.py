@@ -153,7 +153,7 @@ def send_admin_devis_notification(
         etage_depart, etage_arrivee, escale_etage: Floor values ("RDC", "1".."20")
         ascenseur_depart, ascenseur_arrivee, escale_ascenseur: Elevator size/choice (or "Non")
         distance_km, volume_m3, final_price: Quote summary
-        reference: Quote reference (e.g. GV-123-202503021430)
+        reference: Quote reference (e.g. gv0204261430132 = gv + DDMMYY + HHMM + id Adresse / réservation)
         valeur_bien_eur: Declared value of goods (for assurance)
         demontage, emb_fragile, emb_cartons: Selected paid options
         monte_meuble_*, has_stopover, portage_*, demi_etage_*: Access constraints

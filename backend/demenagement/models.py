@@ -477,3 +477,58 @@ class Address(models.Model):
         if self.has_stopover:
             return f"{self.adresse_depart} → {self.escale_adresse} → {self.adresse_arrivee}"
         return f"{self.adresse_depart} → {self.adresse_arrivee}"
+
+
+class DevisQuoteNotification(models.Model):
+    """
+    One row each time a devis summary email is sent (client + admin).
+    reference_code ends with the Address (réservation / trajet) id used for the quote.
+    """
+    client = models.ForeignKey(
+        ClientInformation,
+        on_delete=models.CASCADE,
+        related_name='devis_quote_notifications',
+        verbose_name='Client',
+    )
+    address = models.ForeignKey(
+        'Address',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='devis_quote_notifications',
+        verbose_name='Adresse (réservation)',
+        help_text='Dossier trajet : même id que dans Adresses',
+    )
+    reference_code = models.CharField(
+        max_length=64,
+        unique=True,
+        db_index=True,
+        null=True,
+        blank=True,
+        verbose_name='Référence devis',
+        help_text='Ex. gv0204261430132 — suffixe = id Adresse (réservation)',
+    )
+    final_price = models.FloatField(default=0.0, verbose_name='Prix final (€)')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créé le')
+
+    class Meta:
+        verbose_name = 'Devis envoyé par email'
+        verbose_name_plural = 'Devis envoyés par email'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.reference_code or f'Devis #{self.pk} (sans réf.)'
+
+    @classmethod
+    def create_with_reference(cls, client, final_price, address):
+        from django.utils import timezone
+
+        reservation_id = address.pk
+        ref = f"gv{timezone.now().strftime('%d%m%y%H%M')}{reservation_id}"
+        instance = cls.objects.create(
+            client=client,
+            address=address,
+            final_price=final_price,
+            reference_code=ref,
+        )
+        return instance, ref

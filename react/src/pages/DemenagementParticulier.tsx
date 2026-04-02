@@ -207,7 +207,7 @@ const particulierGalleryItems = [
   { id: 10, title: "Camions et véhicules", desc: "Flotte moderne pour tous types de volumes.", url: "/gallery/img4.jpeg", span: "md:row-span-1" },
   { id: 28, title: "Accès difficile", desc: "Solutions adaptées pour les accès complexes.", url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.45.jpeg", span: "md:row-span-1" },
   { id: 30, title: "Protection des sols", desc: "Mise en place de protections pour préserver vos sols.", url: "/gallery/WhatsApp%20Image%206862026-03-04%20at%2000.06.05.jpeg", span: "md:row-span-1" },
-  { id: 34, title: "Préparation des cartons", desc: "Conditionnement des effets personnels avec soin.", url: "/gallery/WhatsApp%20Image%202026-0-04%20at%2000.07.05.jpeg", span: "md:row-span-1" },
+  { id: 34, title: "Manutention professionnelle", desc: "Équipe spécialisée pour le mobilier de bureau et matériel lourd.", url: "/gallery/image2.jpeg", span: "md:row-span-1" },
   { id: 39, title: "Derniers réglages", desc: "Vérifications finales pour un déménagement réussi.", url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg", span: "md:row-span-1" },
 ];
 

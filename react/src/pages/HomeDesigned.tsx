@@ -445,9 +445,9 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 
 function Frame720() {
   return (
-    <div className="h-[60px] sm:h-[80px] lg:h-[100px] relative shrink-0 w-full">
+    <div className="relative z-0 h-[132px] sm:h-[120px] lg:h-[100px] shrink-0 w-full overflow-hidden lg:overflow-visible">
       <svg
-        className="block size-full"
+        className="pointer-events-none absolute inset-0 z-0 block h-full w-full lg:relative lg:inset-auto"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 1920 160"
@@ -478,17 +478,15 @@ function Frame720() {
             <div className="h-[48px] w-[56px] flex items-center justify-center">
               <div className="h-[48px] w-[56px]"><Group751 /></div>
             </div>
-            <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">950 déménagements par mois</p>
+            <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">950 déménagements par année</p>
           </div>
           <div className="flex flex-col items-center gap-[20px]">
-            <div className="h-[48px] w-[56px] flex items-center justify-center">
-              <div className="h-[52px] w-[52px]">
-                <img
-                  src="/pages-jaunes.svg"
-                  alt="Pages Jaunes - 5 étoiles"
-                  className="block h-full w-full object-contain"
-                />
-              </div>
+            <div className="flex h-[48px] w-[56px] shrink-0 items-center justify-center">
+              <img
+                src="/pages-jaunes.svg"
+                alt="Pages Jaunes - 5 étoiles"
+                className="block h-[48px] w-[56px] max-h-[48px] max-w-[56px] object-contain object-center"
+              />
             </div>
             <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">
               5 étoiles sur Pages Jaunes
@@ -507,6 +505,54 @@ function Frame720() {
               </div>
             </div>
             <p className="font-sans font-[800] text-white text-[18px] text-center tracking-[-0.8px] leading-[28px] whitespace-nowrap">4,8 / Excellent sur TrustPilot</p>
+          </div>
+        </div>
+      </div>
+      {/* Mobile/Tablet stats bar (< lg) — keep desktop unchanged */}
+      <div className="lg:hidden relative z-10 flex h-full items-center justify-center px-3 py-2 sm:px-5">
+        <div className="grid w-full max-w-md grid-cols-2 gap-x-4 gap-y-2 sm:gap-x-6 sm:gap-y-2.5">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-9 shrink-0 items-center justify-center sm:h-9 sm:w-10">
+              <div className="h-8 w-9 sm:h-9 sm:w-10">
+                <Group751 />
+              </div>
+            </div>
+            <p className="min-w-0 font-sans font-[800] text-[11px] leading-tight tracking-[-0.35px] text-white sm:text-[12px]">
+              950 déménagements / mois
+            </p>
+          </div>
+
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-9 shrink-0 items-center justify-center sm:h-9 sm:w-10">
+              <img
+                src="/pages-jaunes.svg"
+                alt="Pages Jaunes - 5 étoiles"
+                className="block h-full w-full max-h-full max-w-full object-contain object-center"
+              />
+            </div>
+            <p className="min-w-0 font-sans font-[800] text-[11px] leading-tight tracking-[-0.35px] text-white sm:text-[12px]">
+              5 étoiles Pages Jaunes
+            </p>
+          </div>
+
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-9 shrink-0 items-center justify-center sm:h-9 sm:w-10">
+              <ShieldCheck className="size-[28px] text-[#CC922F] sm:size-[32px]" strokeWidth={2} />
+            </div>
+            <p className="min-w-0 font-sans font-[800] text-[11px] leading-tight tracking-[-0.35px] text-white sm:text-[12px]">
+              0 litige 2025-2026
+            </p>
+          </div>
+
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-9 shrink-0 items-center justify-center sm:h-8 sm:w-10">
+              <div className="h-7 w-9 sm:h-8 sm:w-10">
+                <CrownIcon />
+              </div>
+            </div>
+            <p className="min-w-0 font-sans font-[800] text-[11px] leading-tight tracking-[-0.35px] text-white sm:text-[12px]">
+              4,8 / Excellent Trustpilot
+            </p>
           </div>
         </div>
       </div>
@@ -810,7 +856,7 @@ export function _Group749() {
     <div className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[50.625%] mt-[calc(50%+13px)] place-items-start relative">
       <div className="[grid-area:1_/_1] flex flex-col font-sans font-[800] h-[55px] justify-center ml-[153px] mt-[27.5px] not-italic relative text-[#161c2d] text-[24px] text-center tracking-[-1.2px] translate-x-[-50%] translate-y-[-50%] w-[306px]">
         <p className="leading-[44px]">
-          950 déménagements par mois
+          950 déménagements par année
         </p>
       </div>
     </div>
@@ -843,7 +889,7 @@ function Frame23() {
     <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
       <div className="text-center section-px">
         <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-          Ce que nos clients disent de nous !
+          Ce que nos clients disent de nous{"\u00A0!"}
         </h2>
       </div>
       <div className="mt-8 flex justify-center">
@@ -854,7 +900,7 @@ function Frame23() {
     <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-          Ce que nos clients disent de nous !
+          Ce que nos clients disent de nous{"\u00A0!"}
         </h2>
       </div>
       <div className="mt-6 flex justify-center">
@@ -1114,6 +1160,100 @@ function Frame2085666151() {
     <div className="absolute bg-white box-border content-stretch flex flex-col items-center p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] left-[270px] top-[280px] w-[260px]">
       <Frame2085665084 />
     </div>
+  );
+}
+
+/** Mobile only: one visible video at a time with carousel (desktop uses absolute layout above). */
+function HowItWorksVideosCarouselMobile() {
+  const [index, setIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const slides = [
+    { key: "v1", node: <Frame2085665085 /> },
+    { key: "v2", node: <Frame2085665084 /> },
+    { key: "v3", node: <Frame2085665086 /> },
+  ] as const;
+
+  const slideCount = slides.length;
+
+  const goPrev = useCallback(() => {
+    setIndex((i) => (i <= 0 ? slideCount - 1 : i - 1));
+  }, [slideCount]);
+
+  const goNext = useCallback(() => {
+    setIndex((i) => (i >= slideCount - 1 ? 0 : i + 1));
+  }, [slideCount]);
+
+  return (
+    <section
+      className="w-full max-w-md mx-auto"
+      aria-roledescription="carousel"
+      aria-label="Vidéos Comment ça marche"
+      onTouchStart={(e) => {
+        touchStartX.current = e.touches[0].clientX;
+      }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX.current;
+        touchStartX.current = null;
+        if (dx > 48) goPrev();
+        else if (dx < -48) goNext();
+      }}
+    >
+      <div className="overflow-hidden rounded-[32px]">
+        <div
+          className="flex transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {slides.map((slide) => (
+            <div
+              key={slide.key}
+              className="min-w-full shrink-0 px-1"
+              aria-hidden={slides[index].key !== slide.key}
+            >
+              <div className="bg-white p-3.5 rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
+                {slide.node}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-4 flex items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={goPrev}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#1c3957] text-[#1c3957] transition-colors hover:bg-[#1c3957] hover:text-white"
+          aria-label="Vidéo précédente"
+        >
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <div className="flex items-center gap-2">
+          {slides.map((_, i) => (
+            <button
+              key={slides[i].key}
+              type="button"
+              onClick={() => setIndex(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === index ? "w-8 bg-[#CC922F]" : "w-2 bg-[#d4d4d4] hover:bg-[#a0a0a0]"
+              }`}
+              aria-label={`Vidéo ${i + 1} sur ${slides.length}`}
+              aria-current={i === index}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={goNext}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1c3957] text-white transition-colors hover:bg-[#2a4f6b]"
+          aria-label="Vidéo suivante"
+        >
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </section>
   );
 }
 
@@ -1917,7 +2057,7 @@ function Content01() {
       {/* Desktop features */}
       <div className="hidden lg:grid leading-[0] place-items-start relative shrink-0 desktop-canvas" data-name="Content 01">
         <Bg />
-        <div className="[grid-area:1_/_1] ml-[30px] mt-[90px] relative" data-name="Bitmap">
+        <div className="[grid-area:1_/_1] ml-[120px] mt-[90px] relative" data-name="Bitmap">
           <div className="bg-white p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
             <div className="h-[490px] w-[500px] overflow-hidden rounded-[24px] relative">
               <img alt="" className="w-full h-full object-cover" src="/ai.jpeg" />
@@ -3283,36 +3423,36 @@ const topBlogPosts = [
 ];
 
 const galleryImageItems = [
-  { id: 1, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/1.jpeg", span: "md:row-span-1" },
-  { id: 2, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/2.jpeg", span: "md:row-span-1" },
-  { id: 3, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/3.jpeg", span: "md:row-span-1" },
-  { id: 4, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/4.jpeg", span: "md:row-span-1" },
-  { id: 5, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/5.jpeg", span: "md:row-span-1" },
-  { id: 6, title: "Galerie", desc: "Nos missions en images.", url: "/gallery/6.jpeg", span: "md:row-span-1" },
-  { id: 7, title: "Déménagement résidentiel", desc: "Équipe professionnelle et matériel adapté pour votre logement.", url: "/gallery/img1.jpeg", span: "md:col-span-2 md:row-span-2" },
-  { id: 8, title: "Monte-meuble", desc: "Utilisation d'un monte-meuble pour accéder aux étages élevés en toute sécurité.", url: "/gallery/img2.jpeg", span: "md:row-span-1" },
-  { id: 9, title: "Protection du mobilier", desc: "Protection intégrale de vos meubles pendant le transport.", url: "/gallery/img3.jpeg", span: "md:row-span-1" },
-  { id: 10, title: "Camions et véhicules", desc: "Flotte moderne pour tous types de volumes.", url: "/gallery/img4.jpeg", span: "md:row-span-2" },
-  { id: 11, title: "Nouveau chez vous", desc: "Installation et déballage jusqu'au dernier carton.", url: "/gallery/img5.jpeg", span: "md:row-span-1" },
-  { id: 12, title: "Bureaux et entreprises", desc: "Déménagements corporate et relocations.", url: "/gallery/img6.jpeg", span: "md:col-span-2 md:row-span-1" },
+  { id: 1, title: "Livraison & manutention", desc: "Acheminement des cartons et des équipements sur site.", url: "/gallery/1.jpeg", span: "md:row-span-1" },
+  { id: 2, title: "Emballage sur place", desc: "Protection et conditionnement des biens avant transport.", url: "/gallery/2.jpeg", span: "md:row-span-1" },
+  { id: 3, title: "Objets précieux", desc: "Manutention soignée pour pièces fragiles et de valeur.", url: "/gallery/3.jpeg", span: "md:row-span-1" },
+  { id: 4, title: "Déménagement corporate", desc: "Interventions en environnement professionnel et événements.", url: "/gallery/4.jpeg", span: "md:row-span-1" },
+  { id: 5, title: "Manutention lourde", desc: "Déplacement sécurisé de mobilier volumineux.", url: "/gallery/5.jpeg", span: "md:row-span-1" },
+  { id: 6, title: "Mobilier protégé", desc: "Meubles emballés et prêts pour le transport.", url: "/gallery/6.jpeg", span: "md:row-span-1" },
+  { id: 7, title: "Monte-meuble en ville", desc: "Intervention rue avec monte-meuble et camion pour accès difficiles.", url: "/gallery/img1.jpeg", span: "md:col-span-2 md:row-span-2" },
+  { id: 8, title: "Monte-meuble télescopique", desc: "Monte-meuble déployé pour franchir les étages en toute sécurité.", url: "/gallery/image2.jpeg", span: "md:row-span-1" },
+  { id: 9, title: "Passage par fenêtre", desc: "Mobilier hissé par l'extérieur, calé et protégé sur la plateforme.", url: "/gallery/img3.jpeg", span: "md:row-span-1" },
+  { id: 10, title: "Cartons prêts au départ", desc: "Cartons étiquetés par pièce et volumes pour un chargement structuré.", url: "/gallery/img4.jpeg", span: "md:row-span-2" },
+  { id: 11, title: "Caisses de stockage", desc: "Conteneurs bois pour garde-meuble et transferts sécurisés.", url: "/gallery/img5.jpeg", span: "md:row-span-1" },
+  { id: 12, title: "Équipe & flotte", desc: "Nos déménageurs et camions devant notre base logistique.", url: "/gallery/img6.jpeg", span: "md:col-span-2 md:row-span-1" },
     {
     id: 13,
-    title: "Préparation de nuit",
-    desc: "Interventions en horaires adaptés à vos contraintes.",
+    title: "Caisse protégée",
+    desc: "Conditionnement sécurisé (filmage, renforts, fragile) avant transport.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.05.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 14,
-    title: "Contrôle de l'inventaire",
-    desc: "Suivi précis de vos biens à chaque étape.",
+    title: "Garde-meubles sécurisé",
+    desc: "Stockage en caisses bois numérotées, accès contrôlé et traçabilité.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.11.51.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 15,
-    title: "Chargement du camion",
-    desc: "Optimisation de l'espace de chargement pour réduire les trajets.",
+    title: "Monte-meuble en intervention",
+    desc: "Déploiement en rue pour accès difficiles et volumes lourds.",
     url: "/gallery/j.jpeg",
     span: "md:row-span-1",
   },
@@ -3325,15 +3465,15 @@ const galleryImageItems = [
   },
   {
     id: 17,
-    title: "Chargement coordonné",
-    desc: "Organisation millimétrée du chargement du camion.",
+    title: "Équipe Guivarche",
+    desc: "Une équipe complète et prête à intervenir sur vos projets.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.14.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 18,
-    title: "Equipe sur le terrain",
-    desc: "Intervention rapide et efficace sur site.",
+    title: "Départ en mission",
+    desc: "Camions, matériel et coordination pour un transfert efficace.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.21.13.jpeg",
     span: "md:row-span-1",
   },
@@ -3346,15 +3486,15 @@ const galleryImageItems = [
   },
   {
     id: 20,
-    title: "Protection renforcée",
-    desc: "Utilisation de matériel de protection haut de gamme.",
+    title: "Installation d'équipements",
+    desc: "Mise en place soignée de matériel sensible et encombrant.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.065jpeg.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 21,
-    title: "Logistique de nuit",
-    desc: "Opérations planifiées en horaires décalés.",
+    title: "Chargement protégé",
+    desc: "Mobilier filmé et sanglé pour un transport sans risque.",
     url: "/gallery/WhatsApp%20Image%20200026-03-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
@@ -3368,71 +3508,71 @@ const galleryImageItems = [
  
   {
     id: 24,
-    title: "Transport en cours",
-    desc: "Suivi de votre déménagement sur de longues distances.",
+    title: "Manutention d'équipement",
+    desc: "Déplacement et roulage sécurisés d'installations spécifiques.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 25,
-    title: "Préparation du départ",
-    desc: "Derniers contrôles avant le départ du camion.",
+    title: "Chargement dans le camion",
+    desc: "Mobilier couvert de couvertures et calé dans la soute du véhicule.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.47.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 26,
-    title: "Coordination d’équipe",
-    desc: "Travail d’équipe pour un déménagement fluide.",
+    title: "Manutention en entrepôt",
+    desc: "Déplacement de charges sur chariot dans nos installations.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 27,
-    title: "Prise en charge complète",
-    desc: "Gestion du projet de déménagement de bout en bout.",
+    title: "Monte-meuble en hauteur",
+    desc: "Mobilier protégé sur plateforme, passage par l'extérieur.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.07.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 28,
-    title: "Accès difficile",
-    desc: "Solutions adaptées pour les accès complexes.",
+    title: "Salon emballé",
+    desc: "Canapés et sièges protégés par couvertures et film avant transport.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%20at%2000.05.45.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 29,
-    title: "Chargement minutieux",
-    desc: "Disposition optimisée des cartons et du mobilier.",
+    title: "Transport de piano",
+    desc: "Piano vertical filmé et sanglé pour un acheminement sécurisé.",
     url: "/gallery/WhatsApp%20Image%202026-03-04%2055at%2000.05.46.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 30,
-    title: "Protection des sols",
-    desc: "Mise en place de protections pour préserver vos sols.",
+    title: "Bacs de rangement",
+    desc: "Bacs professionnels empilés, prêts pour transfert ou stockage.",
     url: "/gallery/WhatsApp%20Image%206862026-03-04%20at%2000.06.05.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 31,
-    title: "Chargement de nuit",
-    desc: "Opérations nocturnes pour limiter les contraintes.",
+    title: "Matériel informatique",
+    desc: "Manutention de baies et équipements sensibles (bureaux, salons).",
     url: "/gallery/WhatsApp%201Image%202026-03-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 32,
-    title: "Préparation du matériel",
-    desc: "Vérification du matériel avant chaque mission.",
+    title: "Box de stockage",
+    desc: "Biens filmés et entreposés dans un espace sécurisé.",
     url: "/gallery/WhatsApp%20Image%202026-jpeg.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 33,
-    title: "Organisation du stock",
-    desc: "Gestion et préparation des fournitures de déménagement.",
+    title: "Instrument de musique",
+    desc: "Prise en charge délicate d'instruments volumineux et fragiles.",
     url: "/gallery/WhatsApp%20Image%202026-500-04%20at%2000.07.06.jpeg",
     span: "md:row-span-1",
   },
@@ -3466,15 +3606,15 @@ const galleryImageItems = [
   },
   {
     id: 38,
-    title: "Installation sur site",
-    desc: "Mise en place du mobilier dans vos nouveaux locaux.",
+    title: "Camions et véhicules",
+    desc: "Notre flotte de camions aux couleurs Guivarche.",
     url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.10.15.jpeg",
     span: "md:row-span-1",
   },
   {
     id: 39,
-    title: "Derniers réglages",
-    desc: "Vérifications finales pour un déménagement réussi.",
+    title: "Monte-meuble en balcon",
+    desc: "Plateforme au niveau du balcon : cartons et mobilier protégés.",
     url: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg",
     span: "md:row-span-1",
   },
@@ -4463,11 +4603,15 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {/* Right: videos section scaled to fit */}
-          <div className="relative h-[468px] w-full max-w-[480px] shrink-0 mx-auto lg:mx-0 scale-[0.78] origin-top-left lg:scale-[0.930] lg:origin-top-right">
+          {/* Right: videos — desktop only (unchanged layout) */}
+          <div className="hidden lg:block relative h-[468px] w-full max-w-[480px] shrink-0 lg:mx-0 lg:scale-[0.930] lg:origin-top-right">
             <Frame2085666152 />
             <Frame2085666153 />
             <Frame2085666151 />
+          </div>
+          {/* Right: videos — mobile / tablet: single carousel */}
+          <div className="lg:hidden w-full min-w-0">
+            <HowItWorksVideosCarouselMobile />
           </div>
         </div>
       </section>

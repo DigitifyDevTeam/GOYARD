@@ -66,7 +66,7 @@ export default function TarificationSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
           {tarificationPlans.map((plan) => {
             const IconComp = plan.icon;
             return (
