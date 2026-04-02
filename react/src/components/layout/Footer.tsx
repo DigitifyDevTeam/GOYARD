@@ -22,8 +22,7 @@ export default function Footer() {
   return (
     <footer className="w-full bg-[#1C2E42] text-white">
       <div className="max-w-[1920px] mx-auto">
-        {/* Main footer content */}
-        <div className="px-6 md:px-12 lg:px-[210px] py-10 md:py-12 lg:py-16">
+        <div className="section-px py-10 md:py-12 lg:py-16">
         {/* Top Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10 md:mb-12 lg:mb-16">
           {/* Logo and Contact Column */}

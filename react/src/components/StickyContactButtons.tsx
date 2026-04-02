@@ -12,12 +12,12 @@ export default function StickyContactButtons() {
   const whatsappHref = `https://wa.me/${whatsappNumberDigits}`;
 
   const buttonClassName =
-    "w-12 h-12 rounded-full bg-[#1c3957] hover:bg-[#2a4f6b] text-white shadow-lg border border-white/10 transition-colors flex items-center justify-center z-60";
+    "w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1c3957] hover:bg-[#2a4f6b] text-white shadow-lg border border-white/10 transition-colors flex items-center justify-center";
 
-  const iconClassName = "w-5 h-5";
+  const iconClassName = "w-4 h-4 sm:w-5 sm:h-5";
 
   return (
-    <div className="fixed right-3 top-1/2 -translate-y-1/2 z-[60] flex flex-col gap-3">
+    <div className="fixed right-3 bottom-4 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 z-[60] flex flex-col gap-3">
       <a
         href={telHref}
         className={`${buttonClassName} pointer-events-auto`}

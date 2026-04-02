@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, X, Phone, Calculator, BadgeEuro, Layers3, MapPin, Route, Globe2 } from "lucide-react";
 
@@ -11,6 +11,8 @@ export default function Header({ onGetQuote }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [outilOpen, setOutilOpen] = useState(false);
   const [zonesOpen, setZonesOpen] = useState(false);
+  const [mobileZonesOpen, setMobileZonesOpen] = useState(false);
+  const [mobileOutilsOpen, setMobileOutilsOpen] = useState(false);
   const zonesTimeoutRef = useRef<number | null>(null);
   const outilsTimeoutRef = useRef<number | null>(null);
 
@@ -58,6 +60,13 @@ export default function Header({ onGetQuote }: HeaderProps) {
       navigate("/tunnel/mes-coordonnees");
     }
   };
+
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setMobileZonesOpen(false);
+      setMobileOutilsOpen(false);
+    }
+  }, [mobileMenuOpen]);
 
   const linkClass = "font-['Poppins',sans-serif] font-semibold text-[#191919] hover:text-[#CC922F] transition-colors text-sm lg:text-[15px] py-2 px-4 lg:px-5 rounded-md hover:bg-slate-50/80";
 
@@ -341,35 +350,52 @@ export default function Header({ onGetQuote }: HeaderProps) {
             </a>
             {/* Mobile "Zones" section with sub-links */}
             <div className="mt-1 mb-2">
-              <p className="px-4 pt-3 pb-1 text-xs font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Zones
-              </p>
-              <div className="flex flex-col gap-1 pl-4">
-                <a
-                  href="/en-construction"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
-                >
-                  <MapPin className="h-4 w-4 text-[#CC922F]" />
-                  Île-de-France · Proximité Parisienne
-                </a>
-                <a
-                  href="/en-construction"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
-                >
-                  <Route className="h-4 w-4 text-[#CC922F]" />
-                  Déménagement National · Toute la France
-                </a>
-                <a
-                  href="/en-construction"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
-                >
-                  <Globe2 className="h-4 w-4 text-[#CC922F]" />
-                  International · Europe &amp; Monde
-                </a>
-              </div>
+              <button
+                type="button"
+                className="w-full flex items-center justify-between px-4 pt-3 pb-1 text-xs font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.16em] text-slate-500"
+                onClick={() => setMobileZonesOpen((v) => !v)}
+                aria-expanded={mobileZonesOpen}
+              >
+                <span>Zones</span>
+                <span className="text-[12px] leading-none text-slate-500">{mobileZonesOpen ? "▴" : "▾"}</span>
+              </button>
+              {mobileZonesOpen && (
+                <div className="flex flex-col gap-1 pl-4">
+                  <a
+                    href="/en-construction"
+                    onClick={() => {
+                      setMobileZonesOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                  >
+                    <MapPin className="h-4 w-4 text-[#CC922F]" />
+                    Île-de-France · Proximité Parisienne
+                  </a>
+                  <a
+                    href="/en-construction"
+                    onClick={() => {
+                      setMobileZonesOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                  >
+                    <Route className="h-4 w-4 text-[#CC922F]" />
+                    Déménagement National · Toute la France
+                  </a>
+                  <a
+                    href="/en-construction"
+                    onClick={() => {
+                      setMobileZonesOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                  >
+                    <Globe2 className="h-4 w-4 text-[#CC922F]" />
+                    International · Europe &amp; Monde
+                  </a>
+                </div>
+              )}
             </div>
             <a
               href="/blog"
@@ -380,35 +406,52 @@ export default function Header({ onGetQuote }: HeaderProps) {
             </a>
             {/* Mobile "Outils" section with sub-links */}
             <div className="mt-1 mb-2">
-              <p className="px-4 pt-3 pb-1 text-xs font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Outils
-              </p>
-              <div className="flex flex-col gap-1 pl-4">
-                <a
-                  href="/tunnel/mes-coordonnees"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
-                >
-                  <Calculator className="h-4 w-4 text-[#CC922F]" />
-                  Calculer votre volume avec notre outil IA
-                </a>
-                <a
-                  href="/formules-demenagement"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
-                >
-                  <BadgeEuro className="h-4 w-4 text-[#CC922F]" />
-                  Tarifs
-                </a>
-                <a
-                  href="/tarification"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
-                >
-                  <Layers3 className="h-4 w-4 text-[#CC922F]" />
-                  Formules de déménagement
-                </a>
-              </div>
+              <button
+                type="button"
+                className="w-full flex items-center justify-between px-4 pt-3 pb-1 text-xs font-['Poppins',sans-serif] font-semibold uppercase tracking-[0.16em] text-slate-500"
+                onClick={() => setMobileOutilsOpen((v) => !v)}
+                aria-expanded={mobileOutilsOpen}
+              >
+                <span>Outils</span>
+                <span className="text-[12px] leading-none text-slate-500">{mobileOutilsOpen ? "▴" : "▾"}</span>
+              </button>
+              {mobileOutilsOpen && (
+                <div className="flex flex-col gap-1 pl-4">
+                  <a
+                    href="/tunnel/mes-coordonnees"
+                    onClick={() => {
+                      setMobileOutilsOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                  >
+                    <Calculator className="h-4 w-4 text-[#CC922F]" />
+                    Calculer votre volume avec notre outil IA
+                  </a>
+                  <a
+                    href="/formules-demenagement"
+                    onClick={() => {
+                      setMobileOutilsOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                  >
+                    <BadgeEuro className="h-4 w-4 text-[#CC922F]" />
+                    Tarifs
+                  </a>
+                  <a
+                    href="/tarification"
+                    onClick={() => {
+                      setMobileOutilsOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="py-2 px-3 rounded-lg text-sm font-['Poppins',sans-serif] text-[#191919] hover:bg-slate-100 flex items-center gap-2"
+                  >
+                    <Layers3 className="h-4 w-4 text-[#CC922F]" />
+                    Formules de déménagement
+                  </a>
+                </div>
+              )}
             </div>
             <a
               href="/faq"

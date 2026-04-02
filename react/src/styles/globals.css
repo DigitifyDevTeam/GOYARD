@@ -130,19 +130,20 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
 
-      body {
-        @apply bg-background text-foreground;
-        font-family: 'Poppins', Helvetica;
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
-      
-      html {
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Poppins', Helvetica;
+    overflow-x: clip;
+    min-height: 100dvh;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -281,4 +282,25 @@ html {
 
 .animate-marquee {
   animation: marquee var(--duration, 40s) linear infinite;
+}
+
+@layer utilities {
+  .section-px {
+    padding-left: clamp(1rem, 5vw, 13.125rem);
+    padding-right: clamp(1rem, 5vw, 13.125rem);
+  }
+
+  .section-container {
+    width: 100%;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 5vw, 13.125rem);
+    padding-right: clamp(1rem, 5vw, 13.125rem);
+  }
+}
+
+img, video, svg {
+  max-width: 100%;
+  height: auto;
 }

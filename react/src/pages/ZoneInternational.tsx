@@ -297,8 +297,8 @@ export default function ZoneInternational() {
 
   {/* Desktop: section title + Google Reviews widget */}
   <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-          <div className="text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
+          <div className="text-center section-px">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
               Ce que nos clients disent de nous !
             </h2>
           </div>

@@ -472,8 +472,8 @@ function Frame720() {
           </clipPath>
         </defs>
       </svg>
-      <div className="hidden lg:block relative shrink-0 w-[1920px]">
-        <div className="absolute inset-0 flex items-end justify-center gap-[120px] px-[160px] pb-[28px]">
+      <div className="hidden lg:block relative shrink-0 w-full max-w-[1920px]">
+        <div className="absolute inset-0 flex items-end justify-center gap-8 xl:gap-[120px] px-8 xl:px-[160px] pb-[28px]">
           <div className="flex flex-col items-center gap-[20px]">
             <div className="h-[48px] w-[56px] flex items-center justify-center">
               <div className="h-[48px] w-[56px]"><Group751 /></div>
@@ -841,8 +841,8 @@ function Frame23() {
     <>
     {/* Desktop: section title + Google Reviews widget */}
     <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-      <div className="text-center">
-        <h2 className="font-['Poppins',_sans-serif] font-[600] text-[51px] leading-[62px] text-black">
+      <div className="text-center section-px">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
           Ce que nos clients disent de nous !
         </h2>
       </div>
@@ -1556,7 +1556,7 @@ function Group756() {
         ref={gridRef}
         className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0"
       >
-        <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-[1920px] flex flex-col items-center justify-center overflow-hidden pt-20">
+        <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-full max-w-[1920px] flex flex-col items-center justify-center overflow-hidden pt-20">
           <div className="relative w-full max-w-[1272px] mx-auto overflow-hidden px-4 mt-14">
             <div className={`logo-marquee-track flex items-center gap-12 py-4 w-max ${carouselStarted ? "" : "logo-marquee-paused"}`}>
               {marqueeLogos.map((logo, i) => (
@@ -1597,24 +1597,37 @@ function Group756() {
       </div>
       {/* Mobile/Tablet companies (< lg) */}
       <div className="lg:hidden w-full bg-white py-10 sm:py-14 px-4 sm:px-6">
-        <h2 className="font-['Poppins',_sans-serif] font-[600] text-xl sm:text-2xl text-black text-center mb-8 sm:mb-10 leading-tight whitespace-nowrap">
+        <h2 className="font-['Poppins',_sans-serif] font-[600] text-xl sm:text-2xl text-black text-center mb-8 sm:mb-10 leading-tight">
           Les sociétés qui nous ont fait confiance
         </h2>
-        <div className="max-w-3xl mx-auto overflow-x-auto pb-4">
-          <div className="min-w-[600px] h-[63px] mx-auto">
-            <svg className="block w-full h-full" fill="none" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1296 63">
-              <g clipPath="url(#clip0_mobile_762)" id="Frame 2147226883">
-                <g id="Group 754">
-                  <path clipRule="evenodd" d={svgPaths.p32823000} fill="var(--fill-0, black)" fillRule="evenodd" />
-                  <path clipRule="evenodd" d={svgPaths.p352c5e00} fill="var(--fill-0, black)" fillRule="evenodd" />
-                </g>
-                <path d={svgPaths.p155eb700} fill="var(--fill-0, #E30613)" />
-                <path clipRule="evenodd" d={svgPaths.pf6c1d00} fill="var(--fill-0, #255398)" fillRule="evenodd" />
-              </g>
-              <defs>
-                <clipPath id="clip0_mobile_762"><rect fill="white" height="63" width="1296" /></clipPath>
-              </defs>
-            </svg>
+        <div className="max-w-3xl mx-auto pb-4 px-2">
+          <style>{`
+            @keyframes logo-marquee-mobile {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .logo-marquee-track-mobile {
+              animation: logo-marquee-mobile 40s linear infinite;
+            }
+          `}</style>
+
+          <div className="relative mx-auto w-full max-w-[828px] sm:max-w-[928px] overflow-hidden">
+            <div className="logo-marquee-track-mobile flex items-center gap-8 py-4 w-max">
+              {[...trustedLogos, ...trustedLogos].map((logo, i) => (
+                <div
+                  key={`${logo.src}-m-${i}`}
+                  className="flex h-[56px] w-[140px] flex-shrink-0 items-center justify-center overflow-hidden sm:h-[64px] sm:w-[160px]"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="h-full w-full object-contain object-center"
+                    style={logo.scale ? { transform: `scale(${logo.scale})` } : undefined}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1687,9 +1700,8 @@ function Group756Logos() {
 
       <section ref={sectionRef} className="w-full bg-white">
         {/* Mobile/Tablet (< lg) - only 5 logos visible */}
-        <div className="lg:hidden w-full py-10 sm:py-14 px-4 sm:px-6 overflow-hidden">
-          {/* Visible area = exactly 5 logos: 5×140px + 4×32px = 828px (base), 5×160 + 4×32 = 928px (sm) */}
-          <div className="relative mx-auto w-[828px] sm:w-[928px] overflow-hidden">
+        <div className="hidden w-full py-10 sm:py-14 px-4 sm:px-6 overflow-hidden">
+          <div className="relative mx-auto w-full max-w-[828px] sm:max-w-[928px] overflow-hidden">
             <div className={`logo-marquee-track-mobile flex items-center gap-8 py-4 w-max ${carouselStarted ? "" : "logo-marquee-paused"}`}>
             {marqueeLogos.map((logo, i) => (
               <div
@@ -1800,7 +1812,7 @@ function Bg() {
       data-name="BG"
     >
       <div
-        className="[grid-area:1_/_1] bg-white h-[771px] ml-0 mt-0 w-[1920px]"
+        className="[grid-area:1_/_1] bg-white h-[771px] ml-0 mt-0 w-full max-w-[1920px]"
         data-name="BG"
       />
       <div
@@ -3636,7 +3648,7 @@ function Group753() {
     <>
     {/* Desktop press section */}
     <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
-      <div className="[grid-area:1_/_1] h-[282px] ml-0 mt-0 relative w-[1920px]">
+      <div className="[grid-area:1_/_1] h-[282px] ml-0 mt-0 relative w-full max-w-[1920px]">
         <svg
           className="block size-full"
           fill="none"
@@ -3691,7 +3703,7 @@ function Group753() {
         <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black mb-8 sm:mb-10">
           La presse parle de nous !
         </h2>
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 grayscale opacity-70">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           <img src={imgLogoDidomiPng} alt="Didomi" className="h-8 sm:h-10 object-contain" />
           <img src={img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic} alt="Press" className="h-8 sm:h-10 object-contain" />
           <img src={imgMidiLibrePng} alt="Midi Libre" className="h-8 sm:h-10 object-contain" />
@@ -4356,7 +4368,7 @@ export default function Home() {
 
   return (
     <div
-      className="bg-white flex flex-col items-center relative w-full overflow-x-hidden"
+      className="bg-white flex flex-col items-center relative w-full overflow-x-clip"
       data-name="Home"
     >
       <Header onGetQuote={handleGetQuote} />
@@ -4384,12 +4396,7 @@ export default function Home() {
           {/* Left: Comment ça marche ? */}
           <div className="flex-1 min-w-0">
             <h2
-              className="font-['Poppins',sans-serif] font-semibold text-left mb-10 sm:mb-12 whitespace-nowrap"
-              style={{
-                fontSize: "51px",
-                lineHeight: "62px",
-                color: "#020618",
-              }}
+              className="font-['Poppins',sans-serif] font-semibold text-left mb-10 sm:mb-12 text-2xl sm:text-3xl md:text-4xl lg:text-[51px] lg:leading-[62px] text-[#020618] lg:whitespace-nowrap"
             >
               Comment ça marche ?
             </h2>
@@ -4406,10 +4413,7 @@ export default function Home() {
                 >
                   1
                 </span>
-                <p
-                  className="font-['Poppins',sans-serif] font-semibold text-slate-600"
-                  style={{ fontSize: "19px", lineHeight: "32px" }}
-                >
+                <p className="font-['Poppins',sans-serif] font-semibold text-slate-600 text-sm sm:text-base lg:text-[19px] lg:leading-[32px]">
                   <span className="font-semibold text-slate-800">Remplissez le formulaire:</span> Indiquez les informations de votre déménagement.
                 </p>
               </div>
@@ -4425,10 +4429,7 @@ export default function Home() {
                 >
                   2
                 </span>
-                <p
-                  className="font-['Poppins',sans-serif] font-semibold text-slate-600"
-                  style={{ fontSize: "19px", lineHeight: "32px" }}
-                >
+                <p className="font-['Poppins',sans-serif] font-semibold text-slate-600 text-sm sm:text-base lg:text-[19px] lg:leading-[32px]">
                   <span className="font-semibold text-slate-800">Recevez votre estimation :</span> Nous vous envoyons un tarif clair et personnalisé.
                 </p>
               </div>
@@ -4444,17 +4445,14 @@ export default function Home() {
                 >
                   3
                 </span>
-                <p
-                  className="font-['Poppins',sans-serif] font-semibold text-slate-600"
-                  style={{ fontSize: "19px", lineHeight: "32px" }}
-                >
+                <p className="font-['Poppins',sans-serif] font-semibold text-slate-600 text-sm sm:text-base lg:text-[19px] lg:leading-[32px]">
                   <span className="font-semibold text-slate-800">Réservez votre déménagement :</span> Validez simplement votre date au prix annoncé.
                 </p>
               </div>
             </div>
           </div>
           {/* Right: videos section scaled to fit */}
-          <div className="relative h-[468px] w-full max-w-[480px] shrink-0 mx-auto lg:mx-0" style={{ transform: "scale(0.930)", transformOrigin: "top right" }}>
+          <div className="relative h-[468px] w-full max-w-[480px] shrink-0 mx-auto lg:mx-0 scale-[0.78] origin-top-left lg:scale-[0.930] lg:origin-top-right">
             <Frame2085666152 />
             <Frame2085666153 />
             <Frame2085666151 />
