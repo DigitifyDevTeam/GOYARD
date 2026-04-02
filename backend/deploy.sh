@@ -36,8 +36,8 @@ DOC_ROOT=~/public_html
 cp -r dist/* "$DOC_ROOT/"
 cp -r dist/.* "$DOC_ROOT/" 2>/dev/null || true
 
-# Copy .htaccess and passenger_wsgi.py to document root
-cp ~/GOYARD/backend/.htaccess "$DOC_ROOT/.htaccess"
+# Copy .htaccess (from Vite dist; built from react/public/) and passenger_wsgi.py
+cp ~/GOYARD/react/dist/.htaccess "$DOC_ROOT/.htaccess"
 cp ~/GOYARD/backend/passenger_wsgi.py "$DOC_ROOT/passenger_wsgi.py"
 
 # Restart Passenger (touch tmp/restart.txt to trigger reload)

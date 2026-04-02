@@ -1,6 +1,6 @@
 # Apache .htaccess for goyard-demenagement.fr
-# Canonical template: ../react/public/.htaccess (copied to dist/ on npm run build).
-# deploy.sh copies react/dist/.htaccess to document root; keep in sync with public/.
+# Source: react/public/ -> copied to dist/ on `npm run build`.
+# Deploy alongside index.html, assets/, etc.
 
 # --- HTTPS redirect ---
 <IfModule mod_rewrite.c>
