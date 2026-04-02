@@ -381,7 +381,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
   return (
     <>
       {/* Desktop hero (>= lg) */}
-      <div className="hidden lg:block h-[600px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+      <div className="hidden lg:block h-[600px] overflow-clip relative shrink-0 desktop-canvas">
         <Group744 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
       </div>
       {/* Mobile/Tablet hero (< lg) */}
@@ -1554,7 +1554,7 @@ function Group756() {
       {/* Desktop companies (>= lg) - logo carousel inside white area */}
       <div
         ref={gridRef}
-        className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0"
+        className="hidden lg:grid leading-[0] place-items-start relative shrink-0 desktop-canvas"
       >
         <div className="[grid-area:1_/_1] bg-white h-[369px] ml-0 mt-0 w-full max-w-[1920px] flex flex-col items-center justify-center overflow-hidden pt-20">
           <div className="relative w-full max-w-[1272px] mx-auto overflow-hidden px-4 mt-14">
@@ -1808,7 +1808,7 @@ export function BoxAddSvgrepoCom1() {
 function Bg() {
   return (
     <div
-      className="[grid-area:1_/_1] grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-0 place-items-start relative"
+      className="[grid-area:1_/_1] grid ml-0 mt-0 place-items-start relative w-full"
       data-name="BG"
     >
       <div
@@ -1915,7 +1915,7 @@ function Content01() {
   return (
     <>
       {/* Desktop features */}
-      <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0" data-name="Content 01">
+      <div className="hidden lg:grid leading-[0] place-items-start relative shrink-0 desktop-canvas" data-name="Content 01">
         <Bg />
         <div className="[grid-area:1_/_1] ml-[30px] mt-[90px] relative" data-name="Bitmap">
           <div className="bg-white p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
@@ -3526,7 +3526,7 @@ function Frame701() {
   return (
     <>
       {/* Desktop blog section */}
-      <div className="hidden lg:block h-[756px] overflow-clip relative shrink-0 w-full max-w-[1920px]">
+      <div className="hidden lg:block h-[756px] overflow-clip relative shrink-0 desktop-canvas">
         <Group707 posts={topBlogPosts} />
         <Group736 />
       </div>
@@ -3647,7 +3647,7 @@ function Group753() {
   return (
     <>
     {/* Desktop press section */}
-    <div className="hidden lg:inline-grid grid-cols-[max-content] grid-rows-[max-content] leading-[0] place-items-start relative shrink-0">
+    <div className="hidden lg:grid leading-[0] place-items-start relative shrink-0 desktop-canvas">
       <div className="[grid-area:1_/_1] h-[282px] ml-0 mt-0 relative w-full max-w-[1920px]">
         <svg
           className="block size-full"
@@ -4353,6 +4353,17 @@ const HOME_DEPARTURE_ADDRESS_KEY = "homeDepartureAddress";
 export default function Home() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
+  const [canvasZoom, setCanvasZoom] = useState(1);
+
+  useEffect(() => {
+    const update = () => {
+      const vw = window.innerWidth;
+      setCanvasZoom(vw >= 1920 ? 1 : vw >= 1024 ? vw / 1920 : 1);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   const handleGetQuote = () => {
     sessionStorage.setItem("cameFromHome", "true");
@@ -4370,6 +4381,7 @@ export default function Home() {
     <div
       className="bg-white flex flex-col items-center relative w-full overflow-x-clip"
       data-name="Home"
+      style={{ '--desktop-canvas-zoom': canvasZoom } as React.CSSProperties}
     >
       <Header onGetQuote={handleGetQuote} />
       <Frame719 onGetQuote={handleGetQuote} address={departureAddress} onAddressChange={handleAddressChange} />

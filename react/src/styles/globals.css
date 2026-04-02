@@ -298,6 +298,11 @@ html {
     padding-left: clamp(1rem, 5vw, 13.125rem);
     padding-right: clamp(1rem, 5vw, 13.125rem);
   }
+
+  .desktop-canvas {
+    width: 1920px;
+    zoom: var(--desktop-canvas-zoom, 1);
+  }
 }
 
 img, video, svg {
