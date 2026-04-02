@@ -39,6 +39,7 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     # More specific /api/... paths must come before the catch-all path('api/', ...)
+    path('api/health/', core_views.api_health, name='api_health'),
     path('api/demenagement/', include('demenagement.urls')),
     path('api/google/places-autocomplete/', core_views.google_places_autocomplete),
     path('api/google/distance-matrix/', core_views.google_distance_matrix),

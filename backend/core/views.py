@@ -91,3 +91,9 @@ def google_distance_matrix(request):
             {'status': 'ERROR', 'error_message': str(e)},
             status=502
         )
+
+
+@require_GET
+def api_health(request):
+    """Smoke test: curl http://127.0.0.1:8002/api/health/ — /api/ alone has no route (404 is normal)."""
+    return JsonResponse({'status': 'ok'})
