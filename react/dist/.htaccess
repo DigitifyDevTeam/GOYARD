@@ -1,28 +1,20 @@
-#
-# Document root for guivarche-demenagement.fr
-# Copy this file next to index.html + assets/ (same folder as the built site).
-#
-# Your React app uses React Router: /contact, /blog, /tunnel/... have no real .html files.
-# Apache must fall back to index.html so the JS app can render each "page".
-#
-# If you still get 404: dist must live at the domain root (index.html and /assets/ at /),
-# not only inside a subfolder, unless you set Vite base and rebuild — see vite.config base.
+# Match react/public/.htaccess — deploy copies react/dist/.htaccess to document root.
 
 Options -MultiViews
 
+<IfModule mod_headers.c>
+  RequestHeader set X-Forwarded-Proto "https" env=HTTPS
+</IfModule>
+
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
+  RewriteEngine On
+  RewriteBase /
 
-    # Django (Gunicorn on 127.0.0.1:8002) — must run before SPA rules
-    RewriteCond %{REQUEST_URI} ^/(api|admin|static|media)(/|$) [NC]
-    RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
+  RewriteCond %{REQUEST_URI} ^/(api|admin|static|media|swagger|redoc)(/|$) [NC]
+  RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
 
-    # Real files and directories (index.html, /assets/*, favicon, etc.)
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L]
-
-    # React Router: any other path → index.html (client-side routes)
-    RewriteRule ^ index.html [L]
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
 </IfModule>
