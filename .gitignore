@@ -5,6 +5,11 @@ backend/.env.*
 !backend/.env.example
 !backend/env.production.example
 
+# Node (never commit dependencies — large; avoids Windows/OneDrive mmap errors on git add)
+node_modules/
+react/node_modules/
+react/node_modules/.vite/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -17,9 +22,6 @@ backend/**/.venv/
 sonar-issues-report.md
 sonar-issues.json
 
-# Node / Vite (must not be committed; tracked paths removed from index)
-react/node_modules/
-react/node_modules/.vite/
-
-# Runtime uploads & ML working files (not source code)
-backend/ai_detector/ai_model/
+# Local AI uploads / training output (large; OneDrive can break `git add` with mmap errors)
+backend/ai_detector/ai_model/images/original_imgs/
+backend/ai_detector/ai_model/images/trained_imgs/

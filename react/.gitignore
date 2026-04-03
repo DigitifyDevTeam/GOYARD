@@ -1,6 +1,7 @@
 node_modules
 node_modules/.vite/
-dist
+dist/*
+!dist/.htaccess
 .env
 .env.local
 .env.*.local
