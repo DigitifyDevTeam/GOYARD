@@ -84,18 +84,74 @@ import { ImageWithFallback } from "./components/figma/ImageWithFallback";
 import Footer from "./components/layout/Footer";
 import StickyContactButtons from "./components/StickyContactButtons";
 import {
+  AspirateurIcon,
+  Armoire2pIcon,
+  ArmoireAncienneIcon,
+  ArmoireAncienneHeavyIcon,
+  ArmoireForteHeavyIcon,
+  BaignoireEnfantIcon,
+  BarbecueIcon,
+  BancDeMusculationIcon,
+  BibliothequeIcon,
   BoiteOuPanierIcon,
+  BuffetCompletHautBasIcon,
+  BureauIcon,
+  CaveAVinIcon,
+  ChaiseBureauIcon,
   ChaiseIcon,
+  ChiffronierIcon,
+  ClimatisationIcon,
+  CoffreRangementIcon,
+  CoiffeuseIcon,
+  ColonneSalleDeBainIcon,
+  CommodeIcon,
   CuisiniereIcon,
+  EchelleIcon,
+  EcranOrdinateurIcon,
+  EscabeauIcon,
+  EtagereCaveIcon,
   EtagereCuisineIcon,
   FourIcon,
   FourPiano6TetesIcon,
   FrigoCongelateurIcon,
+  GuitareIcon,
+  ImprimanteIcon,
+  ImprimanteProIcon,
+  LampeDeBureauIcon,
+  LaveLingeIcon,
+  LaveLingeHeavyIcon,
   LaveVaisselleIcon,
+  LitDoubleIcon,
+  LitSimpleIcon,
   MeubleBasCuisineIcon,
   MeubleHautCuisineIcon,
+  MeubleSalleDeBainIcon,
   MicroOndesIcon,
+  MoyenneTableIcon,
+  ParasolIcon,
+  ParaventIcon,
+  PianoDroitHeavyIcon,
+  PianoQueueHeavyIcon,
+  PlanteEnPotIcon,
+  PoussetteIcon,
+  RefrigerateurAmericainHeavyIcon,
+  ScooterMotoIcon,
+  SecheLingeIcon,
+  TableALangerBebeIcon,
+  TableDeJardinIcon,
+  TableDeNuitIcon,
+  TablePingPongIcon,
   TabouretIcon,
+  TapisDeCourseIcon,
+  TapisMoyenIcon,
+  TapisPetitIcon,
+  TeteDeLitIcon,
+  TransatIcon,
+  TvIcon,
+  ValisesIcon,
+  VaisselierIcon,
+  VeloIcon,
+  VeloInterieurIcon,
 } from "./cuisineObjectIcons";
 
 /** Numéro affiché dans l’en-tête du tunnel (mes-coordonnées, devis, etc.) — lien d’appel */
@@ -2036,7 +2092,7 @@ function AppContent() {
     if (normalized === "fauteuil") return <FauteuilIcon />;
     if (normalized === "pouf") return <PoufIcon />;
     if (normalized === "etendoir") return <EtendoirIcon />;
-    if (normalized === "boîte ou panier") return <BoiteOuPanierIcon />;
+    if (normalized === "boîte ou panier" || normalized === "coffre a linge") return <BoiteOuPanierIcon />;
     if (normalized === "cuisinière (-80kg)") return <CuisiniereIcon />;
     if (normalized === "four") return <FourIcon />;
     if (normalized === "frigo-congélateur") return <FrigoCongelateurIcon />;
@@ -2048,6 +2104,62 @@ function AppContent() {
     if (normalized === "tabouret") return <TabouretIcon />;
     if (normalized === "chaise") return <ChaiseIcon />;
     if (normalized === "four piano 6 têtes") return <FourPiano6TetesIcon />;
+    if (normalized === "buffet haut") return <MeubleHautCuisineIcon />;
+    if (normalized === "moyenne table") return <MoyenneTableIcon />;
+    if (normalized === "plante en pot") return <PlanteEnPotIcon />;
+    if (normalized === "tapis moyen") return <TapisMoyenIcon />;
+    if (normalized === "tapis petit") return <TapisPetitIcon />;
+    if (normalized === "vaisselier (-80kg)") return <VaisselierIcon />;
+    if (normalized === "commode") return <CommodeIcon />;
+    if (normalized === "buffet complet haut + bas") return <BuffetCompletHautBasIcon />;
+    if (normalized === "bibliothèque" || normalized === "bibliotheque") return <BibliothequeIcon />;
+    if (normalized === "armoire 2p (-80kg)") return <Armoire2pIcon />;
+    if (normalized === "armoire ancienne (-80kg)") return <ArmoireAncienneIcon />;
+    if (normalized === "bureau") return <BureauIcon />;
+    if (normalized === "chaise de bureau") return <ChaiseBureauIcon />;
+    if (normalized === "lit double") return <LitDoubleIcon />;
+    if (normalized === "lit simple") return <LitSimpleIcon />;
+    if (normalized === "table de nuit") return <TableDeNuitIcon />;
+    if (normalized === "tête de lit") return <TeteDeLitIcon />;
+    if (normalized === "table à langer bébé") return <TableALangerBebeIcon />;
+    if (normalized === "coiffeuse") return <CoiffeuseIcon />;
+    if (normalized === "tv") return <TvIcon />;
+    if (normalized === "colonne salle de bain") return <ColonneSalleDeBainIcon />;
+    if (normalized === "lave linge") return <LaveLingeIcon />;
+    if (normalized === "meuble salle de bain") return <MeubleSalleDeBainIcon />;
+    if (normalized === "baignoire enfant") return <BaignoireEnfantIcon />;
+    if (normalized === "barbecue") return <BarbecueIcon />;
+    if (normalized === "coffre de rangement") return <CoffreRangementIcon />;
+    if (normalized === "echelle") return <EchelleIcon />;
+    if (normalized === "escabeau") return <EscabeauIcon />;
+    if (normalized === "valises") return <ValisesIcon />;
+    if (normalized === "étagère" || normalized === "etagere" || normalized === "etagére") return <EtagereCaveIcon />;
+    if (normalized === "climatisation") return <ClimatisationIcon />;
+    if (normalized === "parasol") return <ParasolIcon />;
+    if (normalized === "table de jardin") return <TableDeJardinIcon />;
+    if (normalized === "transat") return <TransatIcon />;
+    if (normalized === "vélo") return <VeloIcon />;
+    if (normalized === "poussette") return <PoussetteIcon />;
+    if (normalized === "scooter (moto)") return <ScooterMotoIcon />;
+    if (normalized === "aspirateur") return <AspirateurIcon />;
+    if (normalized === "séche linge") return <SecheLingeIcon />;
+    if (normalized === "table de ping-pong" || normalized === "table de ping-pong (-80kg)") return <TablePingPongIcon />;
+    if (normalized === "chiffronier") return <ChiffronierIcon />;
+    if (normalized === "guitare") return <GuitareIcon />;
+    if (normalized === "lampe de bureau") return <LampeDeBureauIcon />;
+    if (normalized === "paravent") return <ParaventIcon />;
+    if (
+      normalized === "vélo d'intérieur" ||
+      normalized === "vélo d'intérieur (-80kg)" ||
+      normalized === "vélo d'interieur (-80kg)"
+    )
+      return <VeloInterieurIcon />;
+    if (normalized === "tapis de course" || normalized === "tapis de course (-80kg)") return <TapisDeCourseIcon />;
+    if (normalized === "banc de musculation" || normalized === "banc de musculation (-80kg)") return <BancDeMusculationIcon />;
+    if (normalized === "ecran ordinateur") return <EcranOrdinateurIcon />;
+    if (normalized === "imprimante") return <ImprimanteIcon />;
+    if (normalized === "imprimante pro") return <ImprimanteProIcon />;
+    if (normalized === "cave à vin") return <CaveAVinIcon />;
     return <BoxIcon />;
   };
 
@@ -2084,6 +2196,19 @@ function AppContent() {
     "Lave linge (max 150kgs)",
     "Banc de musculation (max 150kgs)"
   ];
+
+  const getSpecialHeavyObjectIcon = (objectName: string) => {
+    const n = objectName.trim().toLowerCase();
+    if (n === "piano droit (max 200kgs)") return <PianoDroitHeavyIcon />;
+    if (n === "piano à queue (max 300kgs)") return <PianoQueueHeavyIcon />;
+    if (n === "armoire forte (max 200kgs)") return <ArmoireForteHeavyIcon />;
+    if (n === "coffre fort (max 200kgs)") return <CoffreRangementIcon />;
+    if (n === "réfrigérateur américain (max 150kgs)") return <RefrigerateurAmericainHeavyIcon />;
+    if (n === "armoire ancienne (max 150kgs)") return <ArmoireAncienneHeavyIcon />;
+    if (n === "lave linge (max 150kgs)") return <LaveLingeHeavyIcon />;
+    if (n === "banc de musculation (max 150kgs)") return <BancDeMusculationIcon />;
+    return <BoxIcon />;
+  };
 
   // Custom heavy objects added by user (for manual method)
   const [customHeavyObjects, setCustomHeavyObjects] = useState<string[]>([]);
@@ -3887,7 +4012,7 @@ function AppContent() {
                                   )}
 
                                   <div className="flex justify-center mb-2">
-                                    <BoxIcon />
+                                    {getSpecialHeavyObjectIcon(object)}
                                   </div>
                                   <h3 className="text-sm font-medium text-slate-900 mb-3">
                                     {object}
@@ -4237,7 +4362,7 @@ function AppContent() {
                                     )}
 
                                     <div className="flex justify-center mb-2">
-                                      <BoxIcon />
+                                      {getSpecialHeavyObjectIcon(object)}
                                     </div>
                                     <h3 className="text-sm font-medium text-slate-900 mb-1">
                                       {object}
@@ -4780,7 +4905,7 @@ function AppContent() {
                                       )}
 
                                       <div className="flex justify-center mb-2">
-                                        <BoxIcon />
+                                        {getSpecialHeavyObjectIcon(object)}
                                       </div>
                                       <h3 className="text-sm font-medium text-slate-900 mb-3">
                                         {object}
