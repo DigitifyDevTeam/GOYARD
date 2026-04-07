@@ -6,7 +6,7 @@ import Footer from "../components/layout/Footer";
 import { InterventionMapVersailles92 } from "../components/intervention-map";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 
-export default function Versailles92() {
+export default function Seine92() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
 
@@ -31,19 +31,19 @@ export default function Versailles92() {
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
-                  Versailles 92 • Déménagement pro
+                  Hauts-de-Seine (92) • Déménagement pro
                 </div>
                 <h1 className="mt-4 font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                  Déménagement à Versailles 92, sans stress.
+                  Déménagement dans les Hauts-de-Seine (92), sans stress.
                 </h1>
                 <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Une équipe réactive pour des déménagements efficaces, soignés et parfaitement organisés à Versailles (92).
+                  Une équipe réactive pour des déménagements efficaces, soignés et parfaitement organisés dans les Hauts-de-Seine (92).
                   Devis rapide, dates flexibles, protection premium.
                 </p>
 
                 <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
                   {[
-                    "Intervention rapide (Versailles 92)",
+                    "Intervention rapide (92)",
                     "Protection mobilier & accès difficiles",
                     "Équipe expérimentée et ponctuelle",
                     "Suivi simple, clair, transparent",
@@ -66,7 +66,7 @@ export default function Versailles92() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => window.location.href = "tel:+33189703324"}
+                    onClick={() => { globalThis.location.href = "tel:+33189703324"; }}
                     className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
                   >
                     Parler à un conseiller
@@ -103,7 +103,7 @@ export default function Versailles92() {
 
                   <div className="mt-6 rounded-2xl bg-[#191919] text-white p-5">
                     <p className="font-['Poppins',sans-serif] font-semibold text-sm">
-                      Astuce Versailles 92
+                      Astuce Hauts-de-Seine (92)
                     </p>
                     <p className="mt-1 text-xs sm:text-[13px] text-white/80 leading-relaxed">
                       Accès étroits, étages, stationnement… Donnez-nous les détails et on prévoit le bon matériel (sangles,
@@ -174,7 +174,7 @@ export default function Versailles92() {
           </div>
         </section>
 
-        {/* Versailles 92 — carte & zone */}
+        {/* Hauts-de-Seine (92) — carte & zone */}
         <section className="mt-0">
           <InterventionMapVersailles92 />
         </section>
@@ -208,7 +208,7 @@ export default function Versailles92() {
                   </span>{" "}
                   De la préparation au dernier carton posé, notre équipe met son
                   savoir-faire au service d'un déménagement fluide, ponctuel et
-                  soigné — partout à Versailles (92).
+                  soigné — partout dans les Hauts-de-Seine (92).
                 </p>
               </div>
             </div>
@@ -218,10 +218,10 @@ export default function Versailles92() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/zones/ver1.jpg", alt: "Équipe de déménagement en action" },
-                  { src: "/zones/ver2.jpg", alt: "Nos locaux et équipements" },
-                  { src: "/zones/ver3.jpg", alt: "Monte-meuble en intervention" },
-                  { src: "/zones/ver4.jpg", alt: "Protection et chargement soigné" },
+                  { src: "/zones/hd92-1-ladefense.jpg", alt: "La Défense (Hauts-de-Seine) — skyline" },
+                  { src: "/zones/hd92-2-ladefense.jpg", alt: "La Défense (92) — quartier d'affaires" },
+                  { src: "/zones/hd92-3-pont-courbevoie.jpg", alt: "Pont de Courbevoie (Hauts-de-Seine) — Seine" },
+                  { src: "/zones/hd92-4-pont-neuilly.jpg", alt: "Pont de Neuilly (Hauts-de-Seine) — bord de Seine" },
                 ].map((img) => (
                   <div
                     key={img.src}
@@ -241,10 +241,10 @@ export default function Versailles92() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/zones/ver1.jpg", alt: "Équipe de déménagement en action" },
-                    { src: "/zones/ver2.jpg", alt: "Nos locaux et équipements" },
-                    { src: "/zones/ver3.jpg", alt: "Monte-meuble en intervention" },
-                    { src: "/zones/ver4.jpg", alt: "Protection et chargement soigné" },
+                    { src: "/zones/hd92-1-ladefense.jpg", alt: "La Défense (Hauts-de-Seine) — skyline" },
+                    { src: "/zones/hd92-2-ladefense.jpg", alt: "La Défense (92) — quartier d'affaires" },
+                    { src: "/zones/hd92-3-pont-courbevoie.jpg", alt: "Pont de Courbevoie (Hauts-de-Seine) — Seine" },
+                    { src: "/zones/hd92-4-pont-neuilly.jpg", alt: "Pont de Neuilly (Hauts-de-Seine) — bord de Seine" },
                   ].map((img) => {
                     return (
                       <div
@@ -320,11 +320,11 @@ export default function Versailles92() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               <div className="lg:col-span-7">
                 <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-                  Versailles 92
+                  Hauts-de-Seine (92)
                 </h2>
                 <p className="mt-3 text-slate-600 leading-relaxed">
-                  Intervention sur Versailles et le département 92 : desserte locale, accès résidentiels et contraintes de
-                  stationnement prises en compte pour une organisation fluide.
+                  Intervention dans les Hauts-de-Seine (92) : desserte locale, accès résidentiels et contraintes de
+                  stationnement prises en compte pour une organisation fluide sur tout le département.
                 </p>
                 <div className="mt-6 grid sm:grid-cols-2 gap-3">
                   {[
@@ -344,7 +344,7 @@ export default function Versailles92() {
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
                   <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Prêt à déménager à Versailles 92 ?
+                    Prêt à déménager dans les Hauts-de-Seine (92) ?
                   </p>
                   <p className="mt-2 text-sm text-slate-600 leading-relaxed">
                     Lancez votre devis en 2 minutes. Vous pouvez affiner ensuite (options, accès, dates).

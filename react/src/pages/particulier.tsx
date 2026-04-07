@@ -1,33 +1,33 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Globe, MapPin, ShieldCheck, Timer, Truck, Users, Laptop, Warehouse, ShoppingCart, Building2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Globe, Home, MapPin, ShieldCheck, Timer, Truck, Boxes, Sofa, Package } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 
-// ─── Sections imported from DemenagementEntreprise.tsx ──────────────
+// ─── Sections (Particulier) ─────────────────────────────────────────
 
-const proDomaines = [
+const particulierDomaines = [
   {
-    icon: <Building2 className="w-8 h-8" />,
-    title: "Bureaux",
-    description: "Postes de travail, mobilier, archivage",
+    icon: <Home className="w-8 h-8" />,
+    title: "Appartements",
+    description: "Accès, étages, protection du mobilier",
   },
   {
-    icon: <Laptop className="w-8 h-8" />,
-    title: "IT / Matériel",
-    description: "Déménagement sécurisé de serveurs",
+    icon: <Sofa className="w-8 h-8" />,
+    title: "Maisons",
+    description: "Volumes plus importants, organisation sur-mesure",
   },
   {
-    icon: <Warehouse className="w-8 h-8" />,
-    title: "Entrepôts",
-    description: "Stockage industriel, racks et palettes",
+    icon: <Boxes className="w-8 h-8" />,
+    title: "Cartons & fragiles",
+    description: "Emballage, vaisselle, objets sensibles",
   },
   {
-    icon: <ShoppingCart className="w-8 h-8" />,
-    title: "Commerces",
-    description: "Agencement, linéaires, caisse",
+    icon: <Package className="w-8 h-8" />,
+    title: "Options",
+    description: "Démontage/remontage, emballage, garde-meubles",
   },
 ];
 
@@ -72,7 +72,7 @@ function SectionHeader({
   );
 }
 
-export default function Pro() {
+export default function Particulier() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
 
@@ -97,22 +97,22 @@ export default function Pro() {
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
-                  Déménagement entreprise
+                  Déménagement particulier
                 </div>
                 <h1 className="mt-4 font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                  Déménagement d'entreprise, sans stress.
+                  Déménagement particulier, sans stress.
                 </h1>
                 <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Transfert de bureaux, relocation d'équipes, déménagement de commerces ou d'entrepôts : une organisation
-                  claire, des délais maîtrisés et une exécution soignée.
+                  Studio, appartement, maison : une organisation claire, des délais maîtrisés et une exécution soignée.
+                  Devis rapide, dates flexibles, protection premium.
                 </p>
 
                 <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
                   {[
                     "Planification & coordination",
-                    "Protection du matériel & mobilier",
+                    "Protection du mobilier & des fragiles",
                     "Équipe expérimentée et ponctuelle",
-                    "Intervention hors horaires si besoin",
+                    "Options d’emballage & démontage",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
@@ -169,11 +169,11 @@ export default function Pro() {
 
                   <div className="mt-6 rounded-2xl bg-[#191919] text-white p-5">
                     <p className="font-['Poppins',sans-serif] font-semibold text-sm">
-                      Astuce déménagement d'entreprise
+                      Astuce déménagement particulier
                     </p>
                     <p className="mt-1 text-xs sm:text-[13px] text-white/80 leading-relaxed">
-                      Anticipez l'IT et la continuité d'activité : inventaire, étiquetage, zones sensibles, créneau hors
-                      horaires, et un plan clair de réinstallation poste par poste.
+                      Préparez un “carton essentiel” (documents, chargeurs, trousse, vêtements). Indiquez-nous les accès,
+                      les étages et les objets fragiles : on prévoit le bon matériel (protections, sangles, monte-meubles si besoin).
                     </p>
                   </div>
                 </div>
@@ -252,7 +252,7 @@ export default function Pro() {
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-              {proDomaines.map((domaine, index) => (
+              {particulierDomaines.map((domaine, index) => (
                 <motion.div
                   key={domaine.title}
                   className="bg-white p-6 sm:p-8 rounded-2xl border border-[#CC922F]/30 text-center group shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_18px_50px_rgba(15,23,42,0.10)] hover:border-[#CC922F]/60"
@@ -310,7 +310,7 @@ export default function Pro() {
                   </span>{" "}
                   De la préparation au dernier carton posé, notre équipe met son
                   savoir-faire au service d'un déménagement fluide, ponctuel et
-                  soigné — pour vos locaux, bureaux et équipes.
+                  soigné — pour votre logement et votre famille.
                 </p>
               </div>
             </div>
@@ -320,10 +320,10 @@ export default function Pro() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/gallery/1.jpeg", alt: "Équipe de déménagement en action" },
-                  { src: "/gallery/4.jpeg", alt: "Nos locaux et équipements" },
-                  { src: "/gallery/Déménagement groupé.jpeg", alt: "Équipe de déménagement en action" },
-                  { src: "/gallery/Déménagement entreprise.jpeg", alt: "Nos locaux et équipements" },
+                  { src: "/gallery/img4.jpeg", alt: "Déménagement particulier - cartons prêts dans l’immeuble" },
+                  { src: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg", alt: "Déménagement particulier - transfert de cartons via balcon" },
+                  { src: "/gallery/image2.jpeg", alt: "Déménagement particulier - monte-meubles en façade d’immeuble" },
+                  { src: "/gallery/img3.jpeg", alt: "Déménagement particulier - livraison en cour d’immeuble" },
                 ].map((img) => (
                   <div
                     key={img.src}
@@ -343,10 +343,10 @@ export default function Pro() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/gallery/1.jpeg", alt: "Équipe de déménagement en action" },
-                    { src: "/gallery/4.jpeg", alt: "Nos locaux et équipements" },
-                    { src: "/gallery/Déménagement groupé.jpeg", alt: "Équipe de déménagement en action" },
-                    { src: "/gallery/Déménagement entreprise.jpeg", alt: "Nos locaux et équipements" },
+                    { src: "/gallery/img4.jpeg", alt: "Déménagement particulier - cartons prêts dans l’immeuble" },
+                    { src: "/gallery/WhatsApp%20Image%202026-03-05%20at%2016.32.42.jpeg", alt: "Déménagement particulier - transfert de cartons via balcon" },
+                    { src: "/gallery/image2.jpeg", alt: "Déménagement particulier - monte-meubles en façade d’immeuble" },
+                    { src: "/gallery/img3.jpeg", alt: "Déménagement particulier - livraison en cour d’immeuble" },
                   ].map((img) => {
                     return (
                       <div
@@ -377,7 +377,7 @@ export default function Pro() {
               Comment ça se passe
             </p>
             <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-              Un déroulé simple, maîtrisé, pro.
+              Un déroulé simple, maîtrisé, clair.
             </h2>
           </div>
           <div className="mt-8 grid md:grid-cols-3 gap-5">
@@ -422,18 +422,17 @@ export default function Pro() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               <div className="lg:col-span-7">
                 <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-                  Déménagement entreprise
+                  Déménagement particulier
                 </h2>
                 <p className="mt-3 text-slate-600 leading-relaxed">
-                  Organisation adaptée aux contraintes professionnelles : accès, sécurité, planning, zones sensibles,
-                  manutention et remise en service rapide.
+                  Organisation adaptée à votre logement : accès, étages, stationnement, protections, manutention et remise en place soignée.
                 </p>
                 <div className="mt-6 grid sm:grid-cols-2 gap-3">
                   {[
-                    "Transfert de bureaux / commerces",
-                    "Relocation & réinstallation",
-                    "Manutention & protection renforcée",
-                    "Démontage / remontage & packaging",
+                    "Appartement / maison",
+                    "Protection & manutention soignée",
+                    "Accès difficiles & étages",
+                    "Emballage / démontage en option",
                   ].map((x) => (
                     <div key={x} className="flex items-start gap-2 rounded-2xl bg-white border border-slate-100 p-4">
                       <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
@@ -446,7 +445,7 @@ export default function Pro() {
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
                   <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Prêt à planifier votre déménagement d'entreprise ?
+                    Prêt à planifier votre déménagement ?
                   </p>
                   <p className="mt-2 text-sm text-slate-600 leading-relaxed">
                     Lancez votre devis en 2 minutes. Vous pouvez affiner ensuite (options, accès, dates).
@@ -469,7 +468,7 @@ export default function Pro() {
                     </button>
                   </div>
                   <p className="mt-4 text-xs text-slate-500">
-                    Réponse rapide • Devis clair • Équipe pro
+                    Réponse rapide • Devis clair • Équipe sérieuse
                   </p>
                 </div>
               </div>
@@ -499,64 +498,7 @@ export default function Pro() {
           </div>
         </div>
 
-        {/* Références */}
-        <section className="bg-white py-8 sm:py-12 lg:py-16">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
-            <SectionHeader
-              icon={<Users className="h-4 w-4" />}
-              pill="Références"
-              pillColor="gold"
-              title="Ils nous ont fait confiance"
-            />
-
-            <style>{`
-              @keyframes entreprise-marquee {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              .entreprise-marquee-track {
-                animation: entreprise-marquee 35s linear infinite;
-              }
-            `}</style>
-
-            <div className="relative w-full max-w-5xl mx-auto overflow-hidden">
-              <div className="entreprise-marquee-track flex items-center gap-12 py-4 w-max">
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Fedex-logo.png" alt="FedEx" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sorbonne.svg" alt="Sorbonne" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(0.85)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sephora.svg" alt="Sephora" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Dior_Logo.svg.png" alt="Dior" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/IXINA-Logo_BLEU_CMJN.jpg" alt="Ixina" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg" alt="BWT Alpine F1 Team" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Longchamps.jpg" alt="Longchamp" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Pinsent_Masons_logo.svg" alt="Pinsent Masons" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/espot.jpg" alt="Espot" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.25)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Polene.jpg" alt="Polène" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/le-tanneur.png" alt="Le Tanneur" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Givenchy.png" alt="Givenchy" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/meurice.jpg" alt="Le Meurice" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/gallery-dept.png" alt="Gallery Dept" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.55)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Hilton.png" alt="Hilton" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
-
-                {/* Duplicated set for seamless loop */}
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Fedex-logo.png" alt="FedEx" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sorbonne.svg" alt="Sorbonne" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(0.85)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sephora.svg" alt="Sephora" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Dior_Logo.svg.png" alt="Dior" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/IXINA-Logo_BLEU_CMJN.jpg" alt="Ixina" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg" alt="BWT Alpine F1 Team" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Longchamps.jpg" alt="Longchamp" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Pinsent_Masons_logo.svg" alt="Pinsent Masons" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/espot.jpg" alt="Espot" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.25)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Polene.jpg" alt="Polène" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/le-tanneur.png" alt="Le Tanneur" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Givenchy.png" alt="Givenchy" className="h-full w-full object-contain object-center" loading="lazy" /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/meurice.jpg" alt="Le Meurice" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/gallery-dept.png" alt="Gallery Dept" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.55)" }} /></div>
-                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Hilton.png" alt="Hilton" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
-              </div>
-            </div>
-          </div>
-        </section>
+       
         {/* CTA final */}
         <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
           <div className="container mx-auto px-4 sm:px-6">

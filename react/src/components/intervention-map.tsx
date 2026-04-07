@@ -163,21 +163,22 @@ export function InterventionMapParis75() {
   );
 }
 
-/** Carte & textes Versailles 92 — landing Ads (libellé demandé) */
+/** Carte & textes Hauts-de-Seine (92) — landing Ads */
 export function InterventionMapVersailles92() {
   return (
     <InterventionMapRegion
-      sectionBadge="Versailles 92"
-      mapLabel="Versailles 92"
-      mapLat={48.8049}
-      mapLng={2.1204}
+      sectionBadge="Hauts-de-Seine (92)"
+      mapLabel="Hauts-de-Seine (92)"
+      // Point central approximatif du département (Nanterre)
+      mapLat={48.8924}
+      mapLng={2.2069}
       mapZoom={12}
-      regionTitle="Versailles 92"
+      regionTitle="Hauts-de-Seine (92)"
       regionSubtitle="Déménagement local"
-      headerDescription="Guivarche Déménagement intervient à Versailles (92) pour des déménagements organisés, soignés et parfaitement cadrés."
+      headerDescription="Guivarche Déménagement intervient dans les Hauts-de-Seine (92) pour des déménagements organisés, soignés et parfaitement cadrés."
       regionParagraphs={[
-        "Versailles et son environnement demandent une bonne lecture des accès, des volumes et du stationnement — nous les anticipons.",
-        "Nous adaptons le matériel, la logistique et les protections pour les livraisons en quartiers résidentiels comme en zones plus denses.",
+        "Les Hauts-de-Seine présentent des configurations variées : centres-villes denses, quartiers résidentiels, accès étroits et contraintes de stationnement — nous les anticipons.",
+        "Nous adaptons le matériel, la logistique et les protections pour des interventions en immeuble comme en maison, partout dans le 92.",
         "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l’intervention.",
       ]}
     />
