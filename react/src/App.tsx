@@ -6225,7 +6225,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/ile-de-france" element={<ZoneIleDeFrance />} />
         <Route path="/lp/paris" element={<Paris />} />
-        <Route path="/lp/versailles" element={<Seine92 />} />
+        <Route path="/lp/hauts-de-seine" element={<Seine92 />} />
         <Route path="/lp/pro" element={<Pro />} />
         <Route path="/lp/particulier" element={<Particulier />} />
         <Route path="/demenagement-national" element={<ZoneNational />} />
