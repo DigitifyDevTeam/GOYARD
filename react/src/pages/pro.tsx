@@ -1,12 +1,98 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, CheckCircle2, MapPin, ShieldCheck, Timer, Truck } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, CheckCircle2, Globe, Headphones, Lock, MapPin, Shield, ShieldCheck, Timer, Truck, Users, Laptop, Warehouse, ShoppingCart, Building2, Clock } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { InterventionMapVersailles92 } from "../components/intervention-map";
+import { InterventionMapRegion } from "../components/intervention-map";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 
-export default function Versailles92() {
+// ─── Sections imported from DemenagementEntreprise.tsx ──────────────
+
+const proDomaines = [
+  {
+    icon: <Building2 className="w-8 h-8" />,
+    title: "Bureaux",
+    description: "Postes de travail, mobilier, archivage",
+  },
+  {
+    icon: <Laptop className="w-8 h-8" />,
+    title: "IT / Matériel",
+    description: "Déménagement sécurisé de serveurs",
+  },
+  {
+    icon: <Warehouse className="w-8 h-8" />,
+    title: "Entrepôts",
+    description: "Stockage industriel, racks et palettes",
+  },
+  {
+    icon: <ShoppingCart className="w-8 h-8" />,
+    title: "Commerces",
+    description: "Agencement, linéaires, caisse",
+  },
+];
+
+const proEngagements = [
+  {
+    icon: <Clock className="w-6 h-6" />,
+    text: "Disponibilité 7j/7, y compris nuit et week-end",
+  },
+  {
+    icon: <Shield className="w-6 h-6" />,
+    text: "Assurance RC Pro tous risques",
+  },
+  {
+    icon: <Lock className="w-6 h-6" />,
+    text: "Confidentialité des données garantie",
+  },
+  {
+    icon: <Headphones className="w-6 h-6" />,
+    text: "Interlocuteur unique du devis au bilan",
+  },
+];
+
+function SectionHeader({
+  icon,
+  pill,
+  pillColor = "gold",
+  title,
+  subtitle,
+}: Readonly<{
+  icon: ReactNode;
+  pill: string;
+  pillColor?: "gold" | "navy";
+  title: string;
+  subtitle?: string;
+}>) {
+  const bg = pillColor === "gold" ? "bg-[#CC922F]/10" : "bg-[#1C3957]/10";
+  const textColor = pillColor === "gold" ? "text-[#CC922F]" : "text-[#1C3957]";
+
+  return (
+    <div className="text-center mb-10 sm:mb-16">
+      <motion.div
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${bg} mb-4`}
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <span className={textColor}>{icon}</span>
+        <span className={`text-sm font-semibold ${textColor}`}>{pill}</span>
+      </motion.div>
+
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-[#1C3957] font-['Poppins',sans-serif]">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-['Poppins',sans-serif]">
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
+}
+
+export default function Pro() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
 
@@ -31,22 +117,22 @@ export default function Versailles92() {
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
-                  Versailles 92 • Déménagement pro
+                  Déménagement entreprise
                 </div>
                 <h1 className="mt-4 font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                  Déménagement à Versailles 92, sans stress.
+                  Déménagement d'entreprise, sans stress.
                 </h1>
                 <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Une équipe réactive pour des déménagements efficaces, soignés et parfaitement organisés à Versailles (92).
-                  Devis rapide, dates flexibles, protection premium.
+                  Transfert de bureaux, relocation d'équipes, déménagement de commerces ou d'entrepôts : une organisation
+                  claire, des délais maîtrisés et une exécution soignée.
                 </p>
 
                 <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
                   {[
-                    "Intervention rapide (Versailles 92)",
-                    "Protection mobilier & accès difficiles",
+                    "Planification & coordination",
+                    "Protection du matériel & mobilier",
                     "Équipe expérimentée et ponctuelle",
-                    "Suivi simple, clair, transparent",
+                    "Intervention hors horaires si besoin",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
@@ -103,11 +189,11 @@ export default function Versailles92() {
 
                   <div className="mt-6 rounded-2xl bg-[#191919] text-white p-5">
                     <p className="font-['Poppins',sans-serif] font-semibold text-sm">
-                      Astuce Versailles 92
+                      Astuce déménagement d'entreprise
                     </p>
                     <p className="mt-1 text-xs sm:text-[13px] text-white/80 leading-relaxed">
-                      Accès étroits, étages, stationnement… Donnez-nous les détails et on prévoit le bon matériel (sangles,
-                      protections, monte-meubles si besoin).
+                      Anticipez l'IT et la continuité d'activité : inventaire, étiquetage, zones sensibles, créneau hors
+                      horaires, et un plan clair de réinstallation poste par poste.
                     </p>
                   </div>
                 </div>
@@ -174,10 +260,53 @@ export default function Versailles92() {
           </div>
         </section>
 
-        {/* Versailles 92 — carte & zone */}
-        <section className="mt-0">
-          <InterventionMapVersailles92 />
+        {/* Notre expertise */}
+        <section className="bg-white py-8 sm:py-12 lg:py-16">
+          <div className="container mx-auto px-4 sm:px-6">
+            <SectionHeader
+              icon={<Globe className="h-4 w-4" />}
+              pill="Notre expertise"
+              pillColor="gold"
+              title="Nos domaines d'intervention"
+              subtitle="Des solutions spécialisées pour chaque type d'activité"
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+              {proDomaines.map((domaine, index) => (
+                <motion.div
+                  key={domaine.title}
+                  className="bg-white p-6 sm:p-8 rounded-2xl border border-[#CC922F]/30 text-center group shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_18px_50px_rgba(15,23,42,0.10)] hover:border-[#CC922F]/60"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                >
+                  <motion.div
+                    className="w-16 h-16 rounded-full bg-[#1C3957] flex items-center justify-center mx-auto mb-6 text-white shadow-md ring-4 ring-[#CC922F]/15 group-hover:bg-[#152a3d] transition-colors duration-300"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    {domaine.icon}
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-3 text-[#1C3957] font-['Poppins',sans-serif]">
+                    {domaine.title}
+                  </h3>
+                  <p className="text-slate-600 leading-relaxed font-['Poppins',sans-serif] text-sm">
+                    {domaine.description}
+                  </p>
+                  <motion.div className="w-10 h-0.5 bg-[#CC922F] mt-6 mx-auto group-hover:w-16 transition-all duration-300" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </section>
+
+       
+
+        
+
+
+        
 
         {/* À propos – visual showcase */}
         <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
@@ -208,7 +337,7 @@ export default function Versailles92() {
                   </span>{" "}
                   De la préparation au dernier carton posé, notre équipe met son
                   savoir-faire au service d'un déménagement fluide, ponctuel et
-                  soigné — partout à Versailles (92).
+                  soigné — pour vos locaux, bureaux et équipes.
                 </p>
               </div>
             </div>
@@ -218,10 +347,10 @@ export default function Versailles92() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/zones/ver1.jpg", alt: "Équipe de déménagement en action" },
-                  { src: "/zones/ver2.jpg", alt: "Nos locaux et équipements" },
-                  { src: "/zones/ver3.jpg", alt: "Monte-meuble en intervention" },
-                  { src: "/zones/ver4.jpg", alt: "Protection et chargement soigné" },
+                  { src: "/gallery/1.jpeg", alt: "Équipe de déménagement en action" },
+                  { src: "/gallery/4.jpeg", alt: "Nos locaux et équipements" },
+                  { src: "/gallery/Déménagement groupé.jpeg", alt: "Équipe de déménagement en action" },
+                  { src: "/gallery/Déménagement entreprise.jpeg", alt: "Nos locaux et équipements" },
                 ].map((img) => (
                   <div
                     key={img.src}
@@ -241,10 +370,10 @@ export default function Versailles92() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/zones/ver1.jpg", alt: "Équipe de déménagement en action" },
-                    { src: "/zones/ver2.jpg", alt: "Nos locaux et équipements" },
-                    { src: "/zones/ver3.jpg", alt: "Monte-meuble en intervention" },
-                    { src: "/zones/ver4.jpg", alt: "Protection et chargement soigné" },
+                    { src: "/gallery/1.jpeg", alt: "Équipe de déménagement en action" },
+                    { src: "/gallery/4.jpeg", alt: "Nos locaux et équipements" },
+                    { src: "/gallery/Déménagement groupé.jpeg", alt: "Équipe de déménagement en action" },
+                    { src: "/gallery/Déménagement entreprise.jpeg", alt: "Nos locaux et équipements" },
                   ].map((img) => {
                     return (
                       <div
@@ -320,18 +449,18 @@ export default function Versailles92() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               <div className="lg:col-span-7">
                 <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-                  Versailles 92
+                  Déménagement entreprise
                 </h2>
                 <p className="mt-3 text-slate-600 leading-relaxed">
-                  Intervention sur Versailles et le département 92 : desserte locale, accès résidentiels et contraintes de
-                  stationnement prises en compte pour une organisation fluide.
+                  Organisation adaptée aux contraintes professionnelles : accès, sécurité, planning, zones sensibles,
+                  manutention et remise en service rapide.
                 </p>
                 <div className="mt-6 grid sm:grid-cols-2 gap-3">
                   {[
-                    "Déménagement appartement / maison",
-                    "Transfert bureaux / commerces",
-                    "Accès difficiles & étages",
-                    "Options d’emballage & démontage",
+                    "Transfert de bureaux / commerces",
+                    "Relocation & réinstallation",
+                    "Manutention & protection renforcée",
+                    "Démontage / remontage & packaging",
                   ].map((x) => (
                     <div key={x} className="flex items-start gap-2 rounded-2xl bg-white border border-slate-100 p-4">
                       <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
@@ -344,7 +473,7 @@ export default function Versailles92() {
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
                   <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Prêt à déménager à Versailles 92 ?
+                    Prêt à planifier votre déménagement d'entreprise ?
                   </p>
                   <p className="mt-2 text-sm text-slate-600 leading-relaxed">
                     Lancez votre devis en 2 minutes. Vous pouvez affiner ensuite (options, accès, dates).
@@ -396,6 +525,65 @@ export default function Versailles92() {
             <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
           </div>
         </div>
+
+        {/* Références */}
+        <section className="bg-white py-8 sm:py-12 lg:py-16">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <SectionHeader
+              icon={<Users className="h-4 w-4" />}
+              pill="Références"
+              pillColor="gold"
+              title="Ils nous ont fait confiance"
+            />
+
+            <style>{`
+              @keyframes entreprise-marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .entreprise-marquee-track {
+                animation: entreprise-marquee 35s linear infinite;
+              }
+            `}</style>
+
+            <div className="relative w-full max-w-5xl mx-auto overflow-hidden">
+              <div className="entreprise-marquee-track flex items-center gap-12 py-4 w-max">
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Fedex-logo.png" alt="FedEx" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sorbonne.svg" alt="Sorbonne" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(0.85)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sephora.svg" alt="Sephora" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Dior_Logo.svg.png" alt="Dior" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/IXINA-Logo_BLEU_CMJN.jpg" alt="Ixina" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg" alt="BWT Alpine F1 Team" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Longchamps.jpg" alt="Longchamp" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Pinsent_Masons_logo.svg" alt="Pinsent Masons" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/espot.jpg" alt="Espot" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.25)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Polene.jpg" alt="Polène" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/le-tanneur.png" alt="Le Tanneur" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Givenchy.png" alt="Givenchy" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/meurice.jpg" alt="Le Meurice" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/gallery-dept.png" alt="Gallery Dept" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.55)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Hilton.png" alt="Hilton" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+
+                {/* Duplicated set for seamless loop */}
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Fedex-logo.png" alt="FedEx" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sorbonne.svg" alt="Sorbonne" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(0.85)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/sephora.svg" alt="Sephora" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Dior_Logo.svg.png" alt="Dior" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/IXINA-Logo_BLEU_CMJN.jpg" alt="Ixina" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Logo_BWT_Alpine_F1_Team_-_2022.svg" alt="BWT Alpine F1 Team" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Longchamps.jpg" alt="Longchamp" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Pinsent_Masons_logo.svg" alt="Pinsent Masons" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/espot.jpg" alt="Espot" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.25)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Polene.jpg" alt="Polène" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/le-tanneur.png" alt="Le Tanneur" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Givenchy.png" alt="Givenchy" className="h-full w-full object-contain object-center" loading="lazy" /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/meurice.jpg" alt="Le Meurice" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.2)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/gallery-dept.png" alt="Gallery Dept" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.55)" }} /></div>
+                <div className="flex h-[72px] w-[220px] flex-shrink-0 items-center justify-center overflow-hidden"><img src="/logos/Hilton.png" alt="Hilton" className="h-full w-full object-contain object-center" loading="lazy" style={{ transform: "scale(1.5)" }} /></div>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* CTA final */}
         <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
           <div className="container mx-auto px-4 sm:px-6">

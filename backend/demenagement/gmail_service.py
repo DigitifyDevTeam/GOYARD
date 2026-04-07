@@ -141,6 +141,7 @@ def send_admin_devis_notification(
     volume_method: Optional[str] = None,
     method_output: Optional[str] = None,
     date_demenagement=None,
+    entry_page: Optional[str] = None,
 ):
     """
     Send an admin notification email when a client requests un devis.
@@ -157,6 +158,7 @@ def send_admin_devis_notification(
         valeur_bien_eur: Declared value of goods (for assurance)
         demontage, emb_fragile, emb_cartons: Selected paid options
         monte_meuble_*, has_stopover, portage_*, demi_etage_*: Access constraints
+        entry_page: Human-readable origin page on the site (CTA demander un devis).
     """
     sender = settings.GMAIL_SENDER_EMAIL
     if not sender:
@@ -171,6 +173,9 @@ def send_admin_devis_notification(
     portage_arr_label = f"{portage_arr:.0f} m" if portage_arr and portage_arr > 0 else "—"
     portage_esc_label = f"{portage_esc:.0f} m" if portage_esc and portage_esc > 0 else "—"
     date_demenagement_label = date_demenagement.strftime("%d/%m/%Y") if date_demenagement else "—"
+
+    entry_page_display = (entry_page or "").strip() or "—"
+    entry_page_safe = html_lib.escape(entry_page_display, quote=False)
 
     etage_depart_display = etage_depart or "RDC"
     etage_arrivee_display = etage_arrivee or "RDC"
@@ -197,10 +202,17 @@ def send_admin_devis_notification(
     ascenseur_arrivee_safe = (ascenseur_arrivee or "Non").replace("<", "&lt;").replace(">", "&gt;")
     escale_ascenseur_safe = (escale_ascenseur or "Non").replace("<", "&lt;").replace(">", "&gt;")
 
-    msg = MIMEMultipart('mixed')
+    subject_base = f'[Nouvelle demande] {client_name} – {reference}'
+    if entry_page_display and entry_page_display != '—':
+        short = entry_page_display if len(entry_page_display) <= 70 else f'{entry_page_display[:67]}...'
+        msg_subject = f'{subject_base} | {short}'
+    else:
+        msg_subject = subject_base
+
+    msg = MIMEMultipart('alternative')
     msg['From'] = f'Guivarche Déménagement <{sender}>'
     msg['To'] = admin_email
-    msg['Subject'] = f'[Nouvelle demande] {client_name} – {reference}'
+    msg['Subject'] = msg_subject
 
     # Badge colors: gold for "Oui", light gray for "Non"
     badge_oui = "background: #fef3c7; color: #b45309; border: 1px solid #fcd34d;"
@@ -298,6 +310,9 @@ def send_admin_devis_notification(
                 <span style="font-size:11px; font-weight:700; color:#CC922F; letter-spacing:1.5px; text-transform:uppercase;">NOUVELLE DEMANDE DE DEVIS</span>
               </div>
               <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">Réf. {reference}</p>
+              <p style="margin:12px 0 0; font-size:15px; color:#CC922F; font-weight:800; line-height:1.35;">
+                Page d&rsquo;origine (site)&nbsp;: {entry_page_safe}
+              </p>
               <!-- final_price is intentionally hidden (removed from visible layout) : {final_price:.2f} -->
             </td>
           </tr>
@@ -314,6 +329,16 @@ def send_admin_devis_notification(
                   <td style="padding:28px 32px 24px;">
                     <p style="margin:0 0 16px; font-size:10px; font-weight:700; color:#CC922F; text-transform:uppercase; letter-spacing:1.5px;">&#x1F464; INFORMATIONS CLIENT</p>
                     <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background:#fafbfc; border-radius:8px; border:1px solid #eef0f3;">
+                      <tr>
+                        <td style="padding:14px 20px; border-bottom:1px solid #eef0f3;">
+                          <table role="presentation" width="100%%" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td style="width:110px; font-size:12px; color:#6b7280; font-weight:600; vertical-align:middle;">Page d&rsquo;origine</td>
+                              <td style="font-size:13px; color:#111827; font-weight:600;">{entry_page_safe}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
                       <tr>
                         <td style="padding:14px 20px; border-bottom:1px solid #eef0f3;">
                           <table role="presentation" width="100%%" cellspacing="0" cellpadding="0">
@@ -544,7 +569,19 @@ def send_admin_devis_notification(
 </body>
 </html>"""
 
+    plain_body = (
+        f"Guivarche – Nouvelle demande de devis\n"
+        f"Référence : {reference}\n"
+        f"Page d'origine (site) : {entry_page_display}\n\n"
+        f"Client : {client_name}\n"
+        f"Email : {client_email}\n"
+        f"Téléphone : {client_phone or '—'}\n\n"
+        f"Distance : {distance_km:.0f} km · Volume : {volume_m3:.1f} m³\n"
+    )
+
+    plain_part = MIMEText(plain_body, 'plain', 'utf-8')
     html_part = MIMEText(html_body, 'html', 'utf-8')
+    msg.attach(plain_part)
     msg.attach(html_part)
 
     raw_message = base64.urlsafe_b64encode(msg.as_bytes()).decode('utf-8')

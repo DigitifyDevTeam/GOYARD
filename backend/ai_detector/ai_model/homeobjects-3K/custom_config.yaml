@@ -1,0 +1,65 @@
+names:
+  0: Banc
+  1: Chaise
+  2: Chaise de bureau
+  3: Transat
+  4: Canapé 3 places (-80KG)
+  5: Canapé d'angle (-80KG)
+  6: Table basse
+  7: Table moyenne
+  8: Table de jardin
+  9: Table de ping-pong (-80KG)
+  10: Bureau
+  11: lit simple
+  12: lit double
+  13: Banc de musculation (-80KG)
+  14: Armoire 2p (-80KG)
+  15: Armoire ancienne (-80KG)
+  16: Commode
+  17: Buffet haut
+  18: Meuble TV bas
+  19: Meuble a chaussure
+  20: Meuble salle de bain
+  21: Colonne salle de bain
+  22: Vaisselier (-80KG)
+  23: Chiffronier
+  24: Etagère
+  25: Etagére muale
+  26: Console
+  27: Coffre a linge
+  28: Coffre de rangement
+  29: Boîte ou panier
+  30: Télevision
+  31: hifi
+  32: Aspirateur
+  33: séche linge
+  34: Lave linge
+  35: Lave vaisselle
+  36: Micro ondes
+  37: Four
+  38: Cuisinière (-80KG)
+  39: Frigo-congélateur
+  40: Lampadaire
+  41: Lampe de bureau
+  42: Cadre
+  43: Miroir
+  44: Plante en pot
+  45: Paravent
+  46: Guitare
+  47: Tapis petit
+  48: Tapis moyen
+  49: Barbecue
+  50: Parasol
+  51: Echelle
+  52: Escabeau
+  53: Etendoir
+  54: Vélo
+  55: Vélo d'intérieur (-80KG)
+  56: Tapis de course (-80KG)
+  57: valises
+  58: Carton
+  59: Porte manteau
+path: C:\Users\walio\Desktop\Workspace\brasenplus\backend\ai_detector\ai_model\homeobjects-3K
+test: ''
+train: images/train
+val: images/val

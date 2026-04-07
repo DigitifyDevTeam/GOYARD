@@ -4,6 +4,7 @@ import traceback
 from datetime import datetime
 from io import BytesIO
 from typing import Optional
+from urllib.parse import unquote, urlparse
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -27,6 +28,51 @@ from ai_detector.pricing import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _resolve_entry_page(request, data) -> Optional[str]:
+    """
+    Page d'origine affichée dans l'email admin : corps JSON, en-tête X-Devis-Entry-Page,
+    ou HTTP Referer (même origine) en secours.
+    """
+    def _norm(val) -> Optional[str]:
+        if val is None:
+            return None
+        s = str(val).strip()
+        if not s:
+            return None
+        low = s.lower()
+        if low in ('non renseigné', 'non renseigne', '—', '-', 'n/a', 'na'):
+            return None
+        return s[:400]
+
+    entry = _norm(data.get('entry_page'))
+    if entry:
+        return entry
+
+    hdr = request.META.get('HTTP_X_DEVIS_ENTRY_PAGE')
+    if hdr:
+        try:
+            entry = _norm(unquote(hdr))
+        except Exception:
+            entry = None
+        if entry:
+            return entry
+
+    referer = request.META.get('HTTP_REFERER', '')
+    if referer:
+        try:
+            parsed = urlparse(referer)
+            req_host = request.get_host().split(':')[0]
+            ref_host = (parsed.netloc or '').split(':')[0]
+            if ref_host and ref_host == req_host:
+                path = (parsed.path or '') + (('?' + parsed.query) if parsed.query else '')
+                if path.startswith('/tunnel'):
+                    return (f'Envoi depuis le tunnel ({path})')[:400]
+                return path[:400] if path else None
+        except Exception:
+            pass
+    return None
 
 
 @api_view(['POST'])
@@ -1301,10 +1347,13 @@ def send_quote_pdf(request):
       - portage_depart_m, portage_arrival_m, portage_escale_m (float, optional)
       - pdf_base64 (optional) - base64-encoded PDF bytes from frontend (ignored)
       - pdf_filename (optional) - suggested filename for attachment (ignored)
+      - entry_page (optional) - human-readable site page where the user started the devis flow
     """
     try:
         data = request.data or {}
         client_id = data.get('client_id')
+
+        entry_page = _resolve_entry_page(request, data)
 
         if not client_id:
             return Response({
@@ -1567,9 +1616,13 @@ def send_quote_pdf(request):
             volume_method=volume_method,
             method_output=method_output,
             date_demenagement=getattr(client, 'date_demenagement', None),
+            entry_page=entry_page,
         )
 
-        logger.info('[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR)', client.email, admin_email, ref, final_price)
+        logger.info(
+            '[send_quote_pdf] Devis sent to %s and admin %s (ref %s, %.2f EUR, entry_page=%s)',
+            client.email, admin_email, ref, final_price, entry_page or '—',
+        )
 
         return Response({
             'success': True,

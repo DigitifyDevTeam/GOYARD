@@ -21,6 +21,7 @@ import DemenagementParticulier from "./pages/DemenagementParticulier";
 import ZoneIleDeFrance from "./pages/ZoneIleDeFrance";
 import Paris from "./pages/paris";
 import Versailles92 from "./pages/versailles92";
+import Pro from "./pages/pro";  
 import LpIleDeFrance from "./landing/LpIleDeFrance";
 import LpDemenagementEntreprise from "./landing/LpDemenagementEntreprise";
 import LpDemenagementParticulier from "./landing/LpDemenagementParticulier";
@@ -6224,6 +6225,7 @@ export default function App() {
         <Route path="/ile-de-france" element={<ZoneIleDeFrance />} />
         <Route path="/lp/paris" element={<Paris />} />
         <Route path="/lp/versailles" element={<Versailles92 />} />
+        <Route path="/lp/pro" element={<Pro />} />
         <Route path="/demenagement-national" element={<ZoneNational />} />
         <Route path="/international" element={<ZoneInternational />} />
         <Route path="/contact" element={<Contact />} />
