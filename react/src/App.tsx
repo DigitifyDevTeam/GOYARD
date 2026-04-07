@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
 import ScrollToTop from "./components/ScrollToTop";
+import DevisEntryTracker from "./components/DevisEntryTracker";
 import PDFReport, { type PDFReportHandles } from "./components/PDFReport";
 import { FormDataManager } from "./utils/formDataManager";
 import HomePage from "./pages/HomeDesigned";
@@ -18,12 +19,15 @@ import EnConstruction from "./pages/EnConstruction";
 import DemenagementEntreprise from "./pages/DemenagementEntreprise";
 import DemenagementParticulier from "./pages/DemenagementParticulier";
 import ZoneIleDeFrance from "./pages/ZoneIleDeFrance";
+import Paris from "./pages/paris";
+import Versailles92 from "./pages/versailles92";
 import LpIleDeFrance from "./landing/LpIleDeFrance";
 import LpDemenagementEntreprise from "./landing/LpDemenagementEntreprise";
 import LpDemenagementParticulier from "./landing/LpDemenagementParticulier";
 import ZoneNational from "./pages/ZoneNational";
 import ZoneInternational from "./pages/ZoneInternational";
 import NotFound from "./pages/NotFound";
+import { clearDevisEntryPage, getDevisEntryPageDisplay } from "./utils/devisEntry";
 import {
   Phone,
   MapPin,
@@ -1434,9 +1438,15 @@ function AppContent() {
         payload.pdf_filename = pdfFilename;
       }
 
+      const entryDisplay = getDevisEntryPageDisplay();
+      payload.entry_page = entryDisplay;
+
       const response = await fetch('/api/quote/send-pdf/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Devis-Entry-Page': encodeURIComponent(entryDisplay),
+        },
         body: JSON.stringify(payload),
       });
 
@@ -1444,6 +1454,7 @@ function AppContent() {
 
       if (result.success) {
         setDevisSent(true);
+        clearDevisEntryPage();
         navigate("/tunnel/devis/confirmation");
       } else {
         alert('Erreur lors de l\'envoi du devis : ' + (result.error || 'Erreur inconnue'));
@@ -1750,24 +1761,37 @@ function AppContent() {
     </svg>
   );
 
+  /** Meuble à chaussures — trait fin comme les autres icônes Entrée */
   const MeubleChaussureIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
-      fill="#CC922F"
-      stroke="#CC922F"
-      strokeWidth={0}
+      viewBox="0 0 24 24"
+      fill="none"
       className="w-12 h-12 shrink-0"
       aria-hidden
     >
-      <path d="M356.242,386.687H155.758c-5.523,0-10-4.478-10-10V100.78c0-5.522,4.477-10,10-10h200.484 c5.523,0,10,4.478,10,10v275.906C366.242,382.209,361.765,386.687,356.242,386.687z M165.758,366.687h180.484V110.78H165.758 V366.687z" />
-      <path d="M356.242,201.233H155.758c-5.523,0-10-4.478-10-10s4.477-10,10-10h200.484c5.523,0,10,4.478,10,10 S361.765,201.233,356.242,201.233z" />
-      <path d="M356.242,299.9H155.758c-5.523,0-10-4.478-10-10s4.477-10,10-10h200.484c5.523,0,10,4.478,10,10 S361.765,299.9,356.242,299.9z" />
-      <path d="M188.334,169.234c-5.523,0-10-4.478-10-10v-26.667c0-5.522,4.477-10,10-10s10,4.478,10,10v26.667 C198.334,164.757,193.857,169.234,188.334,169.234z" />
-      <path d="M188.334,267.233c-5.523,0-10-4.478-10-10v-26.666c0-5.522,4.477-10,10-10s10,4.478,10,10v26.666 C198.334,262.756,193.857,267.233,188.334,267.233z" />
-      <path d="M188.334,357.899c-5.523,0-10-4.478-10-10v-26.666c0-5.522,4.477-10,10-10s10,4.478,10,10v26.666 C198.334,353.422,193.857,357.899,188.334,357.899z" />
-      <path d="M155.758,421.22c-5.523,0-10-4.478-10-10v-34.533c0-5.522,4.477-10,10-10s10,4.478,10,10v34.533 C165.758,416.742,161.281,421.22,155.758,421.22z" />
-      <path d="M356.242,421.22c-5.523,0-10-4.478-10-10v-34.533c0-5.522,4.477-10,10-10s10,4.478,10,10v34.533 C366.242,416.742,361.765,421.22,356.242,421.22z" />
+      <rect
+        x="5.75"
+        y="3.75"
+        width="12.5"
+        height="16.5"
+        rx="1.25"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.25 9.25h7.5M8.25 14.25h7.5M8.25 19.25h7.5"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 21.25v-1M15 21.25v-1"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+      />
     </svg>
   );
 
@@ -1805,24 +1829,40 @@ function AppContent() {
     </svg>
   );
 
+  /** Coffre / banc à chaussures — trait fin comme les autres icônes Entrée */
   const CoffreChaussuresIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
-      fill="#CC922F"
-      stroke="#CC922F"
-      strokeWidth={0}
+      viewBox="0 0 24 24"
+      fill="none"
       className="w-12 h-12 shrink-0"
       aria-hidden
     >
-      <path d="M371.149,418h-234c-5.523,0-10-4.478-10-10V76c0-5.522,4.477-10,10-10h234c5.523,0,10,4.478,10,10v332 C381.149,413.522,376.672,418,371.149,418z M147.149,398h214V86h-214V398z" />
-      <path d="M371.149,184.333h-234c-5.523,0-10-4.478-10-10s4.477-10,10-10h234c5.523,0,10,4.478,10,10 S376.672,184.333,371.149,184.333z" />
-      <path d="M371.149,310.333h-234c-5.523,0-10-4.478-10-10s4.477-10,10-10h234c5.523,0,10,4.478,10,10 S376.672,310.333,371.149,310.333z" />
-      <path d="M272.816,130.333h-44c-5.523,0-10-4.478-10-10s4.477-10,10-10h44c5.523,0,10,4.478,10,10 S278.339,130.333,272.816,130.333z" />
-      <path d="M272.816,252h-44c-5.523,0-10-4.478-10-10s4.477-10,10-10h44c5.523,0,10,4.478,10,10 S278.339,252,272.816,252z" />
-      <path d="M272.816,370.333h-44c-5.523,0-10-4.478-10-10s4.477-10,10-10h44c5.523,0,10,4.478,10,10 S278.339,370.333,272.816,370.333z" />
-      <path d="M396.5,86h-297c-5.523,0-10-4.478-10-10s4.477-10,10-10h297c5.523,0,10,4.478,10,10S402.023,86,396.5,86z" />
-      <path d="M412.5,446h-313c-5.523,0-10-4.478-10-10v-28c0-5.522,4.477-10,10-10h313c5.523,0,10,4.478,10,10v28 C422.5,441.522,418.023,446,412.5,446z M109.5,426h293v-8h-293V426z" />
+      <path
+        d="M4.75 9.25h14.5c.69 0 1.25.56 1.25 1.25v9.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-9.5c0-.69.56-1.25 1.25-1.25z"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.5 13.25h17M12 13.25V20.5"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+      />
+      <path
+        d="M5.5 9.25V7.5c0-1.1.9-2 2-2h9c1.1 0 2 .9 2 2v1.75"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.5 20.5v1.25M15.5 20.5v1.25"
+        stroke="#CC922F"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+      />
     </svg>
   );
 
@@ -6177,10 +6217,13 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <DevisEntryTracker />
       <StickyContactButtons />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/ile-de-france" element={<ZoneIleDeFrance />} />
+        <Route path="/lp/paris" element={<Paris />} />
+        <Route path="/lp/versailles" element={<Versailles92 />} />
         <Route path="/demenagement-national" element={<ZoneNational />} />
         <Route path="/international" element={<ZoneInternational />} />
         <Route path="/contact" element={<Contact />} />

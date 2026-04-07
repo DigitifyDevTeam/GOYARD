@@ -85,28 +85,40 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		keyframes: {
-  			'accordion-down': {
-  				from: {
-  					height: '0'
-  				},
-  				to: {
-  					height: 'var(--radix-accordion-content-height)'
-  				}
-  			},
-  			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
-  				},
-  				to: {
-  					height: '0'
-  				}
-  			}
-  		},
-  		animation: {
-  			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+		keyframes: {
+			'accordion-down': {
+				from: {
+					height: '0'
+				},
+				to: {
+					height: 'var(--radix-accordion-content-height)'
+				}
+			},
+			'accordion-up': {
+				from: {
+					height: 'var(--radix-accordion-content-height)'
+				},
+				to: {
+					height: '0'
+				}
+			},
+			/** Soft outer ring + shadow breathe for LP CTA bars (e.g. Paris ads page) */
+			'cta-bar-attention': {
+				'0%, 100%': {
+					boxShadow:
+						'0 4px 15px rgba(0,0,0,0.1), 0 0 0 0 rgba(27, 54, 93, 0.35)',
+				},
+				'50%': {
+					boxShadow:
+						'0 8px 28px rgba(0,0,0,0.12), 0 0 0 12px rgba(27, 54, 93, 0)',
+				},
+			},
+		},
+		animation: {
+			'accordion-down': 'accordion-down 0.2s ease-out',
+			'accordion-up': 'accordion-up 0.2s ease-out',
+			'cta-bar-attention': 'cta-bar-attention 2.8s ease-in-out infinite',
+		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

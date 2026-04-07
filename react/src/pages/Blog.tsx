@@ -6,6 +6,10 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { blogPosts, categories } from "../data/blogPosts";
 
+function articleCountLabel(n: number) {
+  return `${n} ${n === 1 ? "article" : "articles"}`;
+}
+
 export default function Blog() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,9 +23,16 @@ export default function Blog() {
     return matchesSearch && matchesCategory;
   });
 
-  // Get featured posts
-  const featuredPosts = blogPosts.filter(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured);
+  // Featured: only on "Tous"; still respect search so counts match what’s listed
+  const featuredPosts = blogPosts.filter((post) => {
+    if (!post.featured) return false;
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
+  const featuredPostsDisplayed = featuredPosts.slice(0, 2);
+  const regularPosts = filteredPosts.filter((post) => !post.featured);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex flex-col">
@@ -89,15 +100,18 @@ export default function Blog() {
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* Featured Posts */}
-        {selectedCategory === "Tous" && featuredPosts.length > 0 && (
+        {selectedCategory === "Tous" && featuredPostsDisplayed.length > 0 && (
           <section className="mb-12 sm:mb-16 lg:mb-20">
-            <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8">
               <div className="h-1 w-12 bg-gradient-to-r from-[#CC922F] to-[#1c3957] rounded-full"></div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Articles à la une</h2>
+              <span className="ml-auto text-sm sm:text-base text-gray-500 font-medium">
+                {articleCountLabel(featuredPostsDisplayed.length)}
+              </span>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
-              {featuredPosts.slice(0, 2).map((post) => (
+              {featuredPostsDisplayed.map((post) => (
                 <article
                   key={post.id}
                   onClick={() => post.slug && navigate(`/blog/${post.slug}`)}
@@ -156,7 +170,7 @@ export default function Blog() {
               {selectedCategory === "Tous" ? "Tous les articles" : `Articles : ${selectedCategory}`}
             </h2>
             <span className="ml-auto text-sm sm:text-base text-gray-500 font-medium">
-              {filteredPosts.length} {filteredPosts.length > 1 ? "articles" : "article"}
+              {articleCountLabel(regularPosts.length)}
             </span>
           </div>
 

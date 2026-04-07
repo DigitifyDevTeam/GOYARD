@@ -14,6 +14,7 @@ export default function Contact() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errors, setErrors] = useState<{ email?: string; phone?: string }>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -21,10 +22,47 @@ export default function Contact() {
       ...prev,
       [name]: value,
     }));
+    if (name === "email" || name === "phone") {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
+  };
+
+  const validateEmail = (email: string) => {
+    // Must contain a dot in the domain part (rejects "hello@hhh")
+    const v = email.trim();
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v);
+  };
+
+  const validatePhone = (phone: string) => {
+    const v = phone.trim();
+    if (!v) return true; // optional field
+    // Allow +, spaces, parentheses, dots and dashes; reject letters/symbols.
+    if (!/^[+\d().\-\s]+$/.test(v)) return false;
+    // Require at least 10 digits (French numbers)
+    const digits = v.replace(/\D/g, "");
+    return digits.length >= 10;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const nextErrors: { email?: string; phone?: string } = {};
+    if (!validateEmail(formData.email)) {
+      nextErrors.email = "Veuillez saisir une adresse email valide (ex: nom@domaine.fr).";
+    }
+    if (!validatePhone(formData.phone)) {
+      nextErrors.phone = "Veuillez saisir un numéro valide (chiffres uniquement, ex: +33 6 00 00 00 00).";
+    }
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      setSubmitStatus("idle");
+      return;
+    }
+
     setIsSubmitting(true);
     
     // Simulate form submission
@@ -38,6 +76,7 @@ export default function Contact() {
         subject: "",
         message: "",
       });
+      setErrors({});
       
       // Reset success message after 5 seconds
       setTimeout(() => {
@@ -260,9 +299,15 @@ export default function Contact() {
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full px-5 py-4 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#CC922F] focus:border-transparent outline-none transition-all font-['Poppins',sans-serif]"
+                      aria-invalid={Boolean(errors.email)}
+                      className={`w-full px-5 py-4 text-base border rounded-lg focus:ring-2 focus:ring-[#CC922F] focus:border-transparent outline-none transition-all font-['Poppins',sans-serif] ${
+                        errors.email ? "border-red-400" : "border-gray-300"
+                      }`}
                         placeholder="votre@email.com"
                       />
+                    {errors.email && (
+                      <p className="mt-2 text-sm text-red-600 font-['Poppins',sans-serif]">{errors.email}</p>
+                    )}
                     </div>
 
                     <div>
@@ -275,9 +320,16 @@ export default function Contact() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-5 py-4 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#CC922F] focus:border-transparent outline-none transition-all font-['Poppins',sans-serif]"
+                      inputMode="tel"
+                      aria-invalid={Boolean(errors.phone)}
+                      className={`w-full px-5 py-4 text-base border rounded-lg focus:ring-2 focus:ring-[#CC922F] focus:border-transparent outline-none transition-all font-['Poppins',sans-serif] ${
+                        errors.phone ? "border-red-400" : "border-gray-300"
+                      }`}
                         placeholder="+33 6 00 00 00 00"
                       />
+                    {errors.phone && (
+                      <p className="mt-2 text-sm text-red-600 font-['Poppins',sans-serif]">{errors.phone}</p>
+                    )}
                     </div>
                   </div>
 

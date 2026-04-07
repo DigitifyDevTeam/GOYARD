@@ -350,11 +350,11 @@ export default function FAQ() {
                 >
                   <button
                     onClick={() => toggleItem(index)}
-                    className="w-full py-4 sm:py-5 flex items-start text-left hover:opacity-80 transition-opacity duration-200 relative"
+                    className="w-full py-4 sm:py-5 flex items-center text-left hover:opacity-80 transition-opacity duration-200 relative"
                   >
-                    <div className="flex items-start gap-3 sm:gap-6 pr-12 sm:pr-20 lg:pr-32">
+                    <div className="flex items-center gap-3 sm:gap-6 pr-12 sm:pr-20 lg:pr-32">
                       <div className={`
-                        flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 mt-1
+                        flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300
                         ${expandedItem === index 
                           ? 'bg-[#1c3957]' 
                           : 'bg-[#CC922F]'
@@ -376,7 +376,7 @@ export default function FAQ() {
                         {item.question}
                       </span>
                     </div>
-                    <div className="absolute top-4 sm:top-5 right-0 sm:right-8 lg:right-48">
+                    <div className="absolute top-1/2 -translate-y-1/2 right-0 sm:right-8 lg:right-48">
                       {expandedItem === index ? (
                         <ArrowDownLeft 
                           className="w-8 h-8 sm:w-12 sm:h-12 lg:w-20 lg:h-20 flex-shrink-0 transition-all duration-300 text-[#1c3957]"

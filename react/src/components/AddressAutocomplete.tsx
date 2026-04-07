@@ -14,6 +14,7 @@ interface AddressAutocompleteProps {
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  autoFocus?: boolean;
 }
 
 const DEBOUNCE_MS = 300;
@@ -24,6 +25,7 @@ export function AddressAutocomplete({
   placeholder = 'Saisir une adresse...',
   className,
   disabled,
+  autoFocus,
 }: AddressAutocompleteProps) {
   const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -136,6 +138,7 @@ export function AddressAutocomplete({
         placeholder={placeholder}
         className={cn("min-w-0", className)}
         disabled={disabled}
+        autoFocus={autoFocus}
         autoComplete="off"
       />
       {dropdownList && createPortal(dropdownList, document.body)}

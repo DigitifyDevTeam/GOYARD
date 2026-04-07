@@ -43,6 +43,7 @@ export default function Footer() {
             <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
               <a href="/" className="hover:opacity-70 transition-opacity">Accueil</a>
               <a href="/solution" className="hover:opacity-70 transition-opacity">Solution</a>
+              <a href="/paris" className="hover:opacity-70 transition-opacity">Déménagement Paris</a>
               <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
               <a href="/faq" className="hover:opacity-70 transition-opacity">FAQ</a>
               <a href="/tarif" className="hover:opacity-70 transition-opacity">Tarification</a>
@@ -95,7 +96,7 @@ export default function Footer() {
           {/* Copyright and Legal Links */}
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
             <p className="text-[15px] opacity-65 tracking-[-0.1px]">
-              © 2025 Copyright, All Right Reserved, <span className="underline">Guivarche Déménagement</span>
+              © 2025 Copyright, All Right Reserved, Guivarche Déménagement
             </p>
             <a href="/mentions-legales" className="text-[15px] opacity-65 tracking-[-0.1px] hover:opacity-100 transition-opacity">
               Mentions légales

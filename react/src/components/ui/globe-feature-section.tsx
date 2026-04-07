@@ -5,8 +5,11 @@ import { ArrowRight } from "lucide-react";
 import createGlobe, { COBEOptions } from "cobe"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
+import { useNavigate } from "react-router-dom";
 
 export default function GlobeFeatureSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative w-full mx-auto overflow-hidden rounded-3xl bg-muted border border-gray-200 dark:border-gray-800 shadow-md px-6 py-16 md:px-16 md:py-24">
       <div className="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
@@ -15,7 +18,10 @@ export default function GlobeFeatureSection() {
             Déménagez avec <span className="text-[#CC922F]">Guivarche</span>{" "}
             <span className="text-gray-500 dark:text-gray-400">Votre partenaire de confiance pour un déménagement simple, rapide et sans stress partout en France.</span>
           </h1>
-          <Button className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1C3957] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#2a4f6b]">
+          <Button
+            onClick={() => navigate("/tunnel/mes-coordonnees")}
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1C3957] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#2a4f6b]"
+          >
             Commencer Maintenant <ArrowRight className="h-4 w-4" />
           </Button>
         </div>

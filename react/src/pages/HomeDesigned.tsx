@@ -1,7 +1,16 @@
 import svgPaths from "./svg-jmcfzlx209";
-import { ShieldCheck } from "lucide-react";
+import { Pause, Play, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  createContext,
+  useContext,
+  type ReactNode,
+} from "react";
+import { createPortal } from "react-dom";
 import Header from "../components/layout/Header";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
@@ -954,23 +963,154 @@ function Frame2147226601() {
   );
 }
 
+type HowItWorksVideoId = "v1" | "v2" | "v3";
+
+type HowItWorksVideoContextValue = {
+  activeId: HowItWorksVideoId | null;
+  openVideo: (id: HowItWorksVideoId) => void;
+  closeVideo: () => void;
+};
+
+const HowItWorksVideoContext = createContext<HowItWorksVideoContextValue | null>(null);
+
+function HowItWorksVideoProvider({ children }: { children: ReactNode }) {
+  const [activeId, setActiveId] = useState<HowItWorksVideoId | null>(null);
+  const openVideo = useCallback((id: HowItWorksVideoId) => {
+    setActiveId(id);
+  }, []);
+  const closeVideo = useCallback(() => setActiveId(null), []);
+  return (
+    <HowItWorksVideoContext.Provider value={{ activeId, openVideo, closeVideo }}>
+      {children}
+    </HowItWorksVideoContext.Provider>
+  );
+}
+
+function useHowItWorksVideoModal(videoId: HowItWorksVideoId) {
+  const ctx = useContext(HowItWorksVideoContext);
+  const [localOpen, setLocalOpen] = useState(false);
+  if (ctx) {
+    return {
+      showVideoModal: ctx.activeId === videoId,
+      openModal: () => ctx.openVideo(videoId),
+      closeModal: ctx.closeVideo,
+    };
+  }
+  return {
+    showVideoModal: localOpen,
+    openModal: () => setLocalOpen(true),
+    closeModal: () => setLocalOpen(false),
+  };
+}
+
+function HowItWorksVideoModalShell({
+  src,
+  poster,
+  onClose,
+}: {
+  src: string;
+  poster: string;
+  onClose: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    setPlaying(true);
+    const p = v.play();
+    if (p !== undefined) {
+      p.catch(() => setPlaying(false));
+    }
+  }, [src]);
+
+  const togglePlay = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      void v.play();
+    } else {
+      v.pause();
+    }
+  }, []);
+
+  return createPortal(
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 99999 }}
+      className="flex items-center justify-center bg-black/70 px-4"
+    >
+      <div className="relative w-full max-w-xl">
+        {/* Close button */}
+        <button
+          type="button"
+          onClick={onClose}
+          style={{ position: "absolute", top: -20, right: -20, zIndex: 100000 }}
+          className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-[#1c3957] text-white shadow-xl transition-colors hover:bg-[#152a3d] focus:outline-none focus:ring-2 focus:ring-white"
+          aria-label="Fermer la vidéo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            className="h-6 w-6"
+            aria-hidden
+          >
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Video card */}
+        <div className="overflow-hidden rounded-2xl bg-black shadow-2xl">
+          <div className="relative">
+            <video
+              ref={videoRef}
+              src={src}
+              poster={poster}
+              playsInline
+              className="block h-auto w-full"
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              onEnded={() => setPlaying(false)}
+            />
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <button
+                type="button"
+                onClick={togglePlay}
+                className="pointer-events-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[#1c3957] shadow-lg transition-colors hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#1c3957] focus:ring-offset-2 focus:ring-offset-black/40"
+                aria-label={playing ? "Mettre en pause" : "Lire"}
+              >
+                {playing ? (
+                  <Pause className="h-7 w-7 shrink-0" aria-hidden />
+                ) : (
+                  <Play className="ml-0.5 h-7 w-7 shrink-0" aria-hidden />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 function Frame2085665084() {
-  const [showVideoModal, setShowVideoModal] = useState(false);
+  const { showVideoModal, openModal, closeModal } = useHowItWorksVideoModal("v2");
 
-  const openModal = useCallback((e: React.MouseEvent) => {
+  const handleOpen = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowVideoModal(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setShowVideoModal(false);
-  }, []);
+    openModal();
+  }, [openModal]);
 
   return (
     <>
       <div
         className="h-[210px] overflow-clip relative rounded-[24px] shrink-0 w-full cursor-pointer"
-        onClick={openModal}
+        onClick={handleOpen}
       >
         <video
           className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
@@ -982,7 +1122,7 @@ function Frame2085665084() {
         />
         <button
           type="button"
-          onClick={openModal}
+          onClick={handleOpen}
           aria-label="Lire la vidéo"
           className="absolute z-10 bg-white left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1c3957] focus:ring-offset-2 cursor-pointer"
         >
@@ -993,38 +1133,18 @@ function Frame2085665084() {
       </div>
 
       {showVideoModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
-          onClick={closeModal}
-        >
-          <div
-            className="w-full max-w-xl overflow-hidden rounded-2xl bg-black shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src="/video2.mp4"
-              poster="/photo2.jpeg"
-              controls
-              autoPlay
-              className="block h-auto w-full"
-            />
-          </div>
-        </div>
+        <HowItWorksVideoModalShell
+          src="/video2.mp4"
+          poster="/photo2.jpeg"
+          onClose={closeModal}
+        />
       )}
     </>
   );
 }
 
 function Frame2085665085() {
-  const [showVideoModal, setShowVideoModal] = useState(false);
-
-  const openModal = () => {
-    setShowVideoModal(true);
-  };
-
-  const closeModal = () => {
-    setShowVideoModal(false);
-  };
+  const { showVideoModal, openModal, closeModal } = useHowItWorksVideoModal("v1");
 
   const handleButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -1056,45 +1176,29 @@ function Frame2085665085() {
       </div>
 
       {showVideoModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
-          onClick={closeModal}
-        >
-          <div
-            className="w-full max-w-xl overflow-hidden rounded-2xl bg-black shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src="/Video1.mp4"
-              poster="/photo1.jpeg"
-              controls
-              autoPlay
-              className="block h-auto w-full"
-            />
-          </div>
-        </div>
+        <HowItWorksVideoModalShell
+          src="/Video1.mp4"
+          poster="/photo1.jpeg"
+          onClose={closeModal}
+        />
       )}
     </>
   );
 }
 
 function Frame2085665086() {
-  const [showVideoModal, setShowVideoModal] = useState(false);
+  const { showVideoModal, openModal, closeModal } = useHowItWorksVideoModal("v3");
 
-  const openModal = useCallback((e: React.MouseEvent) => {
+  const handleOpen = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowVideoModal(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setShowVideoModal(false);
-  }, []);
+    openModal();
+  }, [openModal]);
 
   return (
     <>
       <div
         className="h-[210px] overflow-clip relative rounded-[24px] shrink-0 w-full cursor-pointer"
-        onClick={openModal}
+        onClick={handleOpen}
       >
         <video
           className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
@@ -1106,7 +1210,7 @@ function Frame2085665086() {
         />
         <button
           type="button"
-          onClick={openModal}
+          onClick={handleOpen}
           aria-label="Lire la vidéo"
           className="absolute z-10 bg-white left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1c3957] focus:ring-offset-2 cursor-pointer"
         >
@@ -1117,23 +1221,11 @@ function Frame2085665086() {
       </div>
 
       {showVideoModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
-          onClick={closeModal}
-        >
-          <div
-            className="w-full max-w-xl overflow-hidden rounded-2xl bg-black shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src="/video3.mp4"
-              poster="/photo3.jpeg"
-              controls
-              autoPlay
-              className="block h-auto w-full"
-            />
-          </div>
-        </div>
+        <HowItWorksVideoModalShell
+          src="/video3.mp4"
+          poster="/photo3.jpeg"
+          onClose={closeModal}
+        />
       )}
     </>
   );
@@ -1594,6 +1686,7 @@ export function Frame702() {
               <p className="text-sm text-gray-600">Instantané, transparent, sans surprise</p>
             </div>
           </div>
+          <HowItWorksVideoProvider>
           <div className="flex gap-3 mt-8 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4">
             <div className="min-w-[260px] flex-none snap-center bg-white p-2.5 rounded-2xl shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
               <Frame2085665085 />
@@ -1605,6 +1698,7 @@ export function Frame702() {
               <Frame2085665086 />
             </div>
           </div>
+          </HowItWorksVideoProvider>
           <div className="text-center mt-8">
             <button
               onClick={() => window.location.href = '/tunnel/mes-coordonnees'}
@@ -4318,6 +4412,7 @@ function VenteFlashCard({
   prix,
   prixOriginal,
   badge,
+  onReserve,
 }: {
   depart: string;
   arrivee: string;
@@ -4325,6 +4420,7 @@ function VenteFlashCard({
   prix: number;
   prixOriginal: number;
   badge: string;
+  onReserve: () => void;
 }) {
   return (
     <div className="group relative bg-white rounded-[16px] shadow-[0px_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex-shrink-0 w-[340px] transition-all duration-300 hover:shadow-[0px_16px_48px_rgba(0,0,0,0.14)] hover:-translate-y-1 border border-[#f0eeef]">
@@ -4376,7 +4472,11 @@ function VenteFlashCard({
               {prixOriginal}€
             </span>
           </div>
-          <button className="bg-[#1c3957] text-white font-['Poppins',_sans-serif] font-[600] text-[13px] px-[18px] py-[10px] rounded-[8px] transition-all duration-200 hover:bg-[#2a4f6b] cursor-pointer leading-none">
+          <button
+            type="button"
+            onClick={onReserve}
+            className="bg-[#1c3957] text-white font-['Poppins',_sans-serif] font-[600] text-[13px] px-[18px] py-[10px] rounded-[8px] transition-all duration-200 hover:bg-[#2a4f6b] cursor-pointer leading-none"
+          >
             Réserver
           </button>
         </div>
@@ -4462,7 +4562,14 @@ function VenteFlash() {
             style={{ transform: `translateX(-${currentIndex * step}px)` }}
           >
             {venteFlashData.map((deal) => (
-              <VenteFlashCard key={deal.id} {...deal} />
+              <VenteFlashCard
+                key={deal.id}
+                {...deal}
+                onReserve={() => {
+                  sessionStorage.setItem("cameFromHome", "true");
+                  window.location.href = "/tunnel/mes-coordonnees";
+                }}
+              />
             ))}
           </div>
         </div>
@@ -4529,6 +4636,7 @@ export default function Home() {
       <div className="h-8 bg-white"></div>
       <Frame23 />
       {/* test - Comment ça marche ? + videos section */}
+      <HowItWorksVideoProvider>
       <section id="test" className="w-full bg-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
         {/* Left ombre / shade */}
         <div
@@ -4615,6 +4723,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </HowItWorksVideoProvider>
       {/* Services section with Bento grid */}
       <section className="w-full bg-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

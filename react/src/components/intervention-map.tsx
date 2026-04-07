@@ -9,6 +9,8 @@ type InterventionMapRegionProps = Readonly<{
   regionSubtitle: string;
   regionParagraphs: string[];
   headerDescription: string;
+  /** Pill above the section title (default: « Zones d'intervention ») */
+  sectionBadge?: string;
 }>;
 
 function GoogleMap({
@@ -64,6 +66,7 @@ export function InterventionMapRegion({
   regionSubtitle,
   regionParagraphs,
   headerDescription,
+  sectionBadge = "Zones d'intervention",
 }: InterventionMapRegionProps) {
   return (
     <section
@@ -79,7 +82,7 @@ export function InterventionMapRegion({
         <div className="mb-16 text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#CC922F]/30 bg-[#CC922F]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#CC922F]">
             <MapPin size={14} />
-            Zones d'intervention
+            {sectionBadge}
           </div>
           <h2 className="mb-4 text-4xl font-bold text-[#1C2E42] md:text-5xl">
             Nous intervenons dans votre secteur
@@ -133,6 +136,48 @@ export function InterventionMapIleDeFrance() {
       regionParagraphs={[
         "L’Île-de-France regroupe des zones très diversifiées, entre Paris, les départements limitrophes et les communes de la grande couronne.",
         "Nous adaptons le matériel, la logistique et les protections pour gérer les accès, les étages et les contraintes de stationnement.",
+        "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l’intervention.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes ciblés Paris (75) — landing Ads / SEO local */
+export function InterventionMapParis75() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Paris 75"
+      mapLabel="Paris 75"
+      mapLat={48.8566}
+      mapLng={2.3522}
+      mapZoom={11}
+      regionTitle="Paris 75"
+      regionSubtitle="Déménagement dans la capitale"
+      headerDescription="Guivarche Déménagement intervient à Paris (75) pour des déménagements organisés, soignés et parfaitement cadrés."
+      regionParagraphs={[
+        "Paris offre des configurations variées : immeubles haussmanniens, cours, accès étroits et contraintes de stationnement — nous les anticipons.",
+        "Nous adaptons le matériel, la logistique et les protections pour gérer les accès, les étages et les livraisons en centre-ville.",
+        "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l’intervention.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Versailles 92 — landing Ads (libellé demandé) */
+export function InterventionMapVersailles92() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Versailles 92"
+      mapLabel="Versailles 92"
+      mapLat={48.8049}
+      mapLng={2.1204}
+      mapZoom={12}
+      regionTitle="Versailles 92"
+      regionSubtitle="Déménagement local"
+      headerDescription="Guivarche Déménagement intervient à Versailles (92) pour des déménagements organisés, soignés et parfaitement cadrés."
+      regionParagraphs={[
+        "Versailles et son environnement demandent une bonne lecture des accès, des volumes et du stationnement — nous les anticipons.",
+        "Nous adaptons le matériel, la logistique et les protections pour les livraisons en quartiers résidentiels comme en zones plus denses.",
         "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l’intervention.",
       ]}
     />
