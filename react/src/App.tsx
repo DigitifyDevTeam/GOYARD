@@ -239,10 +239,28 @@ function AppContent() {
     if (location.pathname !== "/tunnel/mes-coordonnees") return;
     const cameFromHome = sessionStorage.getItem("cameFromHome");
     const homeAddress = sessionStorage.getItem("homeDepartureAddress");
+    const homeFirstName = sessionStorage.getItem("homeFirstName");
+    const homePhone = sessionStorage.getItem("homePhone");
+    const homeMoveDate = sessionStorage.getItem("homeMoveDate");
     sessionStorage.removeItem("cameFromHome");
     sessionStorage.removeItem("homeDepartureAddress");
+    sessionStorage.removeItem("homeFirstName");
+    sessionStorage.removeItem("homePhone");
+    sessionStorage.removeItem("homeMoveDate");
 
     if (cameFromHome) {
+      if (homeFirstName && homeFirstName.trim()) {
+        setFormData(prev => ({ ...prev, firstName: homeFirstName.trim() }));
+        FormDataManager.saveFormData({ firstName: homeFirstName.trim() });
+      }
+      if (homePhone && homePhone.trim()) {
+        setFormData(prev => ({ ...prev, phone: homePhone.trim() }));
+        FormDataManager.saveFormData({ phone: homePhone.trim() });
+      }
+      if (homeMoveDate && homeMoveDate.trim()) {
+        setFormData(prev => ({ ...prev, date: homeMoveDate.trim() }));
+        FormDataManager.saveFormData({ date: homeMoveDate.trim() });
+      }
       if (homeAddress && homeAddress.trim()) {
         setFormData(prev => ({ ...prev, address: homeAddress.trim() }));
         setAddressData(prev => ({

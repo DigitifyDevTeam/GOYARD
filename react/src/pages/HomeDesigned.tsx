@@ -366,10 +366,10 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
             <span>★★★★★</span>
           </div>
           <span className="font-['Poppins',_sans-serif] font-[700] text-[14px] tracking-tight">
-            4.9/5
+            5/5
           </span>
           <span className="font-['Poppins',_sans-serif] font-[500] text-[13px] text-white/80">
-            254 avis Google
+            70 avis Google
           </span>
         </div>
         <div className="flex items-center gap-2 bg-[#111827]/80 text-white px-5 py-2.5 rounded-full shadow-lg backdrop-blur-sm">
@@ -412,10 +412,10 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
             <div className="flex items-center gap-2 bg-[#111827]/80 text-white px-4 py-2 rounded-full shadow-md backdrop-blur-sm">
               <span className="text-[#FBBF24] text-sm">★★★★★</span>
               <span className="font-['Poppins',_sans-serif] font-[700] text-[13px]">
-                4.9/5
+                5/5
               </span>
               <span className="font-['Poppins',_sans-serif] font-[500] text-[12px] text-white/80">
-                254 avis Google
+                70 avis Google
               </span>
             </div>
             <div className="flex items-center gap-2 bg-[#111827]/80 text-white px-4 py-2 rounded-full shadow-md backdrop-blur-sm">

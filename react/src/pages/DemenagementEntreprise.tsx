@@ -614,7 +614,7 @@ export default function DemenagementEntreprise() {
                     <Button
                       size="lg"
                       className="bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
-                      onClick={() => (window.location.href = "/contact")}
+                      onClick={() => (window.location.href = "/tunnel/mes-coordonnees")}
                     >
                       Demander un devis
                       <ArrowRight className="ml-2 h-5 w-5" />

@@ -1,10 +1,14 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Globe, MapPin, ShieldCheck, Timer, Truck, Users, Laptop, Warehouse, ShoppingCart, Building2 } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle2, Globe, Mail, MapPin, Phone, User, Users, Laptop, Warehouse, ShoppingCart, Building2 } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { FormDataManager } from "../utils/formDataManager";
 
 // ─── Sections imported from DemenagementEntreprise.tsx ──────────────
 
@@ -75,13 +79,31 @@ function SectionHeader({
 export default function Pro() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
+  const [moveDate, setMoveDate] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const primaryCta = () => {
+    FormDataManager.saveFormData({
+      address: departureAddress.trim(),
+      date: moveDate.trim(),
+      name: lastName.trim(),
+      firstName: firstName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+    });
+
     sessionStorage.setItem("cameFromHome", "true");
-    if (departureAddress.trim()) {
-      sessionStorage.setItem("homeDepartureAddress", departureAddress.trim());
-    }
-    navigate("/tunnel/mes-coordonnees");
+    if (departureAddress.trim()) sessionStorage.setItem("homeDepartureAddress", departureAddress.trim());
+    if (moveDate.trim()) sessionStorage.setItem("homeMoveDate", moveDate.trim());
+    if (lastName.trim()) sessionStorage.setItem("homeLastName", lastName.trim());
+    if (firstName.trim()) sessionStorage.setItem("homeFirstName", firstName.trim());
+    if (email.trim()) sessionStorage.setItem("homeEmail", email.trim());
+    if (phone.trim()) sessionStorage.setItem("homePhone", phone.trim());
+
+    navigate("/tunnel/choix-volume");
   };
 
   return (
@@ -132,7 +154,7 @@ export default function Pro() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => window.location.href = "tel:+33189703324"}
+                    onClick={() => (globalThis.location.href = "tel:+33189703324")}
                     className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
                   >
                     Parler à un conseiller
@@ -142,38 +164,142 @@ export default function Pro() {
 
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
-                  <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Ce que vous obtenez
-                  </p>
-                  <div className="mt-4 grid gap-3">
-                    {[
-                      { icon: <Truck className="h-5 w-5" />, title: "Transport sécurisé", desc: "Camions adaptés, arrimage et protections." },
-                      { icon: <ShieldCheck className="h-5 w-5" />, title: "Assurance & sérénité", desc: "Options claires selon la valeur de vos biens." },
-                      { icon: <Timer className="h-5 w-5" />, title: "Créneaux flexibles", desc: "Interventions tôt, tard ou week-end selon dispo." },
-                    ].map((x) => (
-                      <div key={x.title} className="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/40 p-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#CC922F]/10 text-[#CC922F]">
-                          {x.icon}
-                        </div>
-                        <div>
-                          <div className="font-['Poppins',sans-serif] font-semibold text-[#191919] text-sm">
-                            {x.title}
-                          </div>
-                          <div className="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
-                            {x.desc}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg leading-tight">
+                        Obtenez votre devis gratuit
+                        <br /> en 2 minutes
+                      </p>
+                      <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                        Sans engagement • Réponse sous 24h
+                      </p>
+                    </div>
+                    <div className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#CC922F]/12 text-[#CC922F]">
+                      <ArrowRight className="h-5 w-5" />
+                    </div>
                   </div>
 
-                  <div className="mt-6 rounded-2xl bg-[#191919] text-white p-5">
-                    <p className="font-['Poppins',sans-serif] font-semibold text-sm">
-                      Astuce déménagement d'entreprise
-                    </p>
-                    <p className="mt-1 text-xs sm:text-[13px] text-white/80 leading-relaxed">
-                      Anticipez l'IT et la continuité d'activité : inventaire, étiquetage, zones sensibles, créneau hors
-                      horaires, et un plan clair de réinstallation poste par poste.
+                  <div className="mt-6 grid gap-4">
+                    <div>
+                      <Label htmlFor="pro-address" className="text-slate-900 mb-3 block text-base font-medium">
+                        Mon service de déménagement
+                      </Label>
+                      <div className="relative">
+                        <MapPin
+                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 z-10 pointer-events-none"
+                          style={{ color: "#CC922F" }}
+                        />
+                        <AddressAutocomplete
+                          value={departureAddress}
+                          onChange={setDepartureAddress}
+                          placeholder="Quelle est votre adresse ?"
+                          className="pl-12 bg-slate-50 border-slate-200 h-12 text-base"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="pro-date" className="text-slate-900 mb-2 block">
+                        Date de déménagement préférée
+                      </Label>
+                      <div className="relative">
+                        <Calendar
+                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10"
+                          style={{ color: "#CC922F" }}
+                        />
+                        <Input
+                          id="pro-date"
+                          type="date"
+                          min={new Date().toISOString().split("T")[0]}
+                          value={moveDate}
+                          onChange={(e) => setMoveDate(e.target.value)}
+                          className="pl-10 bg-slate-50 border-slate-200 cursor-pointer h-12 text-base"
+                          style={{ colorScheme: "light" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="pro-lastName" className="text-slate-900 mb-2 block">
+                          Nom
+                        </Label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
+                          <Input
+                            id="pro-lastName"
+                            type="text"
+                            placeholder="Nom de famille"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="pro-firstName" className="text-slate-900 mb-2 block">
+                          Prénom
+                        </Label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
+                          <Input
+                            id="pro-firstName"
+                            type="text"
+                            placeholder="Prénom"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="pro-email" className="text-slate-900 mb-2 block">
+                        Email
+                      </Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
+                        <Input
+                          id="pro-email"
+                          type="email"
+                          placeholder="Adresse email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="pro-phone" className="text-slate-900 mb-2 block">
+                        Téléphone
+                      </Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
+                        <Input
+                          id="pro-phone"
+                          type="tel"
+                          inputMode="tel"
+                          placeholder="Numéro de téléphone"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
+                        />
+                      </div>
+                    </div>
+
+                    <Button
+                      type="button"
+                      onClick={primaryCta}
+                      className="w-full bg-[#CC922F] hover:bg-[#CC922F]/90 text-white py-3 rounded-xl font-bold"
+                      size="lg"
+                    >
+                      CONTINUER →
+                    </Button>
+
+                    <p className="text-[11px] text-slate-500 text-center">
+                      Données protégées — aucun démarchage
                     </p>
                   </div>
                 </div>
@@ -199,10 +325,10 @@ export default function Pro() {
                     <span>★★★★★</span>
                   </div>
                   <span className="font-['Poppins',sans-serif] font-bold text-[15px] tracking-tight">
-                    4.9/5
+                    5/5
                   </span>
                   <span className="font-['Poppins',sans-serif] font-medium text-[14px] text-white/80">
-                    254 avis Google
+                    70 avis Google
                   </span>
                 </div>
                 <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
@@ -320,10 +446,13 @@ export default function Pro() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/gallery/1.jpeg", alt: "Équipe de déménagement en action" },
-                  { src: "/gallery/4.jpeg", alt: "Nos locaux et équipements" },
-                  { src: "/gallery/Déménagement groupé.jpeg", alt: "Équipe de déménagement en action" },
-                  { src: "/gallery/Déménagement entreprise.jpeg", alt: "Nos locaux et équipements" },
+                  { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
+                  { src: "/gallery/monte_meuble.jpeg", alt: "Monte-meuble en intervention" },
+                  { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
+                  {
+                    src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
+                    alt: "Nos locaux et équipements",
+                  },
                 ].map((img) => (
                   <div
                     key={img.src}
@@ -343,10 +472,13 @@ export default function Pro() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/gallery/1.jpeg", alt: "Équipe de déménagement en action" },
-                    { src: "/gallery/4.jpeg", alt: "Nos locaux et équipements" },
-                    { src: "/gallery/Déménagement groupé.jpeg", alt: "Équipe de déménagement en action" },
-                    { src: "/gallery/Déménagement entreprise.jpeg", alt: "Nos locaux et équipements" },
+                    { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
+                    { src: "/gallery/monte_meuble.jpeg", alt: "Monte-meuble en intervention" },
+                    { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
+                    {
+                      src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
+                      alt: "Nos locaux et équipements",
+                    },
                   ].map((img) => {
                     return (
                       <div
