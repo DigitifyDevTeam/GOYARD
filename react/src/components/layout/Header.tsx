@@ -362,7 +362,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               {mobileZonesOpen && (
                 <div className="flex flex-col gap-1 pl-4">
                   <a
-                    href="/en-construction"
+                    href="/ile-de-france"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
@@ -373,7 +373,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Île-de-France · Proximité Parisienne
                   </a>
                   <a
-                    href="/en-construction"
+                    href="/demenagement-national"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
@@ -384,7 +384,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Déménagement National · Toute la France
                   </a>
                   <a
-                    href="/en-construction"
+                    href="/international"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
