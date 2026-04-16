@@ -16,6 +16,7 @@ export default function LpDemenagementEntreprise() {
     description:
       "Déménagement professionnel : bureaux, IT, entrepôts. Intervention planifiée, équipe dédiée et devis gratuit. Réponse sous 24h.",
     canonicalPath: CANONICAL,
+    noindex: true,
   });
 
   return (

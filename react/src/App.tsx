@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
+import RobotsMeta from "./components/RobotsMeta";
 import RouteGuard from "./components/RouteGuard";
 import ScrollToTop from "./components/ScrollToTop";
 import DevisEntryTracker from "./components/DevisEntryTracker";
@@ -6237,6 +6238,7 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <RobotsMeta shouldNoindex={(pathname) => pathname.startsWith("/lp/")} />
       <DevisEntryTracker />
       <StickyContactButtons />
       <Routes>

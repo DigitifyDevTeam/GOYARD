@@ -16,6 +16,7 @@ export default function LpIleDeFrance() {
     description:
       "Déménagement en Île-de-France : Paris, petite couronne et au-delà. Devis rapide, équipes réactives, créneaux flexibles. Demandez votre estimation.",
     canonicalPath: CANONICAL,
+    noindex: true,
   });
 
   return (
