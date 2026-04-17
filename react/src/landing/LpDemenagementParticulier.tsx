@@ -16,7 +16,6 @@ export default function LpDemenagementParticulier() {
     description:
       "Déménagement maison & appartement : emballage, transport, montage. Devis gratuit et équipe à l'écoute. Simplifiez votre projet dès aujourd'hui.",
     canonicalPath: CANONICAL,
-    noindex: true,
   });
 
   return (

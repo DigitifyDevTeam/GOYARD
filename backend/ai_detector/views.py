@@ -1326,15 +1326,14 @@ def predict_objects(request):
                     'error': 'File size too large (max 10MB)'
                 })
             
-            # Load YOLO model (exactly like your notebook)
-            # Change to the ai_model directory to match your notebook's working directory
+            # Load the fine-tuned YOLO model from training outputs.
+            # Change to the ai_model directory to keep relative paths stable.
             ai_model_dir = os.path.join(os.path.dirname(__file__), 'ai_model')
             original_cwd = os.getcwd()
             os.chdir(ai_model_dir)
             
             try:
-                # Load model with simple filename like your notebook
-                model = YOLO("yolov8x-oiv7.pt")
+                model = YOLO("runs/detect/train7/weights/best.pt")
                 print(f"YOLO model loaded successfully from {ai_model_dir}")
             except Exception as e:
                 os.chdir(original_cwd)  # Restore original directory
@@ -1995,7 +1994,7 @@ def predict_objects(request):
                 'success': False,
                 'error': f'Prediction failed: {error_message}',
                 'debug_info': {
-                    'model_path': 'yolov8x-oiv7.pt',
+                    'model_path': 'runs/detect/train7/weights/best.pt',
                     'working_directory': ai_model_dir if 'ai_model_dir' in locals() else 'Not set',
                     'original_error': str(e)
                 }

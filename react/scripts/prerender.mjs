@@ -70,14 +70,21 @@ function startStaticServer(dir, port) {
       res.end(indexHtml)
     }
   })
-  return new Promise(resolve => server.listen(port, () => resolve(server)))
+  return new Promise((resolve, reject) => {
+    server.once('error', reject)
+    server.listen(port, () => {
+      const address = server.address()
+      const boundPort = typeof address === 'object' && address ? address.port : port
+      resolve({ server, port: boundPort })
+    })
+  })
 }
 
 const ORIGIN = 'http://localhost'
 
 async function prerender() {
-  const PORT = 4173
-  const server = await startStaticServer(distDir, PORT)
+  const { server, port } = await startStaticServer(distDir, 0)
+  const PORT = port
   console.log(`[prerender] Static server on ${ORIGIN}:${PORT}`)
 
   const puppeteer = await import('puppeteer')

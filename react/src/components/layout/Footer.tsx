@@ -12,11 +12,41 @@ function Group685() {
 
 export default function Footer() {
   useEffect(() => {
-    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
-    const script = document.createElement("script");
-    script.src = "https://elfsightcdn.com/platform.js";
-    script.async = true;
-    document.body.appendChild(script);
+    const widget = document.querySelector(".elfsight-app-94f468c1-4f93-46f0-a5d3-dcee026001cf");
+    if (!widget) return;
+
+    const injectScript = () => {
+      if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
+      const script = document.createElement("script");
+      script.src = "https://elfsightcdn.com/platform.js";
+      script.async = true;
+      document.body.appendChild(script);
+    };
+
+    const scheduleInject = () => {
+      const requestIdle = globalThis.requestIdleCallback as
+        | ((cb: IdleRequestCallback) => number)
+        | undefined;
+      if (requestIdle) {
+        requestIdle(() => injectScript());
+      } else {
+        globalThis.setTimeout(injectScript, 300);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          scheduleInject();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(widget);
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -43,7 +73,8 @@ export default function Footer() {
             <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
               <a href="/" className="hover:opacity-70 transition-opacity">Accueil</a>
               <a href="/solution" className="hover:opacity-70 transition-opacity">Solution</a>
-              <a href="/paris" className="hover:opacity-70 transition-opacity">Déménagement Paris</a>
+              <a href="/demenagement-entreprise" className="hover:opacity-70 transition-opacity">Déménagement entreprise</a>
+              <a href="/demenagement-particulier" className="hover:opacity-70 transition-opacity">Déménagement particulier</a>
               <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
               <a href="/faq" className="hover:opacity-70 transition-opacity">FAQ</a>
               <a href="/tarif" className="hover:opacity-70 transition-opacity">Tarification</a>
@@ -81,6 +112,9 @@ export default function Footer() {
                     src="/trust.png"
                     alt="Trustpilot - Avis clients"
                     className="h-20 w-auto object-contain sm:h-24 md:h-28 lg:h-32"
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
                   />
                 </a>
               </div>
