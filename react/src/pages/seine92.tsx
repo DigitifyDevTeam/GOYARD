@@ -19,7 +19,7 @@ export default function Seine92() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
-  const primaryCta = () => {
+  const persistLandingFormData = () => {
     FormDataManager.saveFormData({
       address: departureAddress.trim(),
       date: moveDate.trim(),
@@ -36,7 +36,16 @@ export default function Seine92() {
     if (firstName.trim()) sessionStorage.setItem("homeFirstName", firstName.trim());
     if (email.trim()) sessionStorage.setItem("homeEmail", email.trim());
     if (phone.trim()) sessionStorage.setItem("homePhone", phone.trim());
+  };
 
+  const primaryCta = () => {
+    persistLandingFormData();
+
+    navigate("/tunnel/mes-coordonnees");
+  };
+
+  const continueToMethodSelection = () => {
+    persistLandingFormData();
     navigate("/tunnel/choix-volume");
   };
 
@@ -225,7 +234,7 @@ export default function Seine92() {
 
                     <Button
                       type="button"
-                      onClick={primaryCta}
+                      onClick={continueToMethodSelection}
                       className="w-full bg-[#CC922F] hover:bg-[#CC922F]/90 text-white py-3 rounded-xl font-bold"
                       size="lg"
                     >

@@ -316,6 +316,17 @@ function AppContent() {
   const [ancienneteLogement, setAncienneteLogement] = useState<"0_2" | "2_5" | "5_plus" | "">("");
   const [selectedMethod, setSelectedMethod] = useState<"list" | "photo" | "surface" | null>(getSelectedMethodFromUrl());
   const [lastUsedMethod, setLastUsedMethod] = useState<"list" | "photo" | "surface" | null>(null);
+  const currentStepNumber =
+    currentPage === "form"
+      ? 1
+      : currentPage === "methods" || currentPage === "volume" || currentPage === "ai-results"
+        ? 2
+        : 3;
+  const stepItems = [
+    { step: 1, title: "Mes informations", subtitle: "Vos coordonnées" },
+    { step: 2, title: "Mon déménagement", subtitle: "Choix de méthode" },
+    { step: 3, title: "Mes adresses", subtitle: "Départ et arrivée" },
+  ] as const;
   const [declaredVolumeM3, setDeclaredVolumeM3] = useState<number | null>(() => {
     try {
       const v = localStorage.getItem('declaredVolumeM3');
@@ -3478,6 +3489,46 @@ function AppContent() {
           {/* Main Content */}
           <div className="lg:col-span-2 min-w-0">
             <div className="bg-slate-50 rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+              {/* Mobile progress */}
+              <div className="lg:hidden mb-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <h3 className="text-sm font-semibold text-slate-900">Mes étapes</h3>
+                  <span className="text-xs font-medium text-slate-600">Étape {currentStepNumber}/3</span>
+                </div>
+                <div className="h-2 w-full rounded-full bg-slate-200 mb-3">
+                  <div
+                    className="h-2 rounded-full bg-[#1c3957] transition-all duration-300"
+                    style={{ width: `${(currentStepNumber / 3) * 100}%` }}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {stepItems.map((item) => {
+                    const isCompleted = currentStepNumber > item.step;
+                    const isCurrent = currentStepNumber === item.step;
+                    const badgeClass = isCompleted
+                      ? "bg-emerald-500 border-emerald-500 text-white"
+                      : isCurrent
+                        ? "bg-white border-[#1c3957] text-[#1c3957]"
+                        : "bg-white border-slate-300 text-slate-400";
+                    const cardClass = isCurrent
+                      ? "border-[#1c3957] bg-[#1c3957]/5"
+                      : "border-slate-200 bg-white";
+
+                    return (
+                      <div key={item.step} className={`rounded-lg border p-2.5 ${cardClass}`}>
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className={`flex h-5 w-5 items-center justify-center rounded-full border text-[10px] font-semibold ${badgeClass}`}>
+                            {isCompleted ? <Check className="w-3 h-3" /> : item.step}
+                          </div>
+                          <p className="text-xs font-semibold text-slate-800 truncate">Étape {item.step}</p>
+                        </div>
+                        <p className="text-[11px] text-slate-600 truncate">{item.title}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {currentPage === "form" && (
                 <div>
                   {/* Sophie's Profile */}
@@ -3674,73 +3725,78 @@ function AppContent() {
                   </div>
 
                   {/* Method Selection */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-                    {/* Method 1: List Cleaning Tasks */}
+                  <div className="space-y-4 sm:space-y-6">
+                    {/* Primary default method: Surface Area Based Quote */}
                     <div
-                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-                      onClick={() => handleSelectMethod("list")}
-                    >
-                      <div className="flex flex-col items-center text-center space-y-4">
-                        <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
-                          <List className="w-8 h-8" style={{ color: '#CC922F' }} />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-slate-900 text-lg mb-2">
-                            Je liste mes objets à déménager
-                          </h3>
-                          <p className="text-sm text-slate-600 leading-relaxed">
-                            Préciser quelles pièces et objets vous souhaitez déménager.
-                          </p>
-                        </div>
-                        <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                    </div>
-
-                    {/* Method 2: AI Photo Detection */}
-                    <div
-                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-                      onClick={() => handleSelectMethod("photo")}
-                    >
-                      <div className="flex flex-col items-center text-center space-y-4">
-                        <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center relative">
-                          <Camera className="w-8 h-8" style={{ color: '#CC922F' }} />
-                          <div className="absolute -top-2 -right-2 bg-[#1c3957] text-white text-xs px-2 py-1 rounded-full font-semibold">
-                            IA
-                          </div>
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-slate-900 text-lg mb-2">
-                            J'envoie des photos de mon espace
-                          </h3>
-                          <p className="text-sm text-slate-600 leading-relaxed">
-                            Notre IA évaluera automatiquement le volume de votre déménagement.
-                          </p>
-                        </div>
-                        <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
-                      </div>
-                    </div>
-
-                    {/* Method 3: Surface Area Based Quote */}
-                    <div
-                      className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                      className="border-2 border-[#1c3957] rounded-lg p-7 sm:p-8 cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 bg-slate-50/50"
                       onClick={() => handleSelectMethod("surface")}
                     >
-                      <div className="flex flex-col items-center text-center space-y-4">
-                        <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
-                          <Maximize2 className="w-8 h-8" style={{ color: '#CC922F' }} />
+                      <div className="flex flex-col items-center text-center space-y-4 sm:space-y-5">
+                        <div className="inline-flex items-center gap-2 rounded-full bg-[#1c3957] px-3 py-1 text-xs font-semibold text-white">
+                          Recommandé par défaut
+                        </div>
+                        <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                          <Maximize2 className="w-10 h-10" style={{ color: '#CC922F' }} />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-slate-900 text-lg mb-2">
+                          <h3 className="font-semibold text-slate-900 text-xl sm:text-2xl mb-2">
                             Mon devis en fonction de la superficie
                           </h3>
-                          <p className="text-sm text-slate-600 leading-relaxed">
+                          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
                             Obtenez une estimation rapide basée sur la surface totale de votre logement.
                           </p>
                         </div>
-                        <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
+                        <ChevronRight className="w-7 h-7" style={{ color: '#CC922F' }} />
                       </div>
                     </div>
 
+                    {/* Secondary methods */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                      {/* Method 1: List Cleaning Tasks */}
+                      <div
+                        className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                        onClick={() => handleSelectMethod("list")}
+                      >
+                        <div className="flex flex-col items-center text-center space-y-4">
+                          <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
+                            <List className="w-8 h-8" style={{ color: '#CC922F' }} />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-slate-900 text-lg mb-2">
+                              Je liste mes objets à déménager
+                            </h3>
+                            <p className="text-sm text-slate-600 leading-relaxed">
+                              Préciser quelles pièces et objets vous souhaitez déménager.
+                            </p>
+                          </div>
+                          <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
+                        </div>
+                      </div>
+
+                      {/* Method 2: AI Photo Detection */}
+                      <div
+                        className="border-2 border-slate-200 rounded-lg p-6 hover:border-[#1c3957] cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                        onClick={() => handleSelectMethod("photo")}
+                      >
+                        <div className="flex flex-col items-center text-center space-y-4">
+                          <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center relative">
+                            <Camera className="w-8 h-8" style={{ color: '#CC922F' }} />
+                            <div className="absolute -top-2 -right-2 bg-[#1c3957] text-white text-xs px-2 py-1 rounded-full font-semibold">
+                              IA
+                            </div>
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-slate-900 text-lg mb-2">
+                              J'envoie des photos de mon espace
+                            </h3>
+                            <p className="text-sm text-slate-600 leading-relaxed">
+                              Notre IA évaluera automatiquement le volume de votre déménagement.
+                            </p>
+                          </div>
+                          <ChevronRight className="w-6 h-6" style={{ color: '#CC922F' }} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Back Button */}
@@ -6116,44 +6172,43 @@ function AppContent() {
           {/* Sidebar */}
           <div className="space-y-6 lg:space-y-12">
             {/* Mes étapes */}
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+            <div className="hidden lg:block bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
               <h3 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2 sm:mb-4">
                 Mes étapes
               </h3>
               <p className="text-sm sm:text-base text-slate-600 mb-4 sm:mb-6">
-                Sélectionnez l'étape sur laquelle vous souhaitez revenir
+                Étape {currentStepNumber} sur 3 - gardez le cap, vous y êtes presque.
               </p>
-              <ul className="space-y-3 sm:space-y-4">
-                <li className="flex items-center min-w-0">
-                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "form" ? "bg-slate-900" : "bg-slate-300"
-                    }`}></div>
-                  <span className={`text-sm sm:text-base truncate ${currentPage === "form" ? "font-medium text-slate-900" : "text-slate-500"
-                    }`}>Mes informations</span>
-                </li>
-                <li className="flex items-center min-w-0">
-                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "methods" ? "bg-slate-900" : "bg-slate-300"
-                    }`}></div>
-                  <span className={`text-sm sm:text-base truncate ${currentPage === "methods" ? "font-medium text-slate-900" : "text-slate-500"
-                    }`}>Mon déménagement</span>
-                </li>
-                {(currentPage === "volume" || currentPage === "ai-results" || currentPage === "addresses") && selectedMethod && (
-                  <li className="flex items-center min-w-0">
-                    <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "volume" || currentPage === "ai-results" ? "bg-slate-900" : "bg-slate-300"
-                      }`}></div>
-                    <span className={`text-sm sm:text-base truncate ${currentPage === "volume" || currentPage === "ai-results" ? "font-medium text-slate-900" : "text-slate-500"
-                      }`}>
-                      {selectedMethod === "list" ? "Inventaire manuel" :
-                        selectedMethod === "photo" ? "Analyse IA" :
-                          selectedMethod === "surface" ? "Calcul surface" : "Méthode sélectionnée"}
-                    </span>
-                  </li>
-                )}
-                <li className="flex items-center min-w-0">
-                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 sm:mr-4 flex-shrink-0 ${currentPage === "addresses" ? "bg-slate-900" : "bg-slate-300"
-                    }`}></div>
-                  <span className={`text-sm sm:text-base truncate ${currentPage === "addresses" ? "font-medium text-slate-900" : "text-slate-500"
-                    }`}>Mes adresses</span>
-                </li>
+              <ul className="relative space-y-4 sm:space-y-5">
+                <div className="absolute left-[15px] sm:left-[17px] top-2 bottom-2 w-[2px] bg-slate-200" />
+                {stepItems.map((item) => {
+                  const isCompleted = currentStepNumber > item.step;
+                  const isCurrent = currentStepNumber === item.step;
+                  const dotClass = isCompleted
+                    ? "bg-emerald-500 border-emerald-500 text-white"
+                    : isCurrent
+                      ? "bg-white border-[#1c3957] text-[#1c3957]"
+                      : "bg-white border-slate-300 text-slate-400";
+                  const cardClass = isCurrent
+                    ? "border-[#1c3957] bg-[#1c3957]/5"
+                    : "border-slate-200 bg-white";
+
+                  return (
+                    <li key={item.step} className="relative flex items-start gap-3 sm:gap-4 min-w-0">
+                      <div className={`relative z-10 mt-0.5 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 text-xs font-semibold ${dotClass}`}>
+                        {isCompleted ? <Check className="w-4 h-4" /> : item.step}
+                      </div>
+                      <div className={`flex-1 rounded-lg border p-3 sm:p-4 ${cardClass}`}>
+                        <p className={`text-sm sm:text-base font-semibold ${isCurrent ? "text-slate-900" : "text-slate-700"}`}>
+                          Étape {item.step} - {item.title}
+                        </p>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                          {item.subtitle}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

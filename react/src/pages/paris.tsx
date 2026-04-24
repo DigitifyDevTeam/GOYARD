@@ -19,7 +19,7 @@ export default function Paris() {
   const [phone, setPhone] = useState("");
   const [moveDate, setMoveDate] = useState("");
 
-  const primaryCta = () => {
+  const persistLandingFormData = () => {
     FormDataManager.saveFormData({
       address: departureAddress.trim(),
       name: lastName.trim(),
@@ -35,8 +35,17 @@ export default function Paris() {
     if (firstName.trim()) sessionStorage.setItem("homeFirstName", firstName.trim());
     if (phone.trim()) sessionStorage.setItem("homePhone", phone.trim());
     if (moveDate.trim()) sessionStorage.setItem("homeMoveDate", moveDate.trim());
+  };
 
-    // User wants the Paris page to continue to the next tunnel step directly
+  const primaryCta = () => {
+    persistLandingFormData();
+
+    // Start at the first tunnel step to avoid skipping contact details
+    navigate("/tunnel/mes-coordonnees");
+  };
+
+  const continueToMethodSelection = () => {
+    persistLandingFormData();
     navigate("/tunnel/choix-volume");
   };
 
@@ -224,7 +233,7 @@ export default function Paris() {
 
                     <Button
                       type="button"
-                      onClick={primaryCta}
+                      onClick={continueToMethodSelection}
                       className="w-full bg-[#CC922F] hover:bg-[#CC922F]/90 text-white py-3 rounded-xl font-bold"
                       size="lg"
                     >

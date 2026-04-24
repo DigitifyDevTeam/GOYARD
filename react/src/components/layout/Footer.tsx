@@ -12,41 +12,11 @@ function Group685() {
 
 export default function Footer() {
   useEffect(() => {
-    const widget = document.querySelector(".elfsight-app-94f468c1-4f93-46f0-a5d3-dcee026001cf");
-    if (!widget) return;
-
-    const injectScript = () => {
-      if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
-      const script = document.createElement("script");
-      script.src = "https://elfsightcdn.com/platform.js";
-      script.async = true;
-      document.body.appendChild(script);
-    };
-
-    const scheduleInject = () => {
-      const requestIdle = globalThis.requestIdleCallback as
-        | ((cb: IdleRequestCallback) => number)
-        | undefined;
-      if (requestIdle) {
-        requestIdle(() => injectScript());
-      } else {
-        globalThis.setTimeout(injectScript, 300);
-      }
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          scheduleInject();
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" }
-    );
-
-    observer.observe(widget);
-
-    return () => observer.disconnect();
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
   }, []);
 
   return (
@@ -112,9 +82,6 @@ export default function Footer() {
                     src="/trust.png"
                     alt="Trustpilot - Avis clients"
                     className="h-20 w-auto object-contain sm:h-24 md:h-28 lg:h-32"
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
                   />
                 </a>
               </div>

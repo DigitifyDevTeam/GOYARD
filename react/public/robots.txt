@@ -1,10 +1,12 @@
 User-agent: Googlebot
 Allow: /
 Disallow: /tunnel/
+Disallow: /lp/
 
 User-agent: Bingbot
 Allow: /
 Disallow: /tunnel/
+Disallow: /lp/
 
 User-agent: Twitterbot
 Allow: /
@@ -15,5 +17,6 @@ Allow: /
 User-agent: *
 Allow: /
 Disallow: /tunnel/
+Disallow: /lp/
 
 Sitemap: https://guivarche-demenagement.fr/sitemap.xml
