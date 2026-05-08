@@ -207,11 +207,12 @@ function AppContent() {
   // Load existing form data on component mount
   useEffect(() => {
     const existingData = FormDataManager.getFormData();
-    if (existingData.firstName || existingData.lastName || existingData.email || existingData.phone) {
+    const resolvedLastName = (existingData.lastName ?? existingData.name ?? "") as string;
+    if (existingData.firstName || resolvedLastName || existingData.email || existingData.phone) {
       setFormData(prev => ({
         ...prev,
         firstName: existingData.firstName || '',
-        name: existingData.lastName || '',
+        name: resolvedLastName || '',
         email: existingData.email || '',
         phone: existingData.phone || '',
         address: existingData.address || '',
@@ -240,11 +241,15 @@ function AppContent() {
     const cameFromHome = sessionStorage.getItem("cameFromHome");
     const homeAddress = sessionStorage.getItem("homeDepartureAddress");
     const homeFirstName = sessionStorage.getItem("homeFirstName");
+    const homeLastName = sessionStorage.getItem("homeLastName");
+    const homeEmail = sessionStorage.getItem("homeEmail");
     const homePhone = sessionStorage.getItem("homePhone");
     const homeMoveDate = sessionStorage.getItem("homeMoveDate");
     sessionStorage.removeItem("cameFromHome");
     sessionStorage.removeItem("homeDepartureAddress");
     sessionStorage.removeItem("homeFirstName");
+    sessionStorage.removeItem("homeLastName");
+    sessionStorage.removeItem("homeEmail");
     sessionStorage.removeItem("homePhone");
     sessionStorage.removeItem("homeMoveDate");
 
@@ -252,6 +257,14 @@ function AppContent() {
       if (homeFirstName && homeFirstName.trim()) {
         setFormData(prev => ({ ...prev, firstName: homeFirstName.trim() }));
         FormDataManager.saveFormData({ firstName: homeFirstName.trim() });
+      }
+      if (homeLastName && homeLastName.trim()) {
+        setFormData(prev => ({ ...prev, name: homeLastName.trim() }));
+        FormDataManager.saveFormData({ lastName: homeLastName.trim(), name: homeLastName.trim() });
+      }
+      if (homeEmail && homeEmail.trim()) {
+        setFormData(prev => ({ ...prev, email: homeEmail.trim() }));
+        FormDataManager.saveFormData({ email: homeEmail.trim() });
       }
       if (homePhone && homePhone.trim()) {
         setFormData(prev => ({ ...prev, phone: homePhone.trim() }));
@@ -436,7 +449,7 @@ function AppContent() {
       },
     },
     arrival: {
-      address: "Lyon, France",
+      address: "",
       floor: "RDC",
       elevator: "Non",
       demiEtage: false,
@@ -1162,15 +1175,24 @@ function AppContent() {
   };
 
   const handleContinueToQuote = async () => {
-    await submitAddressData();
+    const ok = await submitAddressData();
+    if (!ok) return;
     navigate("/tunnel/devis");
   };
 
   // Submit address data to API
-  const submitAddressData = async () => {
+  const submitAddressData = async (): Promise<boolean> => {
+    if (!addressData.departure.address?.trim()) {
+      alert("Veuillez saisir l'adresse de départ.");
+      return false;
+    }
+    if (!addressData.arrival.address?.trim()) {
+      alert("Veuillez saisir l'adresse d'arrivée.");
+      return false;
+    }
     if (!clientId) {
       console.error('No client ID available');
-      return;
+      return false;
     }
 
     try {
@@ -1236,13 +1258,16 @@ function AppContent() {
             setDistanceText(dist.distanceText || `${dist.distanceKm} km`);
           }
         }
+        return true;
       } else {
         console.error('Error submitting address data:', result);
         alert('Erreur lors de l\'enregistrement des adresses: ' + (result.message || 'Erreur inconnue'));
+        return false;
       }
     } catch (error) {
       console.error('Error submitting address data:', error);
       alert('Erreur lors de l\'enregistrement des adresses');
+      return false;
     }
   };
 
@@ -6160,6 +6185,7 @@ function AppContent() {
                     <Button
                       className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white flex-1"
                       onClick={handleContinueToQuote}
+                      disabled={!addressData.departure.address?.trim() || !addressData.arrival.address?.trim()}
                     >
                       Continuer →
                     </Button>

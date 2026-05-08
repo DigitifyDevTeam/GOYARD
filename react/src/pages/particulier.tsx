@@ -89,6 +89,8 @@ export default function Particulier() {
     FormDataManager.saveFormData({
       address: departureAddress.trim(),
       date: moveDate.trim(),
+      // Keep both keys for backward-compat with existing tunnel state ("name")
+      lastName: lastName.trim(),
       name: lastName.trim(),
       firstName: firstName.trim(),
       email: email.trim(),
@@ -104,14 +106,89 @@ export default function Particulier() {
     if (phone.trim()) sessionStorage.setItem("homePhone", phone.trim());
   };
 
+  const ensureClientInfoSubmitted = async (): Promise<number | null> => {
+    const existingClientId = localStorage.getItem("clientId");
+
+    // Minimal validation (match tunnel expectations)
+    if (!lastName.trim()) {
+      alert("Le nom de famille est obligatoire");
+      return null;
+    }
+    if (!firstName.trim()) {
+      alert("Le prénom est obligatoire");
+      return null;
+    }
+    if (!email.trim()) {
+      alert("L'email est obligatoire");
+      return null;
+    }
+    if (!phone.trim()) {
+      alert("Le téléphone est obligatoire");
+      return null;
+    }
+    if (!departureAddress.trim() || departureAddress.trim().length < 10) {
+      alert("Veuillez saisir une adresse valide (au moins 10 caractères).");
+      return null;
+    }
+    if (!moveDate.trim()) {
+      alert("Veuillez sélectionner une date de déménagement.");
+      return null;
+    }
+
+    try {
+      const payload = {
+        nom: lastName.trim(),
+        prenom: firstName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        adresse_depart: departureAddress.trim(),
+        date_demenagement: moveDate.trim(),
+      };
+
+      const url = existingClientId
+        ? `/api/demenagement/client-info/${existingClientId}/`
+        : "/api/demenagement/client-info/";
+      const method = existingClientId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!result?.success || !result?.data?.id) {
+        alert(
+          `Erreur lors de l'enregistrement de vos informations${
+            result?.message ? `: ${result.message}` : "."
+          }`,
+        );
+        return null;
+      }
+
+      const id = Number(result.data.id);
+      FormDataManager.markFormSubmitted(id);
+      return id;
+    } catch (e) {
+      console.error("Error submitting client information from landing:", e);
+      alert("Erreur lors de l'enregistrement de vos informations.");
+      return null;
+    }
+  };
+
   const primaryCta = () => {
     persistLandingFormData();
 
     navigate("/tunnel/mes-coordonnees");
   };
 
-  const continueToMethodSelection = () => {
+  const continueToMethodSelection = async () => {
     persistLandingFormData();
+
+    const clientId = await ensureClientInfoSubmitted();
+    if (!clientId) return;
+
     navigate("/tunnel/choix-volume");
   };
 

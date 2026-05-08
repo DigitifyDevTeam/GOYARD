@@ -126,25 +126,45 @@ def submit_client_information(request):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'PATCH'])
 def get_client_information(request, client_id):
     """
-    API endpoint to retrieve client information by ID
+    API endpoint to retrieve OR update client information by ID.
+
+    - GET: returns client info
+    - PUT/PATCH: updates client info (PATCH is partial)
     """
     try:
         client_info = ClientInformation.objects.get(id=client_id)
-        serializer = ClientInformationSerializer(client_info)
-        
-        return Response({
-            'success': True,
-            'data': serializer.data
-        }, status=status.HTTP_200_OK)
-        
     except ClientInformation.DoesNotExist:
         return Response({
             'success': False,
             'message': 'Client non trouvé'
         }, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ClientInformationSerializer(client_info)
+        return Response({
+            'success': True,
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
+
+    partial = request.method == 'PATCH'
+    serializer = ClientInformationSerializer(client_info, data=request.data, partial=partial)
+    if serializer.is_valid():
+        updated = serializer.save()
+        return Response({
+            'success': True,
+            'message': 'Informations client mises à jour avec succès',
+            'data': ClientInformationSerializer(updated).data
+        }, status=status.HTTP_200_OK)
+
+    print("Serializer errors:", serializer.errors)
+    return Response({
+        'success': False,
+        'message': 'Données invalides',
+        'errors': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
