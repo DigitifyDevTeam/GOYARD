@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, CheckCircle2, Globe, Mail, MapPin, Phone, User, Users, Laptop, Warehouse, ShoppingCart, Building2 } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle2, Globe, MapPin, Users, Laptop, Warehouse, ShoppingCart, Building2 } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
@@ -9,6 +9,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { FormDataManager } from "../utils/formDataManager";
+import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 
 // ─── Sections imported from DemenagementEntreprise.tsx ──────────────
 
@@ -80,51 +81,22 @@ export default function Pro() {
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
   const [moveDate, setMoveDate] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
 
   const persistLandingFormData = () => {
     FormDataManager.saveFormData({
       address: departureAddress.trim(),
       date: moveDate.trim(),
-      // Keep both keys for backward-compat with existing tunnel state ("name")
-      lastName: lastName.trim(),
-      name: lastName.trim(),
-      firstName: firstName.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
     });
 
     sessionStorage.setItem("cameFromHome", "true");
     if (departureAddress.trim()) sessionStorage.setItem("homeDepartureAddress", departureAddress.trim());
     if (moveDate.trim()) sessionStorage.setItem("homeMoveDate", moveDate.trim());
-    if (lastName.trim()) sessionStorage.setItem("homeLastName", lastName.trim());
-    if (firstName.trim()) sessionStorage.setItem("homeFirstName", firstName.trim());
-    if (email.trim()) sessionStorage.setItem("homeEmail", email.trim());
-    if (phone.trim()) sessionStorage.setItem("homePhone", phone.trim());
   };
 
   const ensureClientInfoSubmitted = async (): Promise<number | null> => {
     const existingClientId = localStorage.getItem("clientId");
 
-    if (!lastName.trim()) {
-      alert("Le nom de famille est obligatoire");
-      return null;
-    }
-    if (!firstName.trim()) {
-      alert("Le prénom est obligatoire");
-      return null;
-    }
-    if (!email.trim()) {
-      alert("L'email est obligatoire");
-      return null;
-    }
-    if (!phone.trim()) {
-      alert("Le téléphone est obligatoire");
-      return null;
-    }
     if (!departureAddress.trim() || departureAddress.trim().length < 10) {
       alert("Veuillez saisir une adresse valide (au moins 10 caractères).");
       return null;
@@ -136,10 +108,6 @@ export default function Pro() {
 
     try {
       const payload = {
-        nom: lastName.trim(),
-        prenom: firstName.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
         adresse_depart: departureAddress.trim(),
         date_demenagement: moveDate.trim(),
       };
@@ -298,76 +266,6 @@ export default function Pro() {
                           onChange={(e) => setMoveDate(e.target.value)}
                           className="pl-10 bg-slate-50 border-slate-200 cursor-pointer h-12 text-base"
                           style={{ colorScheme: "light" }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="pro-lastName" className="text-slate-900 mb-2 block">
-                          Nom
-                        </Label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
-                          <Input
-                            id="pro-lastName"
-                            type="text"
-                            placeholder="Nom de famille"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <Label htmlFor="pro-firstName" className="text-slate-900 mb-2 block">
-                          Prénom
-                        </Label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
-                          <Input
-                            id="pro-firstName"
-                            type="text"
-                            placeholder="Prénom"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="pro-email" className="text-slate-900 mb-2 block">
-                        Email
-                      </Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
-                        <Input
-                          id="pro-email"
-                          type="email"
-                          placeholder="Adresse email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="pro-phone" className="text-slate-900 mb-2 block">
-                        Téléphone
-                      </Label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#CC922F" }} />
-                        <Input
-                          id="pro-phone"
-                          type="tel"
-                          inputMode="tel"
-                          placeholder="Numéro de téléphone"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="pl-10 bg-slate-50 border-slate-200 h-12 text-base"
                         />
                       </div>
                     </div>
@@ -537,9 +435,11 @@ export default function Pro() {
                     alt: "Nos locaux et équipements",
                   },
                 ].map((img) => (
-                  <div
+                  <button
                     key={img.src}
-                    className="relative overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] sm:aspect-[4/5]"
+                    type="button"
+                    className="relative overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] sm:aspect-[4/5] cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-[#CC922F] focus:ring-offset-2"
+                    onClick={() => setLightboxImage(img)}
                   >
                     <img
                       src={img.src}
@@ -547,7 +447,7 @@ export default function Pro() {
                       loading="lazy"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
 
@@ -564,9 +464,11 @@ export default function Pro() {
                     },
                   ].map((img) => {
                     return (
-                      <div
+                      <button
                         key={img.src}
-                        className="relative flex-1 overflow-hidden rounded-2xl sm:rounded-3xl h-[320px]"
+                        type="button"
+                        className="relative flex-1 overflow-hidden rounded-2xl sm:rounded-3xl h-[320px] cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-[#CC922F] focus:ring-offset-2"
+                        onClick={() => setLightboxImage(img)}
                       >
                         <img
                           src={img.src}
@@ -574,12 +476,14 @@ export default function Pro() {
                           loading="lazy"
                           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                         />
-                      </div>
+                      </button>
                     );
                   });
                 })()}
               </div>
             </div>
+
+            <LightboxImageDialog image={lightboxImage} onClose={() => setLightboxImage(null)} />
           </div>
         </section>
 

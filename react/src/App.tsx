@@ -490,47 +490,12 @@ function AppContent() {
   };
 
   const handleSubmitForm = async () => {
-    // Validate required fields with specific messages
-    if (!formData.name.trim()) {
-      alert('Le nom de famille est obligatoire');
-      return;
-    }
-    if (!formData.firstName.trim()) {
-      alert('Le prénom est obligatoire');
-      return;
-    }
-    if (!formData.email.trim()) {
-      alert('L\'adresse email est obligatoire');
-      return;
-    }
-    if (!formData.phone.trim()) {
-      alert('Le numéro de téléphone est obligatoire');
-      return;
-    }
     if (!formData.address.trim()) {
       alert('L\'adresse de départ est obligatoire');
       return;
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      alert('Veuillez entrer une adresse email valide');
-      return;
-    }
-
-    // Validate phone number (French format: 10 digits starting with 0)
-    const phoneClean = formData.phone.replace(/[\s\-\.\(\)]/g, '');
-    if (phoneClean.length !== 10) {
-      alert('Le numéro de téléphone doit contenir exactement 10 chiffres');
-      return;
-    }
-    if (!/^0[0-9]{9}$/.test(phoneClean)) {
-      alert('Le numéro de téléphone doit commencer par 0 et être au format français (ex: 0123456789)');
-      return;
-    }
-
-    // Save complete form data for route protection
+    // Save form data for route protection
     FormDataManager.saveFormData({
       firstName: formData.firstName.trim(),
       lastName: formData.name.trim(),
@@ -540,7 +505,6 @@ function AppContent() {
       date: formData.date
     });
 
-    // Validate address length
     if (formData.address.trim().length < 10) {
       alert('L\'adresse doit contenir au moins 10 caractères pour être valide');
       return;
@@ -557,14 +521,9 @@ function AppContent() {
     }
 
     try {
-      // Prepare client information data
       const clientData = {
-        nom: formData.name.trim(),
-        prenom: formData.firstName.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
         adresse_depart: formData.address.trim(),
-        date_demenagement: formData.date // Format: YYYY-MM-DD
+        date_demenagement: formData.date
       };
 
       console.log('Submitting client information:', clientData);
@@ -581,13 +540,10 @@ function AppContent() {
 
       if (result.success) {
         console.log('Client information saved successfully:', result.data);
-        // Store client ID for later use
         setClientId(result.data.id);
 
-        // Mark form as completed for route protection
         FormDataManager.markFormSubmitted(result.data.id);
 
-        // Sync form address into addressData so "Au départ" is pre-filled on tunnel/adresses
         setAddressData((prev) => ({
           ...prev,
           departure: { ...prev.departure, address: formData.address.trim() },
@@ -623,10 +579,6 @@ function AppContent() {
   };
 
   const handleContinueFromSurface = async () => {
-    if (!logementType) {
-      alert("Veuillez sélectionner votre type de logement.");
-      return;
-    }
     if (!ancienneteLogement) {
       alert("Veuillez sélectionner depuis quand vous êtes dans ce logement.");
       return;
@@ -1323,6 +1275,34 @@ function AppContent() {
   };
 
   const handleSendDevis = async () => {
+    // Validate personal info (now collected here at devis step)
+    if (!formData.name.trim()) {
+      alert('Le nom de famille est obligatoire');
+      return;
+    }
+    if (!formData.firstName.trim()) {
+      alert('Le prénom est obligatoire');
+      return;
+    }
+    if (!formData.email.trim()) {
+      alert('L\'adresse email est obligatoire');
+      return;
+    }
+    if (!formData.phone.trim()) {
+      alert('Le numéro de téléphone est obligatoire');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert('Veuillez entrer une adresse email valide');
+      return;
+    }
+    const phoneClean = formData.phone.replace(/[\s\-\.\(\)]/g, '');
+    if (!/^0[0-9]{9}$/.test(phoneClean)) {
+      alert('Le numéro de téléphone doit être au format français (10 chiffres commençant par 0)');
+      return;
+    }
+
     // 1) Export the PDF for email (no auto-download here)
     if (!pdfReportRef.current) {
       alert("Erreur lors de la génération du PDF. L'email n'a pas été envoyé.");
@@ -1465,10 +1445,13 @@ function AppContent() {
 
       const payload: Record<string, any> = {
         client_id: resolvedClientId,
+        nom: formData.name.trim(),
+        prenom: formData.firstName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.replace(/[\s\-\.\(\)]/g, ''),
         demontage_remontage: options.demontageRemontage,
         emballage_fragile: options.emballageFragile,
         emballage_cartons: options.emballageCartons,
-        // Overrides for the email/PDF method block (prevents wrong "superficie" fallback).
         ...(volumeMethodForEmail ? { volume_method: volumeMethodForEmail } : {}),
         ...(methodOutputForEmail ? { method_output: methodOutputForEmail } : {}),
       };
@@ -3165,6 +3148,95 @@ function AppContent() {
                       )}
                     </div>
                     
+                    {/* Personal info fields (collected here at last step) */}
+                    <div className="space-y-4 border-t border-slate-200 pt-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label htmlFor="quote-name" className="text-slate-900 mb-2 block text-sm">Nom</Label>
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
+                            <Input
+                              id="quote-name"
+                              type="text"
+                              placeholder="Nom de famille"
+                              value={formData.name}
+                              onChange={(e) => handleInputChange("name", e.target.value)}
+                              className="pl-10 bg-slate-50 border-slate-200"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <Label htmlFor="quote-firstName" className="text-slate-900 mb-2 block text-sm">Prénom</Label>
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
+                            <Input
+                              id="quote-firstName"
+                              type="text"
+                              placeholder="Prénom"
+                              value={formData.firstName}
+                              onChange={(e) => handleInputChange("firstName", e.target.value)}
+                              className="pl-10 bg-slate-50 border-slate-200"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="quote-email" className="text-slate-900 mb-2 block text-sm">Email</Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
+                          <Input
+                            id="quote-email"
+                            type="email"
+                            placeholder="Adresse email"
+                            value={formData.email}
+                            onChange={(e) => handleInputChange("email", e.target.value)}
+                            className="pl-10 bg-slate-50 border-slate-200"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="quote-phone" className="text-slate-900 mb-2 block text-sm">Téléphone</Label>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
+                          <Input
+                            id="quote-phone"
+                            type="tel"
+                            placeholder="Numéro de téléphone"
+                            value={formData.phone}
+                            onChange={(e) => handleInputChange("phone", e.target.value)}
+                            className="pl-10 bg-slate-50 border-slate-200"
+                          />
+                        </div>
+                      </div>
+                      <p className="text-xs text-primary leading-relaxed">
+                        En soumettant ce formulaire, j'accepte d'être contacté par Guivarche et ses
+                        partenaires pour l'organisation de mon service de déménagement.
+                      </p>
+                    </div>
+
+                    {devisSent ? (
+                      <div className="w-full bg-green-600 text-white py-3 rounded-lg text-center font-medium flex items-center justify-center gap-2">
+                        <Check className="w-5 h-5" />
+                        Récapitulatif envoyé par e-mail !
+                      </div>
+                    ) : (
+                      <Button
+                        className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white py-3"
+                        onClick={handleSendDevis}
+                        disabled={sendingDevis || !formData.name.trim() || !formData.firstName.trim() || !formData.email.trim() || !formData.phone.trim()}
+                      >
+                        {sendingDevis ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Envoi en cours...
+                          </span>
+                        ) : 'DEMANDER MON DEVIS'}
+                      </Button>
+                    )}
+
                     <div className="space-y-3 text-sm border-t border-slate-100 pt-4 pb-2">
                       <div className="flex items-center">
                         <Heart className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
@@ -3178,34 +3250,7 @@ function AppContent() {
                         <Phone className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
                         <span className="text-slate-700">Service client 7j/7 de 9h à 18h</span>
                       </div>
-                      <div className="flex items-center">
-                        <Shield className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: '#CC922F' }} />
-                        <span className="text-slate-700">Assurance incluse</span>
-                      </div>
                     </div>
-
-                    {devisSent ? (
-                      <div className="w-full bg-green-600 text-white py-3 rounded-lg text-center font-medium flex items-center justify-center gap-2">
-                        <Check className="w-5 h-5" />
-                        Récapitulatif envoyé par e-mail !
-                      </div>
-                    ) : (
-                      <Button
-                        className="w-full bg-[#1c3957] hover:bg-[#1c3957]/90 text-white py-3"
-                        onClick={handleSendDevis}
-                        disabled={sendingDevis}
-                      >
-                        {sendingDevis ? (
-                          <span className="flex items-center justify-center gap-2">
-                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Envoi en cours...
-                          </span>
-                        ) : 'DEMANDER MON DEVIS'}
-                      </Button>
-                    )}
 
                     <Button
                       variant="link"
@@ -3599,116 +3644,30 @@ function AppContent() {
                       </div>
                     </div>
 
-                    <div>
-                      <Label
-                        htmlFor="date"
-                        className="text-slate-900 mb-2 block"
-                      >
-                        Date de déménagement préférée
-                      </Label>
-                      <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10" style={{ color: '#CC922F' }} />
-                        <Input
-                          id="date"
-                          type="date"
-                          min={new Date().toISOString().split('T')[0]}
-                          value={formData.date}
-                          onChange={(e) =>
-                            handleInputChange("date", e.target.value)
-                          }
-                          className="pl-10 bg-slate-50 border-slate-200 cursor-pointer"
-                          style={{ colorScheme: 'light' }}
-                        />
-                      </div>
-                    </div>
-
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <Label
-                          htmlFor="name"
+                          htmlFor="date"
                           className="text-slate-900 mb-2 block"
                         >
-                          Nom
+                          Date de déménagement préférée
                         </Label>
                         <div className="relative">
-                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10" style={{ color: '#CC922F' }} />
                           <Input
-                            id="name"
-                            type="text"
-                            placeholder="Nom de famille"
-                            value={formData.name}
+                            id="date"
+                            type="date"
+                            min={new Date().toISOString().split('T')[0]}
+                            value={formData.date}
                             onChange={(e) =>
-                              handleInputChange("name", e.target.value)
+                              handleInputChange("date", e.target.value)
                             }
-                            className="pl-10 bg-slate-50 border-slate-200"
+                            className="pl-10 bg-slate-50 border-slate-200 cursor-pointer"
+                            style={{ colorScheme: 'light' }}
                           />
                         </div>
                       </div>
-                      <div>
-                        <Label
-                          htmlFor="firstName"
-                          className="text-slate-900 mb-2 block"
-                        >
-                          Prénom
-                        </Label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
-                          <Input
-                            id="firstName"
-                            type="text"
-                            placeholder="Prénom"
-                            value={formData.firstName}
-                            onChange={(e) =>
-                              handleInputChange("firstName", e.target.value)
-                            }
-                            className="pl-10 bg-slate-50 border-slate-200"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="email"
-                        className="text-slate-900 mb-2 block"
-                      >
-                        Email
-                      </Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="Adresse email"
-                          value={formData.email}
-                          onChange={(e) =>
-                            handleInputChange("email", e.target.value)
-                          }
-                          className="pl-10 bg-slate-50 border-slate-200"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="phone"
-                        className="text-slate-900 mb-2 block"
-                      >
-                        Téléphone
-                      </Label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#CC922F' }} />
-                        <Input
-                          id="phone"
-                          type="tel"
-                          placeholder="Numéro de téléphone"
-                          value={formData.phone}
-                          onChange={(e) =>
-                            handleInputChange("phone", e.target.value)
-                          }
-                          className="pl-10 bg-slate-50 border-slate-200"
-                        />
-                      </div>
+                      <div className="hidden md:block" aria-hidden="true" />
                     </div>
 
                     <p className="text-xs text-primary leading-relaxed">
@@ -4668,7 +4627,6 @@ function AppContent() {
                       disabled={
                         !surfaceArea ||
                         parseInt(surfaceArea) <= 0 ||
-                        !logementType ||
                         !ancienneteLogement
                       }
                       >

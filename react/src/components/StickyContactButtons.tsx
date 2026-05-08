@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function StickyContactButtons() {
   // Central contact number used across the site.
-  const phoneE164 = "+33 1 89 70 33 24";
+  const phoneE164 = "+33 7 46 32 66 78";
   const telHref = `tel:${phoneE164}`;
   const whatsappNumberDigits = phoneE164
     .split("")
