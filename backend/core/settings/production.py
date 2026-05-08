@@ -7,6 +7,7 @@ pymysql.install_as_MySQLdb()
 
 from pathlib import Path
 import os
+from urllib.parse import urlsplit
 
 # Build paths: settings are in core/settings/, so backend root is parent.parent.parent
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -124,7 +125,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS - explicit origins only in production
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
+
+def _normalize_origin(origin: str) -> str:
+    """
+    `django-cors-headers` expects origins without any path/query/fragment.
+    Accepts values like `https://example.com/` and normalizes them to `https://example.com`.
+    """
+    raw = (origin or "").strip()
+    if not raw:
+        return ""
+    parts = urlsplit(raw)
+    if parts.scheme and parts.netloc:
+        return f"{parts.scheme}://{parts.netloc}"
+    return raw.rstrip("/")
+
+
+_cors_raw = os.environ.get('CORS_ALLOWED_ORIGINS', '')
+CORS_ALLOWED_ORIGINS = []
+for o in (x.strip() for x in _cors_raw.split(',')):
+    normalized = _normalize_origin(o)
+    if normalized and normalized not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(normalized)
 if not CORS_ALLOWED_ORIGINS:
     CORS_ALLOWED_ORIGINS = [
         'https://goyard-demenagement.fr',
@@ -134,7 +155,12 @@ if not CORS_ALLOWED_ORIGINS:
     ]
 
 # Browser POST/CSRF (admin, forms) — align with HTTPS origins; override via CSRF_TRUSTED_ORIGINS in .env
-CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
+_csrf_raw = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = []
+for o in (x.strip() for x in _csrf_raw.split(',')):
+    normalized = _normalize_origin(o)
+    if normalized and normalized not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(normalized)
 if not CSRF_TRUSTED_ORIGINS:
     CSRF_TRUSTED_ORIGINS = list(CORS_ALLOWED_ORIGINS)
 

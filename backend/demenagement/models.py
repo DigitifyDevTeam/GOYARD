@@ -20,11 +20,11 @@ class ClientInformation(models.Model):
         ('6-8 personnes ou plus', '6-8 personnes ou plus'),
     ]
     
-    # Informations personnelles
-    nom = models.CharField(max_length=30, verbose_name="Nom de famille")
-    prenom = models.CharField(max_length=30, verbose_name="Prénom")
-    email = models.EmailField(verbose_name="Adresse email")
-    phone = models.CharField(max_length=20, verbose_name="Numéro de téléphone")
+    # Informations personnelles (collected at the devis/quote step, not at creation)
+    nom = models.CharField(max_length=30, blank=True, default='', verbose_name="Nom de famille")
+    prenom = models.CharField(max_length=30, blank=True, default='', verbose_name="Prénom")
+    email = models.EmailField(blank=True, default='', verbose_name="Adresse email")
+    phone = models.CharField(max_length=20, blank=True, default='', verbose_name="Numéro de téléphone")
     
     # Date de déménagement
     date_demenagement = models.DateField(verbose_name="Date de déménagement")

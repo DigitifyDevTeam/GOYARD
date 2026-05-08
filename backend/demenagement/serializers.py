@@ -14,10 +14,19 @@ class ClientInformationSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+        extra_kwargs = {
+            'nom': {'required': False, 'allow_blank': True},
+            'prenom': {'required': False, 'allow_blank': True},
+            'email': {'required': False, 'allow_blank': True},
+            'phone': {'required': False, 'allow_blank': True},
+        }
     
     def validate_phone(self, value):
         """Validate French phone number format - only numbers allowed"""
         import re
+
+        if not value:
+            return value
         
         # Remove only spaces, dots, dashes, parentheses (common formatting)
         phone_clean = re.sub(r'[\s\-\.\(\)]', '', value)

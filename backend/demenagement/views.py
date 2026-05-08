@@ -1390,6 +1390,16 @@ def send_quote_pdf(request):
                 'error': f'Client with id={client_id} not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
+        # ── 1b. Update personal info if provided (collected at devis step) ──
+        updated_fields = []
+        for field in ('nom', 'prenom', 'email', 'phone'):
+            val = data.get(field)
+            if val is not None and str(val).strip():
+                setattr(client, field, str(val).strip())
+                updated_fields.append(field)
+        if updated_fields:
+            client.save(update_fields=updated_fields + ['updated_at'])
+
         # ── 2. Resolve latest address ───────────────────────────────────
         addr = Address.objects.filter(client_info=client).order_by('-created_at').first()
         if not addr:
