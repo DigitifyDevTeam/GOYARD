@@ -110,7 +110,25 @@ def submit_client_information(request):
     
     if serializer.is_valid():
         client_info = serializer.save()
-        
+
+        entry_page = _resolve_entry_page(request, getattr(request, "data", None) or {})
+        data_in = getattr(request, "data", None) or {}
+        looks_like_landing_form = bool(str(data_in.get("email", "")).strip()) and bool(
+            str(data_in.get("adresse_arrivee", "")).strip()
+        )
+        if looks_like_landing_form:
+            try:
+                from .landing_lead_email import send_landing_form_team_notification
+                from .gmail_service import send_devis_email
+
+                send_landing_form_team_notification(client_info, entry_page=entry_page)
+                user_email = (client_info.email or "").strip()
+                if user_email:
+                    display_name = f"{(client_info.prenom or '').strip()} {(client_info.nom or '').strip()}".strip() or "Client"
+                    send_devis_email(user_email, display_name)
+            except Exception as mail_exc:
+                logger.warning("Post-save landing / confirmation email failed: %s", mail_exc, exc_info=True)
+
         return Response({
             'success': True,
             'message': 'Informations client enregistrées avec succès',

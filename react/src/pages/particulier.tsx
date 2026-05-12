@@ -1,15 +1,11 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, CheckCircle2, Globe, Home, MapPin, Boxes, Sofa, Package } from "lucide-react";
+import { ArrowRight, CheckCircle2, Globe, Home, MapPin, Boxes, Sofa, Package } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { AddressAutocomplete } from "../components/AddressAutocomplete";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { FormDataManager } from "../utils/formDataManager";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
+import { DevisForm, ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
 
 // ─── Sections (Particulier) ─────────────────────────────────────────
 
@@ -79,84 +75,11 @@ function SectionHeader({
 
 export default function Particulier() {
   const navigate = useNavigate();
-  const [departureAddress, setDepartureAddress] = useState("");
-  const [moveDate, setMoveDate] = useState("");
   const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
 
-  const persistLandingFormData = () => {
-    FormDataManager.saveFormData({
-      address: departureAddress.trim(),
-      date: moveDate.trim(),
-    });
-
-    sessionStorage.setItem("cameFromHome", "true");
-    if (departureAddress.trim()) sessionStorage.setItem("homeDepartureAddress", departureAddress.trim());
-    if (moveDate.trim()) sessionStorage.setItem("homeMoveDate", moveDate.trim());
-  };
-
-  const ensureClientInfoSubmitted = async (): Promise<number | null> => {
-    const existingClientId = localStorage.getItem("clientId");
-
-    if (!departureAddress.trim() || departureAddress.trim().length < 10) {
-      alert("Veuillez saisir une adresse valide (au moins 10 caractères).");
-      return null;
-    }
-    if (!moveDate.trim()) {
-      alert("Veuillez sélectionner une date de déménagement.");
-      return null;
-    }
-
-    try {
-      const payload = {
-        adresse_depart: departureAddress.trim(),
-        date_demenagement: moveDate.trim(),
-      };
-
-      const url = existingClientId
-        ? `/api/demenagement/client-info/${existingClientId}/`
-        : "/api/demenagement/client-info/";
-      const method = existingClientId ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (!result?.success || !result?.data?.id) {
-        alert(
-          `Erreur lors de l'enregistrement de vos informations${
-            result?.message ? `: ${result.message}` : "."
-          }`,
-        );
-        return null;
-      }
-
-      const id = Number(result.data.id);
-      FormDataManager.markFormSubmitted(id);
-      return id;
-    } catch (e) {
-      console.error("Error submitting client information from landing:", e);
-      alert("Erreur lors de l'enregistrement de vos informations.");
-      return null;
-    }
-  };
-
   const primaryCta = () => {
-    persistLandingFormData();
-
+    sessionStorage.setItem("cameFromHome", "true");
     navigate("/tunnel/mes-coordonnees");
-  };
-
-  const continueToMethodSelection = async () => {
-    persistLandingFormData();
-
-    const clientId = await ensureClientInfoSubmitted();
-    if (!clientId) return;
-
-    navigate("/tunnel/choix-volume");
   };
 
   return (
@@ -164,7 +87,23 @@ export default function Particulier() {
       <Header onGetQuote={primaryCta} />
 
       <main>
-        {/* Hero */}
+        {/* Devis complet — full quote form */}
+        <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
+          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
+            <div className="text-center mb-10 sm:mb-14">
+              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
+                Confiez-nous votre projet de déménagement
+              </h2>
+              <p className="mt-3 text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
+                Confiez votre déménagement à nos équipes. Nous proposons les tarifs les moins élevés d'Île-de-France.
+              </p>
+            </div>
+
+            <DevisForm />
+          </div>
+        </section>
+
+        {/* Hero — Paris 75 */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_15%_20%,rgba(204,146,47,0.22),transparent_60%),radial-gradient(900px_500px_at_85%_10%,rgba(25,25,25,0.10),transparent_55%)]" />
           <div className="relative w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16">
@@ -173,13 +112,14 @@ export default function Particulier() {
                 <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
                   Déménagement particulier
+
                 </div>
                 <h1 className="mt-4 font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                  Déménagement particulier, sans stress.
+                Déménagement particulier, sans stress.
+
                 </h1>
                 <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Studio, appartement, maison : une organisation claire, des délais maîtrisés et une exécution soignée.
-                  Devis rapide, dates flexibles, protection premium.
+                Studio, appartement, maison : une organisation claire, des délais maîtrisés et une exécution soignée. Devis rapide, dates flexibles, protection premium.
                 </p>
 
                 <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
@@ -216,138 +156,15 @@ export default function Particulier() {
               </div>
 
               <div className="lg:col-span-5">
-                <div className="rounded-3xl bg-white shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg leading-tight">
-                        Obtenez votre devis gratuit
-                        <br /> en 2 minutes
-                      </p>
-                      <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-                        Sans engagement • Réponse sous 24h
-                      </p>
-                    </div>
-                    <div className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#CC922F]/12 text-[#CC922F]">
-                      <ArrowRight className="h-5 w-5" />
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid gap-4">
-                    <div>
-                      <Label htmlFor="part-address" className="text-slate-900 mb-3 block text-base font-medium">
-                        Mon service de déménagement
-                      </Label>
-                      <div className="relative">
-                        <MapPin
-                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 z-10 pointer-events-none"
-                          style={{ color: "#CC922F" }}
-                        />
-                        <AddressAutocomplete
-                          value={departureAddress}
-                          onChange={setDepartureAddress}
-                          placeholder="Quelle est votre adresse ?"
-                          className="pl-12 bg-slate-50 border-slate-200 h-12 text-base"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="part-date" className="text-slate-900 mb-2 block">
-                        Date de déménagement préférée
-                      </Label>
-                      <div className="relative">
-                        <Calendar
-                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10"
-                          style={{ color: "#CC922F" }}
-                        />
-                        <Input
-                          id="part-date"
-                          type="date"
-                          min={new Date().toISOString().split("T")[0]}
-                          value={moveDate}
-                          onChange={(e) => setMoveDate(e.target.value)}
-                          className="pl-10 bg-slate-50 border-slate-200 cursor-pointer h-12 text-base"
-                          style={{ colorScheme: "light" }}
-                        />
-                      </div>
-                    </div>
-
-                    <Button
-                      type="button"
-                      onClick={continueToMethodSelection}
-                      className="w-full bg-[#CC922F] hover:bg-[#CC922F]/90 text-white py-3 rounded-xl font-bold"
-                      size="lg"
-                    >
-                      CONTINUER →
-                    </Button>
-
-                    <p className="text-[11px] text-slate-500 text-center">
-                      Données protégées — aucun démarchage
-                    </p>
-                  </div>
+                <div className="rounded-3xl bg-white/70 backdrop-blur-sm shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
+                  <ParisHeroServicePitch />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Tout commence ici — large conversion strip */}
-        <section className="w-full bg-gradient-to-b from-slate-50/90 to-slate-100/40 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
-          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 2xl:px-32">
-            <div className="mx-auto max-w-6xl text-center">
-              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
-                Tout commence ici
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-slate-600 text-base sm:text-lg lg:text-xl leading-relaxed">
-                Indiquez votre adresse de départ et recevez un devis personnalisé en quelques minutes.
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                <div className="flex items-center gap-3 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
-                  <div className="flex items-center gap-1 text-[#FBBF24] text-[15px] sm:text-base">
-                    <span>★★★★★</span>
-                  </div>
-                  <span className="font-['Poppins',sans-serif] font-bold text-[15px] tracking-tight">
-                    5/5
-                  </span>
-                  <span className="font-['Poppins',sans-serif] font-medium text-[14px] text-white/80">
-                    70 avis Google
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
-                    ✓
-                  </span>
-                  <span className="font-['Poppins',sans-serif] font-semibold text-[15px] whitespace-nowrap">
-                    Devis sous 24h
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-10 w-full max-w-6xl mx-auto">
-                <div className="flex flex-col gap-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_40px_rgba(15,23,42,0.08)] sm:flex-row sm:items-stretch animate-cta-bar-attention">
-                  <div className="flex min-h-[60px] sm:min-h-[68px] flex-1 items-center gap-4 px-5 py-4 sm:px-7 sm:py-5">
-                    <MapPin className="h-7 w-7 shrink-0 text-[#C5912B] sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
-                    <AddressAutocomplete
-                      value={departureAddress}
-                      onChange={setDepartureAddress}
-                      autoFocus
-                      placeholder="Adresse de départ"
-                      className="h-auto border-0 bg-transparent px-0 py-0 text-left text-[17px] sm:text-lg font-['Poppins',sans-serif] text-[#0C1E3A] placeholder:text-[#8E9AAF] focus-visible:ring-0 focus-visible:ring-offset-0"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={primaryCta}
-                    className="shrink-0 rounded-none border-t border-slate-100 bg-[#1B365D] px-6 py-4 text-center font-['Poppins',sans-serif] text-[15px] font-bold text-white transition hover:bg-[#152a4a] sm:border-t-0 sm:border-l sm:border-slate-100/20 sm:px-10 sm:py-5 sm:text-base lg:min-w-[240px]"
-                  >
-                    Obtenir un devis gratuit
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        
 
         {/* Notre expertise */}
         <section className="bg-white py-8 sm:py-12 lg:py-16">
@@ -430,11 +247,11 @@ export default function Particulier() {
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
                   { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
-                  { src: "/gallery/monte_meuble.jpeg", alt: "Monte-meuble en intervention" },
+                  { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                   { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                   {
                     src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
-                    alt: "Nos locaux et équipements",
+                    alt: "Caisses  professionnelles empilées pour le déménagement",
                   },
                 ].map((img) => (
                   <button
@@ -458,11 +275,11 @@ export default function Particulier() {
                 {(() => {
                   return [
                     { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
-                    { src: "/gallery/monte_meuble.jpeg", alt: "Monte-meuble en intervention" },
+                    { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                     { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                     {
                       src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
-                      alt: "Nos locaux et équipements",
+                      alt: "Caisses  professionnelles empilées pour le déménagement",
                     },
                   ].map((img) => {
                     return (
@@ -565,32 +382,7 @@ export default function Particulier() {
 
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
-                  <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Prêt à planifier votre déménagement ?
-                  </p>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-                    Lancez votre devis en 2 minutes. Vous pouvez affiner ensuite (options, accès, dates).
-                  </p>
-                  <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                    <button
-                      type="button"
-                      onClick={primaryCta}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white hover:brightness-95 transition"
-                    >
-                      Démarrer mon devis
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => navigate("/contact")}
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
-                    >
-                      Être rappelé
-                    </button>
-                  </div>
-                  <p className="mt-4 text-xs text-slate-500">
-                    Réponse rapide • Devis clair • Équipe sérieuse
-                  </p>
+                  <ParisDevisTrustAside />
                 </div>
               </div>
             </div>

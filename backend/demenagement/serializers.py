@@ -22,32 +22,13 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         }
     
     def validate_phone(self, value):
-        """Validate French phone number format - only numbers allowed"""
-        import re
-
-        if not value:
-            return value
-        
-        # Remove only spaces, dots, dashes, parentheses (common formatting)
-        phone_clean = re.sub(r'[\s\-\.\(\)]', '', value)
-        
-        # Check if contains any non-digit characters (except + for international)
-        if re.search(r'[^\d\+]', phone_clean):
-            raise serializers.ValidationError("Le numéro de téléphone ne peut contenir que des chiffres")
-        
-        # Convert +33 to 0 for French format standardization
-        if phone_clean.startswith('+33'):
-            phone_clean = '0' + phone_clean[3:]
-        
-        # Check if it's exactly a valid French phone number (10 digits starting with 0)
-        if not re.match(r'^0[1-9][0-9]{8}$', phone_clean):
-            raise serializers.ValidationError("Format de téléphone français invalide. Doit être 10 chiffres commençant par 0 (ex: 0123456789)")
-        
-        # Ensure it's exactly 10 digits
-        if len(phone_clean) != 10:
-            raise serializers.ValidationError("Le numéro de téléphone français doit contenir exactement 10 chiffres")
-        
-        return phone_clean
+        """Store phone as trimmed text; no strict French-format check (landing & international numbers)."""
+        if value is None:
+            return ""
+        s = str(value).strip()
+        if not s:
+            return ""
+        return s[:20]
     
     def validate_date_demenagement(self, value):
         """Validate moving date"""
@@ -122,57 +103,69 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         if value:
             return self.validate_ascenseur(value, "à l'escale")
         return value
-    
+
+    _BOOLEAN_OPTION_KEYS = frozenset(
+        ('monte_meuble', 'cave_ou_garage', 'cours_a_traverser', 'distance_portage')
+    )
+    _TEXT_OPTION_KEYS = frozenset(
+        ('info_complementaire', 'volume', 'superficie', 'type_client')
+    )
+
     def validate_options(self, value, field_name):
-        """Helper method to validate options"""
+        """Validate options: boolean access flags and/or landing-form text metadata."""
         if not isinstance(value, dict):
             raise serializers.ValidationError(f"Les options pour {field_name} doivent être un objet JSON")
-        
-        # Valid option keys
-        valid_keys = ['monte_meuble', 'cave_ou_garage', 'cours_a_traverser', 'distance_portage']
-        
-        # Check for invalid keys
+
+        allowed = self._BOOLEAN_OPTION_KEYS | self._TEXT_OPTION_KEYS
         for key in value.keys():
-            if key not in valid_keys:
+            if key not in allowed:
                 raise serializers.ValidationError(
                     f"Clé invalide '{key}' dans les options {field_name}. "
-                    f"Clés valides: {', '.join(valid_keys)}"
+                    f"Clés valides: {', '.join(sorted(allowed))}"
                 )
-        
-        # Validate that values are boolean
+
         for key, val in value.items():
-            if not isinstance(val, bool):
+            if key in self._TEXT_OPTION_KEYS:
+                if val is None or val == '':
+                    continue
+                if isinstance(val, (str, int, float)):
+                    continue
                 raise serializers.ValidationError(
-                    f"La valeur de '{key}' doit être true ou false dans les options {field_name}"
+                    f"La valeur de '{key}' doit être du texte ou un nombre dans les options {field_name}"
                 )
-        
+            else:
+                if not isinstance(val, bool):
+                    raise serializers.ValidationError(
+                        f"La valeur de '{key}' doit être true ou false dans les options {field_name}"
+                    )
+
         return value
-    
+
     def validate_options_depart(self, value):
         """Validate departure options"""
         return self.validate_options(value, "du départ")
-    
+
     def validate_options_arrivee(self, value):
         """Validate arrival options"""
         return self.validate_options(value, "de l'arrivée")
-    
+
     def validate_escale_options(self, value):
         """Validate stopover options"""
         if value:
             return self.validate_options(value, "de l'escale")
         return value
-    
+
     def validate(self, data):
         """Validate stopover data if has_stopover is True"""
         has_stopover = data.get('has_stopover', False)
-        
+
         if has_stopover:
             # If stopover is enabled, validate stopover requirements
             if not data.get('escale_etage'):
                 raise serializers.ValidationError({
                     'escale_etage': "L'étage d'escale est requis quand l'escale est activée"
                 })
-        
+
         return data
 
 

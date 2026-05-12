@@ -27,7 +27,7 @@ function ParisGoogleReviewsPill({ className }: Readonly<{ className?: string }>)
   );
 }
 
-function ParisHeroServicePitch({ className }: Readonly<{ className?: string }>) {
+export function ParisHeroServicePitch({ className }: Readonly<{ className?: string }>) {
   return (
     <div className={className}>
       <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl lg:text-[2.2rem] lg:leading-tight tracking-tight">
@@ -50,7 +50,7 @@ function ParisHeroServicePitch({ className }: Readonly<{ className?: string }>) 
   );
 }
 
-function ParisDevisTrustAside({ className }: Readonly<{ className?: string }>) {
+export function ParisDevisTrustAside({ className }: Readonly<{ className?: string }>) {
   return (
     <div className={`text-center ${className ?? ""}`}>
        <p className="mx-auto mt-4 max-w-2xl text-slate-600 text-base sm:text-lg lg:text-xl leading-relaxed">
@@ -75,7 +75,8 @@ function ParisDevisTrustAside({ className }: Readonly<{ className?: string }>) {
 const ETAGE_OPTIONS = ["RDC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 const ASCENSEUR_OPTIONS = ["Non", "Oui 2 personnes", "Oui 4 personnes", "Oui 6 personnes"];
 
-function DevisForm() {
+export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
+  const { entryPage } = props ?? {};
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
@@ -129,6 +130,8 @@ function DevisForm() {
         "Oui 6 personnes": "4-6 personnes",
       };
 
+      const pathname = (entryPage?.trim() || (typeof window !== "undefined" ? window.location.pathname : "") || "").trim();
+
       const payload = {
         nom: form.nom,
         prenom: form.prenom,
@@ -143,6 +146,7 @@ function DevisForm() {
         ascenseur_arrivee: ascenseurMap[form.ascenseur_arrivee] || "Non",
         options_depart: { info_complementaire: form.info_depart, volume: form.volume, superficie: form.superficie, type_client: form.type },
         options_arrivee: { info_complementaire: form.info_arrivee },
+        ...(pathname ? { entry_page: pathname } : {}),
       };
 
       const res = await fetch("/api/demenagement/client-info/", {

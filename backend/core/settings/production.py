@@ -182,3 +182,8 @@ GMAIL_OAUTH_CLIENT_ID = os.environ.get('GMAIL_OAUTH_CLIENT_ID', '')
 GMAIL_OAUTH_CLIENT_SECRET = os.environ.get('GMAIL_OAUTH_CLIENT_SECRET', '')
 GMAIL_OAUTH_REFRESH_TOKEN = os.environ.get('GMAIL_OAUTH_REFRESH_TOKEN', '')
 GMAIL_OAUTH_TOKEN_URI = os.environ.get('GMAIL_OAUTH_TOKEN_URI', 'https://oauth2.googleapis.com/token')
+
+LANDING_LEAD_NOTIFICATION_EMAIL = os.environ.get(
+    'LANDING_LEAD_NOTIFICATION_EMAIL',
+    'Contact@guivarche-demenagement.fr',
+)

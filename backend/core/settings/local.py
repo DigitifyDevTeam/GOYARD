@@ -140,3 +140,9 @@ GMAIL_OAUTH_TOKEN_URI = os.environ.get(
     'GMAIL_OAUTH_TOKEN_URI',
     'https://oauth2.googleapis.com/token',
 )
+
+# Inbox for landing-page / formulaire devis leads (same default as quote PDF admin)
+LANDING_LEAD_NOTIFICATION_EMAIL = os.environ.get(
+    'LANDING_LEAD_NOTIFICATION_EMAIL',
+    'Contact@guivarche-demenagement.fr',
+)
