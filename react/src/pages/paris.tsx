@@ -1,97 +1,352 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Calendar, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { InterventionMapParis75 } from "../components/intervention-map";
-import { AddressAutocomplete } from "../components/AddressAutocomplete";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { FormDataManager } from "../utils/formDataManager";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 
-export default function Paris() {
-  const navigate = useNavigate();
-  const [departureAddress, setDepartureAddress] = useState("");
-  const [moveDate, setMoveDate] = useState("");
-  const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
+const PARIS_GOOGLE_REVIEWS_URL =
+  "https://www.google.com/search?hl=fr-TN&gl=tn&q=Guivarche+D%C3%A9m%C3%A9nagement,+25+Rue+de+C%C3%AEteaux,+75012+Paris,+France&ludocid=449127112689032564&lsig=AB86z5WRT9msHEVSPtou8m9KcU8X#lrd=0x47e67304c6ac24e3:0x63b9ebabad39d74,3";
 
-  const persistLandingFormData = () => {
-    FormDataManager.saveFormData({
-      address: departureAddress.trim(),
-      date: moveDate.trim(),
-    });
+function ParisGoogleReviewsPill({ className }: Readonly<{ className?: string }>) {
+  return (
+    <a
+      href={PARIS_GOOGLE_REVIEWS_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-[#111827]/90 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2 ${className ?? ""}`}
+      aria-label="Voir les avis Google — note 5 sur 5, 70 avis"
+    >
+      <span className="flex shrink-0 items-center gap-0.5 text-[#FBBF24] text-[15px] sm:text-base" aria-hidden="true">
+        ★★★★★
+      </span>
+      <span className="font-['Poppins',sans-serif] font-bold text-[15px] tracking-tight">5/5</span>
+      <span className="font-['Poppins',sans-serif] font-medium text-[14px] text-white/80">70 avis Google</span>
+    </a>
+  );
+}
 
-    // Keep the existing home->tunnel prefill behavior as a fallback
-    sessionStorage.setItem("cameFromHome", "true");
-    if (departureAddress.trim()) sessionStorage.setItem("homeDepartureAddress", departureAddress.trim());
-    if (moveDate.trim()) sessionStorage.setItem("homeMoveDate", moveDate.trim());
-  };
+function ParisHeroServicePitch({ className }: Readonly<{ className?: string }>) {
+  return (
+    <div className={className}>
+      <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl lg:text-[2.2rem] lg:leading-tight tracking-tight">
+        L'exigence des grands déménageurs
+      </h2>
+      <p className="mt-3 text-slate-600 text-base sm:text-lg leading-relaxed">
+        Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée
+      </p>
 
-  const ensureClientInfoSubmitted = async (): Promise<number | null> => {
-    const existingClientId = localStorage.getItem("clientId");
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+        <ParisGoogleReviewsPill />
+        <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
+            ✓
+          </span>
+          <span className="font-['Poppins',sans-serif] font-semibold text-[15px] whitespace-nowrap">Devis sous 24h</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-    if (!departureAddress.trim() || departureAddress.trim().length < 10) {
-      alert("Veuillez saisir une adresse valide (au moins 10 caractères).");
-      return null;
+function ParisDevisTrustAside({ className }: Readonly<{ className?: string }>) {
+  return (
+    <div className={`text-center ${className ?? ""}`}>
+       <p className="mx-auto mt-4 max-w-2xl text-slate-600 text-base sm:text-lg lg:text-xl leading-relaxed">
+                Indiquez votre adresse de départ et recevez un devis personnalisé en quelques minutes.
+              </p>
+
+      <div className="mt-8 flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <ParisGoogleReviewsPill />
+                <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
+                    ✓
+                  </span>
+                  <span className="font-['Poppins',sans-serif] font-semibold text-[15px] whitespace-nowrap">
+                    Devis sous 24h
+                  </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ETAGE_OPTIONS = ["RDC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const ASCENSEUR_OPTIONS = ["Non", "Oui 2 personnes", "Oui 4 personnes", "Oui 6 personnes"];
+
+function DevisForm() {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    type: "Particulier",
+    nom: "",
+    prenom: "",
+    tel_fixe: "",
+    tel_portable: "",
+    email: "",
+    adresse_depart: "",
+    cp_depart: "",
+    ville_depart: "",
+    etage_depart: "RDC",
+    ascenseur_depart: "Non",
+    info_depart: "",
+    adresse_arrivee: "",
+    cp_arrivee: "",
+    ville_arrivee: "",
+    etage_arrivee: "RDC",
+    ascenseur_arrivee: "Non",
+    info_arrivee: "",
+    volume: "",
+    superficie: "",
+    date_demenagement: "",
+  });
+
+  const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  const inputCls =
+    "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-[#191919] placeholder:text-slate-400 focus:border-[#CC922F] focus:ring-2 focus:ring-[#CC922F]/20 focus:outline-none transition font-['Poppins',sans-serif]";
+  const selectCls = `${inputCls} appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M2%204l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-8`;
+  const labelCls = "block text-sm font-medium text-[#191919] mb-1.5 font-['Poppins',sans-serif]";
+  const sectionHeadCls = "font-['Poppins',sans-serif] font-bold text-[#191919] text-lg sm:text-xl uppercase tracking-wide mb-5";
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.nom || !form.tel_portable || !form.email || !form.adresse_depart || !form.adresse_arrivee || !form.date_demenagement) {
+      alert("Veuillez remplir tous les champs obligatoires (*).");
+      return;
     }
-    if (!moveDate.trim()) {
-      alert("Veuillez sélectionner une date de déménagement.");
-      return null;
-    }
-
+    setSubmitting(true);
     try {
-      const payload = {
-        adresse_depart: departureAddress.trim(),
-        date_demenagement: moveDate.trim(),
+      const fullAdresseDepart = [form.adresse_depart, form.cp_depart, form.ville_depart].filter(Boolean).join(", ");
+      const fullAdresseArrivee = [form.adresse_arrivee, form.cp_arrivee, form.ville_arrivee].filter(Boolean).join(", ");
+
+      const ascenseurMap: Record<string, string> = {
+        Non: "Non",
+        "Oui 2 personnes": "2-3 personnes",
+        "Oui 4 personnes": "3-4 personnes",
+        "Oui 6 personnes": "4-6 personnes",
       };
 
-      // If the user already has a clientId (previous session), update it so emails reflect latest values.
-      const url = existingClientId
-        ? `/api/demenagement/client-info/${existingClientId}/`
-        : "/api/demenagement/client-info/";
-      const method = existingClientId ? "PUT" : "POST";
+      const payload = {
+        nom: form.nom,
+        prenom: form.prenom,
+        email: form.email,
+        phone: form.tel_portable || form.tel_fixe,
+        date_demenagement: form.date_demenagement,
+        adresse_depart: fullAdresseDepart,
+        etage_depart: form.etage_depart,
+        ascenseur_depart: ascenseurMap[form.ascenseur_depart] || "Non",
+        adresse_arrivee: fullAdresseArrivee,
+        etage_arrivee: form.etage_arrivee,
+        ascenseur_arrivee: ascenseurMap[form.ascenseur_arrivee] || "Non",
+        options_depart: { info_complementaire: form.info_depart, volume: form.volume, superficie: form.superficie, type_client: form.type },
+        options_arrivee: { info_complementaire: form.info_arrivee },
+      };
 
-      const response = await fetch(url, {
-        method,
+      const res = await fetch("/api/demenagement/client-info/", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
-      const result = await response.json();
-
-      if (!result?.success || !result?.data?.id) {
-        alert(
-          `Erreur lors de l'enregistrement de vos informations${
-            result?.message ? `: ${result.message}` : "."
-          }`,
-        );
-        return null;
+      const data = await res.json();
+      if (data?.success) {
+        setSubmitted(true);
+        if (data?.data?.id) localStorage.setItem("clientId", String(data.data.id));
+      } else {
+        alert(data?.message || "Une erreur est survenue.");
       }
-
-      const id = Number(result.data.id);
-      FormDataManager.markFormSubmitted(id);
-      return id;
-    } catch (e) {
-      console.error("Error submitting client information from landing:", e);
-      alert("Erreur lors de l'enregistrement de vos informations.");
-      return null;
+    } catch {
+      alert("Erreur réseau. Veuillez réessayer.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
+  if (submitted) {
+    return (
+      <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-8 sm:p-12 text-center max-w-2xl mx-auto">
+        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 mb-5">
+          <CheckCircle2 className="h-8 w-8 text-emerald-500" />
+        </div>
+        <h3 className="font-['Poppins',sans-serif] font-bold text-[#191919] text-2xl">Demande envoyée !</h3>
+        <p className="mt-3 text-slate-600">Nous avons bien reçu votre demande de devis. Notre équipe vous recontactera sous 24h.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="rounded-3xl bg-white border border-slate-100 shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-6 sm:p-8 lg:p-10 max-w-5xl mx-auto">
+      {/* INFORMATIONS */}
+      <h3 className={sectionHeadCls}>Informations</h3>
+      <div className="grid sm:grid-cols-3 gap-4">
+        <div>
+          <label htmlFor="dv-type" className={labelCls}>Vous êtes un</label>
+          <select id="dv-type" value={form.type} onChange={set("type")} className={selectCls}>
+            <option>Particulier</option>
+            <option>Professionnel</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="dv-nom" className={labelCls}>Nom *</label>
+          <input id="dv-nom" type="text" required value={form.nom} onChange={set("nom")} placeholder="Nom" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-prenom" className={labelCls}>Prénom *</label>
+          <input id="dv-prenom" type="text" required value={form.prenom} onChange={set("prenom")} placeholder="Prénom" className={inputCls} />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-4 mt-4">
+        <div>
+          <label htmlFor="dv-tel-fixe" className={labelCls}>Téléphone Fixe</label>
+          <input id="dv-tel-fixe" type="tel" value={form.tel_fixe} onChange={set("tel_fixe")} placeholder="Téléphone Fixe" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-tel-portable" className={labelCls}>Téléphone Portable *</label>
+          <input id="dv-tel-portable" type="tel" required value={form.tel_portable} onChange={set("tel_portable")} placeholder="Téléphone Portable" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-email" className={labelCls}>Votre email *</label>
+          <input id="dv-email" type="email" required value={form.email} onChange={set("email")} placeholder="Votre email" className={inputCls} />
+        </div>
+      </div>
+
+      <hr className="my-8 border-slate-100" />
+
+      {/* INFORMATIONS DE DÉPART */}
+      <h3 className={sectionHeadCls}>Informations de départ</h3>
+      <div className="grid sm:grid-cols-3 gap-4">
+        <div>
+          <label htmlFor="dv-adr-dep" className={labelCls}>Adresse de départ *</label>
+          <input id="dv-adr-dep" type="text" required value={form.adresse_depart} onChange={set("adresse_depart")} placeholder="Adresse de départ" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-cp-dep" className={labelCls}>Code Postal *</label>
+          <input id="dv-cp-dep" type="text" value={form.cp_depart} onChange={set("cp_depart")} placeholder="Code Postal" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-ville-dep" className={labelCls}>Ville *</label>
+          <input id="dv-ville-dep" type="text" value={form.ville_depart} onChange={set("ville_depart")} placeholder="Ville" className={inputCls} />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-4 mt-4">
+        <div>
+          <label htmlFor="dv-etage-dep" className={labelCls}>Nombre d'étages *</label>
+          <select id="dv-etage-dep" value={form.etage_depart} onChange={set("etage_depart")} className={selectCls}>
+            {ETAGE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="dv-asc-dep" className={labelCls}>Ascenseur</label>
+          <select id="dv-asc-dep" value={form.ascenseur_depart} onChange={set("ascenseur_depart")} className={selectCls}>
+            {ASCENSEUR_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+        </div>
+      </div>
+      <div className="mt-4">
+        <label htmlFor="dv-info-dep" className={labelCls}>Informations complémentaires</label>
+        <textarea
+          id="dv-info-dep"
+          value={form.info_depart}
+          onChange={set("info_depart")}
+          placeholder="Informations complémentaires pour votre déménagement: exemple: volume, démontage, Piano"
+          rows={3}
+          className={`${inputCls} resize-none`}
+        />
+      </div>
+
+      <hr className="my-8 border-slate-100" />
+
+      {/* INFORMATIONS D'ARRIVÉE */}
+      <h3 className={sectionHeadCls}>Informations d'arrivée</h3>
+      <div className="grid sm:grid-cols-3 gap-4">
+        <div>
+          <label htmlFor="dv-adr-arr" className={labelCls}>Adresse d'arrivée *</label>
+          <input id="dv-adr-arr" type="text" required value={form.adresse_arrivee} onChange={set("adresse_arrivee")} placeholder="Adresse d'arrivée" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-cp-arr" className={labelCls}>Code Postal *</label>
+          <input id="dv-cp-arr" type="text" value={form.cp_arrivee} onChange={set("cp_arrivee")} placeholder="Code Postal" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-ville-arr" className={labelCls}>Ville *</label>
+          <input id="dv-ville-arr" type="text" value={form.ville_arrivee} onChange={set("ville_arrivee")} placeholder="Ville" className={inputCls} />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-4 mt-4">
+        <div>
+          <label htmlFor="dv-etage-arr" className={labelCls}>Nombre d'étages *</label>
+          <select id="dv-etage-arr" value={form.etage_arrivee} onChange={set("etage_arrivee")} className={selectCls}>
+            {ETAGE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="dv-asc-arr" className={labelCls}>Ascenseur</label>
+          <select id="dv-asc-arr" value={form.ascenseur_arrivee} onChange={set("ascenseur_arrivee")} className={selectCls}>
+            {ASCENSEUR_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+        </div>
+      </div>
+      <div className="mt-4">
+        <label htmlFor="dv-info-arr" className={labelCls}>Informations complémentaires</label>
+        <textarea
+          id="dv-info-arr"
+          value={form.info_arrivee}
+          onChange={set("info_arrivee")}
+          placeholder="Informations complémentaires pour votre déménagement: exemple: volume, démontage, Piano"
+          rows={3}
+          className={`${inputCls} resize-none`}
+        />
+      </div>
+
+      <hr className="my-8 border-slate-100" />
+
+      {/* VOLUME / SUPERFICIE / DATE */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="dv-volume" className={labelCls}>Volume (m3)</label>
+          <input id="dv-volume" type="text" value={form.volume} onChange={set("volume")} placeholder="Volume (m3)" className={inputCls} />
+        </div>
+        <div>
+          <label htmlFor="dv-superficie" className={labelCls}>Ou Superficie du logement m2</label>
+          <input id="dv-superficie" type="text" value={form.superficie} onChange={set("superficie")} placeholder="Ou Superficie du logement m2" className={inputCls} />
+        </div>
+      </div>
+      <div className="mt-4">
+        <label htmlFor="dv-date" className={labelCls}>Date Prévue de déménagement *</label>
+        <input
+          id="dv-date"
+          type="date"
+          required
+          min={new Date().toISOString().split("T")[0]}
+          value={form.date_demenagement}
+          onChange={set("date_demenagement")}
+          className={inputCls}
+          style={{ colorScheme: "light" }}
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={submitting}
+        className="mt-8 w-full rounded-xl bg-[#CC922F] px-8 py-4 font-['Poppins',sans-serif] font-bold text-white text-base sm:text-lg shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition disabled:opacity-60"
+      >
+        {submitting ? "Envoi en cours..." : "Envoyer ma demande de devis"}
+      </button>
+
+      <p className="mt-3 text-center text-[11px] text-slate-500">Données protégées — aucun démarchage</p>
+    </form>
+  );
+}
+
+export default function Paris() {
+  const navigate = useNavigate();
+  const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
+
   const primaryCta = () => {
-    persistLandingFormData();
-
-    // Start at the first tunnel step to avoid skipping contact details
+    sessionStorage.setItem("cameFromHome", "true");
     navigate("/tunnel/mes-coordonnees");
-  };
-
-  const continueToMethodSelection = async () => {
-    persistLandingFormData();
-    const clientId = await ensureClientInfoSubmitted();
-    if (!clientId) return;
-    navigate("/tunnel/choix-volume");
   };
 
   return (
@@ -99,6 +354,22 @@ export default function Paris() {
       <Header onGetQuote={primaryCta} />
 
       <main>
+        {/* Devis complet — full quote form */}
+        <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
+          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
+            <div className="text-center mb-10 sm:mb-14">
+              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
+                Confiez-nous votre projet de déménagement
+              </h2>
+              <p className="mt-3 text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
+                Confiez votre déménagement à nos équipes. Nous proposons les tarifs les moins élevés d'Île-de-France.
+              </p>
+            </div>
+
+            <DevisForm />
+          </div>
+        </section>
+
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_15%_20%,rgba(204,146,47,0.22),transparent_60%),radial-gradient(900px_500px_at_85%_10%,rgba(25,25,25,0.10),transparent_55%)]" />
@@ -151,132 +422,8 @@ export default function Paris() {
               </div>
 
               <div className="lg:col-span-5">
-                <div className="rounded-3xl bg-white shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg leading-tight">
-                        Obtenez votre devis gratuit  en 2 minutes
-                      </p>
-                      <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-                        Sans engagement • Réponse sous 24h
-                      </p>
-                    </div>
-                    <div className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#CC922F]/12 text-[#CC922F]">
-                      <ArrowRight className="h-5 w-5" />
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid gap-4">
-                    <div>
-                      <Label htmlFor="paris-address" className="text-slate-900 mb-3 block text-base font-medium">
-                        Mon service de déménagement
-                      </Label>
-                      <div className="relative">
-                        <MapPin
-                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 z-10 pointer-events-none"
-                          style={{ color: "#CC922F" }}
-                        />
-                        <AddressAutocomplete
-                          value={departureAddress}
-                          onChange={setDepartureAddress}
-                          placeholder="Quelle est votre adresse ?"
-                          className="pl-12 bg-slate-50 border-slate-200 h-12 text-base"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="paris-date" className="text-slate-900 mb-2 block">
-                        Date de déménagement préférée
-                      </Label>
-                      <div className="relative">
-                        <Calendar
-                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10"
-                          style={{ color: "#CC922F" }}
-                        />
-                        <Input
-                          id="paris-date"
-                          type="date"
-                          min={new Date().toISOString().split("T")[0]}
-                          value={moveDate}
-                          onChange={(e) => setMoveDate(e.target.value)}
-                          className="pl-10 bg-slate-50 border-slate-200 cursor-pointer h-12 text-base"
-                          style={{ colorScheme: "light" }}
-                        />
-                      </div>
-                    </div>
-
-                    <Button
-                      type="button"
-                      onClick={continueToMethodSelection}
-                      className="w-full bg-[#CC922F] hover:bg-[#CC922F]/90 text-white py-3 rounded-xl font-bold"
-                      size="lg"
-                    >
-                      CONTINUER →
-                    </Button>
-
-                    <p className="text-[11px] text-slate-500 text-center">
-                      Données protégées — aucun démarchage
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Tout commence ici — large conversion strip */}
-        <section className="w-full bg-gradient-to-b from-slate-50/90 to-slate-100/40 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
-          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 2xl:px-32">
-            <div className="mx-auto max-w-6xl text-center">
-              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
-                Tout commence ici
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-slate-600 text-base sm:text-lg lg:text-xl leading-relaxed">
-                Indiquez votre adresse de départ et recevez un devis personnalisé en quelques minutes.
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                <div className="flex items-center gap-3 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
-                  <div className="flex items-center gap-1 text-[#FBBF24] text-[15px] sm:text-base">
-                    <span>★★★★★</span>
-                  </div>
-                  <span className="font-['Poppins',sans-serif] font-bold text-[15px] tracking-tight">
-                    5/5
-                  </span>
-                  <span className="font-['Poppins',sans-serif] font-medium text-[14px] text-white/80">
-                    70 avis Google
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
-                    ✓
-                  </span>
-                  <span className="font-['Poppins',sans-serif] font-semibold text-[15px] whitespace-nowrap">
-                    Devis sous 24h
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-10 w-full max-w-6xl mx-auto">
-                <div className="flex flex-col gap-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_40px_rgba(15,23,42,0.08)] sm:flex-row sm:items-stretch animate-cta-bar-attention">
-                  <div className="flex min-h-[60px] sm:min-h-[68px] flex-1 items-center gap-4 px-5 py-4 sm:px-7 sm:py-5">
-                    <MapPin className="h-7 w-7 shrink-0 text-[#C5912B] sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
-                    <AddressAutocomplete
-                      value={departureAddress}
-                      onChange={setDepartureAddress}
-                      autoFocus
-                      placeholder="Adresse de départ"
-                      className="h-auto border-0 bg-transparent px-0 py-0 text-left text-[17px] sm:text-lg font-['Poppins',sans-serif] text-[#0C1E3A] placeholder:text-[#8E9AAF] focus-visible:ring-0 focus-visible:ring-offset-0"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={primaryCta}
-                    className="shrink-0 rounded-none border-t border-slate-100 bg-[#1B365D] px-6 py-4 text-center font-['Poppins',sans-serif] text-[15px] font-bold text-white transition hover:bg-[#152a4a] sm:border-t-0 sm:border-l sm:border-slate-100/20 sm:px-10 sm:py-5 sm:text-base lg:min-w-[240px]"
-                  >
-                    Obtenir un devis gratuit
-                  </button>
+                <div className="rounded-3xl bg-white/70 backdrop-blur-sm shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
+                  <ParisHeroServicePitch />
                 </div>
               </div>
             </div>
@@ -327,12 +474,12 @@ export default function Paris() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
-                  { src: "/gallery/monte_meuble.jpeg", alt: "Monte-meuble en intervention" },
+                  { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action"},
+                  { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                   { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                   {
                     src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
-                    alt: "Nos locaux et équipements",
+                    alt: "Caisses plastiques professionnelles empilées pour le déménagement",
                   },
                 ].map((img) => (
                   <button
@@ -355,12 +502,12 @@ export default function Paris() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
-                    { src: "/gallery/monte_meuble.jpeg", alt: "Monte-meuble en intervention" },
+                    { src: "/gallery/hero.jpeg", alt: "Équipe devant l'agence et la flotte de camions" },
+                    { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                     { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                     {
                       src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
-                      alt: "Nos locaux et équipements",
+                      alt: "Caisses plastiques professionnelles empilées pour le déménagement",
                     },
                   ].map((img) => {
                     return (
@@ -463,33 +610,8 @@ export default function Paris() {
               </div>
 
               <div className="lg:col-span-5">
-                <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
-                  <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Prêt à déménager à Paris 75 ?
-                  </p>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-                    Lancez votre devis en 2 minutes. Vous pouvez affiner ensuite (options, accès, dates).
-                  </p>
-                  <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                    <button
-                      type="button"
-                      onClick={primaryCta}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white hover:brightness-95 transition"
-                    >
-                      Démarrer mon devis
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => navigate("/contact")}
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
-                    >
-                      Être rappelé
-                    </button>
-                  </div>
-                  <p className="mt-4 text-xs text-slate-500">
-                    Réponse rapide • Devis clair • Équipe pro
-                  </p>
+                <div className="rounded-3xl bg-white shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
+                  <ParisDevisTrustAside />
                 </div>
               </div>
             </div>
