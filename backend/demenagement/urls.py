@@ -4,6 +4,7 @@ from . import views
 app_name = 'demenagement'
 
 urlpatterns = [
+    path('contact/', views.submit_contact_form, name='submit_contact_form'),
     # Client information endpoints
     path('client-info/', views.submit_client_information, name='submit_client_information'),
     path('client-info/<int:client_id>/', views.get_client_information, name='get_client_information'),

@@ -76,6 +76,68 @@ def _resolve_entry_page(request, data) -> Optional[str]:
 
 
 @api_view(['POST'])
+def submit_contact_form(request):
+    """
+    Public contact page form: notify admin and send visitor acknowledgment via Gmail.
+    """
+    data = getattr(request, 'data', None) or {}
+    name = str(data.get('name', '')).strip()
+    email = str(data.get('email', '')).strip()
+    phone = str(data.get('phone', '')).strip()
+    subject_key = str(data.get('subject', '')).strip()
+    message = str(data.get('message', '')).strip()
+
+    from .contact_email import SUBJECT_LABELS
+
+    errors = {}
+    if not name:
+        errors['name'] = ['Ce champ est requis.']
+    if not email or '@' not in email or '.' not in email.split('@')[-1]:
+        errors['email'] = ['Adresse e-mail invalide.']
+    if subject_key not in SUBJECT_LABELS:
+        errors['subject'] = ['Veuillez sélectionner un sujet.']
+    if not message:
+        errors['message'] = ['Ce champ est requis.']
+    if errors:
+        return Response(
+            {'success': False, 'message': 'Données invalides', 'errors': errors},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        from .contact_email import (
+            send_contact_client_acknowledgment,
+            send_contact_form_team_notification,
+        )
+
+        send_contact_form_team_notification(
+            name=name,
+            email=email,
+            phone=phone,
+            subject_key=subject_key,
+            message=message,
+        )
+        send_contact_client_acknowledgment(email, name)
+    except Exception as mail_exc:
+        logger.exception('Contact form email failed: %s', mail_exc)
+        return Response(
+            {
+                'success': False,
+                'message': "L'envoi du message a échoué. Veuillez réessayer ou nous appeler.",
+            },
+            status=status.HTTP_503_SERVICE_UNAVAILABLE,
+        )
+
+    return Response(
+        {
+            'success': True,
+            'message': 'Votre message a été envoyé avec succès.',
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+@api_view(['POST'])
 def submit_client_information(request):
     """
     API endpoint to submit client information with address details for quote request

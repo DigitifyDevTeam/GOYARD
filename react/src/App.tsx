@@ -164,6 +164,20 @@ import {
 const TUNNEL_SUPPORT_PHONE_HREF = "tel:+33189703324";
 const TUNNEL_SUPPORT_PHONE_DISPLAY = "+33 1 89 70 33 24";
 
+/** YYYY-MM-DD in local timezone (avoids UTC off-by-one on date inputs). */
+function getLocalDateString(date = new Date()): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function clampToTodayOrLater(dateStr: string): string {
+  const today = getLocalDateString();
+  if (!dateStr || dateStr < today) return today;
+  return dateStr;
+}
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -216,7 +230,7 @@ function AppContent() {
         email: existingData.email || '',
         phone: existingData.phone || '',
         address: existingData.address || '',
-        date: existingData.date || prev.date
+        date: clampToTodayOrLater((existingData.date as string) || prev.date)
       }));
       // Sync saved address into addressData so "Au départ" is pre-filled on tunnel/adresses
       const savedAddress = existingData.address?.trim();
@@ -271,8 +285,9 @@ function AppContent() {
         FormDataManager.saveFormData({ phone: homePhone.trim() });
       }
       if (homeMoveDate && homeMoveDate.trim()) {
-        setFormData(prev => ({ ...prev, date: homeMoveDate.trim() }));
-        FormDataManager.saveFormData({ date: homeMoveDate.trim() });
+        const date = clampToTodayOrLater(homeMoveDate.trim());
+        setFormData(prev => ({ ...prev, date }));
+        FormDataManager.saveFormData({ date });
       }
       if (homeAddress && homeAddress.trim()) {
         setFormData(prev => ({ ...prev, address: homeAddress.trim() }));
@@ -311,7 +326,7 @@ function AppContent() {
   });
   const [formData, setFormData] = useState({
     address: "",
-    date: "2025-12-25", // Future date in YYYY-MM-DD format
+    date: getLocalDateString(),
     name: "",
     firstName: "",
     email: "",
@@ -3657,7 +3672,7 @@ function AppContent() {
                           <Input
                             id="date"
                             type="date"
-                            min={new Date().toISOString().split('T')[0]}
+                            min={getLocalDateString()}
                             value={formData.date}
                             onChange={(e) =>
                               handleInputChange("date", e.target.value)

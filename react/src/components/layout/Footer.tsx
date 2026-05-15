@@ -72,7 +72,7 @@ export default function Footer() {
                 <a href="/contact" className="hover:opacity-70 transition-opacity">Nous Contacter</a>
                 <div className="elfsight-app-94f468c1-4f93-46f0-a5d3-dcee026001cf" data-elfsight-app-lazy />
                 <a
-                  href="https://www.trustpilot.com"
+                  href="https://www.trustpilot.com/review/guivarchedemenagement.fr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="shrink-0"

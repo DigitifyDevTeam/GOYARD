@@ -483,7 +483,7 @@ export default function Paris() {
                   { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                   {
                     src: "/gallery/WhatsApp%20Image%202026-03-18%20at%2001.03.55.jpeg",
-                    alt: "Caisses plastiques professionnelles empilées pour le déménagement",
+                    alt: "Caisses  professionnelles empilées pour le déménagement",
                   },
                 ].map((img) => (
                   <button

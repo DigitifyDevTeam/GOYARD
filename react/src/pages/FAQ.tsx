@@ -419,13 +419,13 @@ export default function FAQ() {
                     },
                     {
                       id: "2", 
-                      src: "/gallery/WhatsApp Image 2026-03-05 at 15.46.54.jpeg",
+                      src: "/gallery/Déménagement groupé.jpeg",
                       alt: "Équipe de déménageurs",
                     },
                     {
                       id: "3",
-                      src: "/gallery/Monte Meuble.jpeg", 
-                      alt: "Camion de déménagement",
+                      src: "/gallery/monte_meuble.jpeg",
+                      alt: "Monte-meuble professionnel",
                     },
                     {
                       id: "4",

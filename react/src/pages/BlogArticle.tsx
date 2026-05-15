@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import NotFound from "./NotFound";
 
 // Article data
 const articles: Record<string, any> = {
@@ -1166,18 +1167,7 @@ export default function BlogArticle() {
   }, []);
 
   if (!article) {
-    return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Article non trouvé</h1>
-        <button
-          onClick={() => navigate("/blog")}
-          className="text-[#CC922F] hover:underline flex items-center gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Retour au blog
-        </button>
-      </div>
-    );
+    return <NotFound />;
   }
 
   const handleShare = (platform: string) => {

@@ -64,10 +64,24 @@ export default function Contact() {
     }
 
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("/api/demenagement/contact/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const payload = (await response.json().catch(() => ({}))) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !payload.success) {
+        setSubmitStatus("error");
+        return;
+      }
+
       setSubmitStatus("success");
       setFormData({
         name: "",
@@ -77,12 +91,15 @@ export default function Contact() {
         message: "",
       });
       setErrors({});
-      
-      // Reset success message after 5 seconds
+
       setTimeout(() => {
         setSubmitStatus("idle");
       }, 5000);
-    }, 1500);
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -267,6 +284,12 @@ export default function Contact() {
                 {submitStatus === "success" && (
                   <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg font-['Poppins',sans-serif]">
                     ✓ Votre message a été envoyé avec succès ! Nous vous contacterons bientôt.
+                  </div>
+                )}
+
+                {submitStatus === "error" && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg font-['Poppins',sans-serif]">
+                    L&apos;envoi a échoué. Réessayez dans un instant ou appelez-nous au +33 1 89 70 33 24.
                   </div>
                 )}
 

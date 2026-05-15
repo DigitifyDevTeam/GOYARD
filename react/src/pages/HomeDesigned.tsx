@@ -527,7 +527,7 @@ function Frame720() {
               </div>
             </div>
             <p className="min-w-0 font-sans font-[800] text-[11px] leading-tight tracking-[-0.35px] text-white sm:text-[12px]">
-              950 déménagements / mois
+              950 déménagements par année
             </p>
           </div>
 
