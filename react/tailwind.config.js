@@ -26,6 +26,12 @@ export default {
   		}
   	},
   	extend: {
+  		screens: {
+  			/** Nav/header compact layout: 1024px–1599px (typical laptops) */
+  			laptop: { min: '1024px', max: '1599px' },
+  			/** Wide monitors: 1600px+ — keeps original spacious header */
+  			desktop: '1600px',
+  		},
   		fontFamily: {
   			sans: [
   				'Poppins',

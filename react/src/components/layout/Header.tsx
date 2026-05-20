@@ -68,25 +68,25 @@ export default function Header({ onGetQuote }: HeaderProps) {
     }
   }, [mobileMenuOpen]);
 
-  const linkClass = "font-['Poppins',sans-serif] font-semibold text-[#191919] hover:text-[#CC922F] transition-colors text-sm lg:text-[15px] py-2 px-4 lg:px-5 rounded-md hover:bg-slate-50/80";
+  const linkClass = "font-['Poppins',sans-serif] font-semibold text-[#191919] hover:text-[#CC922F] transition-colors text-sm lg:text-[15px] py-2 px-4 laptop:text-sm laptop:py-2 laptop:px-3 laptop:whitespace-nowrap laptop:shrink-0 desktop:text-[15px] desktop:px-5 rounded-md hover:bg-slate-50/80";
 
   return (
     <>
       {/* Top bar: logo + desktop nav + CTA / hamburger */}
       <header className="w-full bg-white shadow-[0px_6px_16px_0px_rgba(25,25,25,0.06)]">
-        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
-          <div className="flex items-center justify-between h-32 lg:h-30 gap-4">
-            {/* Logo + nav grouped so Accueil sits closer to logo */}
-            <div className="flex items-center gap-6 lg:gap-20">
-              <a href="/" className="flex-shrink-0 py-4" aria-label="Accueil">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 laptop:px-10 desktop:px-[90px] min-[1920px]:px-[210px]">
+          <div className="flex items-center justify-between h-32 lg:h-30 gap-4 laptop:gap-3 desktop:gap-4 min-w-0">
+            {/* Laptop: logo + nav grouped. Desktop: logo | centered nav | CTA for equal side gaps */}
+            <div className="flex items-center gap-6 laptop:gap-6 min-w-0 laptop:flex-1 laptop:min-w-0 desktop:contents">
+              <a href="/" className="shrink-0 py-4 laptop:py-2" aria-label="Accueil">
                 <img
                   src="/logo.svg"
                   alt="BrasenPlus"
-                  className="h-32 w-auto lg:h-40"
+                  className="h-32 w-auto laptop:h-32 desktop:h-40"
                 />
               </a>
-              {/* Desktop nav - hidden on mobile */}
-              <nav className="hidden lg:flex flex-wrap items-center gap-x-10 gap-y-2 xl:gap-x-14 2xl:gap-x-16 font-[600] text-[#191919] max-w-[980px]" aria-label="Navigation principale">
+              {/* Desktop nav - hidden on mobile; single line on laptop with max even spacing */}
+              <nav className="hidden lg:flex items-center laptop:flex-1 laptop:flex-nowrap laptop:justify-between desktop:flex-1 desktop:flex-nowrap desktop:justify-center desktop:gap-x-14 font-[600] text-[#191919] laptop:min-w-0 desktop:min-w-0" aria-label="Navigation principale">
                 <a href="/" className={linkClass}>
                   Accueil
                 </a>
@@ -94,15 +94,15 @@ export default function Header({ onGetQuote }: HeaderProps) {
                   Solution
                 </a>
                 <a href="/demenagement-particulier" className={linkClass}>
-                  Déménagement particulier
+                  Particulier
                 </a>
                 <a href="/demenagement-entreprise" className={linkClass}>
-                  Déménagement entreprise
+                  Pro
                 </a>
 
                 {/* Zones mega menu */}
                 <div
-                  className="relative mx-2"
+                  className="relative laptop:mx-0 desktop:mx-2"
                   onMouseEnter={openZones}
                   onMouseLeave={closeZonesWithDelay}
                 >
@@ -173,9 +173,6 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     </div>
                   )}
                 </div>
-                <a href="/blog" className={linkClass}>
-                  Blog
-                </a>
 
                 {/* Outil mega menu */}
                 <div
@@ -251,9 +248,6 @@ export default function Header({ onGetQuote }: HeaderProps) {
                   )}
                 </div>
 
-                <a href="/faq" className={linkClass}>
-                  FAQ
-                </a>
                 <a href="/contact" className={linkClass}>
                   Contact
                 </a>
@@ -261,16 +255,16 @@ export default function Header({ onGetQuote }: HeaderProps) {
             </div>
 
             {/* CTA desktop / Hamburger mobile */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 laptop:gap-3 desktop:gap-4 shrink-0 laptop:pl-2">
               <button
                 onClick={handleGetQuote}
-                className="hidden sm:flex bg-[#1c3957] hover:bg-[#2a4f6b] text-white font-['Poppins',sans-serif] font-semibold text-sm lg:text-base px-4 py-2.5 lg:px-5 lg:py-3 rounded transition-colors duration-200 whitespace-nowrap"
+                className="hidden sm:flex bg-[#1c3957] hover:bg-[#2a4f6b] text-white font-['Poppins',sans-serif] font-semibold text-sm lg:text-base laptop:text-sm laptop:px-4 laptop:py-2.5 desktop:text-base desktop:px-5 desktop:py-3 px-4 py-2.5 rounded transition-colors duration-200 whitespace-nowrap"
               >
                 Devis en un clic
               </button>
               <a
                 href="tel:+33 1 89 70 33 24"
-                className="hidden sm:flex items-center gap-2 text-[#1c3957] hover:text-[#CC922F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base whitespace-nowrap transition-colors"
+                className="hidden sm:flex laptop:hidden desktop:flex items-center gap-2 text-[#1c3957] hover:text-[#CC922F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base desktop:text-base whitespace-nowrap transition-colors"
                 aria-label="Appeler le +33 1 89 70 33 24"
               >
                 <Phone className="w-4 h-4 shrink-0" />
@@ -339,14 +333,14 @@ export default function Header({ onGetQuote }: HeaderProps) {
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >
-              DÉMÉNAGEMENT PARTICULIER
+              Particulier
             </a>
             <a
               href="/demenagement-entreprise"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >
-              DÉMÉNAGEMENT ENTREPRISE
+              Pro
             </a>
             {/* Mobile "Zones" section with sub-links */}
             <div className="mt-1 mb-2">
@@ -397,13 +391,6 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 </div>
               )}
             </div>
-            <a
-              href="/blog"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
-            >
-              Blog
-            </a>
             {/* Mobile "Outils" section with sub-links */}
             <div className="mt-1 mb-2">
               <button
@@ -453,13 +440,6 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 </div>
               )}
             </div>
-            <a
-              href="/faq"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
-            >
-              FAQ
-            </a>
             <a
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
