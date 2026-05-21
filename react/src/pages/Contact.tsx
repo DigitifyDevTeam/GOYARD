@@ -149,6 +149,9 @@ export default function Contact() {
                       <a href="tel:+33746326678" className="text-gray-600 text-lg hover:text-[#CC922F] transition-colors font-['Poppins',sans-serif]">
                         +33 7 46 32 66 78
                       </a>
+                      <a href="tel:+33189703324" className="text-gray-600 text-lg hover:text-[#CC922F] transition-colors font-['Poppins',sans-serif]">
+                       <br/>+33 1 89 70 33 24 <br/>
+                      </a>
                     </div>
                   </div>
 
@@ -412,29 +415,28 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="bg-gradient-to-r from-[#1C3957] to-[#2a4f6b] py-10 sm:py-12 lg:py-16">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center text-white">
-              <div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#CC922F] mb-2 font-['Poppins',sans-serif]">23+</div>
-                <div className="text-white/90 font-['Poppins',sans-serif]">Ans d'expérience</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-[#CC922F] mb-2 font-['Poppins',sans-serif]">780</div>
-                <div className="text-white/90 font-['Poppins',sans-serif]">Déménagements/mois</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-[#CC922F] mb-2 font-['Poppins',sans-serif]">22</div>
-                <div className="text-white/90 font-['Poppins',sans-serif]">Camions disponibles</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-[#CC922F] mb-2 font-['Poppins',sans-serif]">500+</div>
-                <div className="text-white/90 font-['Poppins',sans-serif]">Avis positifs</div>
-              </div>
-            </div>
+        {/* Desktop: section title + Google Reviews widget */}
+ <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
+          <div className="text-center section-px">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
+              Ce que nos clients disent de nous !
+            </h2>
           </div>
-        </section>
+          <div className="mt-8 flex justify-center">
+            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
+          </div>
+        </div>
+        {/* Mobile: section title + Google Reviews widget */}
+        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
+              Ce que nos clients disent de nous !
+            </h2>
+          </div>
+          <div className="mt-6 flex justify-center">
+            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
+          </div>
+        </div>
       </main>
       
       <Footer />

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, X, Phone, Calculator, BadgeEuro, Layers3, MapPin, Route, Globe2 } from "lucide-react";
+import { Menu, X, Calculator, BadgeEuro, Layers3, MapPin, Route, Globe2 } from "lucide-react";
+import { ContactPhoneLink } from "../ContactPhoneLink";
 
 interface HeaderProps {
   onGetQuote?: () => void;
@@ -81,7 +82,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               <a href="/" className="shrink-0 py-4 laptop:py-2" aria-label="Accueil">
                 <img
                   src="/logo.svg"
-                  alt="BrasenPlus"
+                  alt="Guivarche Déménagement"
                   className="h-32 w-auto laptop:h-32 desktop:h-40"
                 />
               </a>
@@ -262,14 +263,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               >
                 Devis en un clic
               </button>
-              <a
-                href="tel:+33 1 89 70 33 24"
-                className="hidden sm:flex laptop:hidden desktop:flex items-center gap-2 text-[#1c3957] hover:text-[#CC922F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base desktop:text-base whitespace-nowrap transition-colors"
-                aria-label="Appeler le +33 1 89 70 33 24"
-              >
-                <Phone className="w-4 h-4 shrink-0" />
-                <span>1 89 70 33 24</span>
-              </a>
+              <ContactPhoneLink variant="header" className="hidden sm:flex" />
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}

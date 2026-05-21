@@ -21,6 +21,12 @@ import {
 import { Button } from "../components/ui/button";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { ContactPhoneLink } from "../components/ContactPhoneLink";
+import {
+  gradientCtaActionsClass,
+  gradientCtaOutlineButtonClass,
+  gradientCtaPrimaryButtonClass,
+} from "../components/gradientCtaStyles";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -445,11 +451,11 @@ export default function FormulesDemenagement() {
                 personnalisée pour votre prochain changement d'adresse.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className={gradientCtaActionsClass}>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     size="lg"
-                    className="bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
+                    className={gradientCtaPrimaryButtonClass}
                     onClick={() => navigate("/tunnel/mes-coordonnees")}
                   >
                     Demander mon devis gratuit
@@ -460,11 +466,15 @@ export default function FormulesDemenagement() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
+                    className={gradientCtaOutlineButtonClass}
                     onClick={() => navigate("/contact")}
                   >
                     Nous contacter
                   </Button>
+                </motion.div>
+
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <ContactPhoneLink variant="cta" />
                 </motion.div>
               </div>
             </div>

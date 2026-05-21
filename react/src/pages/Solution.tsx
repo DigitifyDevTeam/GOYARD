@@ -15,6 +15,12 @@ import {
 import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { ContactPhoneLink } from "@/components/ContactPhoneLink";
+import {
+  gradientCtaActionsClass,
+  gradientCtaOutlineButtonClass,
+  gradientCtaPrimaryButtonClass,
+} from "@/components/gradientCtaStyles";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 // Feature interface
@@ -404,27 +410,31 @@ export default function Solution() {
                 Obtenez votre devis gratuit maintenant !
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className={gradientCtaActionsClass}>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    size="lg" 
-                    className="bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
+                  <Button
+                    size="lg"
+                    className={gradientCtaPrimaryButtonClass}
                     onClick={() => window.location.href = '/tunnel/mes-coordonnees'}
                   >
                     Obtenir un devis gratuit
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
-                
+
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className={gradientCtaOutlineButtonClass}
                     onClick={() => window.location.href = '/contact'}
                   >
                     Nous contacter
                   </Button>
+                </motion.div>
+
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <ContactPhoneLink variant="cta" />
                 </motion.div>
               </div>
             </div>

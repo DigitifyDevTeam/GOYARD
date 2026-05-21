@@ -1,7 +1,5 @@
 import { ArrowRight } from "lucide-react";
-
-const TEL_HREF = "tel:+33189703324";
-const TEL_LABEL = "01 89 70 33 24";
+import { ContactPhoneLink } from "../../components/ContactPhoneLink";
 
 export type LpHeroProps = Readonly<{
   badge: string;
@@ -32,12 +30,7 @@ export default function LpHero({ badge, title, subtitle, onPrimary }: LpHeroProp
               Obtenir mon devis gratuit
               <ArrowRight className="h-4 w-4" />
             </button>
-            <a
-              href={TEL_HREF}
-              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
-            >
-              {TEL_LABEL}
-            </a>
+            <ContactPhoneLink variant="inline" className="justify-center w-full sm:w-auto" />
           </div>
         </div>
       </div>

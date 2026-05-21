@@ -3,11 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { ContactPhoneLink } from "../components/ContactPhoneLink";
+import {
+  gradientCtaActionsClass,
+  gradientCtaOutlineClass,
+  gradientCtaPrimaryClass,
+} from "../components/gradientCtaStyles";
 import { InterventionMapParis75 } from "../components/intervention-map";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
+import { cn } from "../lib/utils";
 
 const PARIS_GOOGLE_REVIEWS_URL =
   "https://www.google.com/search?hl=fr-TN&gl=tn&q=Guivarche+D%C3%A9m%C3%A9nagement,+25+Rue+de+C%C3%AEteaux,+75012+Paris,+France&ludocid=449127112689032564&lsig=AB86z5WRT9msHEVSPtou8m9KcU8X#lrd=0x47e67304c6ac24e3:0x63b9ebabad39d74,3";
+
+const PARIS_TRUST_PILL_CLASS =
+  "inline-flex h-12 items-center justify-center gap-2 px-6 rounded-full shadow-lg backdrop-blur-sm shrink-0";
 
 function ParisGoogleReviewsPill({ className }: Readonly<{ className?: string }>) {
   return (
@@ -15,19 +25,62 @@ function ParisGoogleReviewsPill({ className }: Readonly<{ className?: string }>)
       href={PARIS_GOOGLE_REVIEWS_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-[#111827]/90 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2 ${className ?? ""}`}
+      className={cn(
+        PARIS_TRUST_PILL_CLASS,
+        "bg-[#111827]/90 text-white transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2",
+        className,
+      )}
       aria-label="Voir les avis Google — note 5 sur 5, 70 avis"
     >
-      <span className="flex shrink-0 items-center gap-0.5 text-[#FBBF24] text-[15px] sm:text-base" aria-hidden="true">
+      <span className="flex shrink-0 items-center gap-0.5 text-[#FBBF24] text-[15px]" aria-hidden="true">
         ★★★★★
       </span>
-      <span className="font-['Poppins',sans-serif] font-bold text-[15px] tracking-tight">5/5</span>
-      <span className="font-['Poppins',sans-serif] font-medium text-[14px] text-white/80">70 avis Google</span>
+      <span className="font-['Poppins',sans-serif] font-bold text-[15px] leading-none tracking-tight">5/5</span>
+      <span className="font-['Poppins',sans-serif] font-medium text-[14px] leading-none text-white/80 whitespace-nowrap">
+        70 avis Google
+      </span>
     </a>
   );
 }
 
-export function ParisHeroServicePitch({ className }: Readonly<{ className?: string }>) {
+function ParisDevisSous24hPill({ className }: Readonly<{ className?: string }>) {
+  return (
+    <div className={cn(PARIS_TRUST_PILL_CLASS, "bg-[#111827]/85 text-white", className)}>
+      <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
+        ✓
+      </span>
+      <span className="font-['Poppins',sans-serif] font-semibold text-[15px] leading-none whitespace-nowrap">
+        Devis sous 24h
+      </span>
+    </div>
+  );
+}
+
+/** Trust row: avis + devis; animated hero phone only on Paris LP when enabled. */
+function ParisTrustBadgesStack({
+  className,
+  showAnimatedPhone = false,
+}: Readonly<{ className?: string; showAnimatedPhone?: boolean }>) {
+  return (
+    <div className={cn("mt-5 flex w-full flex-col gap-3", className)}>
+      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+        <ParisGoogleReviewsPill className="w-full" />
+        <ParisDevisSous24hPill className="w-full" />
+      </div>
+      {showAnimatedPhone ? (
+        <ContactPhoneLink
+          variant="hero"
+          className="h-12 w-full justify-center gap-2.5 px-6 py-0 sm:px-6 sm:py-0"
+        />
+      ) : null}
+    </div>
+  );
+}
+
+export function ParisHeroServicePitch({
+  className,
+  showAnimatedPhone = false,
+}: Readonly<{ className?: string; showAnimatedPhone?: boolean }>) {
   return (
     <div className={className}>
       <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl lg:text-[2.2rem] lg:leading-tight tracking-tight">
@@ -37,37 +90,22 @@ export function ParisHeroServicePitch({ className }: Readonly<{ className?: stri
         Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée
       </p>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <ParisGoogleReviewsPill />
-        <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
-            ✓
-          </span>
-          <span className="font-['Poppins',sans-serif] font-semibold text-[15px] whitespace-nowrap">Devis sous 24h</span>
-        </div>
-      </div>
+      <ParisTrustBadgesStack showAnimatedPhone={showAnimatedPhone} />
     </div>
   );
 }
 
-export function ParisDevisTrustAside({ className }: Readonly<{ className?: string }>) {
+export function ParisDevisTrustAside({
+  className,
+  showAnimatedPhone = false,
+}: Readonly<{ className?: string; showAnimatedPhone?: boolean }>) {
   return (
     <div className={`text-center ${className ?? ""}`}>
        <p className="mx-auto mt-4 max-w-2xl text-slate-600 text-base sm:text-lg lg:text-xl leading-relaxed">
                 Indiquez votre adresse de départ et recevez un devis personnalisé en quelques minutes.
               </p>
 
-      <div className="mt-8 flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
-        <ParisGoogleReviewsPill />
-                <div className="flex items-center gap-2 bg-[#111827]/85 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400 text-xs text-emerald-400">
-                    ✓
-                  </span>
-                  <span className="font-['Poppins',sans-serif] font-semibold text-[15px] whitespace-nowrap">
-                    Devis sous 24h
-                  </span>
-        </div>
-      </div>
+      <ParisTrustBadgesStack className="mt-8" showAnimatedPhone={showAnimatedPhone} />
     </div>
   );
 }
@@ -402,7 +440,7 @@ export default function Paris() {
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_15%_20%,rgba(204,146,47,0.22),transparent_60%),radial-gradient(900px_500px_at_85%_10%,rgba(25,25,25,0.10),transparent_55%)]" />
           <div className="relative w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16">
-            <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-stretch lg:items-center">
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
@@ -416,42 +454,35 @@ export default function Paris() {
                   Devis rapide, dates flexibles, protection premium.
                 </p>
 
-                <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 max-w-2xl">
                   {[
                     "Intervention rapide (Paris 75)",
                     "Protection mobilier & accès difficiles",
                     "Équipe expérimentée et ponctuelle",
                     "Suivi simple, clair, transparent",
                   ].map((item) => (
-                    <div key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#CC922F] mt-0.5" />
-                      <span className="text-sm sm:text-[15px] text-slate-700">{item}</span>
+                    <div key={item} className="flex min-h-[2.75rem] items-center gap-2.5">
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-[#CC922F]" aria-hidden="true" />
+                      <span className="text-sm sm:text-[15px] leading-snug text-slate-700">{item}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
+                <div className="mt-8">
                   <button
                     type="button"
                     onClick={primaryCta}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition"
+                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition"
                   >
                     Obtenir mon devis
                     <ArrowRight className="h-4 w-4" />
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => (globalThis.location.href = "tel:+33189703324")}
-                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
-                  >
-                    Parler à un conseiller
-                  </button>
                 </div>
               </div>
 
-              <div className="lg:col-span-5">
-                <div className="rounded-3xl bg-white/70 backdrop-blur-sm shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
-                  <ParisHeroServicePitch />
+              <div className="lg:col-span-5 flex">
+                <div className="flex w-full flex-col justify-center rounded-3xl bg-white/70 backdrop-blur-sm shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
+                  <ParisHeroServicePitch showAnimatedPhone />
                 </div>
               </div>
             </div>
@@ -639,7 +670,7 @@ export default function Paris() {
 
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
-                  <ParisDevisTrustAside />
+                  <ParisDevisTrustAside showAnimatedPhone />
                 </div>
               </div>
             </div>
@@ -659,21 +690,16 @@ export default function Paris() {
                 gratuit maintenant !
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button
-                  type="button"
-                  onClick={primaryCta}
-                  className="inline-flex items-center justify-center bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
-                >
+              <div className={gradientCtaActionsClass}>
+                <button type="button" onClick={primaryCta} className={gradientCtaPrimaryClass}>
                   Obtenir un devis gratuit
                 </button>
 
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center border border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
-                >
+                <a href="/contact" className={gradientCtaOutlineClass}>
                   Nous contacter
                 </a>
+
+                <ContactPhoneLink variant="cta" />
               </div>
             </div>
           </div>

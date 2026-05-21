@@ -2,6 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2, MapPin, ShieldCheck, Timer, Truck } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { ContactPhoneLink } from "../components/ContactPhoneLink";
+import {
+  gradientCtaActionsClass,
+  gradientCtaOutlineClass,
+  gradientCtaPrimaryClass,
+} from "../components/gradientCtaStyles";
 import { InterventionMapIleDeFrance } from "../components/intervention-map";
 
 export default function ZoneIleDeFrance() {
@@ -55,13 +61,7 @@ export default function ZoneIleDeFrance() {
                     Obtenir mon devis
                     <ArrowRight className="h-4 w-4" />
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => window.location.href = "tel:+33189703324"}
-                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
-                  >
-                    Parler à un conseiller
-                  </button>
+                  <ContactPhoneLink variant="inline" className="justify-center w-full sm:w-auto" />
                 </div>
               </div>
 
@@ -282,7 +282,7 @@ export default function ZoneIleDeFrance() {
                   <p className="mt-2 text-sm text-slate-600 leading-relaxed">
                     Lancez votre devis en 2 minutes. Vous pouvez affiner ensuite (options, accès, dates).
                   </p>
-                  <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
                     <button
                       type="button"
                       onClick={primaryCta}
@@ -298,6 +298,7 @@ export default function ZoneIleDeFrance() {
                     >
                       Être rappelé
                     </button>
+                    <ContactPhoneLink variant="inline" className="justify-center" />
                   </div>
                   <p className="mt-4 text-xs text-slate-500">
                     Réponse rapide • Devis clair • Équipe pro
@@ -342,21 +343,16 @@ export default function ZoneIleDeFrance() {
                 gratuit maintenant !
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button
-                  type="button"
-                  onClick={primaryCta}
-                  className="inline-flex items-center justify-center bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
-                >
+              <div className={gradientCtaActionsClass}>
+                <button type="button" onClick={primaryCta} className={gradientCtaPrimaryClass}>
                   Obtenir un devis gratuit
                 </button>
 
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center border border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
-                >
+                <a href="/contact" className={gradientCtaOutlineClass}>
                   Nous contacter
                 </a>
+
+                <ContactPhoneLink variant="cta" />
               </div>
             </div>
           </div>

@@ -1,15 +1,13 @@
 import { Phone, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CONTACT_PHONE_ARIA, CONTACT_PHONE_HREF } from "../constants/contactPhone";
+
+/** WhatsApp sticky button — unchanged; separate from the main call line */
+const STICKY_WHATSAPP_E164 = "+33746326678";
 
 export default function StickyContactButtons() {
-  // Central contact number used across the site.
-  const phoneE164 = "+33 7 46 32 66 78";
-  const telHref = `tel:${phoneE164}`;
-  const whatsappNumberDigits = phoneE164
-    .split("")
-    .filter((ch) => ch >= "0" && ch <= "9")
-    .join("");
-  const whatsappHref = `https://wa.me/${whatsappNumberDigits}`;
+  const telHref = CONTACT_PHONE_HREF;
+  const whatsappHref = `https://wa.me/${STICKY_WHATSAPP_E164.replace(/\D/g, "")}`;
 
   const buttonClassName =
     "w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1c3957] hover:bg-[#2a4f6b] text-white shadow-lg border border-white/10 transition-colors flex items-center justify-center";
@@ -21,7 +19,7 @@ export default function StickyContactButtons() {
       <a
         href={telHref}
         className={`${buttonClassName} pointer-events-auto`}
-        aria-label="Appeler"
+        aria-label={CONTACT_PHONE_ARIA}
       >
         <Phone className={iconClassName} />
       </a>

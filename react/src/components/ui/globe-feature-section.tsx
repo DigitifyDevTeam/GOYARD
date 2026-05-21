@@ -45,30 +45,9 @@ const GLOBE_CONFIG: COBEOptions = {
   mapSamples: 16000,
   mapBrightness: 1.2,
   baseColor: [1, 1, 1],
-  markerColor: [204 / 255, 146 / 255, 47 / 255], // #CC922F brand color
+  markerColor: [204 / 255, 146 / 255, 47 / 255],
   glowColor: [1, 1, 1],
-  markers: [
-    { location: [48.8566, 2.3522], size: 0.1 }, // Paris
-    { location: [43.6047, 1.4442], size: 0.08 }, // Toulouse
-    { location: [43.2965, 5.3698], size: 0.08 }, // Marseille
-    { location: [45.764, 4.8357], size: 0.09 }, // Lyon
-    { location: [47.2184, -1.5536], size: 0.07 }, // Nantes
-    { location: [50.6292, 3.0573], size: 0.08 }, // Lille
-    { location: [48.5734, 7.7521], size: 0.07 }, // Strasbourg
-    { location: [44.8378, -0.5792], size: 0.08 }, // Bordeaux
-    { location: [43.6108, 3.8767], size: 0.07 }, // Montpellier
-    { location: [47.4784, -0.5632], size: 0.06 }, // Angers
-    { location: [49.2583, 4.0317], size: 0.07 }, // Reims
-    { location: [48.1173, -1.6778], size: 0.06 }, // Rennes
-    { location: [49.4944, 0.1079], size: 0.07 }, // Le Havre
-    { location: [43.7102, 7.2620], size: 0.07 }, // Nice
-    { location: [47.3220, 5.0415], size: 0.06 }, // Dijon
-    { location: [48.6921, 6.1844], size: 0.06 }, // Nancy
-    { location: [45.1885, 5.7245], size: 0.06 }, // Grenoble
-    { location: [49.8951, 2.2958], size: 0.06 }, // Amiens
-    { location: [47.9029, 1.9093], size: 0.06 }, // Orléans
-    { location: [46.5802, 0.3404], size: 0.06 }, // Poitiers
-  ],
+  markers: [],
 }
 
 export function Globe({

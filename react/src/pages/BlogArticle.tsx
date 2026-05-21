@@ -15,6 +15,11 @@ import {
 } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { ContactPhoneLink } from "../components/ContactPhoneLink";
+import {
+  gradientCtaActionsClass,
+  gradientCtaPrimaryClass,
+} from "../components/gradientCtaStyles";
 import NotFound from "./NotFound";
 
 // Article data
@@ -1473,15 +1478,20 @@ export default function BlogArticle() {
                   Obtenez votre devis gratuit en quelques clics et profitez de notre expertise pour un déménagement sans stress !
                 </p>
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate("/tunnel/mes-coordonnees")}
-                  className="px-8 py-4 bg-white text-[#1C3957] font-semibold rounded-full hover:bg-gray-50 transition-all duration-200 text-lg font-['Poppins',sans-serif] inline-flex items-center gap-2"
-                >
-                  Obtenir un devis gratuit
-                  <ChevronRight className="w-5 h-5" />
-                </motion.button>
+                <div className={gradientCtaActionsClass}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate("/tunnel/mes-coordonnees")}
+                    className={`${gradientCtaPrimaryClass} gap-2`}
+                  >
+                    Obtenir un devis gratuit
+                    <ChevronRight className="w-5 h-5" />
+                  </motion.button>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <ContactPhoneLink variant="cta" />
+                  </motion.div>
+                </div>
               </div>
             </div>
 

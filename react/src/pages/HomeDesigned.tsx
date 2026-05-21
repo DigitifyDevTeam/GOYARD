@@ -14,6 +14,12 @@ import { createPortal } from "react-dom";
 import Header from "../components/layout/Header";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import Footer from "../components/layout/Footer";
+import { ContactPhoneLink } from "../components/ContactPhoneLink";
+import {
+  gradientCtaActionsClass,
+  gradientCtaOutlineClass,
+  gradientCtaPrimaryClass,
+} from "../components/gradientCtaStyles";
 import InteractiveImageBentoGallery from "../components/bento-gallery";
 import TarificationSection from "../components/TarificationSection";
 import { BentoDemo } from "../components/demo1";
@@ -380,6 +386,7 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
             Devis sous 24h
           </span>
         </div>
+        <ContactPhoneLink variant="hero" />
       </div>
       <Group716 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
     </div>
@@ -426,6 +433,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
                 Devis sous 24h
               </span>
             </div>
+            <ContactPhoneLink variant="hero" />
           </div>
           <div className="w-full max-w-lg flex flex-col sm:flex-row gap-4 mt-2">
             <div className="relative flex-1 min-w-0 sm:min-w-[220px]">
@@ -1734,21 +1742,16 @@ function Group719({ onGetQuote }: { onGetQuote: () => void }) {
               maintenant !
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                type="button"
-                onClick={onGetQuote}
-                className="inline-flex items-center justify-center bg-white text-[#1C3957] hover:bg-gray-50 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
-              >
+            <div className={gradientCtaActionsClass}>
+              <button type="button" onClick={onGetQuote} className={gradientCtaPrimaryClass}>
                 Obtenir un devis gratuit
               </button>
 
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center border border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
-              >
+              <a href="/contact" className={gradientCtaOutlineClass}>
                 Nous contacter
               </a>
+
+              <ContactPhoneLink variant="cta" />
             </div>
           </div>
         </div>

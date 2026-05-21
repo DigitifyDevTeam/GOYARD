@@ -119,11 +119,53 @@ export default {
 						'0 8px 28px rgba(0,0,0,0.12), 0 0 0 12px rgba(27, 54, 93, 0)',
 				},
 			},
+			/** Soft expanding ring on the full phone pill (header) */
+			'phone-attention': {
+				'0%, 100%': {
+					boxShadow:
+						'0 2px 12px rgba(28, 57, 87, 0.08), 0 0 0 0 rgba(204, 146, 47, 0.32)',
+					transform: 'scale(1)',
+				},
+				'55%': {
+					boxShadow:
+						'0 4px 18px rgba(28, 57, 87, 0.1), 0 0 0 4px rgba(204, 146, 47, 0)',
+					transform: 'scale(1.006)',
+				},
+			},
+			/** Soft expanding ring on phone pill in dark hero badges */
+			'phone-attention-hero': {
+				'0%, 100%': {
+					boxShadow:
+						'0 4px 14px rgba(0, 0, 0, 0.18), 0 0 0 0 rgba(204, 146, 47, 0.45)',
+					transform: 'scale(1)',
+				},
+				'55%': {
+					boxShadow:
+						'0 6px 18px rgba(0, 0, 0, 0.22), 0 0 0 4px rgba(204, 146, 47, 0.15)',
+					transform: 'scale(1.006)',
+				},
+			},
+			/** Soft expanding ring on phone pill over gradient CTAs */
+			'phone-attention-cta': {
+				'0%, 100%': {
+					boxShadow:
+						'0 2px 14px rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(255, 255, 255, 0.28)',
+					transform: 'scale(1)',
+				},
+				'55%': {
+					boxShadow:
+						'0 6px 22px rgba(0, 0, 0, 0.14), 0 0 0 5px rgba(255, 255, 255, 0)',
+					transform: 'scale(1.008)',
+				},
+			},
 		},
 		animation: {
 			'accordion-down': 'accordion-down 0.2s ease-out',
 			'accordion-up': 'accordion-up 0.2s ease-out',
 			'cta-bar-attention': 'cta-bar-attention 2.8s ease-in-out infinite',
+			'phone-attention': 'phone-attention 4.2s cubic-bezier(0.45, 0, 0.55, 1) infinite',
+			'phone-attention-hero': 'phone-attention-hero 4.2s cubic-bezier(0.45, 0, 0.55, 1) infinite',
+			'phone-attention-cta': 'phone-attention-cta 4.2s cubic-bezier(0.45, 0, 0.55, 1) infinite',
 		}
   	}
   },
