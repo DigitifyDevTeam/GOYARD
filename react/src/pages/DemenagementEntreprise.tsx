@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -31,6 +30,7 @@ import TarificationSection from "@/components/TarificationSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 import InteractiveImageBentoGallery from "@/components/bento-gallery";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 
 // ─── Professionnel Data ───────────────────────────────────────────
 
@@ -323,57 +323,13 @@ function StepCard({
           {number}
         </span>
       </motion.div>
-      <h4 className="text-lg font-bold text-[#1C3957] mb-2 font-['Poppins',sans-serif]">
+      <h3 className="text-lg font-bold text-[#1C3957] mb-2 font-['Poppins',sans-serif]">
         {title}
-      </h4>
+      </h3>
       <p className="text-sm text-gray-600 font-['Poppins',sans-serif]">
         {description}
       </p>
     </motion.div>
-  );
-}
-
-function GoogleReviewsSection() {
-  useEffect(() => {
-    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]'))
-      return;
-    const script = document.createElement("script");
-    script.src = "https://elfsightcdn.com/platform.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
-  return (
-    <>
-      {/* Desktop: section title + Google Reviews widget */}
-      <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-        <div className="text-center section-px">
-          <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-            Ce que nos clients disent de nous !
-          </h2>
-        </div>
-        <div className="mt-8 flex justify-center">
-          <div
-            className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277"
-            data-elfsight-app-lazy
-          />
-        </div>
-      </div>
-      {/* Mobile: section title + Google Reviews widget */}
-      <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-            Ce que nos clients disent de nous !
-          </h2>
-        </div>
-        <div className="mt-6 flex justify-center">
-          <div
-            className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full"
-            data-elfsight-app-lazy
-          />
-        </div>
-      </div>
-    </>
   );
 }
 

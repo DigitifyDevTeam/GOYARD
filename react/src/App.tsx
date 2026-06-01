@@ -2776,6 +2776,7 @@ function AppContent() {
                 </h1>
               </div>
 
+              <h2 className="sr-only">Détail des prestations incluses</h2>
               {/* Services Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-10 sm:mb-16">
                 {/* Camion équipé */}
@@ -2884,6 +2885,7 @@ function AppContent() {
 
           {currentPage === "options" && (
             <>
+              <h1 className="sr-only">Options de votre déménagement</h1>
               {/* Guarantee Section */}
               <div className="bg-slate-100 rounded-lg p-4 sm:p-6 lg:p-8 text-center mb-8 sm:mb-12">
                 <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4">
@@ -3016,9 +3018,9 @@ function AppContent() {
                       <div className="flex items-center justify-center md:justify-start mb-3">
                         <Truck className="w-12 h-12 sm:w-16 sm:h-16 font-bold" style={{ color: '#CC922F' }} />
                       </div>
-                      <div className="text-xl font-bold text-slate-900 mb-1">
+                      <h1 className="text-xl font-bold text-slate-900 mb-1">
                         Devis personnalisé
-                      </div>
+                      </h1>
                       <div className="text-sm text-slate-600">
                         Un conseiller vous recontactera par e-mail ou par téléphone avec votre devis détaillé
                       </div>
@@ -3399,9 +3401,9 @@ function AppContent() {
               <div className="mt-8">
 
                 <div className="text-center mb-12">
-                  <h1 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
+                  <h2 className="text-2xl font-semibold text-slate-900 mb-8 max-w-4xl mx-auto">
                     Toutes les prestations de déménagement professionnel avec Guivarche Déménagement comprennent
-                  </h1>
+                  </h2>
                 </div>
 
                 {/* Services Grid */}
@@ -3574,10 +3576,23 @@ function AppContent() {
           {/* Main Content */}
           <div className="lg:col-span-2 min-w-0">
             <div className="bg-slate-50 rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+              {currentPage === "form" && (
+                <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
+                  Votre devis de déménagement
+                </h1>
+              )}
+              {currentPage === "methods" && (
+                <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
+                  Choisissez votre méthode d&apos;estimation
+                </h1>
+              )}
+              {currentPage !== "form" && currentPage !== "methods" && (
+                <h1 className="sr-only">Demande de devis de déménagement — Guivarche</h1>
+              )}
               {/* Mobile progress */}
               <div className="lg:hidden mb-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                 <div className="flex items-center justify-between gap-3 mb-3">
-                  <h3 className="text-sm font-semibold text-slate-900">Mes étapes</h3>
+                  <h2 className="text-sm font-semibold text-slate-900">Mes étapes</h2>
                   <span className="text-xs font-medium text-slate-600">Étape {currentStepNumber}/3</span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-200 mb-3">
@@ -3627,9 +3642,9 @@ function AppContent() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2">
+                      <p className="text-lg sm:text-xl font-semibold text-slate-900 mb-2">
                         Sophie
-                      </h2>
+                      </p>
                       <p className="text-primary text-sm sm:text-base mb-3">
                         Bonjour ! Je suis Sophie.
                       </p>
@@ -3714,9 +3729,9 @@ function AppContent() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold text-slate-900 mb-1">
+                      <p className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
-                      </h2>
+                      </p>
                       <p className="text-primary text-sm mb-2">
                         Parfait ! On est à quelques clics de votre devis.
                       </p>
@@ -3825,9 +3840,9 @@ function AppContent() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold text-slate-900 mb-1">
+                      <p className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
-                      </h2>
+                      </p>
                       <p className="text-primary text-sm">
                         Parfait ! Précisez pièce par pièce les objets à déménager dont vous avez besoin.
                       </p>
@@ -4324,9 +4339,9 @@ function AppContent() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold text-slate-900 mb-1">
+                      <p className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
-                      </h2>
+                      </p>
                       <p className="text-primary text-sm">
                         Parfait ! Indiquez-moi la surface de votre logement pour une estimation rapide.
                       </p>
@@ -5568,9 +5583,9 @@ function AppContent() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold text-slate-900 mb-1">
+                      <p className="text-lg font-semibold text-slate-900 mb-1">
                         Sophie
-                      </h2>
+                      </p>
                       <p className="text-primary text-sm">
                         Pouvez-vous m'en dire un peu plus sur les adresses ? Départ, arrivée et éventuelles étapes intermédiaires.
                       </p>
@@ -6172,9 +6187,9 @@ function AppContent() {
           <div className="space-y-6 lg:space-y-12">
             {/* Mes étapes */}
             <div className="hidden lg:block bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
-              <h3 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2 sm:mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2 sm:mb-4">
                 Mes étapes
-              </h3>
+              </h2>
               <p className="text-sm sm:text-base text-slate-600 mb-4 sm:mb-6">
                 Étape {currentStepNumber} sur 3 - gardez le cap, vous y êtes presque.
               </p>

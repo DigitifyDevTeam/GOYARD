@@ -5,6 +5,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { InterventionMapVersailles92 } from "../components/intervention-map";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { DevisForm, ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
@@ -25,26 +26,7 @@ export default function Seine92() {
       <Header onGetQuote={primaryCta} />
 
       <main>
-        {/* Devis complet — full quote form */}
-        <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
-          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
-            <div className="text-center mb-10 sm:mb-14">
-              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
-                Obtenez un Devis Gratuit en 24H
-              </h2>
-              <p className="mt-4 mx-auto max-w-2xl rounded-xl border border-[#CC922F]/35 bg-[#CC922F]/12 px-4 py-3 sm:px-5 sm:py-4 text-[#191919] text-base sm:text-lg leading-relaxed shadow-[0_4px_20px_rgba(204,146,47,0.12)]">
-                Confiez votre déménagement à nos équipes.{" "}
-                <span className="font-bold text-[#CC922F] underline decoration-[#CC922F]/50 decoration-2 underline-offset-4">
-                  Nous proposons les tarifs les moins élevés d&apos;Île-de-France.
-                </span>
-              </p>
-            </div>
-
-            <DevisForm />
-          </div>
-        </section>
-
-        {/* Hero — Paris 75 */}
+        {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_15%_20%,rgba(204,146,47,0.22),transparent_60%),radial-gradient(900px_500px_at_85%_10%,rgba(25,25,25,0.10),transparent_55%)]" />
           <div className="relative w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16">
@@ -96,7 +78,26 @@ export default function Seine92() {
           </div>
         </section>
 
-        
+        {/* Devis complet — full quote form */}
+        <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
+          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
+            <div className="text-center mb-10 sm:mb-14">
+              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
+                Obtenez un Devis Gratuit en 24H
+              </h2>
+              <p className="mt-4 mx-auto max-w-2xl rounded-xl border border-[#CC922F]/35 bg-[#CC922F]/12 px-4 py-3 sm:px-5 sm:py-4 text-[#191919] text-base sm:text-lg leading-relaxed shadow-[0_4px_20px_rgba(204,146,47,0.12)]">
+                Confiez votre déménagement à nos équipes.{" "}
+                <span className="font-bold text-[#CC922F] underline decoration-[#CC922F]/50 decoration-2 underline-offset-4">
+                  Nous proposons les tarifs les moins élevés d&apos;Île-de-France.
+                </span>
+              </p>
+            </div>
+
+            <DevisForm />
+          </div>
+        </section>
+
+        <GoogleReviewsSection />
 
         {/* Hauts-de-Seine (92) — carte & zone */}
         <section className="mt-0">
@@ -285,28 +286,6 @@ export default function Seine92() {
             </div>
           </div>
         </section>
-        {/* Desktop: section title + Google Reviews widget */}
-        <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-          <div className="text-center section-px">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
-          </div>
-        </div>
-        {/* Mobile: section title + Google Reviews widget */}
-        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-6 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
-          </div>
-        </div>
         {/* CTA final */}
         <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
           <div className="container mx-auto px-4 sm:px-6">

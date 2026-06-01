@@ -1,25 +1,33 @@
 import type { PageMetaOptions } from "../hooks/usePageMeta";
 
-/** Paid ad landing pages — noindex, excluded from sitemap/prerender SEO */
-export const PAID_LANDING_PATHS = [
+/**
+ * Campaign landing pages under /lp/* — must stay noindex (paid ads, not organic SEO).
+ * Excluded from sitemap.xml and scripts/prerender.mjs; blocked in robots.txt.
+ */
+export const LANDING_PAGE_PATHS = [
   "/lp/paris",
   "/lp/hauts-de-seine",
   "/lp/pro",
   "/lp/particulier",
+  "/lp/demenagement-entreprise",
+  "/lp/demenagement-particulier",
+  "/lp/ile-de-france",
 ] as const;
 
+/** @deprecated Use LANDING_PAGE_PATHS */
+export const PAID_LANDING_PATHS = LANDING_PAGE_PATHS;
+
+export function isLandingPath(pathname: string): boolean {
+  const path = pathname.replace(/\/+$/, "") || "/";
+  return path === "/lp" || path.startsWith("/lp/");
+}
+
 export function isPaidLandingPath(pathname: string): boolean {
-  return PAID_LANDING_PATHS.some(
-    (p) => pathname === p || pathname === `${p}/`,
-  );
+  return isLandingPath(pathname);
 }
 
 export function isNoIndexPath(pathname: string): boolean {
-  return (
-    isPaidLandingPath(pathname) ||
-    pathname.startsWith("/lp/") ||
-    pathname.startsWith("/tunnel/")
-  );
+  return isLandingPath(pathname) || pathname.startsWith("/tunnel/");
 }
 
 function pageMeta(
@@ -37,19 +45,18 @@ function pageMeta(
 }
 
 /** Minimal meta for /lp/* pages (not meant for organic SEO) */
-function landingPageMeta(canonicalPath: string): PageMetaOptions {
-  return pageMeta(
-    "Guivarche Déménagement",
-    "Demandez votre devis de déménagement en ligne.",
-    canonicalPath,
-    { robotsNoIndex: true },
-  );
+function landingPageMeta(
+  canonicalPath: string,
+  title: string,
+  description: string,
+): PageMetaOptions {
+  return pageMeta(title, description, canonicalPath, { robotsNoIndex: true });
 }
 
 export const PAGE_META = {
   home: pageMeta(
-    "Entreprise de Déménagement pour Particuliers et Pro - Guivarche",
-    "Guivarche Déménagement, entreprise spécialisée pour particuliers et professionnels. Profitez d'un accompagnement fiable et adapté à tous vos projets de déménagement.",
+    "Déménageur Paris & IDF : Particuliers et Pro - Guivarche",
+    "Guivarche, déménageur à Paris et Île-de-France. Équipes salariées, devis sous 24h, solutions particuliers et entreprises. Estimez votre projet en ligne.",
     "/",
   ),
   tarif: pageMeta(
@@ -63,13 +70,13 @@ export const PAGE_META = {
     "/solution",
   ),
   faq: pageMeta(
-    "FAQ Déménagement : Tarifs, Délais et Organisation - Guivarche",
-    "Retrouvez les réponses aux questions fréquentes sur nos services de déménagement, nos tarifs, délais d'intervention et modalités d'organisation.",
+    "FAQ Déménagement : Tarifs, Délais, Devis | Guivarche",
+    "Tarifs, délais, assurance, emballage : toutes vos questions sur le déménagement avec Guivarche. Réponses claires et devis gratuit sous 24 h pour votre projet.",
     "/faq",
   ),
   demenagementParticulier: pageMeta(
     "Service de Déménagement pour Particuliers - Guivarche",
-    "Simplifiez votre déménagement particulier avec une équipe expérimentée, des services adaptés et un suivi complet.",
+    "Déménagement particulier clé en main à Paris et en Île-de-France. Équipe expérimentée, emballage, transport sécurisé et devis gratuit sous 24 h.",
     "/demenagement-particulier",
   ),
   demenagementEntreprise: pageMeta(
@@ -98,13 +105,13 @@ export const PAGE_META = {
     "/mentions-legales",
   ),
   ileDeFrance: pageMeta(
-    "Déménagement en Île-de-France : Paris et Banlieue - Guivarche",
-    "Déménagement en Île-de-France avec une équipe réactive à Paris et en petite couronne. Devis rapide, protection du mobilier et interventions soignées.",
+    "Déménageur Île-de-France : Paris & Banlieue - Guivarche",
+    "Guivarche vous accompagne en Île-de-France : Paris, petite couronne et départements limitrophes. Équipes salariées, devis sous 24 h et transport sécurisé.",
     "/ile-de-france",
   ),
   demenagementNational: pageMeta(
-    "Déménagement National : Longue Distance en France - Guivarche",
-    "Organisez votre déménagement national en toute sérénité : transport sécurisé, planification rigoureuse et suivi clair partout en France métropolitaine.",
+    "Déménagement National & Longue Distance - Guivarche",
+    "Organisez votre déménagement longue distance en France avec Guivarche. Transport sécurisé, planification rigoureuse et suivi personnalisé de bout en bout.",
     "/demenagement-national",
   ),
   international: pageMeta(
@@ -113,8 +120,8 @@ export const PAGE_META = {
     "/international",
   ),
   formulesDemenagement: pageMeta(
-    "Formules de Déménagement : Économique, Standard, Premium - Guivarche",
-    "Comparez nos formules de déménagement et estimez votre budget. Choisissez l'offre adaptée à votre volume, vos dates et votre niveau de service.",
+    "Formules Déménagement : Éco, Standard, Luxe | Guivarche",
+    "Prix au m³, kilomètres et accès : comparez nos formules Économique, Standard et Luxe. Estimez votre budget à Paris et en IDF. Devis ferme gratuit sous 24 h.",
     "/formules-demenagement",
   ),
   enConstruction: pageMeta(
@@ -127,13 +134,41 @@ export const PAGE_META = {
     "La page demandée est introuvable. Retournez à l'accueil ou contactez Guivarche Déménagement pour votre projet de déménagement.",
     "/",
   ),
-  lpParis: landingPageMeta("/lp/paris"),
-  lpHautsDeSeine: landingPageMeta("/lp/hauts-de-seine"),
-  lpPro: landingPageMeta("/lp/pro"),
-  lpParticulier: landingPageMeta("/lp/particulier"),
-  lpDemenagementEntreprise: landingPageMeta("/lp/demenagement-entreprise"),
-  lpDemenagementParticulier: landingPageMeta("/lp/demenagement-particulier"),
-  lpIleDeFrance: landingPageMeta("/lp/ile-de-france"),
+  lpParis: landingPageMeta(
+    "/lp/paris",
+    "Déménageur à Paris : Devis Gratuit sous 24h - Guivarche",
+    "Demandez votre devis de déménagement à Paris. Guivarche intervient dans tous les arrondissements avec des équipes salariées et un accompagnement sur mesure.",
+  ),
+  lpHautsDeSeine: landingPageMeta(
+    "/lp/hauts-de-seine",
+    "Déménageur Hauts-de-Seine : Devis Rapide - Guivarche",
+    "Déménagement dans les Hauts-de-Seine (92) avec Guivarche. Devis gratuit et interventions soignées à Neuilly, Boulogne, La Défense et alentours.",
+  ),
+  lpPro: landingPageMeta(
+    "/lp/pro",
+    "Déménagement Professionnel : Devis Entreprise - Guivarche",
+    "Transférez vos bureaux ou locaux professionnels avec Guivarche. Planification rigoureuse et continuité d'activité garantie pour votre entreprise.",
+  ),
+  lpParticulier: landingPageMeta(
+    "/lp/particulier",
+    "Déménagement Particulier : Devis Gratuit - Guivarche",
+    "Préparez votre déménagement particulier sereinement avec Guivarche. Emballage, transport sécurisé et devis personnalisé sous 24 h en Île-de-France.",
+  ),
+  lpDemenagementEntreprise: landingPageMeta(
+    "/lp/demenagement-entreprise",
+    "Déménagement d'Entreprise : Devis Pro - Guivarche",
+    "Organisez le déménagement de votre entreprise avec Guivarche. Transfert de bureaux, matériel et archives avec une équipe dédiée et un planning maîtrisé.",
+  ),
+  lpDemenagementParticulier: landingPageMeta(
+    "/lp/demenagement-particulier",
+    "Déménagement Particulier Paris : Devis - Guivarche",
+    "Estimez votre déménagement particulier en ligne avec Guivarche. Formules adaptées, équipes 100 % salariées et intervention rapide à Paris et en Île-de-France.",
+  ),
+  lpIleDeFrance: landingPageMeta(
+    "/lp/ile-de-france",
+    "Déménageur Île-de-France : Devis sous 24h - Guivarche",
+    "Déménagement en Île-de-France avec Guivarche. Paris, petite couronne et départements limitrophes : devis gratuit, protection du mobilier et équipes expérimentées.",
+  ),
 } as const satisfies Record<string, PageMetaOptions>;
 
 export const BLOG_ARTICLE_META: Record<
@@ -163,26 +198,26 @@ export const BLOG_ARTICLE_META: Record<
   "checklist-ultime-demenagement": {
     title: "Check-list Ultime pour un Déménagement Sans Oublis - Guivarche",
     description:
-      "Ne rien oublier grâce à notre liste complète des tâches à effectuer avant, pendant et après votre déménagement.",
+      "Ne rien oublier avant votre déménagement : notre check-list complète des tâches à planifier avant, pendant et après le jour J, avec conseils pratiques de Guivarche.",
   },
   "demenager-avec-enfants-guide-pratique": {
     title: "Déménager avec des Enfants : Guide Pratique - Guivarche",
     description:
-      "Comment impliquer vos enfants dans le processus et rendre cette transition plus facile pour toute la famille.",
+      "Comment impliquer vos enfants dans le déménagement et rendre cette transition plus sereine. Conseils concrets pour organiser le jour J en famille.",
   },
   "erreurs-eviter-demenagement": {
     title: "Erreurs à Éviter Lors d'un Déménagement - Guivarche",
     description:
-      "Apprenez des expériences des autres et évitez les pièges les plus courants pour un déménagement sans accroc.",
+      "Découvrez les erreurs les plus fréquentes lors d'un déménagement et comment les éviter. Retours d'expérience et conseils pour un transfert sans surprise.",
   },
   "budget-demenagement-economies": {
-    title: "Budget Déménagement : Astuces pour Faire des Économies - Guivarche",
+    title: "Budget Déménagement : Astuces pour Économiser - Guivarche",
     description:
-      "Nos astuces pour réduire les coûts de votre déménagement sans compromettre la qualité du service.",
+      "Réduisez le coût de votre déménagement sans sacrifier la qualité. Astuces de planification, choix de formule et bonnes pratiques pour optimiser votre budget.",
   },
   "assurance-demenagement-guide-complet": {
     title: "Assurance Déménagement : Guide Complet - Guivarche",
     description:
-      "Les différentes options d'assurance pour protéger vos biens pendant le transport et éviter les mauvaises surprises.",
+      "Comprenez les options d'assurance déménagement pour protéger vos biens pendant le transport. Garanties, franchises et conseils pour choisir la bonne couverture.",
   },
 };

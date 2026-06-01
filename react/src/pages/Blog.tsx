@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Search, Calendar, Clock, ArrowRight, User, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "../components/layout/Header";
@@ -15,7 +15,6 @@ function articleCountLabel(n: number) {
 export default function Blog() {
   usePageMeta(PAGE_META.blog);
 
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tous");
 
@@ -116,10 +115,10 @@ export default function Blog() {
             
             <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
               {featuredPostsDisplayed.map((post) => (
-                <article
+                <Link
                   key={post.id}
-                  onClick={() => post.slug && navigate(`/blog/${post.slug}`)}
-                  className="group relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                  to={`/blog/${post.slug}`}
+                  className="group relative block bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
                 >
                   <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
                     <img
@@ -160,7 +159,7 @@ export default function Blog() {
                       <ArrowRight className="w-5 h-5 text-[#CC922F] group-hover:translate-x-2 transition-transform" />
                     </div>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </section>
@@ -189,10 +188,10 @@ export default function Blog() {
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {regularPosts.map((post) => (
-                <article
+                <Link
                   key={post.id}
-                  onClick={() => post.slug && navigate(`/blog/${post.slug}`)}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                  to={`/blog/${post.slug}`}
+                  className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="relative h-56 overflow-hidden">
                     <img
@@ -232,7 +231,7 @@ export default function Blog() {
                       </div>
                     </div>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           )}

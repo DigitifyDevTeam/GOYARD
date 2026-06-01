@@ -21,6 +21,7 @@ import {
   gradientCtaPrimaryClass,
 } from "../components/gradientCtaStyles";
 import InteractiveImageBentoGallery from "../components/bento-gallery";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import TarificationSection from "../components/TarificationSection";
 import { BentoDemo } from "../components/demo1";
 import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.jpg";
@@ -251,10 +252,10 @@ function Group743() {
   return (
     <div className="absolute contents left-[calc(50%+0.5px)] top-[71px] translate-x-[-50%]">
       <Group715 />
-      <h1 className="absolute font-['Poppins',_sans-serif] font-[800] leading-[1.2] left-[calc(50%+0.5px)] not-italic text-[50px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">
+      <p className="absolute font-['Poppins',_sans-serif] font-[800] leading-[1.2] left-[calc(50%+0.5px)] not-italic text-[50px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">
         <span className="block">Guivarche Déménagement</span>
         <span className="block text-[28px] font-[600] text-white/90 mt-2">L'exigence des grands déménageurs</span>
-      </h1>
+      </p>
     </div>
   );
 }
@@ -399,6 +400,7 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <>
+      <h1 className="sr-only">Guivarche Déménagement — L&apos;exigence des grands déménageurs</h1>
       {/* Desktop hero (>= lg) */}
       <div className="hidden lg:block h-[600px] overflow-clip relative shrink-0 desktop-canvas">
         <Group744 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
@@ -410,10 +412,10 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           <div className="absolute inset-0 bg-black/55" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
-          <h1 className="font-['Poppins',_sans-serif] font-[800] leading-tight text-2xl sm:text-4xl text-white mb-6 sm:mb-8 max-w-xl">
+          <p className="font-['Poppins',_sans-serif] font-[800] leading-tight text-2xl sm:text-4xl text-white mb-6 sm:mb-8 max-w-xl" aria-hidden="true">
             <span className="block">Guivarche Déménagement</span>
             <span className="block text-lg sm:text-2xl font-[600] text-white/90 mt-2">L'exigence des grands déménageurs</span>
-          </h1>
+          </p>
           <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-white/80 mb-8 sm:mb-10 max-w-xl">
             Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée pour un déménagement en toute confiance.
           </p>
@@ -895,40 +897,7 @@ export function _Group750() {
 
 
 function Frame23() {
-  useEffect(() => {
-    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
-    const script = document.createElement('script');
-    script.src = 'https://elfsightcdn.com/platform.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
-  return (
-    <>
-    {/* Desktop: section title + Google Reviews widget */}
-    <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-      <div className="text-center section-px">
-        <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-          Ce que nos clients disent de nous{"\u00A0!"}
-        </h2>
-      </div>
-      <div className="mt-8 flex justify-center">
-      <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
-      </div>
-    </div>
-    {/* Mobile: section title + Google Reviews widget */}
-    <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto text-center">
-        <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-          Ce que nos clients disent de nous{"\u00A0!"}
-        </h2>
-      </div>
-      <div className="mt-6 flex justify-center">
-      <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
-      </div>
-    </div>
-    </>
-  );
+  return <GoogleReviewsSection />;
 }
 
 function Frame2147226601() {
@@ -2157,6 +2126,8 @@ function Content01() {
       {/* Desktop features */}
       <div className="hidden lg:grid leading-[0] place-items-start relative shrink-0 desktop-canvas" data-name="Content 01">
         <Bg />
+        <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[820px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">Déclarez vos affaires en toute simplicité, rapidité et précision</h2>
+        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[820px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">3 méthodes simples pour estimer votre déménagement.</p>
         <div className="[grid-area:1_/_1] ml-[120px] mt-[90px] relative" data-name="Bitmap">
           <div className="bg-white p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
             <div className="h-[490px] w-[500px] overflow-hidden rounded-[24px] relative">
@@ -2194,8 +2165,6 @@ function Content01() {
             <p className="font-['Poppins',_sans-serif] font-[500] text-[16px] leading-[26px] text-[#161c2d] opacity-70 tracking-[-0.2px]">Renseignez vos m² et obtenez une estimation rapide du volume.</p>
           </div>
         </div>
-        <h2 className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-normal leading-[78px] ml-[820px] mt-[107px] not-italic relative text-[#161c2d] text-[48px] tracking-[-1.8px] w-[877px]">Déclarez vos affaires en toute simplicité, rapidité et précision</h2>
-        <p className="[grid-area:1_/_1] font-['Poppins',_sans-serif] font-[500] leading-[32px] ml-[820px] mt-[285px] not-italic opacity-70 relative text-[#161c2d] text-[19px] tracking-[-0.2px] w-[606px]">3 méthodes simples pour estimer votre déménagement.</p>
       </div>
       {/* Mobile features */}
       <div className="lg:hidden w-full py-10 sm:py-14 px-4 sm:px-6">
@@ -2477,7 +2446,7 @@ function Frame724() {
         </div>
       </div>
       <div className="absolute capitalize flex flex-col font-['Poppins',_sans-serif] font-[700] h-[229px] justify-center leading-[0] left-[74px] not-italic text-[40px] text-white top-[114.5px] tracking-[0.8px] translate-y-[-50%] w-[253px]">
-        <h3 className="leading-[50px]">vestibulum feugiat</h3>
+        <p className="leading-[50px]">vestibulum feugiat</p>
       </div>
     </div>
   );
@@ -2617,7 +2586,7 @@ function Frame723() {
         </div>
       </div>
       <div className="absolute capitalize flex flex-col font-['Poppins',_sans-serif] font-[700] h-[229px] justify-center leading-[0] left-[85px] not-italic text-[40px] text-white top-[114.5px] tracking-[0.8px] translate-y-[-50%] w-[253px]">
-        <h3 className="leading-[50px]">Maecenas a lacinia</h3>
+        <p className="leading-[50px]">Maecenas a lacinia</p>
       </div>
       <Group727 />
     </div>
@@ -2737,7 +2706,7 @@ function Frame726() {
         </div>
       </div>
       <div className="absolute capitalize flex flex-col font-['Poppins',_sans-serif] font-[700] h-[229px] justify-center leading-[0] left-[72px] not-italic text-[40px] text-white top-[114.5px] tracking-[0.8px] translate-y-[-50%] w-[253px]">
-        <h3 className="leading-[50px]">scelerisque luctus</h3>
+        <p className="leading-[50px]">scelerisque luctus</p>
       </div>
       <div
         className="absolute flex h-[calc(1px*((var(--transform-inner-width)*0.7071067690849304)+(var(--transform-inner-height)*0.7071067690849304)))] items-center justify-center left-[-125px] top-[-17px] w-[calc(1px*((var(--transform-inner-height)*0.7071067690849304)+(var(--transform-inner-width)*0.7071067690849304)))]"
@@ -2843,8 +2812,8 @@ function Frame700() {
             </svg>
           </div>
         </div>
-        <h2 className="absolute font-['Poppins',_sans-serif] font-[600] leading-[62px] left-[calc(50%+0.5px)] not-italic text-[51px] text-center text-nowrap text-white top-[46px] translate-x-[-50%] whitespace-pre">Préparer son déménagement</h2>
-        <p className="absolute font-['Poppins',_sans-serif] font-[500] leading-[normal] left-[calc(50%-290px)] not-italic text-[20px] text-nowrap text-slate-50 top-[114px] whitespace-pre">L'organisation sans stress, pour un nouveau départ réussi</p>
+        <h2 className="absolute font-['Poppins',_sans-serif] font-[600] leading-[62px] left-[calc(50%+0.5px)] not-italic text-[51px] text-center text-nowrap text-white top-[46px] translate-x-[-50%] whitespace-pre hidden lg:block">Préparer son déménagement</h2>
+        <p className="absolute font-['Poppins',_sans-serif] font-[500] leading-[normal] left-[calc(50%-290px)] not-italic text-[20px] text-nowrap text-slate-50 top-[114px] whitespace-pre hidden lg:block" aria-hidden="true">L'organisation sans stress, pour un nouveau départ réussi</p>
         <Frame725 />
       </div>
       {/* Mobile tutorials */}
@@ -3114,9 +3083,9 @@ function Group759({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <div className="absolute contents left-[312px] top-[463px]">
       <Group724 post={post} />
-      <h3 className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[312px] not-italic text-[24px] text-black top-[496px] w-[617px] line-clamp-2">
+      <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[normal] left-[312px] not-italic text-[24px] text-black top-[496px] w-[617px] line-clamp-2">
         {post?.title ?? "Mauris malesuada condimentum elementum."}
-      </h3>
+      </p>
       <p className="absolute font-['Inter',_sans-serif] font-[600] leading-[24px] left-[312px] not-italic text-[#62748e] text-[16px] top-[538px] w-[617px] line-clamp-3">
         {post?.excerpt ?? "Duis elementum orci odio, a ullamcorper purus sagittis porttitor. Cras quis lacinia velit. Donec varius augue nec faucibus fringilla."}
       </p>

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FormDataManager } from "../utils/formDataManager";
+
+const DEVIS_CONFIRMATION_PATH = "/tunnel/devis/confirmation";
 import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
@@ -12,8 +15,10 @@ import {
 import { InterventionMapParis75 } from "../components/intervention-map";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 import { cn } from "../lib/utils";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { EXTERNAL_LINK_REL } from "../constants/externalLink";
 
 const PARIS_GOOGLE_REVIEWS_URL =
   "https://www.google.com/search?hl=fr-TN&gl=tn&q=Guivarche+D%C3%A9m%C3%A9nagement,+25+Rue+de+C%C3%AEteaux,+75012+Paris,+France&ludocid=449127112689032564&lsig=AB86z5WRT9msHEVSPtou8m9KcU8X#lrd=0x47e67304c6ac24e3:0x63b9ebabad39d74,3";
@@ -26,7 +31,7 @@ function ParisGoogleReviewsPill({ className }: Readonly<{ className?: string }>)
     <a
       href={PARIS_GOOGLE_REVIEWS_URL}
       target="_blank"
-      rel="noopener noreferrer"
+      rel={EXTERNAL_LINK_REL}
       className={cn(
         PARIS_TRUST_PILL_CLASS,
         "bg-[#111827]/90 text-white transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2",
@@ -85,9 +90,9 @@ export function ParisHeroServicePitch({
 }: Readonly<{ className?: string; showAnimatedPhone?: boolean }>) {
   return (
     <div className={className}>
-      <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl lg:text-[2.2rem] lg:leading-tight tracking-tight">
+      <p className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl lg:text-[2.2rem] lg:leading-tight tracking-tight">
         L'exigence des grands déménageurs
-      </h2>
+      </p>
       <p className="mt-3 text-slate-600 text-base sm:text-lg leading-relaxed">
         Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée
       </p>
@@ -117,8 +122,8 @@ const ASCENSEUR_OPTIONS = ["Non", "Oui 2 personnes", "Oui 4 personnes", "Oui 6 p
 
 export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
   const { entryPage } = props ?? {};
+  const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     type: "Particulier",
     nom: "",
@@ -196,8 +201,13 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
       });
       const data = await res.json();
       if (data?.success) {
-        setSubmitted(true);
-        if (data?.data?.id) localStorage.setItem("clientId", String(data.data.id));
+        const clientId = data?.data?.id;
+        if (clientId) {
+          FormDataManager.markFormSubmitted(clientId);
+        } else {
+          FormDataManager.markFormSubmitted();
+        }
+        navigate(DEVIS_CONFIRMATION_PATH);
       } else {
         alert(data?.message || "Une erreur est survenue.");
       }
@@ -207,18 +217,6 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
       setSubmitting(false);
     }
   };
-
-  if (submitted) {
-    return (
-      <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-8 sm:p-12 text-center max-w-2xl mx-auto">
-        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 mb-5">
-          <CheckCircle2 className="h-8 w-8 text-emerald-500" />
-        </div>
-        <h3 className="font-['Poppins',sans-serif] font-bold text-[#191919] text-2xl">Demande envoyée !</h3>
-        <p className="mt-3 text-slate-600">Nous avons bien reçu votre demande de devis. Notre équipe vous recontactera sous 24h.</p>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit} className="rounded-3xl bg-white border border-slate-100 shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-6 sm:p-8 lg:p-10 max-w-5xl mx-auto">
@@ -400,46 +398,6 @@ export default function Paris() {
       <Header onGetQuote={primaryCta} />
 
       <main>
-        {/* Devis complet — full quote form */}
-        <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
-          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
-            <div className="text-center mb-10 sm:mb-14">
-              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
-              Obtenez un Devis Gratuit en 24H
-              </h2>
-              <p className="mt-4 mx-auto max-w-2xl rounded-xl border border-[#CC922F]/35 bg-[#CC922F]/12 px-4 py-3 sm:px-5 sm:py-4 text-[#191919] text-base sm:text-lg leading-relaxed shadow-[0_4px_20px_rgba(204,146,47,0.12)]">
-                Confiez votre déménagement à nos équipes.{" "}
-                <span className="font-bold text-[#CC922F] underline decoration-[#CC922F]/50 decoration-2 underline-offset-4">
-                  Nous proposons les tarifs les moins élevés d&apos;Île-de-France.
-                </span>
-              </p>
-            </div>
-
-            <DevisForm />
-          </div>
-        </section>
- {/* Desktop: section title + Google Reviews widget */}
- <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-          <div className="text-center section-px">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
-          </div>
-        </div>
-        {/* Mobile: section title + Google Reviews widget */}
-        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-6 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
-          </div>
-        </div>
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_15%_20%,rgba(204,146,47,0.22),transparent_60%),radial-gradient(900px_500px_at_85%_10%,rgba(25,25,25,0.10),transparent_55%)]" />
@@ -492,6 +450,27 @@ export default function Paris() {
             </div>
           </div>
         </section>
+
+        {/* Devis complet — full quote form */}
+        <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
+          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
+            <div className="text-center mb-10 sm:mb-14">
+              <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
+                Obtenez un Devis Gratuit en 24H
+              </h2>
+              <p className="mt-4 mx-auto max-w-2xl rounded-xl border border-[#CC922F]/35 bg-[#CC922F]/12 px-4 py-3 sm:px-5 sm:py-4 text-[#191919] text-base sm:text-lg leading-relaxed shadow-[0_4px_20px_rgba(204,146,47,0.12)]">
+                Confiez votre déménagement à nos équipes.{" "}
+                <span className="font-bold text-[#CC922F] underline decoration-[#CC922F]/50 decoration-2 underline-offset-4">
+                  Nous proposons les tarifs les moins élevés d&apos;Île-de-France.
+                </span>
+              </p>
+            </div>
+
+            <DevisForm />
+          </div>
+        </section>
+
+        <GoogleReviewsSection />
 
         {/* Paris 75 — carte & zone */}
         <section className="mt-0">

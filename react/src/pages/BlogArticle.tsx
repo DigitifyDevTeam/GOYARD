@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -1136,6 +1136,7 @@ const articles: Record<string, any> = {
 const relatedArticles = [
   {
     id: 2,
+    slug: "comment-emballer-objets-fragiles",
     title: "Comment emballer vos objets fragiles",
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&auto=format&fit=crop&q=80",
     category: "Astuces",
@@ -1143,6 +1144,7 @@ const relatedArticles = [
   },
   {
     id: 4,
+    slug: "checklist-ultime-demenagement",
     title: "Check-list ultime pour votre déménagement",
     image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&auto=format&fit=crop&q=80",
     category: "Organisation",
@@ -1150,6 +1152,7 @@ const relatedArticles = [
   },
   {
     id: 6,
+    slug: "erreurs-eviter-demenagement",
     title: "Les erreurs à éviter lors d'un déménagement",
     image: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=400&auto=format&fit=crop&q=80",
     category: "Conseils",
@@ -1349,9 +1352,9 @@ export default function BlogArticle() {
                         <span>TikTok</span>
                       </button>
                       <a
-                        href="https://www.pagesjaunes.fr/"
+                        href="https://www.pagesjaunes.fr/pros/64768014"
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="nofollow noopener noreferrer"
                         className="flex items-center gap-3 w-full px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                       >
                         <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
@@ -1517,32 +1520,33 @@ export default function BlogArticle() {
               </h2>
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {relatedArticles.map((related) => (
-                  <motion.div
-                    key={related.id}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
-                    whileHover={{ y: -5 }}
-                  >
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={related.image}
-                        alt={getBlogImageAlt(related.image, related.title)}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute top-3 right-3">
-                        <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-[#1C3957] text-xs font-semibold rounded-full">
-                          {related.category}
-                        </span>
+                  <motion.div key={related.id} whileHover={{ y: -5 }}>
+                    <Link
+                      to={`/blog/${related.slug}`}
+                      className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={related.image}
+                          alt={getBlogImageAlt(related.image, related.title)}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute top-3 right-3">
+                          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-[#1C3957] text-xs font-semibold rounded-full">
+                            {related.category}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#CC922F] transition-colors line-clamp-2">
-                        {related.title}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <Clock className="w-4 h-4" />
-                        <span>{related.readTime} de lecture</span>
+                      <div className="p-6">
+                        <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#CC922F] transition-colors line-clamp-2">
+                          {related.title}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <Clock className="w-4 h-4" />
+                          <span>{related.readTime} de lecture</span>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </motion.div>
                 ))}
               </div>

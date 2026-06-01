@@ -1,6 +1,7 @@
 import { Phone, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CONTACT_PHONE_ARIA, CONTACT_PHONE_HREF } from "../constants/contactPhone";
+import { EXTERNAL_LINK_REL } from "../constants/externalLink";
 
 /** WhatsApp sticky button — unchanged; separate from the main call line */
 const STICKY_WHATSAPP_E164 = "+33746326678";
@@ -27,7 +28,7 @@ export default function StickyContactButtons() {
       <a
         href={whatsappHref}
         target="_blank"
-        rel="noopener noreferrer"
+        rel={EXTERNAL_LINK_REL}
         className={`${buttonClassName} pointer-events-auto bg-[#1f7a3a] hover:bg-[#1a6a33]`}
         aria-label="WhatsApp"
       >

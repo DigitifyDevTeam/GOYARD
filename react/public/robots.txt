@@ -1,3 +1,4 @@
+# Campaign landings (/lp/*) and quote tunnel: no organic SEO — use noindex + Disallow
 User-agent: Googlebot
 Allow: /
 Disallow: /tunnel/
@@ -10,9 +11,11 @@ Disallow: /lp/
 
 User-agent: Twitterbot
 Allow: /
+Disallow: /lp/
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /lp/
 
 User-agent: *
 Allow: /

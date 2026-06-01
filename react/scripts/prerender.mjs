@@ -19,7 +19,7 @@ const blogSlugs = [
   'assurance-demenagement-guide-complet',
 ]
 
-// /lp/* excluded: paid landing + campaign pages are noindex (see robots.txt)
+// /lp/* excluded from prerender (noindex campaign landings — see LANDING_PAGE_PATHS in pageMeta.ts, robots.txt)
 const routes = [
   '/',
   '/ile-de-france',

@@ -40,6 +40,12 @@ function setCanonical(href: string) {
   link.href = href;
 }
 
+function removeCanonical() {
+  document.querySelectorAll('link[rel="canonical"]').forEach((el) => el.remove());
+}
+
+const NOINDEX_ROBOTS = "noindex, follow";
+
 export function usePageMeta({
   title,
   description,
@@ -49,10 +55,18 @@ export function usePageMeta({
   useEffect(() => {
     document.title = title;
     setMetaDescription(description);
-    setRobots(robotsNoIndex ? "noindex,follow" : "index,follow");
 
-    if (canonicalPath && !robotsNoIndex) {
-      const path = canonicalPath.startsWith("/") ? canonicalPath : `/${canonicalPath}`;
+    if (robotsNoIndex) {
+      setRobots(NOINDEX_ROBOTS);
+      removeCanonical();
+      return;
+    }
+
+    setRobots("index, follow");
+    if (canonicalPath) {
+      const path = canonicalPath.startsWith("/")
+        ? canonicalPath
+        : `/${canonicalPath}`;
       setCanonical(`${SITE_ORIGIN}${path}`);
     }
   }, [title, description, canonicalPath, robotsNoIndex]);

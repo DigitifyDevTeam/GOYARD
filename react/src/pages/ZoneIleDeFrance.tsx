@@ -9,6 +9,7 @@ import {
   gradientCtaPrimaryClass,
 } from "../components/gradientCtaStyles";
 import { InterventionMapIleDeFrance } from "../components/intervention-map";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 
@@ -312,28 +313,7 @@ export default function ZoneIleDeFrance() {
             </div>
           </div>
         </section>
-        {/* Desktop: section title + Google Reviews widget */}
-        <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-          <div className="text-center section-px">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
-          </div>
-        </div>
-        {/* Mobile: section title + Google Reviews widget */}
-        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-6 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
-          </div>
-        </div>
+        <GoogleReviewsSection />
         {/* CTA final */}
         <section className="w-full bg-gray-50 py-12 sm:py-16 lg:py-20">
           <div className="container mx-auto px-4 sm:px-6">

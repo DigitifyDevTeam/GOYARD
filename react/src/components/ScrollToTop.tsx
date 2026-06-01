@@ -19,7 +19,7 @@ export default function ScrollToTop() {
 
     robotsMeta.setAttribute(
       "content",
-      isNoIndexPath(pathname) ? "noindex,follow" : "index,follow",
+      isNoIndexPath(pathname) ? "noindex, follow" : "index, follow",
     );
   }, [pathname]);
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import GlobeFeatureSection from "../components/ui/globe-feature-section";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
@@ -207,7 +208,7 @@ export default function Contact() {
                   </div>
 
                   {/* Facebook */}
-                  <a href="https://www.facebook.com/profile.php?id=61587408931997" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
+                  <a href="https://www.facebook.com/profile.php?id=61587408931997" target="_blank" rel="nofollow noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#1877F2] rounded-full flex items-center justify-center">
                       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -220,7 +221,7 @@ export default function Contact() {
                   </a>
 
                   {/* Instagram */}
-                  <a href="https://www.instagram.com/guivarche_demenagement/" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
+                  <a href="https://www.instagram.com/guivarche_demenagement/" target="_blank" rel="nofollow noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
                     <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-full flex items-center justify-center">
                       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.405a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
@@ -246,7 +247,7 @@ export default function Contact() {
                   </div>
 
                   {/* YouTube */}
-                  <a href="https://www.youtube.com/@Guivarchedem" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
+                  <a href="https://www.youtube.com/@Guivarchedem" target="_blank" rel="nofollow noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#FF0000] rounded-full flex items-center justify-center">
                       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -259,7 +260,7 @@ export default function Contact() {
                   </a>
 
                   {/* TikTok */}
-                  <a href="https://www.tiktok.com/@guivarche_demenagement" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
+                  <a href="https://www.tiktok.com/@guivarche_demenagement" target="_blank" rel="nofollow noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
                     <div className="flex-shrink-0 w-14 h-14 bg-black rounded-full flex items-center justify-center">
                       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
@@ -272,7 +273,7 @@ export default function Contact() {
                   </a>
 
                   {/* Pages Jaunes */}
-                  <a href="https://www.pagesjaunes.fr/pros/64768014" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
+                  <a href="https://www.pagesjaunes.fr/pros/64768014" target="_blank" rel="nofollow noopener noreferrer" className="flex items-start space-x-4 sm:space-x-5 p-5 sm:p-8 bg-gray-50 rounded-xl hover:shadow-md transition-shadow hover:opacity-90">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#FFD700] rounded-full flex items-center justify-center">
                       <svg className="w-7 h-7 text-[#333]" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
@@ -419,28 +420,7 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* Desktop: section title + Google Reviews widget */}
- <div className="hidden lg:block w-full max-w-[1920px] bg-white pt-20 pb-12">
-          <div className="text-center section-px">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-3xl lg:text-4xl xl:text-[51px] xl:leading-[62px] text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277" data-elfsight-app-lazy />
-          </div>
-        </div>
-        {/* Mobile: section title + Google Reviews widget */}
-        <div className="lg:hidden w-full bg-white pt-16 pb-10 sm:pt-20 sm:pb-12 px-4 sm:px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-['Poppins',_sans-serif] font-[600] text-2xl sm:text-3xl text-black">
-              Ce que nos clients disent de nous !
-            </h2>
-          </div>
-          <div className="mt-6 flex justify-center">
-            <div className="elfsight-app-402ccb84-5c20-4877-9afd-70877cb72277 w-full" data-elfsight-app-lazy />
-          </div>
-        </div>
+        <GoogleReviewsSection />
       </main>
       
       <Footer />
