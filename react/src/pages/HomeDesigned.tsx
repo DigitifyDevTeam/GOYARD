@@ -358,7 +358,7 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           <img
             alt={SITE_IMAGE_ALTS.heroDesktop}
             className="absolute inset-0 w-full h-full object-cover"
-            src="/hero.png"
+            src="/hero.webp"
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/55" />
