@@ -6313,7 +6313,8 @@ export default function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/tarification" element={<Tarification />} />
+        <Route path="/tarif" element={<Tarification />} />
+        <Route path="/tarification" element={<Navigate to="/tarif" replace />} />
         <Route path="/formules-demenagement" element={<FormulesDemenagement />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />

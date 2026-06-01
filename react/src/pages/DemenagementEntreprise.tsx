@@ -28,6 +28,8 @@ import {
   gradientCtaPrimaryButtonClass,
 } from "@/components/gradientCtaStyles";
 import TarificationSection from "@/components/TarificationSection";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 import InteractiveImageBentoGallery from "@/components/bento-gallery";
 
 // ─── Professionnel Data ───────────────────────────────────────────
@@ -378,6 +380,8 @@ function GoogleReviewsSection() {
 // ─── Main Component ───────────────────────────────────────────────
 
 export default function DemenagementEntreprise() {
+  usePageMeta(PAGE_META.demenagementEntreprise);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />

@@ -23,13 +23,16 @@ import {
 import InteractiveImageBentoGallery from "../components/bento-gallery";
 import TarificationSection from "../components/TarificationSection";
 import { BentoDemo } from "../components/demo1";
-import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.png";
-import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.png";
-import imgRectangle1 from "../assets/d41ef5adf9f05c54ecad13585f3b21dd4df4b048.png";
+import imgRectangle2 from "../assets/a93f87ef4032e03a68eee0916e20dc8b5fe4cd74.jpg";
+import imgRectangle3 from "../assets/8d38f461f226bc9614f9b8c825d1b3083ac5eba1.jpg";
+import imgRectangle1 from "../assets/d41ef5adf9f05c54ecad13585f3b21dd4df4b048.jpg";
 import imgDigitalCollectionThumbnailHandlerAshx from "../assets/53b766c44171f9376cc8a1dee761e4f33c290361.png";
 import imgLogoDidomiPng from "../assets/3c0a284d49ffbfd1086bdb506d30c9aab84f0f53.png";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 import img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic from "../assets/67595fbf992984e9ed9dbc8317fb35438187dcd8.png";
 import imgMidiLibrePng from "../assets/a9ebad2e02ff8cd3779f21f2156198dd44f1986d.png";
+import { SITE_IMAGE_ALTS } from "../seo/imageAlts";
 import { blogPosts } from "../data/blogPosts";
 
 function Group721() {
@@ -353,7 +356,7 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
         >
           {/* Full-width hero image: recommended dimension 1920x600 */}
           <img
-            alt=""
+            alt={SITE_IMAGE_ALTS.heroDesktop}
             className="absolute inset-0 w-full h-full object-cover"
             src="/hero.png"
           />
@@ -403,7 +406,7 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
       {/* Mobile/Tablet hero (< lg) */}
       <div className="lg:hidden relative w-full overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/hero.jpeg" alt="" className="w-full h-full object-cover" />
+          <img src="/hero.jpeg" alt={SITE_IMAGE_ALTS.heroMobile} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/55" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
@@ -2157,7 +2160,7 @@ function Content01() {
         <div className="[grid-area:1_/_1] ml-[120px] mt-[90px] relative" data-name="Bitmap">
           <div className="bg-white p-[14px] rounded-[32px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)]">
             <div className="h-[490px] w-[500px] overflow-hidden rounded-[24px] relative">
-              <img alt="" className="w-full h-full object-cover" src="/ai.jpeg" />
+              <img alt={SITE_IMAGE_ALTS.aiFeature} className="w-full h-full object-cover" src="/ai.jpeg" />
               <div className="absolute inset-0 bg-black/15 pointer-events-none" />
             </div>
           </div>
@@ -2200,7 +2203,7 @@ function Content01() {
           <div className="mb-8 sm:mb-10">
             <div className="bg-white p-2.5 sm:p-3 rounded-2xl shadow-[0px_4px_24px_0px_rgba(0,0,0,0.06)] mb-8 sm:mb-10">
               <div className="relative overflow-hidden rounded-xl">
-                <img src="/ai.jpeg" alt="" className="w-full h-40 sm:h-56 object-cover" />
+                <img src="/ai.jpeg" alt={SITE_IMAGE_ALTS.aiFeature} className="w-full h-40 sm:h-56 object-cover" />
                 <div className="absolute inset-0 bg-black/15 pointer-events-none" />
               </div>
             </div>
@@ -3216,7 +3219,7 @@ function Group734({ post }: { post?: (typeof blogPosts)[0] }) {
     <a href={post ? `/blog/${post.slug}` : "#"} className="absolute contents left-[972px] top-[183px] block">
       <div className="absolute h-[214px] left-[972px] rounded-[20px] top-[183px] w-[306px]">
         <img
-          alt=""
+          alt={post?.imageAlt ?? post?.title ?? "Article du blog Guivarche Déménagement"}
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
           src={post?.image ?? imgRectangle2}
         />
@@ -3367,7 +3370,7 @@ function Group735({ post }: { post?: (typeof blogPosts)[0] }) {
     <a href={post ? `/blog/${post.slug}` : "#"} className="absolute contents left-[972px] top-[431px] block">
       <div className="absolute h-[214px] left-[972px] rounded-[20px] top-[431px] w-[306px]">
         <img
-          alt=""
+          alt={post?.imageAlt ?? post?.title ?? "Article du blog Guivarche Déménagement"}
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
           src={post?.image ?? imgRectangle3}
         />
@@ -3389,7 +3392,7 @@ function Group706({ posts }: { posts: typeof blogPosts }) {
         <a href={post0 ? `/blog/${post0.slug}` : "#"} className="absolute block inset-0 left-[312px] top-[183px] h-[244px] w-[636px] rounded-[20px] z-10" aria-label={post0?.title} />
         <div className="absolute h-[244px] left-[312px] rounded-[20px] top-[183px] w-[636px]">
           <img
-            alt=""
+            alt={post0?.imageAlt ?? post0?.title ?? "Article du blog Guivarche Déménagement"}
             className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[20px] size-full"
             src={post0?.image ?? imgRectangle1}
           />
@@ -3779,7 +3782,7 @@ function Frame701() {
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
             {topBlogPosts.map((post) => (
               <a key={post.id} href={`/blog/${post.slug}`} className="bg-white rounded-xl shadow-md overflow-hidden text-left block hover:opacity-95 transition-opacity">
-                <img src={post.image} alt="" className="w-full h-40 sm:h-48 object-cover" />
+                <img src={post.image} alt={post.imageAlt ?? post.title} className="w-full h-40 sm:h-48 object-cover" />
                 <div className="p-4 sm:p-5">
                   <p className="font-['Inter',_sans-serif] font-[600] text-xs text-[#CC922F] mb-2">{post.date}</p>
                   <h3 className="font-['Poppins',_sans-serif] font-[600] text-base sm:text-lg text-black leading-snug">{post.title}</h3>
@@ -3836,7 +3839,7 @@ function Frame2147226884() {
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <img
-            alt=""
+            alt={SITE_IMAGE_ALTS.press.revueDurable}
             className="absolute h-[530.57%] left-0 max-w-none top-[-201.55%] w-full"
             src={imgDigitalCollectionThumbnailHandlerAshx}
           />
@@ -3847,7 +3850,7 @@ function Frame2147226884() {
         data-name="logo-didomi.png"
       >
         <img
-          alt=""
+          alt={SITE_IMAGE_ALTS.press.laProvence}
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
           src={imgLogoDidomiPng}
         />
@@ -3858,7 +3861,7 @@ function Frame2147226884() {
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <img
-            alt=""
+            alt={SITE_IMAGE_ALTS.press.lExpress}
             className="absolute h-[229.36%] left-0 max-w-none top-[-61.47%] w-full"
             src={img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic}
           />
@@ -3870,7 +3873,7 @@ function Frame2147226884() {
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <img
-            alt=""
+            alt={SITE_IMAGE_ALTS.press.midiLibre}
             className="absolute h-[246.91%] left-0 max-w-none top-[-71.6%] w-full"
             src={imgMidiLibrePng}
           />
@@ -3941,9 +3944,10 @@ function Group753() {
           La presse parle de nous !
         </h2>
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-          <img src={imgLogoDidomiPng} alt="Didomi" className="h-8 sm:h-10 object-contain" />
-          <img src={img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic} alt="Press" className="h-8 sm:h-10 object-contain" />
-          <img src={imgMidiLibrePng} alt="Midi Libre" className="h-8 sm:h-10 object-contain" />
+          <img src={imgDigitalCollectionThumbnailHandlerAshx} alt={SITE_IMAGE_ALTS.press.revueDurable} className="h-8 sm:h-10 object-contain" />
+          <img src={imgLogoDidomiPng} alt={SITE_IMAGE_ALTS.press.laProvence} className="h-8 sm:h-10 object-contain" />
+          <img src={img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic} alt={SITE_IMAGE_ALTS.press.lExpress} className="h-8 sm:h-10 object-contain" />
+          <img src={imgMidiLibrePng} alt={SITE_IMAGE_ALTS.press.midiLibre} className="h-8 sm:h-10 object-contain" />
         </div>
       </div>
     </div>
@@ -4601,6 +4605,8 @@ function VenteFlash() {
 const HOME_DEPARTURE_ADDRESS_KEY = "homeDepartureAddress";
 
 export default function Home() {
+  usePageMeta(PAGE_META.home);
+
   const navigate = useNavigate();
   const [departureAddress, setDepartureAddress] = useState("");
   const [canvasZoom, setCanvasZoom] = useState(1);

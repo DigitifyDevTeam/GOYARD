@@ -19,16 +19,10 @@ const blogSlugs = [
   'assurance-demenagement-guide-complet',
 ]
 
+// /lp/* excluded: paid landing + campaign pages are noindex (see robots.txt)
 const routes = [
   '/',
   '/ile-de-france',
-  '/lp/paris',
-  '/lp/hauts-de-seine',
-  '/lp/pro',
-  '/lp/particulier',
-  '/lp/demenagement-entreprise',
-  '/lp/demenagement-particulier',
-  '/lp/ile-de-france',
   '/demenagement-national',
   '/international',
   '/contact',
@@ -39,7 +33,7 @@ const routes = [
   '/blog',
   ...blogSlugs.map(s => `/blog/${s}`),
   '/faq',
-  '/tarification',
+  '/tarif',
   '/formules-demenagement',
   '/mentions-legales',
   '/rgpd',

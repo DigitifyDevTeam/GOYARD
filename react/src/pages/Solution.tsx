@@ -22,6 +22,8 @@ import {
   gradientCtaPrimaryButtonClass,
 } from "@/components/gradientCtaStyles";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 // Feature interface
 interface Feature {
@@ -193,6 +195,8 @@ const movingFaqs = [
 
 // Main Component
 export default function Solution() {
+  usePageMeta(PAGE_META.solution);
+
   const statsRef = useRef<HTMLDivElement>(null);
 
   const features: Feature[] = [
@@ -200,7 +204,7 @@ export default function Solution() {
       step: "Étape 1",
       title: "Estimation du volume",
       content: "Évaluez votre volume de déménagement grâce à nos trois méthodes : surface habitable, liste d'objets, ou analyse IA par photos.",
-      image: "/mesurer le volume.png"
+      image: "/mesurer le volume.webp"
     },
     {
       step: "Étape 2", 

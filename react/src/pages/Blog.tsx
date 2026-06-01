@@ -5,12 +5,16 @@ import { motion } from "framer-motion";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { blogPosts, categories } from "../data/blogPosts";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 function articleCountLabel(n: number) {
   return `${n} ${n === 1 ? "article" : "articles"}`;
 }
 
 export default function Blog() {
+  usePageMeta(PAGE_META.blog);
+
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tous");
@@ -120,7 +124,7 @@ export default function Blog() {
                   <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
                     <img
                       src={post.image}
-                      alt={post.title}
+                      alt={post.imageAlt ?? post.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
@@ -193,7 +197,7 @@ export default function Blog() {
                   <div className="relative h-56 overflow-hidden">
                     <img
                       src={post.image}
-                      alt={post.title}
+                      alt={post.imageAlt ?? post.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>

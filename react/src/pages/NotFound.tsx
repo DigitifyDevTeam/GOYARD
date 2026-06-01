@@ -2,8 +2,11 @@ import { useLocation } from "react-router-dom";
 import { AlertCircle, Calculator, Home, Phone } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function NotFound() {
+  usePageMeta(PAGE_META.notFound);
   const location = useLocation();
 
   // Keep the same phone number used in the floating contact buttons.

@@ -27,6 +27,8 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 /*
 interface StatCounterProps {
@@ -348,6 +350,7 @@ function GoogleReviewsSection() {
 // ─── Main Component ───────────────────────────────────────────────
 
 export default function particulier() {
+  usePageMeta(PAGE_META.demenagementParticulier);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">

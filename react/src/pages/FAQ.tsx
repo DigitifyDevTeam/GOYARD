@@ -11,6 +11,8 @@ import { ArrowUpRight, ArrowDownLeft, Plus, Minus, Zap, ArrowRight } from "lucid
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import ImageStack from "../components/polaroid-flick-through";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 interface FAQItem {
   question: string;
@@ -263,6 +265,8 @@ const faqData: Record<string, FAQCategory> = {
 };
 
 export default function FAQ() {
+  usePageMeta(PAGE_META.faq);
+
   const [activeCategory, setActiveCategory] = useState("services");
   const [expandedItem, setExpandedItem] = useState<number | null>(0);
 

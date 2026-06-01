@@ -4,19 +4,13 @@ import LandingShell from "./components/LandingShell";
 import LpHero from "./components/LpHero";
 import LpTrustStrip from "./components/LpTrustStrip";
 import { useLandingMeta } from "./useLandingMeta";
-
-const CANONICAL = "/lp/demenagement-entreprise";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function LpDemenagementEntreprise() {
   const navigate = useNavigate();
   const primaryCta = () => navigate("/tunnel/mes-coordonnees");
 
-  useLandingMeta({
-    title: "Déménagement d'entreprise — Devis rapide | Guivarche",
-    description:
-      "Déménagement professionnel : bureaux, IT, entrepôts. Intervention planifiée, équipe dédiée et devis gratuit. Réponse sous 24h.",
-    canonicalPath: CANONICAL,
-  });
+  useLandingMeta(PAGE_META.lpDemenagementEntreprise);
 
   return (
     <LandingShell onGetQuote={primaryCta}>

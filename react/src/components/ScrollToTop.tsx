@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { isNoIndexPath } from "../seo/pageMeta";
 
 export default function ScrollToTop() {
   const { pathname } = useLocation();
@@ -16,8 +17,10 @@ export default function ScrollToTop() {
       document.head.appendChild(robotsMeta);
     }
 
-    const isLandingPage = pathname.startsWith("/lp/");
-    robotsMeta.setAttribute("content", isLandingPage ? "noindex,follow" : "index,follow");
+    robotsMeta.setAttribute(
+      "content",
+      isNoIndexPath(pathname) ? "noindex,follow" : "index,follow",
+    );
   }, [pathname]);
 
   return null;

@@ -4,19 +4,13 @@ import LandingShell from "./components/LandingShell";
 import LpHero from "./components/LpHero";
 import LpTrustStrip from "./components/LpTrustStrip";
 import { useLandingMeta } from "./useLandingMeta";
-
-const CANONICAL = "/lp/ile-de-france";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function LpIleDeFrance() {
   const navigate = useNavigate();
   const primaryCta = () => navigate("/tunnel/mes-coordonnees");
 
-  useLandingMeta({
-    title: "Déménagement Île-de-France — Paris & banlieue | Guivarche",
-    description:
-      "Déménagement en Île-de-France : Paris, petite couronne et au-delà. Devis rapide, équipes réactives, créneaux flexibles. Demandez votre estimation.",
-    canonicalPath: CANONICAL,
-  });
+  useLandingMeta(PAGE_META.lpIleDeFrance);
 
   return (
     <LandingShell onGetQuote={primaryCta}>

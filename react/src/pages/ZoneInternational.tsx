@@ -9,7 +9,12 @@ import {
   gradientCtaPrimaryClass,
 } from "../components/gradientCtaStyles";
 import { InterventionMapInternational } from "../components/intervention-map";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
+
 export default function ZoneInternational() {
+  usePageMeta(PAGE_META.international);
+
   const navigate = useNavigate();
   const primaryCta = () => navigate("/tunnel/mes-coordonnees");
 

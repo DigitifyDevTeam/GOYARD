@@ -1,20 +1,27 @@
-# Match react/public/.htaccess — deploy copies react/dist/.htaccess to document root.
+# Guivarche: document root .htaccess (build copies public/ → dist/)
+# Deploy dist to site root; keep Vite output in subfolder goyard-demenagement/
+# See backend/apache-guivarche-root.htaccess for the same template.
 
 Options -MultiViews
 
 <IfModule mod_headers.c>
-  RequestHeader set X-Forwarded-Proto "https" env=HTTPS
+    RequestHeader set X-Forwarded-Proto "https" env=HTTPS
 </IfModule>
 
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
+    RewriteEngine On
+    RewriteBase /
 
-  RewriteCond %{REQUEST_URI} ^/(api|admin|static|media|swagger|redoc)(/|$) [NC]
-  RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
+    RewriteCond %{REQUEST_URI} ^/(api|admin|static|media)(/|$) [NC]
+    RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
 
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+    RewriteRule ^assets/(.*)$ goyard-demenagement/assets/$1 [L]
+    RewriteRule ^favicon\.svg$ goyard-demenagement/favicon.svg [L]
+
+    RewriteCond %{REQUEST_URI} ^/goyard-demenagement/
+    RewriteRule ^ - [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ /goyard-demenagement/index.html [L]
 </IfModule>

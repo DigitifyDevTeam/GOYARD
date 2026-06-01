@@ -9,8 +9,12 @@ import {
   gradientCtaPrimaryClass,
 } from "../components/gradientCtaStyles";
 import { InterventionMapIleDeFrance } from "../components/intervention-map";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function ZoneIleDeFrance() {
+  usePageMeta(PAGE_META.ileDeFrance);
+
   const navigate = useNavigate();
 
   const primaryCta = () => navigate("/tunnel/mes-coordonnees");

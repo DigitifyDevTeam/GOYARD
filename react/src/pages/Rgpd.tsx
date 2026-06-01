@@ -1,7 +1,11 @@
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function Rgpd() {
+  usePageMeta(PAGE_META.rgpd);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />

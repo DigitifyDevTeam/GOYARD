@@ -1,7 +1,11 @@
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function MentionsLegales() {
+  usePageMeta(PAGE_META.mentionsLegales);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />

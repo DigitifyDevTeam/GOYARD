@@ -27,6 +27,8 @@ import {
   gradientCtaOutlineButtonClass,
   gradientCtaPrimaryButtonClass,
 } from "../components/gradientCtaStyles";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -145,6 +147,8 @@ function FAQAccordion({ items }: Readonly<{ items: FAQItem[] }>) {
 }
 
 export default function FormulesDemenagement() {
+  usePageMeta(PAGE_META.formulesDemenagement);
+
   const navigate = useNavigate();
 
   return (

@@ -21,6 +21,9 @@ import {
   gradientCtaPrimaryClass,
 } from "../components/gradientCtaStyles";
 import NotFound from "./NotFound";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { BLOG_ARTICLE_META, PAGE_META } from "../seo/pageMeta";
+import { getBlogImageAlt } from "../seo/imageAlts";
 
 // Article data
 const articles: Record<string, any> = {
@@ -1162,6 +1165,18 @@ export default function BlogArticle() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const article = slug ? articles[slug as keyof typeof articles] : null;
+  const articleMeta = slug ? BLOG_ARTICLE_META[slug] : undefined;
+
+  usePageMeta(
+    article && slug
+      ? {
+          title:
+            articleMeta?.title ?? `${article.title} | Guivarche Déménagement`,
+          description: articleMeta?.description ?? article.excerpt,
+          canonicalPath: `/blog/${slug}`,
+        }
+      : PAGE_META.blog,
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1218,7 +1233,7 @@ export default function BlogArticle() {
         <div className="absolute inset-0">
           <img
             src={article.image}
-            alt={article.title}
+            alt={getBlogImageAlt(article.image, article.title)}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
@@ -1510,7 +1525,7 @@ export default function BlogArticle() {
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={related.image}
-                        alt={related.title}
+                        alt={getBlogImageAlt(related.image, related.title)}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute top-3 right-3">

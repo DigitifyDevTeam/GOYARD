@@ -19,7 +19,7 @@ const features = [
       <img
         className="absolute -right-20 -top-20 h-40 w-40 opacity-60 object-cover"
         src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&auto=format&fit=crop&q=80"
-        alt=""
+        alt="Dossiers et documents pour organiser un déménagement"
       />
     ),
     className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
@@ -34,7 +34,7 @@ const features = [
       <img
         className="absolute -right-20 -top-20 h-40 w-40 opacity-60 object-cover"
         src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&auto=format&fit=crop&q=80"
-        alt=""
+        alt="Chambre meublée pour estimer le volume à déménager"
       />
     ),
     className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
@@ -49,7 +49,7 @@ const features = [
       <img
         className="absolute -right-20 -top-20 h-40 w-40 opacity-60 object-cover"
         src="https://images.unsplash.com/photo-1502920917128-1aa500764b68?w=400&auto=format&fit=crop&q=80"
-        alt=""
+        alt="Carte et zones de déménagement en France et à l'international"
       />
     ),
     className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
@@ -64,7 +64,7 @@ const features = [
       <img
         className="absolute -right-20 -top-20 h-32 w-32 opacity-60 object-cover"
         src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400&auto=format&fit=crop&q=80"
-        alt=""
+        alt="Agenda et planification des dates de déménagement"
       />
     ),
     className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
@@ -78,9 +78,9 @@ const features = [
     cta: "Découvrir le suivi",
     background: (
       <img
-        className="absolute -right-20 -top-20 h-40 w-40 opacity-60 object-cover"
+        className="absolute -right-20 -top-20 h-40 w-40 object-cover opacity-60"
         src="https://images.unsplash.com/photo-1515165562835-c4c9e0737eaa?w=400&auto=format&fit=crop&q=80"
-        alt=""
+        alt="Notifications et suivi du projet de déménagement"
       />
     ),
     className: "lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4",

@@ -2,8 +2,12 @@ import { useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import GlobeFeatureSection from "../components/ui/globe-feature-section";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function Contact() {
+  usePageMeta(PAGE_META.contact);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",

@@ -4,19 +4,13 @@ import LandingShell from "./components/LandingShell";
 import LpHero from "./components/LpHero";
 import LpTrustStrip from "./components/LpTrustStrip";
 import { useLandingMeta } from "./useLandingMeta";
-
-const CANONICAL = "/lp/demenagement-particulier";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function LpDemenagementParticulier() {
   const navigate = useNavigate();
   const primaryCta = () => navigate("/tunnel/mes-coordonnees");
 
-  useLandingMeta({
-    title: "Déménagement particulier — Devis gratuit | Guivarche",
-    description:
-      "Déménagement maison & appartement : emballage, transport, montage. Devis gratuit et équipe à l'écoute. Simplifiez votre projet dès aujourd'hui.",
-    canonicalPath: CANONICAL,
-  });
+  useLandingMeta(PAGE_META.lpDemenagementParticulier);
 
   return (
     <LandingShell onGetQuote={primaryCta}>

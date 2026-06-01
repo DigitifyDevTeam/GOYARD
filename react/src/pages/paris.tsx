@@ -12,6 +12,8 @@ import {
 import { InterventionMapParis75 } from "../components/intervention-map";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 import { cn } from "../lib/utils";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 const PARIS_GOOGLE_REVIEWS_URL =
   "https://www.google.com/search?hl=fr-TN&gl=tn&q=Guivarche+D%C3%A9m%C3%A9nagement,+25+Rue+de+C%C3%AEteaux,+75012+Paris,+France&ludocid=449127112689032564&lsig=AB86z5WRT9msHEVSPtou8m9KcU8X#lrd=0x47e67304c6ac24e3:0x63b9ebabad39d74,3";
@@ -383,6 +385,8 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
 }
 
 export default function Paris() {
+  usePageMeta(PAGE_META.lpParis);
+
   const navigate = useNavigate();
   const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
 
@@ -533,7 +537,7 @@ export default function Paris() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action"},
+                  { src: "/gallery/hero.jpeg", alt: "Équipe Guivarche Déménagement" },
                   { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                   { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                   {
@@ -561,7 +565,7 @@ export default function Paris() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/gallery/hero.jpeg", alt: "Équipe devant l'agence et la flotte de camions" },
+                    { src: "/gallery/hero.jpeg", alt: "Équipe Guivarche Déménagement devant l'agence" },
                     { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                     { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                     {

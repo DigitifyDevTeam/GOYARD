@@ -1,7 +1,11 @@
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 export default function EnConstruction() {
+  usePageMeta(PAGE_META.enConstruction);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />

@@ -47,7 +47,7 @@ export default function Footer() {
               <a href="/demenagement-particulier" className="hover:opacity-70 transition-opacity">Déménagement particulier</a>
               <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
               <a href="/faq" className="hover:opacity-70 transition-opacity">FAQ</a>
-              <a href="/tarif" className="hover:opacity-70 transition-opacity">Tarification</a>
+              <a href="/tarification" className="hover:opacity-70 transition-opacity">Tarification</a>
               <a href="/contact" className="hover:opacity-70 transition-opacity">Contact</a>
             </div>
           </div>

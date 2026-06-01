@@ -6,6 +6,8 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 import { DevisForm, ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { PAGE_META } from "../seo/pageMeta";
 
 // ─── Sections (Particulier) ─────────────────────────────────────────
 
@@ -74,6 +76,8 @@ function SectionHeader({
 }
 
 export default function Particulier() {
+  usePageMeta(PAGE_META.lpParticulier);
+
   const navigate = useNavigate();
   const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
 
@@ -92,10 +96,13 @@ export default function Particulier() {
           <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
             <div className="text-center mb-10 sm:mb-14">
               <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-tight tracking-tight">
-                Confiez-nous votre projet de déménagement
+                Obtenez un Devis Gratuit en 24H
               </h2>
-              <p className="mt-3 text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
-                Confiez votre déménagement à nos équipes. Nous proposons les tarifs les moins élevés d'Île-de-France.
+              <p className="mt-4 mx-auto max-w-2xl rounded-xl border border-[#CC922F]/35 bg-[#CC922F]/12 px-4 py-3 sm:px-5 sm:py-4 text-[#191919] text-base sm:text-lg leading-relaxed shadow-[0_4px_20px_rgba(204,146,47,0.12)]">
+                Confiez votre déménagement à nos équipes.{" "}
+                <span className="font-bold text-[#CC922F] underline decoration-[#CC922F]/50 decoration-2 underline-offset-4">
+                  Nous proposons les tarifs les moins élevés d&apos;Île-de-France.
+                </span>
               </p>
             </div>
 
@@ -136,28 +143,21 @@ export default function Particulier() {
                   ))}
                 </div>
 
-                <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
+                <div className="mt-8">
                   <button
                     type="button"
                     onClick={primaryCta}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition"
+                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[#CC922F] px-6 py-3 font-['Poppins',sans-serif] font-semibold text-white shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition"
                   >
                     Obtenir mon devis
                     <ArrowRight className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => (globalThis.location.href = "tel:+33189703324")}
-                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
-                  >
-                    Parler à un conseiller
                   </button>
                 </div>
               </div>
 
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white/70 backdrop-blur-sm shadow-[0px_14px_45px_rgba(15,23,42,0.10)] border border-slate-100 p-6 sm:p-7">
-                  <ParisHeroServicePitch />
+                  <ParisHeroServicePitch showAnimatedPhone />
                 </div>
               </div>
             </div>
@@ -246,7 +246,7 @@ export default function Particulier() {
               {/* Mobile: simple 2x2 */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                 {[
-                  { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
+                  { src: "/gallery/hero.jpeg", alt: "Équipe Guivarche Déménagement" },
                   { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                   { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                   {
@@ -274,7 +274,7 @@ export default function Particulier() {
               <div className="hidden lg:flex items-end gap-4">
                 {(() => {
                   return [
-                    { src: "/gallery/hero.jpeg", alt: "Équipe de déménagement en action" },
+                    { src: "/gallery/hero.jpeg", alt: "Équipe Guivarche Déménagement" },
                     { src: "/gallery/monte_meuble.jpeg", alt: "Garde-meubles : caisses de stockage dans l'entrepôt" },
                     { src: "/gallery/1.jpeg", alt: "Protection et chargement soigné" },
                     {
@@ -382,7 +382,7 @@ export default function Particulier() {
 
               <div className="lg:col-span-5">
                 <div className="rounded-3xl bg-white border border-slate-100 shadow-[0px_14px_40px_rgba(15,23,42,0.08)] p-6 sm:p-7">
-                  <ParisDevisTrustAside />
+                  <ParisDevisTrustAside showAnimatedPhone />
                 </div>
               </div>
             </div>
