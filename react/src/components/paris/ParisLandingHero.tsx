@@ -5,8 +5,10 @@ import {
   Building2,
   Calendar,
   Clock,
+  Handshake,
   Layers,
   Mail,
+  Map,
   MapPin,
   NotebookPen,
   Package,
@@ -55,6 +57,13 @@ const CLIENT_LOGOS = [
   { src: "/logos/sorbonne.svg", alt: "Sorbonne Université", scale: 0.82 },
 ] as const;
 
+const MOBILE_FOOTER_BENEFITS = [
+  { icon: Users, label: "Équipe 100% salariée" },
+  { icon: ShieldCheck, label: "0 litige 2025" },
+  { icon: Handshake, label: "Prix fixe garanti" },
+  { icon: Map, label: "France entière" },
+] as const;
+
 function TrustpilotStarIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg className={cn("shrink-0", className)} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
@@ -91,6 +100,32 @@ function GoogleGIcon({ className }: Readonly<{ className?: string }>) {
         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
       />
     </svg>
+  );
+}
+
+function ParisLpHeaderMobile() {
+  return (
+    <header className="w-full border-b border-slate-100/80 bg-white">
+      <div className="mx-auto flex h-[4.5rem] max-w-[1920px] items-center justify-between px-4">
+        <a
+          href="/"
+          className="shrink-0 rounded-lg transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2"
+          aria-label="Retour à l'accueil — Guivarche Déménagement"
+        >
+          <img src="/logo.svg" alt="Guivarche Déménagement" className="h-11 w-auto" />
+        </a>
+        <a
+          href={CONTACT_PHONE_HREF}
+          className="inline-flex items-center gap-1.5 font-['Poppins',sans-serif] text-sm font-bold text-[#CC922F] sm:text-[15px]"
+          aria-label="Appeler le 01 89 70 33 24"
+        >
+          <Phone className="h-4 w-4 shrink-0" strokeWidth={2.25} aria-hidden />
+          <span className="tabular-nums tracking-tight">
+            {CONTACT_PHONE_AREA} {CONTACT_PHONE_REST}
+          </span>
+        </a>
+      </div>
+    </header>
   );
 }
 
@@ -145,7 +180,12 @@ function IconField({
 const fieldCls =
   "w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-3.5 text-[15px] text-[#1C3957] placeholder:text-slate-400 focus:border-[#CC922F] focus:outline-none focus:ring-2 focus:ring-[#CC922F]/20 font-['Poppins',sans-serif] transition";
 
-function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) {
+function ParisCompactDevisForm({
+  entryPage,
+  variant = "desktop",
+}: Readonly<{ entryPage?: string; variant?: "desktop" | "mobile" }>) {
+  const isMobile = variant === "mobile";
+  const fieldId = (name: string) => (isMobile ? `paris-m-${name}` : `paris-${name}`);
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -245,20 +285,35 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_18px_50px_rgba(15,23,42,0.12)] xl:p-9"
+      className={cn(
+        "w-full bg-white",
+        isMobile
+          ? "px-4 pb-6 pt-4"
+          : "rounded-2xl border border-slate-100 p-7 shadow-[0_18px_50px_rgba(15,23,42,0.12)] xl:p-9",
+      )}
     >
-      <h2 className="text-center font-['Poppins',sans-serif] text-[1.5rem] font-extrabold leading-snug text-[#1C3957] xl:text-[1.65rem]">
+      <h2
+        className={cn(
+          "text-center font-['Poppins',sans-serif] font-extrabold leading-snug text-[#1C3957]",
+          isMobile ? "text-[1.2rem]" : "text-[1.5rem] xl:text-[1.65rem]",
+        )}
+      >
         Recevoir mon devis de déménagement à Paris
       </h2>
-      <p className="mt-1 text-center font-['Poppins',sans-serif] text-[1.5rem] font-extrabold text-[#CC922F] xl:text-[1.65rem]">
+      <p
+        className={cn(
+          "mt-0.5 text-center font-['Poppins',sans-serif] font-extrabold text-[#CC922F]",
+          isMobile ? "text-[1.2rem]" : "text-[1.5rem] xl:text-[1.65rem]",
+        )}
+      >
         immédiatement
       </p>
 
-      <div className="mt-6 space-y-3">
+      <div className={cn("space-y-3", isMobile ? "mt-5" : "mt-6")}>
         <div className="grid grid-cols-2 gap-3">
           <IconField icon={User}>
             <input
-              id="paris-nom"
+              id={fieldId("nom")}
               type="text"
               required
               value={form.nom}
@@ -269,7 +324,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
           </IconField>
           <IconField icon={Phone}>
             <input
-              id="paris-tel"
+              id={fieldId("tel")}
               type="tel"
               required
               value={form.tel_portable}
@@ -283,7 +338,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
         <div className="grid grid-cols-2 gap-3">
           <IconField icon={Mail}>
             <input
-              id="paris-mail"
+              id={fieldId("mail")}
               type="email"
               required
               value={form.email}
@@ -294,7 +349,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
           </IconField>
           <IconField icon={Calendar}>
             <input
-              id="paris-date"
+              id={fieldId("date")}
               type="date"
               required
               min={new Date().toISOString().split("T")[0]}
@@ -308,7 +363,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
 
         <IconField icon={MapPin}>
           <input
-            id="paris-adr-dep"
+            id={fieldId("adr-dep")}
             type="text"
             required
             value={form.adresse_depart}
@@ -321,7 +376,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
         <div className="grid grid-cols-2 gap-3">
           <IconField icon={Building2}>
             <select
-              id="paris-etage-dep"
+              id={fieldId("etage-dep")}
               value={form.etage_depart}
               onChange={set("etage_depart")}
               className={cn(fieldCls, "appearance-none", !form.etage_depart && "text-slate-400")}
@@ -338,7 +393,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
           </IconField>
           <IconField icon={ArrowUpDown}>
             <select
-              id="paris-asc-dep"
+              id={fieldId("asc-dep")}
               value={form.ascenseur_depart}
               onChange={set("ascenseur_depart")}
               className={cn(fieldCls, "appearance-none", !form.ascenseur_depart && "text-slate-400")}
@@ -358,7 +413,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2.5">
           <IconField icon={Package}>
             <input
-              id="paris-volume"
+              id={fieldId("volume")}
               type="text"
               value={form.volume}
               onChange={set("volume")}
@@ -369,7 +424,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
           <span className="font-['Poppins',sans-serif] text-sm font-semibold text-slate-400">ou</span>
           <IconField icon={Layers}>
             <input
-              id="paris-superficie"
+              id={fieldId("superficie")}
               type="text"
               value={form.superficie}
               onChange={set("superficie")}
@@ -381,7 +436,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
 
         <IconField icon={MapPin}>
           <input
-            id="paris-adr-arr"
+            id={fieldId("adr-arr")}
             type="text"
             required
             value={form.adresse_arrivee}
@@ -394,7 +449,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
         <div className="grid grid-cols-2 gap-3">
           <IconField icon={Building2}>
             <select
-              id="paris-etage-arr"
+              id={fieldId("etage-arr")}
               value={form.etage_arrivee}
               onChange={set("etage_arrivee")}
               className={cn(fieldCls, "appearance-none", !form.etage_arrivee && "text-slate-400")}
@@ -411,7 +466,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
           </IconField>
           <IconField icon={ArrowUpDown}>
             <select
-              id="paris-asc-arr"
+              id={fieldId("asc-arr")}
               value={form.ascenseur_arrivee}
               onChange={set("ascenseur_arrivee")}
               className={cn(fieldCls, "appearance-none", !form.ascenseur_arrivee && "text-slate-400")}
@@ -430,7 +485,7 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
 
         <IconField icon={NotebookPen}>
           <textarea
-            id="paris-info"
+            id={fieldId("info")}
             value={form.info_complementaire}
             onChange={set("info_complementaire")}
             placeholder="Informations complémentaires"
@@ -443,9 +498,16 @@ function ParisCompactDevisForm({ entryPage }: Readonly<{ entryPage?: string }>) 
       <button
         type="submit"
         disabled={submitting}
-        className="mt-6 w-full rounded-xl bg-[#CC922F] px-4 py-4 font-['Poppins',sans-serif] text-base font-extrabold text-[#1C3957] shadow-[0_10px_28px_rgba(204,146,47,0.35)] transition hover:brightness-95 disabled:opacity-60"
+        className={cn(
+          "w-full rounded-xl bg-[#CC922F] px-4 font-['Poppins',sans-serif] font-extrabold text-[#1C3957] shadow-[0_10px_28px_rgba(204,146,47,0.35)] transition hover:brightness-95 disabled:opacity-60",
+          isMobile ? "mt-5 py-3.5 text-[15px] leading-snug" : "mt-6 py-4 text-base",
+        )}
       >
-        {submitting ? "Envoi en cours..." : "Recevoir mon devis gratuit à Paris"}
+        {submitting
+          ? "Envoi en cours..."
+          : isMobile
+            ? "Recevoir mon devis gratuit à Paris immédiatement"
+            : "Recevoir mon devis gratuit à Paris"}
       </button>
     </form>
   );
@@ -502,6 +564,118 @@ function ParisHeroTrustCard() {
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+function ParisHeroTrustCardMobile() {
+  return (
+    <div className="relative z-20 mx-4 -mt-10 rounded-2xl bg-white px-4 py-5 shadow-[0_10px_36px_rgba(0,0,0,0.14)] sm:mx-5">
+      <div className="flex items-stretch justify-center">
+        <a
+          href={PARIS_GOOGLE_REVIEWS_URL}
+          target="_blank"
+          rel={EXTERNAL_LINK_REL}
+          className="flex flex-1 flex-col items-center gap-1.5 px-2 transition hover:opacity-90"
+          aria-label="Google 5 sur 5"
+        >
+          <GoogleGIcon className="h-9 w-9" />
+          <p className="font-['Poppins',sans-serif] text-sm font-bold text-[#1C3957]">Google 5/5</p>
+          <p className="text-[#CC922F] text-sm leading-none" aria-hidden>
+            ★★★★★
+          </p>
+        </a>
+        <div className="mx-3 w-px self-stretch bg-slate-200" aria-hidden />
+        <a
+          href={TRUSTPILOT_URL}
+          target="_blank"
+          rel={EXTERNAL_LINK_REL}
+          className="flex flex-1 flex-col items-center gap-1.5 px-2 transition hover:opacity-90"
+          aria-label="Trustpilot 4,8 sur 5"
+        >
+          <TrustpilotStarIcon className="h-9 w-9" />
+          <p className="font-['Poppins',sans-serif] text-sm font-bold text-[#1C3957]">Trustpilot 4,8/5</p>
+          <p className="text-[#00B67A] text-sm leading-none" aria-hidden>
+            ★★★★★
+          </p>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function ParisMobileBenefitsBar() {
+  return (
+    <div className="border-t border-slate-100 bg-white px-3 py-5">
+      <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-4">
+        {MOBILE_FOOTER_BENEFITS.map(({ icon: Icon, label }) => (
+          <div key={label} className="flex flex-col items-center gap-2 text-center">
+            <span className="flex h-9 w-9 items-center justify-center text-[#1C3957]">
+              <Icon className="h-6 w-6" strokeWidth={1.75} aria-hidden />
+            </span>
+            <span className="font-['Poppins',sans-serif] text-[11px] font-semibold leading-tight text-[#1C3957] sm:text-xs">
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Mobile hero — stacked layout (Paris LP mockup). */
+export function ParisLandingHeroMobile({ entryPage }: Readonly<{ entryPage?: string }>) {
+  return (
+    <div className="lg:hidden">
+      <ParisLpHeaderMobile />
+
+      <section className="relative min-h-[min(52vh,420px)] overflow-hidden">
+        <img
+          src="/gallery/hero.jpeg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-black/50" aria-hidden />
+        <div className="absolute inset-0 bg-[#1C3957]/28" aria-hidden />
+
+        <div className="relative z-10 flex min-h-[min(52vh,420px)] flex-col items-center justify-center px-5 py-14 text-center">
+          <h1
+            className={cn(
+              "font-['Poppins',sans-serif] text-[1.65rem] font-extrabold leading-tight text-white sm:text-[1.85rem]",
+              HERO_TEXT_SHADOW,
+            )}
+          >
+            Déménagement à <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>Paris</span>
+          </h1>
+          <p
+            className={cn(
+              "mt-2 font-['Poppins',sans-serif] text-[1.75rem] font-extrabold leading-tight text-white sm:text-[2rem]",
+              HERO_TEXT_SHADOW,
+            )}
+          >
+            Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
+          </p>
+          <p
+            className={cn(
+              "mt-4 font-['Poppins',sans-serif] text-sm font-medium text-white sm:text-[15px]",
+              HERO_TEXT_SHADOW,
+            )}
+          >
+            <span className="text-[#F5B84A]">Paris</span>
+            <span className="mx-1.5 text-white/90">•</span>
+            Province
+            <span className="mx-1.5 text-white/90">•</span>
+            France entière
+          </p>
+        </div>
+      </section>
+
+      <ParisHeroTrustCardMobile />
+
+      <ParisCompactDevisForm entryPage={entryPage} variant="mobile" />
+
+      <ParisMobileBenefitsBar />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FormDataManager } from "../utils/formDataManager";
 
 const DEVIS_CONFIRMATION_PATH = "/tunnel/devis/confirmation";
-import { ParisLandingHeroDesktop } from "../components/paris/ParisLandingHero";
+import { ParisLandingHeroDesktop, ParisLandingHeroMobile } from "../components/paris/ParisLandingHero";
 import { ContactPhoneLink } from "../components/ContactPhoneLink";
 import { cn } from "../lib/utils";
 import { usePageMeta } from "../hooks/usePageMeta";
@@ -379,6 +379,7 @@ export default function Paris() {
   return (
     <div className="min-h-screen bg-white">
       <ParisLandingHeroDesktop entryPage="/lp/paris" />
+      <ParisLandingHeroMobile entryPage="/lp/paris" />
     </div>
   );
 }
