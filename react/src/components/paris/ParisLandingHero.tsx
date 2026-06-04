@@ -26,6 +26,7 @@ import {
   CONTACT_PHONE_HREF,
   CONTACT_PHONE_REST,
 } from "../../constants/contactPhone";
+import type { LandingHeroConfig, LandingHeroLocationPart } from "./landingHeroConfig";
 
 const DEVIS_CONFIRMATION_PATH = "/tunnel/devis/confirmation";
 
@@ -180,12 +181,31 @@ function IconField({
 const fieldCls =
   "w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-3.5 text-[15px] text-[#1C3957] placeholder:text-slate-400 focus:border-[#CC922F] focus:outline-none focus:ring-2 focus:ring-[#CC922F]/20 font-['Poppins',sans-serif] transition";
 
+function MobileLocationLine({ parts }: Readonly<{ parts: LandingHeroLocationPart[] }>) {
+  return (
+    <p
+      className={cn(
+        "mt-4 font-['Poppins',sans-serif] text-sm font-medium text-white sm:text-[15px]",
+        HERO_TEXT_SHADOW,
+      )}
+    >
+      {parts.map((part, index) => (
+        <span key={part.label}>
+          {index > 0 ? <span className="mx-1.5 text-white/90">•</span> : null}
+          <span className={part.accent ? "text-[#F5B84A]" : undefined}>{part.label}</span>
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function ParisCompactDevisForm({
-  entryPage,
+  config,
   variant = "desktop",
-}: Readonly<{ entryPage?: string; variant?: "desktop" | "mobile" }>) {
+}: Readonly<{ config: LandingHeroConfig; variant?: "desktop" | "mobile" }>) {
   const isMobile = variant === "mobile";
-  const fieldId = (name: string) => (isMobile ? `paris-m-${name}` : `paris-${name}`);
+  const fieldId = (name: string) =>
+    isMobile ? `${config.fieldSlug}-m-${name}` : `${config.fieldSlug}-${name}`;
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -231,7 +251,7 @@ function ParisCompactDevisForm({
         "Oui 6 personnes": "4-6 personnes",
       };
       const pathname = (
-        entryPage?.trim() ||
+        config.entryPage?.trim() ||
         (typeof window !== "undefined" ? window.location.pathname : "") ||
         ""
       ).trim();
@@ -298,7 +318,7 @@ function ParisCompactDevisForm({
           isMobile ? "text-[1.2rem]" : "text-[1.5rem] xl:text-[1.65rem]",
         )}
       >
-        Recevoir mon devis de déménagement à Paris
+        {config.formTitle}
       </h2>
       <p
         className={cn(
@@ -503,11 +523,7 @@ function ParisCompactDevisForm({
           isMobile ? "mt-5 py-3.5 text-[15px] leading-snug" : "mt-6 py-4 text-base",
         )}
       >
-        {submitting
-          ? "Envoi en cours..."
-          : isMobile
-            ? "Recevoir mon devis gratuit à Paris immédiatement"
-            : "Recevoir mon devis gratuit à Paris"}
+        {submitting ? "Envoi en cours..." : isMobile ? config.formCtaMobile : config.formCtaDesktop}
       </button>
     </form>
   );
@@ -570,7 +586,7 @@ function ParisHeroTrustCard() {
 
 function ParisHeroTrustCardMobile() {
   return (
-    <div className="relative z-20 mx-4 -mt-10 rounded-2xl bg-white px-4 py-5 shadow-[0_10px_36px_rgba(0,0,0,0.14)] sm:mx-5">
+    <div className="mt-4 mb-2 rounded-2xl border border-slate-100 bg-white px-4 py-5 shadow-[0_6px_24px_rgba(15,23,42,0.08)]">
       <div className="flex items-stretch justify-center">
         <a
           href={PARIS_GOOGLE_REVIEWS_URL}
@@ -623,8 +639,8 @@ function ParisMobileBenefitsBar() {
   );
 }
 
-/** Mobile hero — stacked layout (Paris LP mockup). */
-export function ParisLandingHeroMobile({ entryPage }: Readonly<{ entryPage?: string }>) {
+/** Mobile hero — stacked layout (regional LP mockup). */
+export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHeroConfig }>) {
   return (
     <div className="lg:hidden">
       <ParisLpHeaderMobile />
@@ -646,7 +662,8 @@ export function ParisLandingHeroMobile({ entryPage }: Readonly<{ entryPage?: str
               HERO_TEXT_SHADOW,
             )}
           >
-            Déménagement à <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>Paris</span>
+            {config.heroLine1Prefix}
+            <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
           </h1>
           <p
             className={cn(
@@ -656,32 +673,26 @@ export function ParisLandingHeroMobile({ entryPage }: Readonly<{ entryPage?: str
           >
             Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
           </p>
-          <p
-            className={cn(
-              "mt-4 font-['Poppins',sans-serif] text-sm font-medium text-white sm:text-[15px]",
-              HERO_TEXT_SHADOW,
-            )}
-          >
-            <span className="text-[#F5B84A]">Paris</span>
-            <span className="mx-1.5 text-white/90">•</span>
-            Province
-            <span className="mx-1.5 text-white/90">•</span>
-            France entière
-          </p>
+          <MobileLocationLine parts={config.mobileLocationParts} />
         </div>
       </section>
 
-      <ParisHeroTrustCardMobile />
-
-      <ParisCompactDevisForm entryPage={entryPage} variant="mobile" />
+      <ParisCompactDevisForm config={config} variant="mobile" />
 
       <ParisMobileBenefitsBar />
+
+      <div className="bg-white px-4 pt-5 sm:px-5">
+        <p className="text-center font-['Poppins',sans-serif] text-lg font-extrabold leading-snug text-[#1C3957] sm:text-xl">
+          {config.mobilePriceBanner}
+        </p>
+        <ParisHeroTrustCardMobile />
+      </div>
     </div>
   );
 }
 
-/** Desktop hero — split image + compact devis form (Paris LP mockup). */
-export function ParisLandingHeroDesktop({ entryPage }: Readonly<{ entryPage?: string }>) {
+/** Desktop hero — split image + compact devis form (regional LP mockup). */
+export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHeroConfig }>) {
   return (
     <div className="hidden lg:block">
       <ParisLpHeader />
@@ -704,7 +715,8 @@ export function ParisLandingHeroDesktop({ entryPage }: Readonly<{ entryPage?: st
                   HERO_TEXT_SHADOW,
                 )}
               >
-                Déménagement à <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>Paris</span>
+                {config.heroLine1Prefix}
+                <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
               </h1>
               <p
                 className={cn(
@@ -731,7 +743,7 @@ export function ParisLandingHeroDesktop({ entryPage }: Readonly<{ entryPage?: st
                   HERO_TEXT_SHADOW,
                 )}
               >
-                Votre déménageur à Paris
+                {config.moverTitle}
               </h2>
               <p
                 className={cn(
@@ -739,7 +751,7 @@ export function ParisLandingHeroDesktop({ entryPage }: Readonly<{ entryPage?: st
                   HERO_TEXT_SHADOW,
                 )}
               >
-                Une équipe fiable, claire et réactive pour votre déménagement à Paris.
+                {config.moverDescription}
               </p>
 
               <ul className="mt-6 ml-auto w-full max-w-[22rem] space-y-3.5 sm:max-w-[24rem]">
@@ -768,7 +780,7 @@ export function ParisLandingHeroDesktop({ entryPage }: Readonly<{ entryPage?: st
         </div>
 
         <div className="flex min-h-full w-[min(50%,680px)] shrink-0 items-center justify-center bg-[#EEF1F5] px-7 py-8 xl:w-[min(48%,720px)] xl:px-10 xl:py-10">
-          <ParisCompactDevisForm entryPage={entryPage} />
+          <ParisCompactDevisForm config={config} />
         </div>
       </section>
     </div>

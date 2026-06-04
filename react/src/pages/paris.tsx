@@ -5,6 +5,7 @@ import { FormDataManager } from "../utils/formDataManager";
 
 const DEVIS_CONFIRMATION_PATH = "/tunnel/devis/confirmation";
 import { ParisLandingHeroDesktop, ParisLandingHeroMobile } from "../components/paris/ParisLandingHero";
+import { PARIS_LANDING_CONFIG } from "../components/paris/landingHeroConfig";
 import { ContactPhoneLink } from "../components/ContactPhoneLink";
 import { cn } from "../lib/utils";
 import { usePageMeta } from "../hooks/usePageMeta";
@@ -378,8 +379,8 @@ export default function Paris() {
 
   return (
     <div className="min-h-screen bg-white">
-      <ParisLandingHeroDesktop entryPage="/lp/paris" />
-      <ParisLandingHeroMobile entryPage="/lp/paris" />
+      <ParisLandingHeroDesktop config={PARIS_LANDING_CONFIG} />
+      <ParisLandingHeroMobile config={PARIS_LANDING_CONFIG} />
     </div>
   );
 }

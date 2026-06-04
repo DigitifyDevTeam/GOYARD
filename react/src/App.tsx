@@ -6310,13 +6310,13 @@ export default function App() {
       <StickyContactButtons />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/ile-de-france" element={<ZoneIleDeFrance />} />
+        <Route path="/demenagement-ile-de-france" element={<ZoneIleDeFrance />} />
         <Route path="/lp/paris" element={<Paris />} />
         <Route path="/lp/hauts-de-seine" element={<Seine92 />} />
         <Route path="/lp/pro" element={<Pro />} />
         <Route path="/lp/particulier" element={<Particulier />} />
         <Route path="/demenagement-national" element={<ZoneNational />} />
-        <Route path="/international" element={<ZoneInternational />} />
+        <Route path="/demenagement-international" element={<ZoneInternational />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/solution" element={<Solution />} />
         <Route path="/en-construction" element={<EnConstruction />} />
