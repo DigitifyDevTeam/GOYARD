@@ -36,7 +36,34 @@ curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST http://127.0.0.1:8002/api/demena
   -d '{"prenom":"Jean","nom":"Dupont","email":"jean@example.com","phone":"0123456789","date_demenagement":"2025-12-01","adresse_depart":"10 Rue de la Paix, Paris"}'
 ```
 
-**Full payload:**
+**Landing compact form (Paris / Hauts-de-Seine LP):**
+```bash
+curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST http://127.0.0.1:8002/api/demenagement/client-info/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nom": "Dupont",
+    "prenom": "",
+    "email": "jean.dupont@example.com",
+    "phone": "0612345678",
+    "date_demenagement": "2026-12-01",
+    "adresse_depart": "10 Rue de la Paix, 75002 Paris",
+    "etage_depart": "3",
+    "ascenseur_depart": "2-3 personnes",
+    "adresse_arrivee": "20 Avenue Victor Hugo, 75016 Paris",
+    "etage_arrivee": "RDC",
+    "ascenseur_arrivee": "Non",
+    "options_depart": {
+      "type_client": "Particulier",
+      "volume": "25",
+      "superficie": "80",
+      "info_complementaire": "Cartons fournis"
+    },
+    "options_arrivee": {},
+    "entry_page": "/lp/paris"
+  }'
+```
+
+**Full payload (formulaire long avec prénom):**
 ```bash
 curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST http://127.0.0.1:8002/api/demenagement/client-info/ \
   -H "Content-Type: application/json" \
@@ -45,7 +72,7 @@ curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST http://127.0.0.1:8002/api/demena
     "nom": "Dupont",
     "email": "jean.dupont@example.com",
     "phone": "0123456789",
-    "date_demenagement": "2025-12-01",
+    "date_demenagement": "2026-12-01",
     "adresse_depart": "10 Rue de la Paix, Paris",
     "etage_depart": "RDC",
     "ascenseur_depart": "Non",

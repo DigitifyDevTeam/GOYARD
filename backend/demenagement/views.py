@@ -142,30 +142,27 @@ def submit_client_information(request):
     """
     API endpoint to submit client information with address details for quote request
     
-    Expected JSON data:
+    Expected JSON data (landing compact LP or formulaire long):
     {
         "nom": "Dupont",
-        "prenom": "Jean",
+        "prenom": "",
         "email": "jean.dupont@email.com",
-        "phone": "0123456789",
-        "date_demenagement": "2024-12-25",
+        "phone": "0612345678",
+        "date_demenagement": "2026-12-25",
         "adresse_depart": "123 Rue de la Paix, 75001 Paris",
         "etage_depart": "3",
-        "ascenseur_depart": "2 personnes",
-        "options_depart": {
-            "monte_meuble": false,
-            "cave_ou_garage": true,
-            "cours_a_traverser": false
-        },
-        "has_stopover": false,
-        "adresse_arrivee": "25 Rue de Cîteaux, 75012 Paris, France",
+        "ascenseur_depart": "2-3 personnes",
+        "adresse_arrivee": "25 Rue de Cîteaux, 75012 Paris",
         "etage_arrivee": "RDC",
         "ascenseur_arrivee": "Non",
-        "options_arrivee": {
-            "monte_meuble": true,
-            "cave_ou_garage": false,
-            "cours_a_traverser": true
-        }
+        "options_depart": {
+            "type_client": "Particulier",
+            "volume": "25",
+            "superficie": "80",
+            "info_complementaire": "Cartons fournis"
+        },
+        "options_arrivee": {},
+        "entry_page": "/lp/paris"
     }
     """
     serializer = ClientInformationSerializer(data=request.data)
@@ -186,7 +183,9 @@ def submit_client_information(request):
                 send_landing_form_team_notification(client_info, entry_page=entry_page)
                 user_email = (client_info.email or "").strip()
                 if user_email:
-                    display_name = f"{(client_info.prenom or '').strip()} {(client_info.nom or '').strip()}".strip() or "Client"
+                    prenom = (client_info.prenom or '').strip()
+                    nom = (client_info.nom or '').strip()
+                    display_name = f"{prenom} {nom}".strip() if prenom else (nom or "Client")
                     send_devis_email(user_email, display_name)
             except Exception as mail_exc:
                 logger.warning("Post-save landing / confirmation email failed: %s", mail_exc, exc_info=True)

@@ -32,44 +32,140 @@ def _esc(value: Any) -> str:
     return html_lib.escape(s, quote=False)
 
 
-def _options_rows(opts: Optional[dict]) -> str:
-    if not isinstance(opts, dict) or not opts:
-        return '<tr><td colspan="2" style="padding:14px 18px;font-size:13px;color:#5B4A72;">Aucune option</td></tr>'
+_LANDING_PROJECT_KEYS = (
+    ("type_client", "Type de client"),
+    ("volume", "Volume (m³)"),
+    ("superficie", "Superficie (m²)"),
+    ("info_complementaire", "Infos complémentaires"),
+)
 
-    labels = {
-        "info_complementaire": "Infos complémentaires",
-        "volume": "Volume (m³)",
-        "superficie": "Superficie (m²)",
-        "type_client": "Type de client",
-        "monte_meuble": "Monte-meuble",
-        "cave_ou_garage": "Cave / garage",
-        "cours_a_traverser": "Cour à traverser",
-        "distance_portage": "Portage (m)",
-    }
-    boolean_keys = {"monte_meuble", "cave_ou_garage", "cours_a_traverser", "distance_portage"}
+_ACCESS_OPTION_LABELS = {
+    "monte_meuble": "Monte-meuble",
+    "cave_ou_garage": "Cave / garage",
+    "cours_a_traverser": "Cour à traverser",
+    "distance_portage": "Portage (m)",
+}
+
+_ENTRY_PAGE_LABELS = {
+    "/lp/paris": "Landing Paris",
+    "/lp/hauts-de-seine": "Landing Hauts-de-Seine (92)",
+}
+
+
+def _format_entry_page(entry_page: Optional[str]) -> str:
+    raw = (entry_page or "").strip()
+    if not raw:
+        return "—"
+    return _ENTRY_PAGE_LABELS.get(raw, raw)
+
+
+def _contact_name_rows(prenom: str, nom: str) -> str:
+    prenom = (prenom or "").strip()
+    nom = (nom or "").strip()
+    if prenom:
+        return (
+            f'<tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Prénom</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(prenom)}</td></tr>'
+            f'<tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Nom</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(nom)}</td></tr>'
+        )
+    return (
+        f'<tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Nom</td>'
+        f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(nom or None)}</td></tr>'
+    )
+
+
+def _project_rows(opts: Optional[dict]) -> str:
+    if not isinstance(opts, dict):
+        opts = {}
     rows: list[str] = []
-    for key, raw in opts.items():
-        label = labels.get(key, key.replace("_", " ").title())
-        if key in boolean_keys:
-            if raw is True:
-                val = "Oui"
-            elif raw is False:
-                val = "Non"
-            else:
-                val = str(raw).strip() if raw not in (None, "") else "—"
+    for key, label in _LANDING_PROJECT_KEYS:
+        raw = opts.get(key)
+        if raw is None or str(raw).strip() == "":
+            continue
+        rows.append(
+            "<tr>"
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;width:38%;">{_esc(label)}</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(str(raw).strip())}</td>'
+            "</tr>"
+        )
+    return "".join(rows) if rows else (
+        '<tr><td colspan="2" style="padding:14px 18px;font-size:13px;color:#5B4A72;">Non renseigné</td></tr>'
+    )
+
+
+def _access_options_rows(opts: Optional[dict]) -> str:
+    if not isinstance(opts, dict) or not opts:
+        return ""
+    rows: list[str] = []
+    for key, label in _ACCESS_OPTION_LABELS.items():
+        if key not in opts:
+            continue
+        raw = opts[key]
+        if raw is True:
+            val = "Oui"
+        elif raw is False:
+            val = "Non"
         else:
-            if raw is None or str(raw).strip() == "":
-                continue
-            val = str(raw).strip()
+            val = str(raw).strip() if raw not in (None, "") else "—"
         rows.append(
             "<tr>"
             f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;width:38%;">{_esc(label)}</td>'
             f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(val)}</td>'
             "</tr>"
         )
-    return "".join(rows) if rows else (
-        '<tr><td colspan="2" style="padding:14px 18px;font-size:13px;color:#5B4A72;">Aucune option</td></tr>'
+    return "".join(rows)
+
+
+def _arrival_info_rows(opts: Optional[dict]) -> str:
+    """Infos complémentaires saisies côté arrivée (formulaire long)."""
+    if not isinstance(opts, dict):
+        return ""
+    raw = opts.get("info_complementaire")
+    if raw is None or str(raw).strip() == "":
+        return ""
+    return (
+        "<tr>"
+        f'<td style="padding:12px 18px;font-size:12px;color:#5B4A72;font-weight:600;width:38%;">Infos complémentaires</td>'
+        f'<td style="padding:12px 18px;font-size:14px;color:#1C3957;">{_esc(str(raw).strip())}</td>'
+        "</tr>"
     )
+
+
+def _plain_landing_recap(
+    *,
+    cid: Any,
+    entry_display: str,
+    full_name: str,
+    email: str,
+    phone: str,
+    date_label: str,
+    client: "ClientInformation",
+) -> str:
+    opts_dep = getattr(client, "options_depart", None) or {}
+    opts_arr = getattr(client, "options_arrivee", None) or {}
+    lines = [
+        f"Nouvelle demande formulaire site (#{cid})",
+        f"Page : {entry_display}",
+        f"Contact : {full_name}",
+        f"Email : {email or '—'}",
+        f"Tél : {phone or '—'}",
+        f"Date déménagement : {date_label}",
+        "",
+        f"Départ : {getattr(client, 'adresse_depart', '') or '—'}",
+        f"  Étage : {getattr(client, 'etage_depart', '') or '—'} | Ascenseur : {getattr(client, 'ascenseur_depart', '') or '—'}",
+        f"Arrivée : {getattr(client, 'adresse_arrivee', '') or '—'}",
+        f"  Étage : {getattr(client, 'etage_arrivee', '') or '—'} | Ascenseur : {getattr(client, 'ascenseur_arrivee', '') or '—'}",
+        "",
+    ]
+    for key, label in _LANDING_PROJECT_KEYS:
+        val = opts_dep.get(key)
+        if val is not None and str(val).strip():
+            lines.append(f"{label} : {val}")
+    arr_info = opts_arr.get("info_complementaire")
+    if arr_info is not None and str(arr_info).strip():
+        lines.append(f"Infos arrivée : {arr_info}")
+    return "\n".join(lines) + "\n"
 
 
 def send_landing_form_team_notification(client: "ClientInformation", entry_page: Optional[str] = None) -> Optional[dict]:
@@ -86,13 +182,15 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
 
     prenom = getattr(client, "prenom", "") or ""
     nom = getattr(client, "nom", "") or ""
-    full_name = f"{prenom} {nom}".strip() or "Prospect"
+    prenom_s = str(prenom).strip()
+    nom_s = str(nom).strip()
+    full_name = f"{prenom_s} {nom_s}".strip() if prenom_s else (nom_s or "Prospect")
     cid = getattr(client, "id", None) or "—"
 
     dd = getattr(client, "date_demenagement", None)
     date_label = dd.strftime("%d/%m/%Y") if dd else "—"
 
-    entry_display = (entry_page or "").strip() or "—"
+    entry_display = _format_entry_page(entry_page)
     # Subject (objet) : include page d'origine for tri côté boîte mail
     entry_subject = re.sub(r"\s+", " ", (entry_page or "").strip()) or "—"
     if len(entry_subject) > 85:
@@ -101,6 +199,29 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
     subject = f"[Formulaire] {full_name_subject} | {entry_subject}"
     if len(subject) > 200:
         subject = subject[:197] + "..."
+
+    opts_depart = getattr(client, "options_depart", None) or {}
+    opts_arrivee = getattr(client, "options_arrivee", None) or {}
+    access_rows = _access_options_rows(opts_depart)
+    access_section_html = ""
+    if access_rows:
+        access_section_html = f"""
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border:1px solid #DDD4EC;border-radius:12px;overflow:hidden;margin-bottom:20px;background:#FDFBFF;">
+                <tr>
+                  <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Accès départ (options)</td>
+                </tr>
+                {access_rows}
+              </table>"""
+    arrival_rows = _arrival_info_rows(opts_arrivee)
+    arrival_section_html = ""
+    if arrival_rows:
+        arrival_section_html = f"""
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border:1px solid #DDD4EC;border-radius:12px;overflow:hidden;margin-bottom:24px;background:#FDFBFF;">
+                <tr>
+                  <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Arrivée — compléments</td>
+                </tr>
+                {arrival_rows}
+              </table>"""
 
     logo_url = "https://goyard-demenagement.fr/logo.svg"
 
@@ -154,8 +275,7 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
                 <tr>
                   <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Contact</td>
                 </tr>
-                <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Nom</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(nom)}</td></tr>
-                <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Prénom</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(prenom)}</td></tr>
+                {_contact_name_rows(prenom_s, nom_s)}
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">E-mail</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{email_cell}</td></tr>
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Téléphone</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(getattr(client,'phone',None))}</td></tr>
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Date déménagement</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(date_label)}</td></tr>
@@ -174,18 +294,13 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
                 <tr><td style="padding:12px 18px;font-size:12px;color:#5B4A72;font-weight:600;">Ascenseur arrivée</td><td style="padding:12px 18px;font-size:14px;color:#1C3957;">{_esc(getattr(client,'ascenseur_arrivee',None))}</td></tr>
               </table>
 
-              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border:1px solid #DDD4EC;border-radius:12px;overflow:hidden;margin-bottom:8px;background:#FDFBFF;">
+              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border:1px solid #DDD4EC;border-radius:12px;overflow:hidden;margin-bottom:20px;background:#FDFBFF;">
                 <tr>
-                  <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Détails complémentaires — départ</td>
+                  <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Projet &amp; logement</td>
                 </tr>
-                {_options_rows(getattr(client, "options_depart", None))}
+                {_project_rows(opts_depart)}
               </table>
-              <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="border:1px solid #DDD4EC;border-radius:12px;overflow:hidden;margin-bottom:24px;background:#FDFBFF;">
-                <tr>
-                  <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Arrivée — compléments</td>
-                </tr>
-                {_options_rows(getattr(client, "options_arrivee", None))}
-              </table>
+{access_section_html}{arrival_section_html}
 {reply_button_html}
               <p style="margin:16px 0 0;font-size:12px;color:#6B5B88;text-align:center;">ID enregistrement : {_esc(cid)} · Guivarche Déménagement</p>
             </td>
@@ -197,15 +312,14 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
 </body>
 </html>"""
 
-    plain = (
-        f"Nouvelle demande formulaire site (#{cid})\n"
-        f"Page : {entry_display}\n"
-        f"Nom : {full_name}\n"
-        f"Email : {getattr(client, 'email', '') or '—'}\n"
-        f"Tél : {getattr(client, 'phone', '') or '—'}\n"
-        f"Date : {date_label}\n"
-        f"Départ : {getattr(client, 'adresse_depart', '') or '—'}\n"
-        f"Arrivée : {getattr(client, 'adresse_arrivee', '') or '—'}\n"
+    plain = _plain_landing_recap(
+        cid=cid,
+        entry_display=entry_display,
+        full_name=full_name,
+        email=(getattr(client, "email", "") or "").strip(),
+        phone=(getattr(client, "phone", "") or "").strip(),
+        date_label=date_label,
+        client=client,
     )
 
     msg = MIMEMultipart("alternative")

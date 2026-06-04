@@ -309,3 +309,48 @@ img, video, svg {
   max-width: 100%;
   height: auto;
 }
+
+/* iOS Safari: date inputs in narrow grids (overflow, tap target, no zoom on focus) */
+@supports (-webkit-touch-callout: none) {
+  input[type="date"],
+  input.lp-form-date {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 3rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="date"]::-webkit-date-and-time-value,
+  input.lp-form-date::-webkit-date-and-time-value {
+    display: block;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    padding: 0;
+    margin: 0;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input.lp-form-date::-webkit-calendar-picker-indicator {
+    position: relative;
+    margin: 0;
+    margin-left: auto;
+    padding: 0.25rem;
+    cursor: pointer;
+    opacity: 1;
+    flex-shrink: 0;
+  }
+
+  .relative input.lp-form-date {
+    padding-right: 2.75rem;
+  }
+}

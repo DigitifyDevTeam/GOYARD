@@ -39,13 +39,21 @@ class ClientInformationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La date de déménagement ne peut pas être dans le passé")
         
         return value
+
+    def to_internal_value(self, data):
+        """Accept legacy/alternate field names from landing forms."""
+        if isinstance(data, dict):
+            data = data.copy()
+            if not str(data.get('phone') or '').strip() and data.get('tel_portable'):
+                data['phone'] = data['tel_portable']
+        return super().to_internal_value(data)
     
     def validate_etage(self, value, field_name):
-        """Helper method to validate floor values"""
-        if not value:
-            raise serializers.ValidationError(f"L'étage est requis pour {field_name}")
-        
-        value = value.strip().upper()
+        """Helper method to validate floor values (blank defaults to RDC for compact LP forms)."""
+        if not value or not str(value).strip():
+            return 'RDC'
+
+        value = str(value).strip().upper()
         
         # Check if it's RDC
         if value == 'RDC':
@@ -80,7 +88,10 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         return value
     
     def validate_ascenseur(self, value, field_name):
-        """Helper method to validate elevator values"""
+        """Helper method to validate elevator values (blank defaults to Non)."""
+        if not value or not str(value).strip():
+            return 'Non'
+
         valid_choices = ['Non', '2-3 personnes', '3-4 personnes', '4-6 personnes', '6-8 personnes ou plus']
         
         if value not in valid_choices:

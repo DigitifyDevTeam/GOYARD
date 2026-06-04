@@ -123,7 +123,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                       </p>
                       <div className="flex gap-4 justify-between">
                         <a
-                          href="/ile-de-france"
+                          href="/demenagement-ile-de-france"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/international"
+                          href="/demenagement-international"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -350,7 +350,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               {mobileZonesOpen && (
                 <div className="flex flex-col gap-1 pl-4">
                   <a
-                    href="/ile-de-france"
+                    href="/demenagement-ile-de-france"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
@@ -372,7 +372,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Déménagement National · Toute la France
                   </a>
                   <a
-                    href="/international"
+                    href="/demenagement-international"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);

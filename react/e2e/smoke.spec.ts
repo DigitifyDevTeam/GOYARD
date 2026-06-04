@@ -97,10 +97,13 @@ test.describe('Production smoke — guivarche-demenagement.fr', () => {
   test('API health — client-info endpoint responds', async ({ request }) => {
     const res = await request.post('/api/demenagement/client-info/', {
       data: {
-        prenom: 'E2E',
-        nom: 'Test',
+        nom: 'Test E2E',
+        prenom: '',
         email: `e2e-${Date.now()}@example.com`,
-        telephone: '0612345678',
+        phone: '0612345678',
+        date_demenagement: '2026-12-15',
+        adresse_depart: '1 rue Test, Paris',
+        adresse_arrivee: '2 rue Test, Lyon',
       },
       failOnStatusCode: false,
     });

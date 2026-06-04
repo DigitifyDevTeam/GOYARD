@@ -168,7 +168,7 @@ function IconField({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative min-w-0 w-full", className)}>
       <Icon
         className="pointer-events-none absolute left-3.5 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-[#1C3957]/60"
         aria-hidden
@@ -179,7 +179,15 @@ function IconField({
 }
 
 const fieldCls =
-  "w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-3.5 text-[15px] text-[#1C3957] placeholder:text-slate-400 focus:border-[#CC922F] focus:outline-none focus:ring-2 focus:ring-[#CC922F]/20 font-['Poppins',sans-serif] transition";
+  "w-full min-w-0 rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-3.5 text-[15px] text-[#1C3957] placeholder:text-slate-400 focus:border-[#CC922F] focus:outline-none focus:ring-2 focus:ring-[#CC922F]/20 font-['Poppins',sans-serif] transition";
+
+const dateFieldCls = (hasValue: boolean, isMobile: boolean) =>
+  cn(
+    fieldCls,
+    "lp-form-date",
+    hasValue ? "text-[#1C3957]" : "text-[#64748b]",
+    isMobile && "min-h-[3rem] py-3.5 pl-11 pr-12 text-base leading-normal",
+  );
 
 function MobileLocationLine({ parts }: Readonly<{ parts: LandingHeroLocationPart[] }>) {
   return (
@@ -330,7 +338,7 @@ function ParisCompactDevisForm({
       </p>
 
       <div className={cn("space-y-3", isMobile ? "mt-5" : "mt-6")}>
-        <div className="grid grid-cols-2 gap-3">
+        <div className={cn("grid grid-cols-2 gap-3", isMobile && "[&>*]:min-w-0")}>
           <IconField icon={User}>
             <input
               id={fieldId("nom")}
@@ -355,7 +363,7 @@ function ParisCompactDevisForm({
           </IconField>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className={cn("grid grid-cols-2 gap-3", isMobile && "[&>*]:min-w-0")}>
           <IconField icon={Mail}>
             <input
               id={fieldId("mail")}
@@ -365,6 +373,7 @@ function ParisCompactDevisForm({
               onChange={set("email")}
               placeholder="Mail"
               className={fieldCls}
+              autoComplete="email"
             />
           </IconField>
           <IconField icon={Calendar}>
@@ -375,8 +384,9 @@ function ParisCompactDevisForm({
               min={new Date().toISOString().split("T")[0]}
               value={form.date_demenagement}
               onChange={set("date_demenagement")}
-              className={cn(fieldCls, "text-slate-500")}
+              className={dateFieldCls(!!form.date_demenagement, isMobile)}
               style={{ colorScheme: "light" }}
+              aria-label="Date prévue de déménagement"
             />
           </IconField>
         </div>

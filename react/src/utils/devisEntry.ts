@@ -13,6 +13,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/ile-de-france": "Île-de-France",
   "/paris": "Paris (landing)",
   "/lp/paris": "Landing Paris",
+  "/lp/hauts-de-seine": "Landing Hauts-de-Seine (92)",
   "/versailles-92": "Versailles 92 (landing)",
   "/lp/versailles-92": "Landing Versailles 92",
   "/demenagement-national": "France métropolitaine",

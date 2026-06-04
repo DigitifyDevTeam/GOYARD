@@ -4,11 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { FormDataManager } from "../utils/formDataManager";
 
 const DEVIS_CONFIRMATION_PATH = "/tunnel/devis/confirmation";
-import { ParisLandingHeroDesktop, ParisLandingHeroMobile } from "../components/paris/ParisLandingHero";
+import { RegionalLandingPage } from "../components/paris/RegionalLandingPage";
 import { PARIS_LANDING_CONFIG } from "../components/paris/landingHeroConfig";
 import { ContactPhoneLink } from "../components/ContactPhoneLink";
 import { cn } from "../lib/utils";
-import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 import { EXTERNAL_LINK_REL } from "../constants/externalLink";
 
@@ -375,13 +374,6 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
 }
 
 export default function Paris() {
-  usePageMeta(PAGE_META.lpParis);
-
-  return (
-    <div className="min-h-screen bg-white">
-      <ParisLandingHeroDesktop config={PARIS_LANDING_CONFIG} />
-      <ParisLandingHeroMobile config={PARIS_LANDING_CONFIG} />
-    </div>
-  );
+  return <RegionalLandingPage config={PARIS_LANDING_CONFIG} meta={PAGE_META.lpParis} />;
 }
 
