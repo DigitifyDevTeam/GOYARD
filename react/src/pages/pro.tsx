@@ -6,7 +6,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 import GoogleReviewsSection from "@/components/GoogleReviewsSection";
-import { DevisForm, ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
+import { ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 
@@ -142,7 +142,8 @@ export default function Pro() {
           </div>
         </section>
 
-        {/* Devis complet — full quote form */}
+        {/* Devis complet — formulaire (masqué sur LP, réactiver si besoin) */}
+        {/*
         <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
           <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
             <div className="text-center mb-10 sm:mb-14">
@@ -160,6 +161,7 @@ export default function Pro() {
             <DevisForm />
           </div>
         </section>
+        */}
 
         <GoogleReviewsSection />
 

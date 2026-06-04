@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { InterventionMapVersailles92 } from "../components/intervention-map";
 import { LightboxImageDialog, type LightboxImage } from "../components/lightbox-image-dialog";
 import GoogleReviewsSection from "@/components/GoogleReviewsSection";
-import { DevisForm, ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
+import { ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 
@@ -32,11 +32,13 @@ export default function Seine92() {
           <div className="relative w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16">
             <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
               <div className="lg:col-span-7">
+                {/*
                 <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-slate-700">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
                   Hauts-de-Seine (92) • Déménagement pro
                 </div>
-                <h1 className="mt-4 font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
+                */}
+                <h1 className="font-['Poppins',sans-serif] font-extrabold tracking-tight text-[#191919] text-3xl sm:text-4xl lg:text-5xl leading-tight">
                 Déménagement dans les Hauts-de-Seine (92), sans stress.
                 </h1>
                 <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
@@ -78,7 +80,8 @@ export default function Seine92() {
           </div>
         </section>
 
-        {/* Devis complet — full quote form */}
+        {/* Devis complet — formulaire (masqué sur LP, réactiver si besoin) */}
+        {/*
         <section className="w-full bg-slate-50/60 py-16 sm:py-20 lg:py-24 border-y border-slate-200/80">
           <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
             <div className="text-center mb-10 sm:mb-14">
@@ -96,6 +99,7 @@ export default function Seine92() {
             <DevisForm />
           </div>
         </section>
+        */}
 
         <GoogleReviewsSection />
 
