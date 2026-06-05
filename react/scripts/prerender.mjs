@@ -19,7 +19,17 @@ const blogSlugs = [
   'assurance-demenagement-guide-complet',
 ]
 
-// /lp/* excluded from prerender (noindex campaign landings — see LANDING_PAGE_PATHS in pageMeta.ts, robots.txt)
+// /lp/* prerendered for per-page <title> and markup; still noindex (see pageMeta.ts, robots.txt)
+const landingRoutes = [
+  '/lp/paris',
+  '/lp/hauts-de-seine',
+  '/lp/pro',
+  '/lp/particulier',
+  '/lp/demenagement-entreprise',
+  '/lp/demenagement-particulier',
+  '/lp/ile-de-france',
+]
+
 const routes = [
   '/',
   '/ile-de-france',
@@ -37,6 +47,7 @@ const routes = [
   '/formules-demenagement',
   '/mentions-legales',
   '/rgpd',
+  ...landingRoutes,
 ]
 
 function getMime(ext) {

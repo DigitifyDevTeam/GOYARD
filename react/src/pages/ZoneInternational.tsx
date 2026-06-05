@@ -285,7 +285,7 @@ export default function ZoneInternational() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => navigate("/contact")}
+                      onClick={() => navigate("/contact/")}
                       className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 font-['Poppins',sans-serif] font-semibold text-[#191919] hover:bg-slate-50 transition"
                     >
                       Être rappelé
@@ -321,7 +321,7 @@ export default function ZoneInternational() {
                   Obtenir un devis gratuit
                 </button>
 
-                <a href="/contact" className={gradientCtaOutlineClass}>
+                <a href="/contact/" className={gradientCtaOutlineClass}>
                   Nous contacter
                 </a>
 

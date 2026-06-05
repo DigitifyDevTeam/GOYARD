@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { withTrailingSlash } from "../utils/paths";
 
 const SITE_ORIGIN = "https://guivarche-demenagement.fr";
 
@@ -67,7 +68,7 @@ export function usePageMeta({
       const path = canonicalPath.startsWith("/")
         ? canonicalPath
         : `/${canonicalPath}`;
-      setCanonical(`${SITE_ORIGIN}${path}`);
+      setCanonical(`${SITE_ORIGIN}${withTrailingSlash(path)}`);
     }
   }, [title, description, canonicalPath, robotsNoIndex]);
 }

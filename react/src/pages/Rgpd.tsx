@@ -175,7 +175,7 @@ export default function Rgpd() {
                 Notre site utilise des cookies pour améliorer votre expérience de navigation et analyser l'utilisation du site. 
                 Vous pouvez gérer vos préférences en matière de cookies via les paramètres de votre navigateur. Pour plus d'informations, 
                 consultez notre page{" "}
-                <a href="/mentions-legales" className="text-[#CC922F] hover:underline">
+                <a href="/mentions-legales/" className="text-[#CC922F] hover:underline">
                   Mentions légales
                 </a>.
               </p>

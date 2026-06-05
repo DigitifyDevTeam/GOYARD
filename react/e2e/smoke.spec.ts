@@ -8,7 +8,7 @@ const STATIC_PAGES: { path: string; heading: RegExp | string }[] = [
   { path: '/blog', heading: /blog|actualit/i },
   { path: '/faq', heading: /faq|question/i },
   { path: '/contact', heading: /contact/i },
-  { path: '/tarification', heading: /tarif|formule|prix/i },
+  { path: '/tarif/', heading: /tarif|formule|prix/i },
   { path: '/mentions-legales', heading: /mention|légal/i },
   { path: '/rgpd', heading: /rgpd|donnée|confidentialité/i },
 ];

@@ -91,13 +91,13 @@ export default function Header({ onGetQuote }: HeaderProps) {
                 <a href="/" className={linkClass}>
                   Accueil
                 </a>
-                <a href="/solution" className={linkClass}>
+                <a href="/solution/" className={linkClass}>
                   Solution
                 </a>
-                <a href="/demenagement-particulier" className={linkClass}>
+                <a href="/demenagement-particulier/" className={linkClass}>
                   Particulier
                 </a>
-                <a href="/demenagement-entreprise" className={linkClass}>
+                <a href="/demenagement-entreprise/" className={linkClass}>
                   Pro
                 </a>
 
@@ -123,7 +123,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                       </p>
                       <div className="flex gap-4 justify-between">
                         <a
-                          href="/demenagement-ile-de-france"
+                          href="/demenagement-ile-de-france/"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/demenagement-national"
+                          href="/demenagement-national/"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/demenagement-international"
+                          href="/demenagement-international/"
                           className="group flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -213,7 +213,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/formules-demenagement"
+                          href="/formules-demenagement/"
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -229,7 +229,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/tarification"
+                          href="/tarif/"
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -249,7 +249,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                   )}
                 </div>
 
-                <a href="/contact" className={linkClass}>
+                <a href="/contact/" className={linkClass}>
                   Contact
                 </a>
               </nav>
@@ -316,21 +316,21 @@ export default function Header({ onGetQuote }: HeaderProps) {
               Accueil
             </a>
             <a
-              href="/solution"
+              href="/solution/"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >
               Solution
             </a>
             <a
-              href="/demenagement-particulier"
+              href="/demenagement-particulier/"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >
               Particulier
             </a>
             <a
-              href="/demenagement-entreprise"
+              href="/demenagement-entreprise/"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >
@@ -350,7 +350,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               {mobileZonesOpen && (
                 <div className="flex flex-col gap-1 pl-4">
                   <a
-                    href="/demenagement-ile-de-france"
+                    href="/demenagement-ile-de-france/"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
@@ -361,7 +361,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Île-de-France · Proximité Parisienne
                   </a>
                   <a
-                    href="/demenagement-national"
+                    href="/demenagement-national/"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
@@ -372,7 +372,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Déménagement National · Toute la France
                   </a>
                   <a
-                    href="/demenagement-international"
+                    href="/demenagement-international/"
                     onClick={() => {
                       setMobileZonesOpen(false);
                       setMobileMenuOpen(false);
@@ -410,7 +410,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Calculer votre volume avec notre outil IA
                   </a>
                   <a
-                    href="/formules-demenagement"
+                    href="/formules-demenagement/"
                     onClick={() => {
                       setMobileOutilsOpen(false);
                       setMobileMenuOpen(false);
@@ -421,7 +421,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Tarifs
                   </a>
                   <a
-                    href="/tarification"
+                    href="/tarif/"
                     onClick={() => {
                       setMobileOutilsOpen(false);
                       setMobileMenuOpen(false);
@@ -435,7 +435,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               )}
             </div>
             <a
-              href="/contact"
+              href="/contact/"
               onClick={() => setMobileMenuOpen(false)}
               className={`py-3 px-4 rounded-lg ${linkClass} text-base`}
             >

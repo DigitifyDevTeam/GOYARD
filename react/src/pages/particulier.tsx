@@ -414,7 +414,7 @@ export default function Particulier() {
                 </button>
 
                 <a
-                  href="/contact"
+                  href="/contact/"
                   className="inline-flex items-center justify-center border border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-full text-base sm:text-lg font-['Poppins',sans-serif] transition-colors"
                 >
                   Nous contacter

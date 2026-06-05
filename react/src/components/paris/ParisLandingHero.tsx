@@ -190,6 +190,8 @@ const dateFieldCls = (hasValue: boolean, isMobile: boolean) =>
   );
 
 function MobileLocationLine({ parts }: Readonly<{ parts: LandingHeroLocationPart[] }>) {
+  if (parts.length === 0) return null;
+
   return (
     <p
       className={cn(
@@ -675,14 +677,35 @@ export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHer
             {config.heroLine1Prefix}
             <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
           </h1>
+          {!config.mobilePriceBannerAfterDevis ? (
+            <p
+              className={cn(
+                "mt-3 font-['Poppins',sans-serif] text-lg font-extrabold leading-snug text-white sm:text-xl",
+                HERO_TEXT_SHADOW,
+              )}
+            >
+              {config.mobilePriceBanner}
+            </p>
+          ) : null}
           <p
             className={cn(
-              "mt-2 font-['Poppins',sans-serif] text-[1.75rem] font-extrabold leading-tight text-white sm:text-[2rem]",
+              config.mobilePriceBannerAfterDevis ? "mt-3" : "mt-2",
+              "font-['Poppins',sans-serif] text-[1.75rem] font-extrabold leading-tight text-white sm:text-[2rem]",
               HERO_TEXT_SHADOW,
             )}
           >
             Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
           </p>
+          {config.mobilePriceBannerAfterDevis ? (
+            <p
+              className={cn(
+                "mt-3 font-['Poppins',sans-serif] text-lg font-extrabold leading-snug text-white sm:text-xl",
+                HERO_TEXT_SHADOW,
+              )}
+            >
+              {config.mobilePriceBanner}
+            </p>
+          ) : null}
           <MobileLocationLine parts={config.mobileLocationParts} />
         </div>
       </section>
@@ -692,9 +715,6 @@ export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHer
       <ParisMobileBenefitsBar />
 
       <div className="bg-white px-4 pt-5 sm:px-5">
-        <p className="text-center font-['Poppins',sans-serif] text-lg font-extrabold leading-snug text-[#1C3957] sm:text-xl">
-          {config.mobilePriceBanner}
-        </p>
         <ParisHeroTrustCardMobile />
       </div>
     </div>

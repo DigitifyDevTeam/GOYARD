@@ -24,6 +24,7 @@ import NotFound from "./NotFound";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { BLOG_ARTICLE_META, PAGE_META } from "../seo/pageMeta";
 import { getBlogImageAlt } from "../seo/imageAlts";
+import { blogArticlePath, withTrailingSlash } from "../utils/paths";
 
 // Article data
 const articles: Record<string, any> = {
@@ -1245,7 +1246,7 @@ export default function BlogArticle() {
         <div className="relative h-full flex items-end">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 lg:pb-16">
             <motion.button
-              onClick={() => navigate("/blog")}
+              onClick={() => navigate(withTrailingSlash("/blog"))}
               className="flex items-center gap-2 text-white/90 hover:text-white mb-8 group"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1522,7 +1523,7 @@ export default function BlogArticle() {
                 {relatedArticles.map((related) => (
                   <motion.div key={related.id} whileHover={{ y: -5 }}>
                     <Link
-                      to={`/blog/${related.slug}`}
+                      to={blogArticlePath(related.slug)}
                       className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
                     >
                       <div className="relative h-48 overflow-hidden">

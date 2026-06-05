@@ -7,6 +7,7 @@ import Footer from "../components/layout/Footer";
 import { blogPosts, categories } from "../data/blogPosts";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { blogArticlePath } from "../utils/paths";
 
 function articleCountLabel(n: number) {
   return `${n} ${n === 1 ? "article" : "articles"}`;
@@ -117,7 +118,7 @@ export default function Blog() {
               {featuredPostsDisplayed.map((post) => (
                 <Link
                   key={post.id}
-                  to={`/blog/${post.slug}`}
+                  to={blogArticlePath(post.slug)}
                   className="group relative block bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
                 >
                   <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
@@ -190,7 +191,7 @@ export default function Blog() {
               {regularPosts.map((post) => (
                 <Link
                   key={post.id}
-                  to={`/blog/${post.slug}`}
+                  to={blogArticlePath(post.slug)}
                   className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="relative h-56 overflow-hidden">

@@ -20,5 +20,12 @@ if (!fs.existsSync(sourceHtaccess)) {
 fs.mkdirSync(distDir, { recursive: true })
 fs.copyFileSync(sourceHtaccess, targetHtaccess)
 
+// /tarification is a legacy alias (301 → /tarif/); remove stale prerender output if present
+const staleTarificationDir = path.join(distDir, 'tarification')
+if (fs.existsSync(staleTarificationDir)) {
+  fs.rmSync(staleTarificationDir, { recursive: true, force: true })
+  console.log(`[postbuild] removed stale ${staleTarificationDir}`)
+}
+
 console.log(`[postbuild] copied ${sourceHtaccess} -> ${targetHtaccess}`)
 

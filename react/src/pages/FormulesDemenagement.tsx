@@ -471,7 +471,7 @@ export default function FormulesDemenagement() {
                     variant="outline"
                     size="lg"
                     className={gradientCtaOutlineButtonClass}
-                    onClick={() => navigate("/contact")}
+                    onClick={() => navigate("/contact/")}
                   >
                     Nous contacter
                   </Button>

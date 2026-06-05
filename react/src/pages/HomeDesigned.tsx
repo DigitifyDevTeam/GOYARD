@@ -35,6 +35,7 @@ import img5Fcb271D51F22D198Ef69D58F2F116B4Fgraphic from "../assets/67595fbf99298
 import imgMidiLibrePng from "../assets/a9ebad2e02ff8cd3779f21f2156198dd44f1986d.png";
 import { SITE_IMAGE_ALTS } from "../seo/imageAlts";
 import { blogPosts } from "../data/blogPosts";
+import { blogArticlePath } from "../utils/paths";
 
 function Group721() {
   return (
@@ -1719,7 +1720,7 @@ function Group719({ onGetQuote }: { onGetQuote: () => void }) {
                 Obtenir un devis gratuit
               </button>
 
-              <a href="/contact" className={gradientCtaOutlineClass}>
+              <a href="/contact/" className={gradientCtaOutlineClass}>
                 Nous contacter
               </a>
 
@@ -3069,7 +3070,7 @@ function DribbbleLightPreview3() {
 function Page4({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
     <a
-      href={post ? `/blog/${post.slug}` : "#"}
+      href={post ? blogArticlePath(post.slug) : "#"}
       className="absolute contents inset-[65.87%_50.29%_30.76%_48.38%]"
       data-name="Page-1"
       aria-label="Lire l'article"
@@ -3185,7 +3186,7 @@ function Group732({ post }: { post?: (typeof blogPosts)[0] }) {
 
 function Group734({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
-    <a href={post ? `/blog/${post.slug}` : "#"} className="absolute contents left-[972px] top-[183px] block">
+    <a href={post ? blogArticlePath(post.slug) : "#"} className="absolute contents left-[972px] top-[183px] block">
       <div className="absolute h-[214px] left-[972px] rounded-[20px] top-[183px] w-[306px]">
         <img
           alt={post?.imageAlt ?? post?.title ?? "Article du blog Guivarche Déménagement"}
@@ -3336,7 +3337,7 @@ function Group773({ post }: { post?: (typeof blogPosts)[0] }) {
 
 function Group735({ post }: { post?: (typeof blogPosts)[0] }) {
   return (
-    <a href={post ? `/blog/${post.slug}` : "#"} className="absolute contents left-[972px] top-[431px] block">
+    <a href={post ? blogArticlePath(post.slug) : "#"} className="absolute contents left-[972px] top-[431px] block">
       <div className="absolute h-[214px] left-[972px] rounded-[20px] top-[431px] w-[306px]">
         <img
           alt={post?.imageAlt ?? post?.title ?? "Article du blog Guivarche Déménagement"}
@@ -3358,7 +3359,7 @@ function Group706({ posts }: { posts: typeof blogPosts }) {
   return (
     <div className="absolute contents left-1/2 top-[183px] translate-x-[-50%]">
       <div className="absolute contents left-1/2 top-[183px] translate-x-[-50%]">
-        <a href={post0 ? `/blog/${post0.slug}` : "#"} className="absolute block inset-0 left-[312px] top-[183px] h-[244px] w-[636px] rounded-[20px] z-10" aria-label={post0?.title} />
+        <a href={post0 ? blogArticlePath(post0.slug) : "#"} className="absolute block inset-0 left-[312px] top-[183px] h-[244px] w-[636px] rounded-[20px] z-10" aria-label={post0?.title} />
         <div className="absolute h-[244px] left-[312px] rounded-[20px] top-[183px] w-[636px]">
           <img
             alt={post0?.imageAlt ?? post0?.title ?? "Article du blog Guivarche Déménagement"}
@@ -3477,7 +3478,7 @@ function Page5() {
 function Group736() {
   return (
     <div className="absolute contents left-[calc(50%+0.453px)] top-[677px] translate-x-[-50%]">
-      <a href="/blog" className="[text-underline-position:from-font] absolute decoration-solid font-['Poppins',_sans-serif] font-[500] leading-[62px] left-[945px] not-italic text-[18px] text-black text-center text-nowrap top-[677px] translate-x-[-50%] underline whitespace-pre hover:opacity-80">
+      <a href="/blog/" className="[text-underline-position:from-font] absolute decoration-solid font-['Poppins',_sans-serif] font-[500] leading-[62px] left-[945px] not-italic text-[18px] text-black text-center text-nowrap top-[677px] translate-x-[-50%] underline whitespace-pre hover:opacity-80">
         Voir tous les articles
       </a>
       <Page5 />
@@ -3750,7 +3751,7 @@ function Frame701() {
           </p>
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
             {topBlogPosts.map((post) => (
-              <a key={post.id} href={`/blog/${post.slug}`} className="bg-white rounded-xl shadow-md overflow-hidden text-left block hover:opacity-95 transition-opacity">
+              <a key={post.id} href={blogArticlePath(post.slug)} className="bg-white rounded-xl shadow-md overflow-hidden text-left block hover:opacity-95 transition-opacity">
                 <img src={post.image} alt={post.imageAlt ?? post.title} className="w-full h-40 sm:h-48 object-cover" />
                 <div className="p-4 sm:p-5">
                   <p className="font-['Inter',_sans-serif] font-[600] text-xs text-[#CC922F] mb-2">{post.date}</p>
@@ -3759,7 +3760,7 @@ function Frame701() {
               </a>
             ))}
           </div>
-          <a href="/blog" className="inline-block mt-6 font-['Poppins',_sans-serif] font-[500] text-sm text-black underline">
+          <a href="/blog/" className="inline-block mt-6 font-['Poppins',_sans-serif] font-[500] text-sm text-black underline">
             Voir tous les articles
           </a>
         </div>

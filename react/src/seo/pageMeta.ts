@@ -141,7 +141,7 @@ export const PAGE_META = {
   ),
   lpHautsDeSeine: landingPageMeta(
     "/lp/hauts-de-seine",
-    "Déménageur Hauts-de-Seine : Devis Rapide - Guivarche",
+    "Déménageur Hauts-de-Seine (92) : Devis Gratuit - Guivarche",
     "Déménagement dans les Hauts-de-Seine (92) avec Guivarche. Devis gratuit et interventions soignées à Neuilly, Boulogne, La Défense et alentours.",
   ),
   lpPro: landingPageMeta(

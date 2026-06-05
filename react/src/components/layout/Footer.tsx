@@ -59,13 +59,13 @@ export default function Footer() {
             <p className="text-[15px] opacity-65 tracking-[-0.1px] font-medium">Accès Rapide</p>
             <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
               <a href="/" className="hover:opacity-70 transition-opacity">Accueil</a>
-              <a href="/solution" className="hover:opacity-70 transition-opacity">Solution</a>
-              <a href="/demenagement-entreprise" className="hover:opacity-70 transition-opacity">Déménagement entreprise</a>
-              <a href="/demenagement-particulier" className="hover:opacity-70 transition-opacity">Déménagement particulier</a>
-              <a href="/blog" className="hover:opacity-70 transition-opacity">Blog</a>
-              <a href="/faq" className="hover:opacity-70 transition-opacity">FAQ</a>
-              <a href="/tarification" className="hover:opacity-70 transition-opacity">Tarification</a>
-              <a href="/contact" className="hover:opacity-70 transition-opacity">Contact</a>
+              <a href="/solution/" className="hover:opacity-70 transition-opacity">Solution</a>
+              <a href="/demenagement-entreprise/" className="hover:opacity-70 transition-opacity">Déménagement entreprise</a>
+              <a href="/demenagement-particulier/" className="hover:opacity-70 transition-opacity">Déménagement particulier</a>
+              <a href="/blog/" className="hover:opacity-70 transition-opacity">Blog</a>
+              <a href="/faq/" className="hover:opacity-70 transition-opacity">FAQ</a>
+              <a href="/tarif/" className="hover:opacity-70 transition-opacity">Tarification</a>
+              <a href="/contact/" className="hover:opacity-70 transition-opacity">Contact</a>
             </div>
           </div>
 
@@ -73,9 +73,9 @@ export default function Footer() {
           <div className="flex flex-col gap-6">
             <p className="text-[15px] opacity-65 tracking-[-0.1px] font-medium">Articles Récents</p>
             <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
-              <a href="/blog/guide-complet-demenagement-reussi" className="hover:opacity-70 transition-opacity">Guide complet pour un déménagement réussi</a>
-              <a href="/blog/comment-emballer-objets-fragiles" className="hover:opacity-70 transition-opacity">Comment emballer vos objets fragiles</a>
-              <a href="/blog/demenagement-ecologique-solutions-durables" className="hover:opacity-70 transition-opacity">Déménagement écologique : nos solutions durables</a>
+              <a href="/blog/guide-complet-demenagement-reussi/" className="hover:opacity-70 transition-opacity">Guide complet pour un déménagement réussi</a>
+              <a href="/blog/comment-emballer-objets-fragiles/" className="hover:opacity-70 transition-opacity">Comment emballer vos objets fragiles</a>
+              <a href="/blog/demenagement-ecologique-solutions-durables/" className="hover:opacity-70 transition-opacity">Déménagement écologique : nos solutions durables</a>
             </div>
           </div>
 
@@ -83,10 +83,10 @@ export default function Footer() {
           <div className="flex flex-col gap-6">
             <p className="text-[15px] opacity-65 tracking-[-0.1px] font-medium">Informations</p>
             <div className="flex flex-col gap-4 text-base lg:text-[17px] tracking-[-0.2px]">
-              <a href="/mentions-legales" className="hover:opacity-70 transition-opacity">Mentions Légales</a>
-              <a href="/rgpd" className="hover:opacity-70 transition-opacity">RGPD</a>
+              <a href="/mentions-legales/" className="hover:opacity-70 transition-opacity">Mentions Légales</a>
+              <a href="/rgpd/" className="hover:opacity-70 transition-opacity">RGPD</a>
               <div className="flex flex-col gap-3 items-start">
-                <a href="/contact" className="hover:opacity-70 transition-opacity">Nous Contacter</a>
+                <a href="/contact/" className="hover:opacity-70 transition-opacity">Nous Contacter</a>
                 <div className="elfsight-app-94f468c1-4f93-46f0-a5d3-dcee026001cf" data-elfsight-app-lazy />
                 <a
                   href="https://www.trustpilot.com/review/guivarchedemenagement.fr"
@@ -116,10 +116,10 @@ export default function Footer() {
             <p className="text-[15px] opacity-65 tracking-[-0.1px]">
               © 2025 Copyright, All Right Reserved, Guivarche Déménagement
             </p>
-            <a href="/mentions-legales" className="text-[15px] opacity-65 tracking-[-0.1px] hover:opacity-100 transition-opacity">
+            <a href="/mentions-legales/" className="text-[15px] opacity-65 tracking-[-0.1px] hover:opacity-100 transition-opacity">
               Mentions légales
             </a>
-            <a href="/rgpd" className="text-[15px] opacity-65 tracking-[-0.1px] hover:opacity-100 transition-opacity">
+            <a href="/rgpd/" className="text-[15px] opacity-65 tracking-[-0.1px] hover:opacity-100 transition-opacity">
               RGPD
             </a>
           </div>

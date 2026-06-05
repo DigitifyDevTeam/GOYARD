@@ -16,6 +16,9 @@ Options -MultiViews
     RewriteEngine On
     RewriteBase /
 
+    # Legacy alias: canonical page is /tarif/ (Formules de déménagement)
+    RewriteRule ^tarification/?$ /tarif/ [R=301,L]
+
     RewriteCond %{REQUEST_URI} ^/(api|admin|static|media)(/|$) [NC]
     RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
 

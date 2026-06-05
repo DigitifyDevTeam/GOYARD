@@ -6302,13 +6302,26 @@ function AppContent() {
   );
 }
 
-export default function App() {
+function shouldUseTrailingSlash(pathname: string): boolean {
+  return pathname !== "/" && !pathname.startsWith("/tunnel");
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  const { pathname, search, hash } = location;
+
+  if (shouldUseTrailingSlash(pathname) && !pathname.endsWith("/")) {
+    return <Navigate to={`${pathname}/${search}${hash}`} replace />;
+  }
+
+  const matchPath = pathname.endsWith("/") && pathname !== "/"
+    ? pathname.replace(/\/+$/, "")
+    : pathname;
+  const routeLocation =
+    matchPath === pathname ? location : { ...location, pathname: matchPath };
+
   return (
-    <Router>
-      <ScrollToTop />
-      <DevisEntryTracker />
-      <StickyContactButtons />
-      <Routes>
+    <Routes location={routeLocation}>
         <Route path="/" element={<HomePage />} />
         <Route path="/demenagement-ile-de-france" element={<ZoneIleDeFrance />} />
         <Route path="/lp/paris" element={<Paris />} />
@@ -6329,7 +6342,7 @@ export default function App() {
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/tarif" element={<Tarification />} />
-        <Route path="/tarification" element={<Navigate to="/tarif" replace />} />
+        <Route path="/tarification" element={<Navigate to="/tarif/" replace />} />
         <Route path="/formules-demenagement" element={<FormulesDemenagement />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />
@@ -6386,7 +6399,17 @@ export default function App() {
           </RouteGuard>
         } />
         <Route path="*" element={<NotFound />} />
-      </Routes>
+    </Routes>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      <DevisEntryTracker />
+      <StickyContactButtons />
+      <AppRoutes />
     </Router>
   );
 }
