@@ -8,7 +8,8 @@ import urllib.parse
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from django.views.decorators.csrf import csrf_exempt
+
+from core.ratelimit import enforce_rate_limit_json
 
 
 def get_google_api_key():

@@ -3,6 +3,8 @@
  * Handles all API calls related to addresses
  */
 
+import { apiFetch } from '../utils/clientAccess';
+
 // In production (same domain), use empty string for relative URLs; in dev, Vite proxy handles /api
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
 
@@ -53,7 +55,7 @@ export interface AddressListResponse {
  */
 export const createAddress = async (addressData: Omit<AddressData, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<AddressData>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/demenagement/address/`, {
+    const response = await apiFetch(`${API_BASE_URL}/api/demenagement/address/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +81,7 @@ export const createAddress = async (addressData: Omit<AddressData, 'id' | 'creat
  */
 export const getAddress = async (addressId: number): Promise<ApiResponse<AddressData>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/demenagement/address/${addressId}/`);
+    const response = await apiFetch(`${API_BASE_URL}/api/demenagement/address/${addressId}/`);
 
     const data = await response.json();
 
@@ -99,7 +101,7 @@ export const getAddress = async (addressId: number): Promise<ApiResponse<Address
  */
 export const getAddressByClient = async (clientId: number): Promise<ApiResponse<AddressData>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/demenagement/address/client/${clientId}/`);
+    const response = await apiFetch(`${API_BASE_URL}/api/demenagement/address/client/${clientId}/`);
 
     const data = await response.json();
 
@@ -123,7 +125,7 @@ export const listAddresses = async (clientId?: number): Promise<AddressListRespo
       ? `${API_BASE_URL}/api/demenagement/addresses/?client_id=${clientId}`
       : `${API_BASE_URL}/api/demenagement/addresses/`;
 
-    const response = await fetch(url);
+    const response = await apiFetch(url);
 
     const data = await response.json();
 
@@ -147,7 +149,7 @@ export const updateAddress = async (
   partial: boolean = true
 ): Promise<ApiResponse<AddressData>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/demenagement/address/${addressId}/update/`, {
+    const response = await apiFetch(`${API_BASE_URL}/api/demenagement/address/${addressId}/update/`, {
       method: partial ? 'PATCH' : 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -173,7 +175,7 @@ export const updateAddress = async (
  */
 export const deleteAddress = async (addressId: number): Promise<ApiResponse<{ client_info_id: number }>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/demenagement/address/${addressId}/delete/`, {
+    const response = await apiFetch(`${API_BASE_URL}/api/demenagement/address/${addressId}/delete/`, {
       method: 'DELETE',
     });
 

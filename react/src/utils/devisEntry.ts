@@ -21,7 +21,6 @@ const ROUTE_LABELS: Record<string, string> = {
   "/blog": "Blog",
   "/faq": "FAQ",
   "/tarif": "Formules déménagement",
-  "/tarification": "Formules déménagement",
   "/formules-demenagement": "Tarifs",
   "/mentions-legales": "Mentions légales",
   "/rgpd": "RGPD",

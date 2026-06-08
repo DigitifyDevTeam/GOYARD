@@ -1,3 +1,5 @@
+import { clearClientAccessToken, storeClientAccessToken } from './clientAccess';
+
 // Form data management utilities
 export interface UserFormData {
   firstName: string;
@@ -57,11 +59,14 @@ export const FormDataManager = {
   },
 
   // Mark form as submitted via API
-  markFormSubmitted: (clientId?: number): void => {
+  markFormSubmitted: (clientId?: number, accessToken?: string): void => {
     localStorage.setItem('userFormSubmitted', 'true');
     localStorage.setItem('formCompletionStatus', 'true');
     if (clientId) {
       localStorage.setItem('clientId', clientId.toString());
+    }
+    if (accessToken) {
+      storeClientAccessToken(accessToken);
     }
   },
 
@@ -80,6 +85,8 @@ export const FormDataManager = {
   clearFormData: (): void => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(COMPLETION_KEY);
+    localStorage.removeItem('clientId');
+    clearClientAccessToken();
   },
 
   // Reset form data but keep completion status

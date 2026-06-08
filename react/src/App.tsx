@@ -5,6 +5,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import DevisEntryTracker from "./components/DevisEntryTracker";
 import PDFReport, { type PDFReportHandles } from "./components/PDFReport";
 import { FormDataManager } from "./utils/formDataManager";
+import { apiFetch } from "./utils/clientAccess";
 import HomePage from "./pages/HomeDesigned";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -557,7 +558,7 @@ function AppContent() {
         console.log('Client information saved successfully:', result.data);
         setClientId(result.data.id);
 
-        FormDataManager.markFormSubmitted(result.data.id);
+        FormDataManager.markFormSubmitted(result.data.id, result.access_token);
 
         setAddressData((prev) => ({
           ...prev,
@@ -657,7 +658,7 @@ function AppContent() {
       console.log('Submitting superficie calculation:', payload);
 
       // Call API to save superficie calculation
-      const response = await fetch('/api/demenagement/superficie/', {
+      const response = await apiFetch('/api/demenagement/superficie/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1045,7 +1046,7 @@ function AppContent() {
 
       console.log('Submitting manual selection:', payload);
 
-      const response = await fetch('/api/demenagement/rooms/', {
+      const response = await apiFetch('/api/demenagement/rooms/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1200,7 +1201,7 @@ function AppContent() {
 
       console.log('Submitting address data:', addressPayload);
 
-      const response = await fetch('/api/demenagement/address/', {
+      const response = await apiFetch('/api/demenagement/address/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1495,7 +1496,7 @@ function AppContent() {
       const entryDisplay = getDevisEntryPageDisplay();
       payload.entry_page = entryDisplay;
 
-      const response = await fetch('/api/quote/send-pdf/', {
+      const response = await apiFetch('/api/quote/send-pdf/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -6342,7 +6343,6 @@ function AppRoutes() {
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/tarif" element={<Tarification />} />
-        <Route path="/tarification" element={<Navigate to="/tarif/" replace />} />
         <Route path="/formules-demenagement" element={<FormulesDemenagement />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />

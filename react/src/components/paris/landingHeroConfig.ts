@@ -44,7 +44,7 @@ export const HAUTS_DE_SEINE_LANDING_CONFIG: LandingHeroConfig = {
   mobilePriceBannerAfterDevis: true,
   moverTitle: "Votre déménageur dans les Hauts-de-Seine",
   moverDescription:
-    "Une équipe fiable, claire et réactive pour votre déménagement dans les Hauts-de-Seine.",
+    "Une équipe fiable, claire et réactive\npour votre déménagement dans les Hauts-de-Seine.",
   formTitle: "Recevoir mon devis de déménagement dans les Hauts-de-Seine",
   formCtaDesktop: "Recevoir mon devis immédiatement",
   formCtaMobile: "Recevoir mon devis  immédiatement",

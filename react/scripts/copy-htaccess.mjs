@@ -20,7 +20,7 @@ if (!fs.existsSync(sourceHtaccess)) {
 fs.mkdirSync(distDir, { recursive: true })
 fs.copyFileSync(sourceHtaccess, targetHtaccess)
 
-// /tarification is a legacy alias (301 → /tarif/); remove stale prerender output if present
+// Remove stale /tarification prerender output so the URL is not served as a static page
 const staleTarificationDir = path.join(distDir, 'tarification')
 if (fs.existsSync(staleTarificationDir)) {
   fs.rmSync(staleTarificationDir, { recursive: true, force: true })

@@ -209,6 +209,31 @@ function MobileLocationLine({ parts }: Readonly<{ parts: LandingHeroLocationPart
   );
 }
 
+function HeroPriceBanner({
+  text,
+  variant = "mobile",
+  className,
+}: Readonly<{
+  text: string;
+  variant?: "mobile" | "desktop";
+  className?: string;
+}>) {
+  return (
+    <p
+      className={cn(
+        "w-full bg-[#E10600] py-2.5 text-center font-['Poppins',sans-serif] font-extrabold leading-tight text-white",
+        "whitespace-nowrap",
+        variant === "mobile"
+          ? "-mx-5 mt-3 w-[calc(100%+2.5rem)] px-3 text-[15px] sm:text-base"
+          : "mt-3 px-4 text-lg xl:text-xl",
+        className,
+      )}
+    >
+      {text}
+    </p>
+  );
+}
+
 function ParisCompactDevisForm({
   config,
   variant = "desktop",
@@ -297,9 +322,9 @@ function ParisCompactDevisForm({
       if (data?.success) {
         const clientId = data?.data?.id;
         if (clientId) {
-          FormDataManager.markFormSubmitted(clientId);
+          FormDataManager.markFormSubmitted(clientId, data?.access_token);
         } else {
-          FormDataManager.markFormSubmitted();
+          FormDataManager.markFormSubmitted(undefined, data?.access_token);
         }
         navigate(DEVIS_CONFIRMATION_PATH);
       } else {
@@ -678,14 +703,7 @@ export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHer
             <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
           </h1>
           {!config.mobilePriceBannerAfterDevis ? (
-            <p
-              className={cn(
-                "mt-3 font-['Poppins',sans-serif] text-lg font-extrabold leading-snug text-white sm:text-xl",
-                HERO_TEXT_SHADOW,
-              )}
-            >
-              {config.mobilePriceBanner}
-            </p>
+            <HeroPriceBanner text={config.mobilePriceBanner} variant="mobile" />
           ) : null}
           <p
             className={cn(
@@ -697,14 +715,7 @@ export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHer
             Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
           </p>
           {config.mobilePriceBannerAfterDevis ? (
-            <p
-              className={cn(
-                "mt-3 font-['Poppins',sans-serif] text-lg font-extrabold leading-snug text-white sm:text-xl",
-                HERO_TEXT_SHADOW,
-              )}
-            >
-              {config.mobilePriceBanner}
-            </p>
+            <HeroPriceBanner text={config.mobilePriceBanner} variant="mobile" />
           ) : null}
           <MobileLocationLine parts={config.mobileLocationParts} />
         </div>
@@ -738,7 +749,7 @@ export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHe
           <div className="absolute inset-0 bg-[#1C3957]/28" aria-hidden />
 
           <div className="relative z-10 flex w-full max-w-[680px] flex-col items-center justify-center gap-8 xl:gap-10">
-            <div className="flex w-full flex-col items-center text-center">
+            <div className="flex w-full flex-col items-center self-stretch text-center">
               <h1
                 className={cn(
                   "font-['Poppins',sans-serif] text-[2.5rem] font-extrabold leading-[1.06] tracking-tight text-white xl:text-[3rem]",
@@ -748,14 +759,21 @@ export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHe
                 {config.heroLine1Prefix}
                 <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
               </h1>
+              {!config.mobilePriceBannerAfterDevis ? (
+                <HeroPriceBanner text={config.mobilePriceBanner} variant="desktop" className="self-stretch" />
+              ) : null}
               <p
                 className={cn(
-                  "mt-1 font-['Poppins',sans-serif] text-[2.5rem] font-extrabold leading-[1.06] tracking-tight text-white xl:text-[3rem]",
+                  config.mobilePriceBannerAfterDevis ? "mt-3" : "mt-1",
+                  "font-['Poppins',sans-serif] text-[2.5rem] font-extrabold leading-[1.06] tracking-tight text-white xl:text-[3rem]",
                   HERO_TEXT_SHADOW,
                 )}
               >
                 Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
               </p>
+              {config.mobilePriceBannerAfterDevis ? (
+                <HeroPriceBanner text={config.mobilePriceBanner} variant="desktop" className="self-stretch" />
+              ) : null}
             </div>
 
             <div className="flex w-full flex-col items-end self-stretch pr-0 text-right sm:pr-2 xl:pr-4">
@@ -777,7 +795,7 @@ export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHe
               </h2>
               <p
                 className={cn(
-                  "mt-3 max-w-md font-['Poppins',sans-serif] text-[17px] font-semibold leading-relaxed text-white",
+                  "mt-3 ml-auto max-w-[34rem] text-left font-['Poppins',sans-serif] text-[17px] font-semibold leading-snug text-white",
                   HERO_TEXT_SHADOW,
                 )}
               >

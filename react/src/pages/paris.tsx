@@ -194,9 +194,9 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
       if (data?.success) {
         const clientId = data?.data?.id;
         if (clientId) {
-          FormDataManager.markFormSubmitted(clientId);
+          FormDataManager.markFormSubmitted(clientId, data?.access_token);
         } else {
-          FormDataManager.markFormSubmitted();
+          FormDataManager.markFormSubmitted(undefined, data?.access_token);
         }
         navigate(DEVIS_CONFIRMATION_PATH);
       } else {
