@@ -18,14 +18,11 @@ def get_google_api_key():
 
 @require_GET
 def google_places_autocomplete(request):
-    """
-    Proxy for Google Places Autocomplete API.
-    Query params: input (required), types (optional, default address),
-    language (optional, default fr), components (optional).
-    By default, results are restricted to:
-    France (FR), Belgium (BE), United Kingdom/England (GB),
-    Luxembourg (LU), Germany (DE).
-    """
+    """Proxy for Google Places Autocomplete API (rate-limited per IP)."""
+    limited = enforce_rate_limit_json(request, 'google_places', limit=120, window_seconds=3600)
+    if limited:
+        return limited
+
     api_key = get_google_api_key()
     if not api_key:
         return JsonResponse({'predictions': [], 'status': 'REQUEST_DENIED', 'error_message': 'GOOGLE_MAPS_API_KEY not set'}, status=500)
@@ -59,10 +56,11 @@ def google_places_autocomplete(request):
 
 @require_GET
 def google_distance_matrix(request):
-    """
-    Proxy for Google Distance Matrix API.
-    Query params: origins (required), destinations (required), mode (optional), units (optional), language (optional).
-    """
+    """Proxy for Google Distance Matrix API (rate-limited per IP)."""
+    limited = enforce_rate_limit_json(request, 'google_distance_matrix', limit=40, window_seconds=3600)
+    if limited:
+        return limited
+
     api_key = get_google_api_key()
     if not api_key:
         return JsonResponse({'status': 'REQUEST_DENIED', 'error_message': 'GOOGLE_MAPS_API_KEY not set'}, status=500)

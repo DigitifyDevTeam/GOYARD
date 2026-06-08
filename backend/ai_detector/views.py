@@ -21,6 +21,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+from core.ratelimit import enforce_rate_limit_json
+
 
 # Room-based object organization
 ROOM_OBJECTS = {
@@ -325,6 +327,9 @@ def calculate_quote(volume_calculation, distance_km=None):
 def upload_photos(request):
     """Handle photo upload and room creation"""
     if request.method == 'POST':
+        limited = enforce_rate_limit_json(request, 'ai_upload_photos', limit=30, window_seconds=3600)
+        if limited:
+            return limited
         try:
             room_type = request.POST.get('room_type')
             room_name = request.POST.get('room_name', f'Room {room_type}')
@@ -430,6 +435,9 @@ def upload_photos(request):
 def analyze_photos(request):
     """Analyze photos with AI"""
     if request.method == 'POST':
+        limited = enforce_rate_limit_json(request, 'ai_analyze_photos', limit=30, window_seconds=3600)
+        if limited:
+            return limited
         try:
             photo_ids = request.POST.getlist('photo_ids')
             
@@ -1293,6 +1301,9 @@ def room_list(request):
 def predict_objects(request):
     """YOLO-based object detection API endpoint"""
     if request.method == 'POST':
+        limited = enforce_rate_limit_json(request, 'ai_predict', limit=40, window_seconds=3600)
+        if limited:
+            return limited
         try:
             # Check if image file is provided
             if 'image' not in request.FILES:
@@ -2613,6 +2624,9 @@ def calculate_manual_quote(request):
 def test_ai_model(request):
     """Test endpoint for AI model functionality"""
     if request.method == 'POST':
+        limited = enforce_rate_limit_json(request, 'ai_test', limit=10, window_seconds=3600)
+        if limited:
+            return limited
         try:
             # Test YOLO model loading
             model_path = os.path.join(os.path.dirname(__file__), 'ai_model', 'yolov8x-oiv7.pt')

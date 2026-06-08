@@ -1,12 +1,16 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from core.ratelimit import enforce_rate_limit_json
 from .image_utils import check_duplicate_image
 
 @csrf_exempt
 def check_duplicate_images(request):
     """Check for duplicate images before upload"""
     if request.method == 'POST':
+        limited = enforce_rate_limit_json(request, 'ai_check_duplicates', limit=60, window_seconds=3600)
+        if limited:
+            return limited
         try:
             photos = request.FILES.getlist('photos')
             

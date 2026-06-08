@@ -599,6 +599,10 @@ def get_final_quote(request):
       - portage_depart_m, portage_arrival_m, portage_escale_m (optional, in meters)
       - distance_km (optional fallback if address_id is missing)
     """
+    limited = enforce_rate_limit(request, 'final_quote', limit=30, window_seconds=3600)
+    if limited:
+        return limited
+
     try:
         data = request.data or {}
         print(f"[get_final_quote] Received data: {data}")
