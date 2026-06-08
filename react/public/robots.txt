@@ -1,24 +1,40 @@
 # Campaign landings (/lp/*) and quote tunnel: no organic SEO — use noindex + Disallow
+# API, admin, and test paths: discourage well-behaved crawlers (not a security boundary)
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test/
 Disallow: /tunnel/
 Disallow: /lp/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test/
 Disallow: /tunnel/
 Disallow: /lp/
 
 User-agent: Twitterbot
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test/
 Disallow: /lp/
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test/
 Disallow: /lp/
 
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test/
 Disallow: /tunnel/
 Disallow: /lp/
 
