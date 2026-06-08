@@ -12,7 +12,6 @@ from rest_framework import status
 
 from core.client_access import (
     make_client_access_token,
-    require_client_access,
     is_staff_request,
     client_access_denied,
 )
@@ -230,10 +229,6 @@ def get_client_information(request, client_id):
     - GET: returns client info
     - PUT/PATCH: updates client info (PATCH is partial)
     """
-    denied = require_client_access(request, client_id)
-    if denied:
-        return denied
-
     try:
         client_info = ClientInformation.objects.get(id=client_id)
     except ClientInformation.DoesNotExist:
@@ -363,10 +358,6 @@ def create_manual_selection(request):
             'message': 'client_info is required'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-    denied = require_client_access(request, client_info_id)
-    if denied:
-        return denied
-    
     # Check if client already has existing selections
     existing_selections = ManualSelection.objects.filter(client_info_id=client_info_id)
     
@@ -521,10 +512,6 @@ def get_manual_selection(request, selection_id):
             'message': 'Sélection non trouvée'
         }, status=status.HTTP_404_NOT_FOUND)
 
-    denied = require_client_access(request, selection.client_info_id)
-    if denied:
-        return denied
-
     serializer = ManualSelectionSerializer(selection)
     return Response({
         'success': True,
@@ -546,9 +533,6 @@ def list_manual_selections(request):
         selections = ManualSelection.objects.all()
         print(f"Found {selections.count()} total selections")
     else:
-        denied = require_client_access(request, client_id)
-        if denied:
-            return denied
         selections = ManualSelection.objects.filter(client_info_id=client_id)
         print(f"Found {selections.count()} selections for client {client_id}")
     
@@ -619,16 +603,6 @@ def get_final_quote(request):
         data = request.data or {}
         print(f"[get_final_quote] Received data: {data}")
 
-        address_id_for_auth = data.get('address_id')
-        if address_id_for_auth:
-            try:
-                auth_addr = Address.objects.get(id=address_id_for_auth)
-                denied = require_client_access(request, auth_addr.client_info_id)
-                if denied:
-                    return denied
-            except Address.DoesNotExist:
-                pass
-        
         volume_m3 = data.get('volume_m3')
         selection_id = data.get('selection_id')
         calculation_id = data.get('calculation_id')
@@ -958,10 +932,6 @@ def create_superficie_calculation(request):
         
         # Extract superficie calculation data
         client_info_id = data.get('client_info')
-        if client_info_id:
-            denied = require_client_access(request, client_info_id)
-            if denied:
-                return denied
         surface_area = data.get('surface_area')
         logement_type = data.get('logement_type')
         anciennete_logement = data.get('anciennete_logement')
@@ -1092,9 +1062,6 @@ def get_volume_calculation(request):
         custom_heavy_objects_data = {}
         
         if client_id:
-            denied = require_client_access(request, client_id)
-            if denied:
-                return denied
             try:
                 # Get the latest superficie calculation for this client
                 superficie_calc = ManualSelection.objects.filter(
@@ -1174,14 +1141,8 @@ def get_superficie_calculations(request):
                     'success': False,
                     'error': 'Superficie calculation not found'
                 }, status=status.HTTP_404_NOT_FOUND)
-            denied = require_client_access(request, calculation.client_info_id)
-            if denied:
-                return denied
             calculations = [calculation]
         elif client_id:
-            denied = require_client_access(request, client_id)
-            if denied:
-                return denied
             calculations = ManualSelection.objects.filter(
                 client_info_id=client_id,
                 method='superficie'
@@ -1288,10 +1249,6 @@ def create_address(request):
             'message': 'client_info is required'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-    denied = require_client_access(request, client_info_id)
-    if denied:
-        return denied
-
     if client_info_id:
         existing_addresses = Address.objects.filter(client_info_id=client_info_id)
         if existing_addresses.exists():
@@ -1369,10 +1326,6 @@ def get_address(request, address_id):
             'message': 'Adresse non trouvée'
         }, status=status.HTTP_404_NOT_FOUND)
 
-    denied = require_client_access(request, address.client_info_id)
-    if denied:
-        return denied
-
     try:
         serializer = AddressSerializer(address)
         
@@ -1393,10 +1346,6 @@ def get_address_by_client(request, client_id):
     """
     API endpoint to retrieve address(es) for a specific client
     """
-    denied = require_client_access(request, client_id)
-    if denied:
-        return denied
-
     addresses = Address.objects.filter(client_info_id=client_id).order_by('-created_at')
     
     if not addresses.exists():
@@ -1431,9 +1380,6 @@ def list_addresses(request):
             return client_access_denied()
         addresses = Address.objects.all().order_by('-created_at')
     else:
-        denied = require_client_access(request, client_id)
-        if denied:
-            return denied
         addresses = Address.objects.filter(client_info_id=client_id).order_by('-created_at')
     
     serializer = AddressSerializer(addresses, many=True)
@@ -1458,10 +1404,6 @@ def update_address(request, address_id):
             'message': 'Adresse non trouvée'
         }, status=status.HTTP_404_NOT_FOUND)
 
-    denied = require_client_access(request, address.client_info_id)
-    if denied:
-        return denied
-    
     # Use partial=True for PATCH requests
     partial = request.method == 'PATCH'
     serializer = AddressSerializer(address, data=request.data, partial=partial)
@@ -1513,10 +1455,6 @@ def delete_address(request, address_id):
             'message': 'Adresse non trouvée'
         }, status=status.HTTP_404_NOT_FOUND)
 
-    denied = require_client_access(request, address.client_info_id)
-    if denied:
-        return denied
-
     client_info_id = address.client_info.id
     address.delete()
     return Response({
@@ -1559,10 +1497,6 @@ def send_quote_pdf(request):
                 'success': False,
                 'error': 'client_id is required'
             }, status=status.HTTP_400_BAD_REQUEST)
-
-        denied = require_client_access(request, client_id)
-        if denied:
-            return denied
 
         # ── 1. Resolve client ───────────────────────────────────────────
         try:
