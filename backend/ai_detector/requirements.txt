@@ -1,7 +1,5 @@
 # Legacy / reference lockfile for ai_detector (keep in sync with ../requirements.txt for Dependabot)
 Django==4.2.30
-tensorflow-cpu==2.15.0
-keras==2.15.0
 opencv-python==4.8.1.78
 Pillow>=11.3.0
 numpy==1.24.3
