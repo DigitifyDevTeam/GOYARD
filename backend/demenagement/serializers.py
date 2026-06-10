@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rest_framework import serializers
 from .models import ClientInformation, ManualSelection, Address
 from ai_detector.views import ROOM_OBJECTS, OBJECT_VOLUMES
@@ -41,7 +43,7 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         return value
 
     @staticmethod
-    def _compose_full_address(street: str, postal_code: str | None, city: str | None) -> str:
+    def _compose_full_address(street: str, postal_code: Optional[str], city: Optional[str]) -> str:
         parts = [
             str(part).strip()
             for part in (street, postal_code, city)
