@@ -111,10 +111,60 @@ export function ParisDevisTrustAside({
 const ETAGE_OPTIONS = ["RDC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 const ASCENSEUR_OPTIONS = ["Non", "Oui 2 personnes", "Oui 4 personnes", "Oui 6 personnes"];
 
+type DevisFormState = {
+  nom: string;
+  prenom: string;
+  tel_portable: string;
+  email: string;
+  adresse_depart: string;
+  cp_depart: string;
+  ville_depart: string;
+  etage_depart: string;
+  adresse_arrivee: string;
+  cp_arrivee: string;
+  ville_arrivee: string;
+  etage_arrivee: string;
+  volume: string;
+  superficie: string;
+  date_demenagement: string;
+};
+
+type DevisFormFieldKey = keyof DevisFormState;
+
+function getDevisFormFieldErrors(form: DevisFormState): Partial<Record<DevisFormFieldKey, boolean>> {
+  const hasText = (value: string) => value.trim() !== "";
+  const volumeSuperficieMissing = !hasText(form.volume) && !hasText(form.superficie);
+
+  return {
+    nom: !hasText(form.nom),
+    prenom: !hasText(form.prenom),
+    tel_portable: !hasText(form.tel_portable),
+    email: !hasText(form.email),
+    adresse_depart: !hasText(form.adresse_depart),
+    cp_depart: !hasText(form.cp_depart),
+    ville_depart: !hasText(form.ville_depart),
+    etage_depart: form.etage_depart === "",
+    adresse_arrivee: !hasText(form.adresse_arrivee),
+    cp_arrivee: !hasText(form.cp_arrivee),
+    ville_arrivee: !hasText(form.ville_arrivee),
+    etage_arrivee: form.etage_arrivee === "",
+    volume: volumeSuperficieMissing,
+    superficie: volumeSuperficieMissing,
+    date_demenagement: form.date_demenagement === "",
+  };
+}
+
+function hasDevisFormFieldErrors(errors: Partial<Record<DevisFormFieldKey, boolean>>): boolean {
+  return Object.values(errors).some(Boolean);
+}
+
+const devisFieldErrorCls = "border-red-500 placeholder:text-red-500";
+
 export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
   const { entryPage } = props ?? {};
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
   const [form, setForm] = useState({
     type: "Particulier",
     nom: "",
@@ -148,17 +198,21 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
   const labelCls = "block text-sm font-medium text-[#191919] mb-1.5 font-['Poppins',sans-serif]";
   const sectionHeadCls = "font-['Poppins',sans-serif] font-bold text-[#191919] text-lg sm:text-xl uppercase tracking-wide mb-5";
 
+  const fieldErrors = showErrors ? getDevisFormFieldErrors(form) : {};
+  const err = (field: DevisFormFieldKey) => !!fieldErrors[field];
+  const fieldClass = (field: DevisFormFieldKey, base = inputCls) => cn(base, err(field) && devisFieldErrorCls);
+  const placeholder = (field: DevisFormFieldKey, base: string) => (err(field) ? "obligatoire" : base);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.nom || !form.tel_portable || !form.email || !form.adresse_depart || !form.adresse_arrivee || !form.date_demenagement) {
-      alert("Veuillez remplir tous les champs obligatoires (*).");
+    const errors = getDevisFormFieldErrors(form);
+    if (hasDevisFormFieldErrors(errors)) {
+      setShowErrors(true);
       return;
     }
+    setShowErrors(false);
     setSubmitting(true);
     try {
-      const fullAdresseDepart = [form.adresse_depart, form.cp_depart, form.ville_depart].filter(Boolean).join(", ");
-      const fullAdresseArrivee = [form.adresse_arrivee, form.cp_arrivee, form.ville_arrivee].filter(Boolean).join(", ");
-
       const ascenseurMap: Record<string, string> = {
         Non: "Non",
         "Oui 2 personnes": "2-3 personnes",
@@ -174,14 +228,29 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
         email: form.email,
         phone: form.tel_portable || form.tel_fixe,
         date_demenagement: form.date_demenagement,
-        adresse_depart: fullAdresseDepart,
+        adresse_depart: form.adresse_depart,
+        cp_depart: form.cp_depart,
+        ville_depart: form.ville_depart,
         etage_depart: form.etage_depart,
         ascenseur_depart: ascenseurMap[form.ascenseur_depart] || "Non",
-        adresse_arrivee: fullAdresseArrivee,
+        adresse_arrivee: form.adresse_arrivee,
+        cp_arrivee: form.cp_arrivee,
+        ville_arrivee: form.ville_arrivee,
         etage_arrivee: form.etage_arrivee,
         ascenseur_arrivee: ascenseurMap[form.ascenseur_arrivee] || "Non",
-        options_depart: { info_complementaire: form.info_depart, volume: form.volume, superficie: form.superficie, type_client: form.type },
-        options_arrivee: { info_complementaire: form.info_arrivee },
+        options_depart: {
+          info_complementaire: form.info_depart,
+          volume: form.volume,
+          superficie: form.superficie,
+          type_client: form.type,
+          cp_depart: form.cp_depart,
+          ville_depart: form.ville_depart,
+        },
+        options_arrivee: {
+          info_complementaire: form.info_arrivee,
+          cp_arrivee: form.cp_arrivee,
+          ville_arrivee: form.ville_arrivee,
+        },
         ...(pathname ? { entry_page: pathname } : {}),
       };
 
@@ -223,11 +292,11 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
         </div>
         <div>
           <label htmlFor="dv-nom" className={labelCls}>Nom *</label>
-          <input id="dv-nom" type="text" required value={form.nom} onChange={set("nom")} placeholder="Nom" className={inputCls} />
+          <input id="dv-nom" type="text" value={form.nom} onChange={set("nom")} placeholder={placeholder("nom", "Nom")} className={fieldClass("nom")} aria-invalid={err("nom")} />
         </div>
         <div>
           <label htmlFor="dv-prenom" className={labelCls}>Prénom *</label>
-          <input id="dv-prenom" type="text" required value={form.prenom} onChange={set("prenom")} placeholder="Prénom" className={inputCls} />
+          <input id="dv-prenom" type="text" value={form.prenom} onChange={set("prenom")} placeholder={placeholder("prenom", "Prénom")} className={fieldClass("prenom")} aria-invalid={err("prenom")} />
         </div>
       </div>
       <div className="grid sm:grid-cols-3 gap-4 mt-4">
@@ -237,11 +306,11 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
         </div>
         <div>
           <label htmlFor="dv-tel-portable" className={labelCls}>Téléphone Portable *</label>
-          <input id="dv-tel-portable" type="tel" required value={form.tel_portable} onChange={set("tel_portable")} placeholder="Téléphone Portable" className={inputCls} />
+          <input id="dv-tel-portable" type="tel" value={form.tel_portable} onChange={set("tel_portable")} placeholder={placeholder("tel_portable", "Téléphone Portable")} className={fieldClass("tel_portable")} aria-invalid={err("tel_portable")} />
         </div>
         <div>
           <label htmlFor="dv-email" className={labelCls}>Votre email *</label>
-          <input id="dv-email" type="email" required value={form.email} onChange={set("email")} placeholder="Votre email" className={inputCls} />
+          <input id="dv-email" type="email" value={form.email} onChange={set("email")} placeholder={placeholder("email", "Votre email")} className={fieldClass("email")} aria-invalid={err("email")} />
         </div>
       </div>
 
@@ -249,24 +318,24 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
 
       {/* INFORMATIONS DE DÉPART */}
       <h3 className={sectionHeadCls}>Informations de départ</h3>
-      <div className="grid sm:grid-cols-3 gap-4">
-        <div>
-          <label htmlFor="dv-adr-dep" className={labelCls}>Adresse de départ *</label>
-          <input id="dv-adr-dep" type="text" required value={form.adresse_depart} onChange={set("adresse_depart")} placeholder="Adresse de départ" className={inputCls} />
-        </div>
+      <div>
+        <label htmlFor="dv-adr-dep" className={labelCls}>Adresse de départ *</label>
+        <input id="dv-adr-dep" type="text" value={form.adresse_depart} onChange={set("adresse_depart")} placeholder={placeholder("adresse_depart", "Adresse de départ")} className={fieldClass("adresse_depart")} aria-invalid={err("adresse_depart")} />
+      </div>
+      <div className="grid sm:grid-cols-2 gap-4 mt-4">
         <div>
           <label htmlFor="dv-cp-dep" className={labelCls}>Code Postal *</label>
-          <input id="dv-cp-dep" type="text" value={form.cp_depart} onChange={set("cp_depart")} placeholder="Code Postal" className={inputCls} />
+          <input id="dv-cp-dep" type="text" inputMode="numeric" value={form.cp_depart} onChange={set("cp_depart")} placeholder={placeholder("cp_depart", "Code Postal")} className={fieldClass("cp_depart")} autoComplete="postal-code" aria-invalid={err("cp_depart")} />
         </div>
         <div>
           <label htmlFor="dv-ville-dep" className={labelCls}>Ville *</label>
-          <input id="dv-ville-dep" type="text" value={form.ville_depart} onChange={set("ville_depart")} placeholder="Ville" className={inputCls} />
+          <input id="dv-ville-dep" type="text" value={form.ville_depart} onChange={set("ville_depart")} placeholder={placeholder("ville_depart", "Ville")} className={fieldClass("ville_depart")} aria-invalid={err("ville_depart")} />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 mt-4">
         <div>
           <label htmlFor="dv-etage-dep" className={labelCls}>Nombre d'étages *</label>
-          <select id="dv-etage-dep" value={form.etage_depart} onChange={set("etage_depart")} className={selectCls}>
+          <select id="dv-etage-dep" value={form.etage_depart} onChange={set("etage_depart")} className={fieldClass("etage_depart", selectCls)} aria-invalid={err("etage_depart")}>
             {ETAGE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
           </select>
         </div>
@@ -293,24 +362,24 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
 
       {/* INFORMATIONS D'ARRIVÉE */}
       <h3 className={sectionHeadCls}>Informations d'arrivée</h3>
-      <div className="grid sm:grid-cols-3 gap-4">
-        <div>
-          <label htmlFor="dv-adr-arr" className={labelCls}>Adresse d'arrivée *</label>
-          <input id="dv-adr-arr" type="text" required value={form.adresse_arrivee} onChange={set("adresse_arrivee")} placeholder="Adresse d'arrivée" className={inputCls} />
-        </div>
+      <div>
+        <label htmlFor="dv-adr-arr" className={labelCls}>Adresse d'arrivée *</label>
+        <input id="dv-adr-arr" type="text" value={form.adresse_arrivee} onChange={set("adresse_arrivee")} placeholder={placeholder("adresse_arrivee", "Adresse d'arrivée")} className={fieldClass("adresse_arrivee")} aria-invalid={err("adresse_arrivee")} />
+      </div>
+      <div className="grid sm:grid-cols-2 gap-4 mt-4">
         <div>
           <label htmlFor="dv-cp-arr" className={labelCls}>Code Postal *</label>
-          <input id="dv-cp-arr" type="text" value={form.cp_arrivee} onChange={set("cp_arrivee")} placeholder="Code Postal" className={inputCls} />
+          <input id="dv-cp-arr" type="text" inputMode="numeric" value={form.cp_arrivee} onChange={set("cp_arrivee")} placeholder={placeholder("cp_arrivee", "Code Postal")} className={fieldClass("cp_arrivee")} autoComplete="postal-code" aria-invalid={err("cp_arrivee")} />
         </div>
         <div>
           <label htmlFor="dv-ville-arr" className={labelCls}>Ville *</label>
-          <input id="dv-ville-arr" type="text" value={form.ville_arrivee} onChange={set("ville_arrivee")} placeholder="Ville" className={inputCls} />
+          <input id="dv-ville-arr" type="text" value={form.ville_arrivee} onChange={set("ville_arrivee")} placeholder={placeholder("ville_arrivee", "Ville")} className={fieldClass("ville_arrivee")} aria-invalid={err("ville_arrivee")} />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 mt-4">
         <div>
           <label htmlFor="dv-etage-arr" className={labelCls}>Nombre d'étages *</label>
-          <select id="dv-etage-arr" value={form.etage_arrivee} onChange={set("etage_arrivee")} className={selectCls}>
+          <select id="dv-etage-arr" value={form.etage_arrivee} onChange={set("etage_arrivee")} className={fieldClass("etage_arrivee", selectCls)} aria-invalid={err("etage_arrivee")}>
             {ETAGE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
           </select>
         </div>
@@ -338,32 +407,39 @@ export function DevisForm(props?: Readonly<{ entryPage?: string }>) {
       {/* VOLUME / SUPERFICIE / DATE */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="dv-volume" className={labelCls}>Volume (m3)</label>
-          <input id="dv-volume" type="text" value={form.volume} onChange={set("volume")} placeholder="Volume (m3)" className={inputCls} />
+          <label htmlFor="dv-volume" className={labelCls}>Volume (m3) *</label>
+          <input id="dv-volume" type="text" value={form.volume} onChange={set("volume")} placeholder={placeholder("volume", "Volume (m3)")} className={fieldClass("volume")} aria-invalid={err("volume")} />
         </div>
         <div>
-          <label htmlFor="dv-superficie" className={labelCls}>Ou Superficie du logement m2</label>
-          <input id="dv-superficie" type="text" value={form.superficie} onChange={set("superficie")} placeholder="Ou Superficie du logement m2" className={inputCls} />
+          <label htmlFor="dv-superficie" className={labelCls}>Ou Superficie du logement m2 *</label>
+          <input id="dv-superficie" type="text" value={form.superficie} onChange={set("superficie")} placeholder={placeholder("superficie", "Ou Superficie du logement m2")} className={fieldClass("superficie")} aria-invalid={err("superficie")} />
         </div>
       </div>
       <div className="mt-4">
         <label htmlFor="dv-date" className={labelCls}>Date Prévue de déménagement *</label>
-        <input
-          id="dv-date"
-          type="date"
-          required
-          min={new Date().toISOString().split("T")[0]}
-          value={form.date_demenagement}
-          onChange={set("date_demenagement")}
-          className={inputCls}
-          style={{ colorScheme: "light" }}
-        />
+        <div className="relative">
+          {err("date_demenagement") && !form.date_demenagement ? (
+            <span className="pointer-events-none absolute left-4 top-1/2 z-[1] -translate-y-1/2 font-['Poppins',sans-serif] text-sm text-red-500">
+              obligatoire
+            </span>
+          ) : null}
+          <input
+            id="dv-date"
+            type="date"
+            min={new Date().toISOString().split("T")[0]}
+            value={form.date_demenagement}
+            onChange={set("date_demenagement")}
+            className={fieldClass("date_demenagement")}
+            style={{ colorScheme: "light" }}
+            aria-invalid={err("date_demenagement")}
+          />
+        </div>
       </div>
 
       <button
         type="submit"
         disabled={submitting}
-        className="mt-8 w-full rounded-xl bg-[#CC922F] px-8 py-4 font-['Poppins',sans-serif] font-bold text-white text-base sm:text-lg shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition disabled:opacity-60"
+        className="mt-8 w-full rounded-xl bg-[#CC922F] px-8 py-4 font-['Poppins',sans-serif] font-bold text-white text-base sm:text-lg shadow-[0px_12px_30px_rgba(204,146,47,0.25)] hover:brightness-95 transition disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? "Envoi en cours..." : "Envoyer ma demande de devis"}
       </button>

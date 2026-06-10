@@ -6,6 +6,7 @@ import {
   Calendar,
   Clock,
   Handshake,
+  Hash,
   Layers,
   Mail,
   Map,
@@ -37,6 +38,54 @@ const TRUSTPILOT_URL = "https://www.trustpilot.com/review/guivarchedemenagement.
 
 const ETAGE_OPTIONS = ["RDC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 const ASCENSEUR_OPTIONS = ["Non", "Oui 2 personnes", "Oui 4 personnes", "Oui 6 personnes"];
+
+type ParisCompactDevisFormState = {
+  nom: string;
+  tel_portable: string;
+  email: string;
+  adresse_depart: string;
+  cp_depart: string;
+  etage_depart: string;
+  ascenseur_depart: string;
+  adresse_arrivee: string;
+  cp_arrivee: string;
+  etage_arrivee: string;
+  ascenseur_arrivee: string;
+  volume: string;
+  superficie: string;
+  date_demenagement: string;
+  info_complementaire: string;
+};
+
+type ParisCompactDevisFieldKey = keyof ParisCompactDevisFormState;
+
+function getParisCompactDevisFieldErrors(
+  form: ParisCompactDevisFormState,
+): Partial<Record<ParisCompactDevisFieldKey, boolean>> {
+  const hasText = (value: string) => value.trim() !== "";
+  const volumeSuperficieMissing = !hasText(form.volume) && !hasText(form.superficie);
+
+  return {
+    nom: !hasText(form.nom),
+    tel_portable: !hasText(form.tel_portable),
+    email: !hasText(form.email),
+    date_demenagement: form.date_demenagement === "",
+    adresse_depart: !hasText(form.adresse_depart),
+    cp_depart: !hasText(form.cp_depart),
+    etage_depart: form.etage_depart === "",
+    ascenseur_depart: form.ascenseur_depart === "",
+    volume: volumeSuperficieMissing,
+    superficie: volumeSuperficieMissing,
+    adresse_arrivee: !hasText(form.adresse_arrivee),
+    cp_arrivee: !hasText(form.cp_arrivee),
+    etage_arrivee: form.etage_arrivee === "",
+    ascenseur_arrivee: form.ascenseur_arrivee === "",
+  };
+}
+
+function hasParisCompactDevisFieldErrors(errors: Partial<Record<ParisCompactDevisFieldKey, boolean>>): boolean {
+  return Object.values(errors).some(Boolean);
+}
 
 const HERO_BENEFITS = [
   { icon: Users, label: "Équipe 100% salariée" },
@@ -162,10 +211,12 @@ function IconField({
   icon: Icon,
   className,
   children,
+  showObligatoire = false,
 }: Readonly<{
   icon: React.ComponentType<{ className?: string }>;
   className?: string;
   children: React.ReactNode;
+  showObligatoire?: boolean;
 }>) {
   return (
     <div className={cn("relative min-w-0 w-full", className)}>
@@ -173,10 +224,17 @@ function IconField({
         className="pointer-events-none absolute left-3.5 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-[#1C3957]/60"
         aria-hidden
       />
+      {showObligatoire ? (
+        <span className="pointer-events-none absolute left-11 top-1/2 z-[1] -translate-y-1/2 font-['Poppins',sans-serif] text-[15px] text-red-500">
+          obligatoire
+        </span>
+      ) : null}
       {children}
     </div>
   );
 }
+
+const fieldErrorCls = "border-red-500 placeholder:text-red-500";
 
 const fieldCls =
   "w-full min-w-0 rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-3.5 text-[15px] text-[#1C3957] placeholder:text-slate-400 focus:border-[#CC922F] focus:outline-none focus:ring-2 focus:ring-[#CC922F]/20 font-['Poppins',sans-serif] transition";
@@ -243,14 +301,17 @@ function ParisCompactDevisForm({
     isMobile ? `${config.fieldSlug}-m-${name}` : `${config.fieldSlug}-${name}`;
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
   const [form, setForm] = useState({
     nom: "",
     tel_portable: "",
     email: "",
     adresse_depart: "",
+    cp_depart: "",
     etage_depart: "",
     ascenseur_depart: "",
     adresse_arrivee: "",
+    cp_arrivee: "",
     etage_arrivee: "",
     ascenseur_arrivee: "",
     volume: "",
@@ -264,19 +325,19 @@ function ParisCompactDevisForm({
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
+  const fieldErrors = showErrors ? getParisCompactDevisFieldErrors(form) : {};
+  const err = (field: ParisCompactDevisFieldKey) => !!fieldErrors[field];
+  const fieldClass = (field: ParisCompactDevisFieldKey, base = fieldCls) => cn(base, err(field) && fieldErrorCls);
+  const placeholder = (field: ParisCompactDevisFieldKey, base: string) => (err(field) ? "obligatoire" : base);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !form.nom ||
-      !form.tel_portable ||
-      !form.email ||
-      !form.adresse_depart ||
-      !form.adresse_arrivee ||
-      !form.date_demenagement
-    ) {
-      alert("Veuillez remplir tous les champs obligatoires.");
+    const errors = getParisCompactDevisFieldErrors(form);
+    if (hasParisCompactDevisFieldErrors(errors)) {
+      setShowErrors(true);
       return;
     }
+    setShowErrors(false);
     setSubmitting(true);
     try {
       const ascenseurMap: Record<string, string> = {
@@ -298,9 +359,11 @@ function ParisCompactDevisForm({
         phone: form.tel_portable,
         date_demenagement: form.date_demenagement,
         adresse_depart: form.adresse_depart,
+        cp_depart: form.cp_depart,
         etage_depart: form.etage_depart || "RDC",
         ascenseur_depart: ascenseurMap[form.ascenseur_depart] || "Non",
         adresse_arrivee: form.adresse_arrivee,
+        cp_arrivee: form.cp_arrivee,
         etage_arrivee: form.etage_arrivee || "RDC",
         ascenseur_arrivee: ascenseurMap[form.ascenseur_arrivee] || "Non",
         options_depart: {
@@ -308,8 +371,11 @@ function ParisCompactDevisForm({
           volume: form.volume,
           superficie: form.superficie,
           type_client: "Particulier",
+          cp_depart: form.cp_depart,
         },
-        options_arrivee: {},
+        options_arrivee: {
+          cp_arrivee: form.cp_arrivee,
+        },
         ...(pathname ? { entry_page: pathname } : {}),
       };
 
@@ -366,77 +432,99 @@ function ParisCompactDevisForm({
 
       <div className={cn("space-y-3", isMobile ? "mt-5" : "mt-6")}>
         <div className={cn("grid grid-cols-2 gap-3", isMobile && "[&>*]:min-w-0")}>
-          <IconField icon={User}>
+          <IconField icon={User} showObligatoire={err("nom") && !form.nom}>
             <input
               id={fieldId("nom")}
               type="text"
-              required
               value={form.nom}
               onChange={set("nom")}
-              placeholder="Nom"
-              className={fieldCls}
+              placeholder={placeholder("nom", "Nom")}
+              className={fieldClass("nom")}
+              aria-invalid={err("nom")}
             />
           </IconField>
-          <IconField icon={Phone}>
+          <IconField icon={Phone} showObligatoire={err("tel_portable") && !form.tel_portable}>
             <input
               id={fieldId("tel")}
               type="tel"
-              required
               value={form.tel_portable}
               onChange={set("tel_portable")}
-              placeholder="Téléphone"
-              className={fieldCls}
+              placeholder={placeholder("tel_portable", "Téléphone")}
+              className={fieldClass("tel_portable")}
+              aria-invalid={err("tel_portable")}
             />
           </IconField>
         </div>
 
         <div className={cn("grid grid-cols-2 gap-3", isMobile && "[&>*]:min-w-0")}>
-          <IconField icon={Mail}>
+          <IconField icon={Mail} showObligatoire={err("email") && !form.email}>
             <input
               id={fieldId("mail")}
               type="email"
-              required
               value={form.email}
               onChange={set("email")}
-              placeholder="Mail"
-              className={fieldCls}
+              placeholder={placeholder("email", "Mail")}
+              className={fieldClass("email")}
               autoComplete="email"
+              aria-invalid={err("email")}
             />
           </IconField>
-          <IconField icon={Calendar}>
+          <IconField icon={Calendar} showObligatoire={err("date_demenagement") && !form.date_demenagement}>
             <input
               id={fieldId("date")}
               type="date"
-              required
               min={new Date().toISOString().split("T")[0]}
               value={form.date_demenagement}
               onChange={set("date_demenagement")}
-              className={dateFieldCls(!!form.date_demenagement, isMobile)}
+              className={fieldClass(
+                "date_demenagement",
+                dateFieldCls(!!form.date_demenagement, isMobile),
+              )}
               style={{ colorScheme: "light" }}
               aria-label="Date prévue de déménagement"
+              aria-invalid={err("date_demenagement")}
             />
           </IconField>
         </div>
 
-        <IconField icon={MapPin}>
+        <IconField icon={MapPin} showObligatoire={err("adresse_depart") && !form.adresse_depart}>
           <input
             id={fieldId("adr-dep")}
             type="text"
-            required
             value={form.adresse_depart}
             onChange={set("adresse_depart")}
-            placeholder="Adresse de départ"
-            className={fieldCls}
+            placeholder={placeholder("adresse_depart", "Adresse de départ")}
+            className={fieldClass("adresse_depart")}
+            aria-invalid={err("adresse_depart")}
+          />
+        </IconField>
+
+        <IconField icon={Hash} showObligatoire={err("cp_depart") && !form.cp_depart}>
+          <input
+            id={fieldId("cp-dep")}
+            type="text"
+            inputMode="numeric"
+            value={form.cp_depart}
+            onChange={set("cp_depart")}
+            placeholder={placeholder("cp_depart", "Code postal de départ")}
+            className={fieldClass("cp_depart")}
+            autoComplete="postal-code"
+            aria-invalid={err("cp_depart")}
           />
         </IconField>
 
         <div className="grid grid-cols-2 gap-3">
-          <IconField icon={Building2}>
+          <IconField icon={Building2} showObligatoire={err("etage_depart") && !form.etage_depart}>
             <select
               id={fieldId("etage-dep")}
               value={form.etage_depart}
               onChange={set("etage_depart")}
-              className={cn(fieldCls, "appearance-none", !form.etage_depart && "text-slate-400")}
+              className={cn(
+                fieldClass("etage_depart"),
+                "appearance-none",
+                !form.etage_depart && !err("etage_depart") && "text-slate-400",
+              )}
+              aria-invalid={err("etage_depart")}
             >
               <option value="" disabled>
                 Étage
@@ -448,12 +536,17 @@ function ParisCompactDevisForm({
               ))}
             </select>
           </IconField>
-          <IconField icon={ArrowUpDown}>
+          <IconField icon={ArrowUpDown} showObligatoire={err("ascenseur_depart") && !form.ascenseur_depart}>
             <select
               id={fieldId("asc-dep")}
               value={form.ascenseur_depart}
               onChange={set("ascenseur_depart")}
-              className={cn(fieldCls, "appearance-none", !form.ascenseur_depart && "text-slate-400")}
+              className={cn(
+                fieldClass("ascenseur_depart"),
+                "appearance-none",
+                !form.ascenseur_depart && !err("ascenseur_depart") && "text-slate-400",
+              )}
+              aria-invalid={err("ascenseur_depart")}
             >
               <option value="" disabled>
                 Ascenseur
@@ -468,48 +561,69 @@ function ParisCompactDevisForm({
         </div>
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2.5">
-          <IconField icon={Package}>
+          <IconField icon={Package} showObligatoire={err("volume") && !form.volume}>
             <input
               id={fieldId("volume")}
               type="text"
               value={form.volume}
               onChange={set("volume")}
-              placeholder="Volume (m3)"
-              className={fieldCls}
+              placeholder={placeholder("volume", "Volume (m3)")}
+              className={fieldClass("volume")}
+              aria-invalid={err("volume")}
             />
           </IconField>
           <span className="font-['Poppins',sans-serif] text-sm font-semibold text-slate-400">ou</span>
-          <IconField icon={Layers}>
+          <IconField icon={Layers} showObligatoire={err("superficie") && !form.superficie}>
             <input
               id={fieldId("superficie")}
               type="text"
               value={form.superficie}
               onChange={set("superficie")}
-              placeholder="Superficie (m2)"
-              className={fieldCls}
+              placeholder={placeholder("superficie", "Superficie (m2)")}
+              className={fieldClass("superficie")}
+              aria-invalid={err("superficie")}
             />
           </IconField>
         </div>
 
-        <IconField icon={MapPin}>
+        <IconField icon={MapPin} showObligatoire={err("adresse_arrivee") && !form.adresse_arrivee}>
           <input
             id={fieldId("adr-arr")}
             type="text"
-            required
             value={form.adresse_arrivee}
             onChange={set("adresse_arrivee")}
-            placeholder="Adresse d'arrivée"
-            className={fieldCls}
+            placeholder={placeholder("adresse_arrivee", "Adresse d'arrivée")}
+            className={fieldClass("adresse_arrivee")}
+            aria-invalid={err("adresse_arrivee")}
+          />
+        </IconField>
+
+        <IconField icon={Hash} showObligatoire={err("cp_arrivee") && !form.cp_arrivee}>
+          <input
+            id={fieldId("cp-arr")}
+            type="text"
+            inputMode="numeric"
+            value={form.cp_arrivee}
+            onChange={set("cp_arrivee")}
+            placeholder={placeholder("cp_arrivee", "Code postal d'arrivée")}
+            className={fieldClass("cp_arrivee")}
+            autoComplete="postal-code"
+            aria-invalid={err("cp_arrivee")}
           />
         </IconField>
 
         <div className="grid grid-cols-2 gap-3">
-          <IconField icon={Building2}>
+          <IconField icon={Building2} showObligatoire={err("etage_arrivee") && !form.etage_arrivee}>
             <select
               id={fieldId("etage-arr")}
               value={form.etage_arrivee}
               onChange={set("etage_arrivee")}
-              className={cn(fieldCls, "appearance-none", !form.etage_arrivee && "text-slate-400")}
+              className={cn(
+                fieldClass("etage_arrivee"),
+                "appearance-none",
+                !form.etage_arrivee && !err("etage_arrivee") && "text-slate-400",
+              )}
+              aria-invalid={err("etage_arrivee")}
             >
               <option value="" disabled>
                 Étage
@@ -521,12 +635,17 @@ function ParisCompactDevisForm({
               ))}
             </select>
           </IconField>
-          <IconField icon={ArrowUpDown}>
+          <IconField icon={ArrowUpDown} showObligatoire={err("ascenseur_arrivee") && !form.ascenseur_arrivee}>
             <select
               id={fieldId("asc-arr")}
               value={form.ascenseur_arrivee}
               onChange={set("ascenseur_arrivee")}
-              className={cn(fieldCls, "appearance-none", !form.ascenseur_arrivee && "text-slate-400")}
+              className={cn(
+                fieldClass("ascenseur_arrivee"),
+                "appearance-none",
+                !form.ascenseur_arrivee && !err("ascenseur_arrivee") && "text-slate-400",
+              )}
+              aria-invalid={err("ascenseur_arrivee")}
             >
               <option value="" disabled>
                 Ascenseur
@@ -556,7 +675,7 @@ function ParisCompactDevisForm({
         type="submit"
         disabled={submitting}
         className={cn(
-          "w-full rounded-xl bg-[#CC922F] px-4 font-['Poppins',sans-serif] font-extrabold text-[#1C3957] shadow-[0_10px_28px_rgba(204,146,47,0.35)] transition hover:brightness-95 disabled:opacity-60",
+          "w-full rounded-xl bg-[#CC922F] px-4 font-['Poppins',sans-serif] font-extrabold text-[#1C3957] shadow-[0_10px_28px_rgba(204,146,47,0.35)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60",
           isMobile ? "mt-5 py-3.5 text-[15px] leading-snug" : "mt-6 py-4 text-base",
         )}
       >
@@ -678,21 +797,24 @@ function ParisMobileBenefitsBar() {
 
 /** Mobile hero — stacked layout (regional LP mockup). */
 export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHeroConfig }>) {
+  const showPriceBanner =
+    config.showPriceBanner !== false && config.mobilePriceBanner.trim().length > 0;
+
   return (
     <div className="lg:hidden">
       <ParisLpHeaderMobile />
 
-      <section className="relative min-h-[min(52vh,420px)] overflow-hidden">
+      <section className="relative min-h-[min(34vh,260px)] overflow-hidden">
         <img
           src="/gallery/hero.jpeg"
           alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover object-[70%_40%]"
           aria-hidden
         />
         <div className="absolute inset-0 bg-black/50" aria-hidden />
         <div className="absolute inset-0 bg-[#1C3957]/28" aria-hidden />
 
-        <div className="relative z-10 flex min-h-[min(52vh,420px)] flex-col items-center justify-center px-5 py-14 text-center">
+        <div className="relative z-10 flex min-h-[min(34vh,260px)] flex-col items-center justify-center px-5 py-6 text-center">
           <h1
             className={cn(
               "font-['Poppins',sans-serif] text-[1.65rem] font-extrabold leading-tight text-white sm:text-[1.85rem]",
@@ -702,19 +824,19 @@ export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHer
             {config.heroLine1Prefix}
             <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
           </h1>
-          {!config.mobilePriceBannerAfterDevis ? (
+          {showPriceBanner && !config.mobilePriceBannerAfterDevis ? (
             <HeroPriceBanner text={config.mobilePriceBanner} variant="mobile" />
           ) : null}
           <p
             className={cn(
-              config.mobilePriceBannerAfterDevis ? "mt-3" : "mt-2",
+              showPriceBanner && config.mobilePriceBannerAfterDevis ? "mt-3" : "mt-2",
               "font-['Poppins',sans-serif] text-[1.75rem] font-extrabold leading-tight text-white sm:text-[2rem]",
               HERO_TEXT_SHADOW,
             )}
           >
             Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
           </p>
-          {config.mobilePriceBannerAfterDevis ? (
+          {showPriceBanner && config.mobilePriceBannerAfterDevis ? (
             <HeroPriceBanner text={config.mobilePriceBanner} variant="mobile" />
           ) : null}
           <MobileLocationLine parts={config.mobileLocationParts} />
@@ -734,6 +856,9 @@ export function ParisLandingHeroMobile({ config }: Readonly<{ config: LandingHer
 
 /** Desktop hero — split image + compact devis form (regional LP mockup). */
 export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHeroConfig }>) {
+  const showPriceBanner =
+    config.showPriceBanner !== false && config.mobilePriceBanner.trim().length > 0;
+
   return (
     <div className="hidden lg:block">
       <ParisLpHeader />
@@ -759,24 +884,24 @@ export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHe
                 {config.heroLine1Prefix}
                 <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>{config.heroLine1Accent}</span>
               </h1>
-              {!config.mobilePriceBannerAfterDevis ? (
+              {showPriceBanner && !config.mobilePriceBannerAfterDevis ? (
                 <HeroPriceBanner text={config.mobilePriceBanner} variant="desktop" className="self-stretch" />
               ) : null}
               <p
                 className={cn(
-                  config.mobilePriceBannerAfterDevis ? "mt-3" : "mt-1",
+                  showPriceBanner && config.mobilePriceBannerAfterDevis ? "mt-3" : "mt-1",
                   "font-['Poppins',sans-serif] text-[2.5rem] font-extrabold leading-[1.06] tracking-tight text-white xl:text-[3rem]",
                   HERO_TEXT_SHADOW,
                 )}
               >
                 Devis gratuit <span className={cn("text-[#F5B84A]", HERO_TEXT_SHADOW)}>immédiat</span>
               </p>
-              {config.mobilePriceBannerAfterDevis ? (
+              {showPriceBanner && config.mobilePriceBannerAfterDevis ? (
                 <HeroPriceBanner text={config.mobilePriceBanner} variant="desktop" className="self-stretch" />
               ) : null}
             </div>
 
-            <div className="flex w-full flex-col items-end self-stretch pr-0 text-right sm:pr-2 xl:pr-4">
+            <div className="flex w-full flex-col items-center self-stretch text-center">
               <p
                 className={cn(
                   "font-['Poppins',sans-serif] text-[13px] font-bold uppercase tracking-[0.22em] text-[#F5B84A]",
@@ -795,14 +920,14 @@ export function ParisLandingHeroDesktop({ config }: Readonly<{ config: LandingHe
               </h2>
               <p
                 className={cn(
-                  "mt-3 ml-auto max-w-[34rem] text-left font-['Poppins',sans-serif] text-[17px] font-semibold leading-snug text-white",
+                  "mt-3 mx-auto max-w-[34rem] text-center font-['Poppins',sans-serif] text-[17px] font-semibold leading-snug text-white whitespace-pre-line",
                   HERO_TEXT_SHADOW,
                 )}
               >
                 {config.moverDescription}
               </p>
 
-              <ul className="mt-6 ml-auto w-full max-w-[22rem] space-y-3.5 sm:max-w-[24rem]">
+              <ul className="mt-6 mx-auto w-full max-w-[22rem] space-y-3.5 sm:max-w-[24rem]">
                 {HERO_BENEFITS.map(({ icon: Icon, label }) => (
                   <li key={label} className="grid grid-cols-[2.5rem_1fr] items-center gap-3 text-left">
                     <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/55 bg-black/25 text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)] backdrop-blur-[2px]">

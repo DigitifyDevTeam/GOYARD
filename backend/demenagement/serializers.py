@@ -40,13 +40,50 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         
         return value
 
+    @staticmethod
+    def _compose_full_address(street: str, postal_code: str | None, city: str | None) -> str:
+        parts = [
+            str(part).strip()
+            for part in (street, postal_code, city)
+            if part is not None and str(part).strip()
+        ]
+        return ", ".join(parts)
+
     def to_internal_value(self, data):
         """Accept legacy/alternate field names from landing forms."""
         if isinstance(data, dict):
             data = data.copy()
             if not str(data.get('phone') or '').strip() and data.get('tel_portable'):
                 data['phone'] = data['tel_portable']
+
+            opts_depart = dict(data.get('options_depart') or {})
+            opts_arrivee = dict(data.get('options_arrivee') or {})
+            for key in ('cp_depart', 'ville_depart'):
+                if str(data.get(key) or '').strip():
+                    opts_depart[key] = str(data[key]).strip()
+            for key in ('cp_arrivee', 'ville_arrivee'):
+                if str(data.get(key) or '').strip():
+                    opts_arrivee[key] = str(data[key]).strip()
+            if opts_depart:
+                data['options_depart'] = opts_depart
+            if opts_arrivee:
+                data['options_arrivee'] = opts_arrivee
         return super().to_internal_value(data)
+
+    def create(self, validated_data):
+        opts_depart = validated_data.get('options_depart') or {}
+        opts_arr = validated_data.get('options_arrivee') or {}
+        validated_data['adresse_depart'] = self._compose_full_address(
+            validated_data.get('adresse_depart', ''),
+            opts_depart.get('cp_depart'),
+            opts_depart.get('ville_depart'),
+        )
+        validated_data['adresse_arrivee'] = self._compose_full_address(
+            validated_data.get('adresse_arrivee', ''),
+            opts_arr.get('cp_arrivee'),
+            opts_arr.get('ville_arrivee'),
+        )
+        return super().create(validated_data)
     
     def validate_etage(self, value, field_name):
         """Helper method to validate floor values (blank defaults to RDC for compact LP forms)."""
@@ -119,7 +156,16 @@ class ClientInformationSerializer(serializers.ModelSerializer):
         ('monte_meuble', 'cave_ou_garage', 'cours_a_traverser', 'distance_portage')
     )
     _TEXT_OPTION_KEYS = frozenset(
-        ('info_complementaire', 'volume', 'superficie', 'type_client')
+        (
+            'info_complementaire',
+            'volume',
+            'superficie',
+            'type_client',
+            'cp_depart',
+            'ville_depart',
+            'cp_arrivee',
+            'ville_arrivee',
+        )
     )
 
     def validate_options(self, value, field_name):

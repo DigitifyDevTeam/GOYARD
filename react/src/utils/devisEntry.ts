@@ -11,6 +11,8 @@ const ROUTE_LABELS: Record<string, string> = {
   "/demenagement-particulier": "Déménagement particulier",
   "/demenagement-entreprise": "Déménagement entreprise",
   "/ile-de-france": "Île-de-France",
+  "/versaille": "Versailles",
+  "/longue": "Longue distance",
   "/paris": "Paris (landing)",
   "/lp/paris": "Landing Paris",
   "/lp/hauts-de-seine": "Landing Hauts-de-Seine (92)",
@@ -25,9 +27,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/mentions-legales": "Mentions légales",
   "/rgpd": "RGPD",
   "/en-construction": "En construction",
-  "/lp/demenagement-entreprise": "Landing entreprise",
-  "/lp/demenagement-particulier": "Landing particulier",
-  "/lp/ile-de-france": "Landing Île-de-France",
+  "/lp/longue-distance": "Landing longue distance",
 };
 
 function storageSet(key: string, value: string): void {

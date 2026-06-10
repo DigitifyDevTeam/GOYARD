@@ -22,11 +22,11 @@ import DemenagementParticulier from "./pages/DemenagementParticulier";
 import ZoneIleDeFrance from "./pages/ZoneIleDeFrance";
 import Paris from "./pages/paris";
 import Seine92 from "./pages/seine92";
+import Versaille from "./pages/versaille";
+import LongueDistance from "./pages/longue";
+import LongueDistanceSeo from "./pages/LongueDistanceSeo";
 import Pro from "./pages/pro";  
 import Particulier from "./pages/particulier";
-import LpIleDeFrance from "./landing/LpIleDeFrance";
-import LpDemenagementEntreprise from "./landing/LpDemenagementEntreprise";
-import LpDemenagementParticulier from "./landing/LpDemenagementParticulier";
 import ZoneNational from "./pages/ZoneNational";
 import ZoneInternational from "./pages/ZoneInternational";
 import NotFound from "./pages/NotFound";
@@ -113,8 +113,8 @@ import {
   ColonneSalleDeBainIcon,
   CommodeIcon,
   CuisiniereIcon,
-  EchelleIcon,
   EcranOrdinateurIcon,
+  EchelleIcon,
   EscabeauIcon,
   EtagereCaveIcon,
   EtagereCuisineIcon,
@@ -6325,8 +6325,11 @@ function AppRoutes() {
     <Routes location={routeLocation}>
         <Route path="/" element={<HomePage />} />
         <Route path="/demenagement-ile-de-france" element={<ZoneIleDeFrance />} />
+        <Route path="/versaille" element={<Versaille />} />
+        <Route path="/longue" element={<LongueDistanceSeo />} />
         <Route path="/lp/paris" element={<Paris />} />
         <Route path="/lp/hauts-de-seine" element={<Seine92 />} />
+        <Route path="/lp/longue-distance" element={<LongueDistance />} />
         <Route path="/lp/pro" element={<Pro />} />
         <Route path="/lp/particulier" element={<Particulier />} />
         <Route path="/demenagement-national" element={<ZoneNational />} />
@@ -6336,9 +6339,6 @@ function AppRoutes() {
         <Route path="/en-construction" element={<EnConstruction />} />
         <Route path="/demenagement-entreprise" element={<DemenagementEntreprise />} />
         <Route path="/demenagement-particulier" element={<DemenagementParticulier />} />
-        <Route path="/lp/demenagement-entreprise" element={<LpDemenagementEntreprise />} />
-        <Route path="/lp/demenagement-particulier" element={<LpDemenagementParticulier />} />
-        <Route path="/lp/ile-de-france" element={<LpIleDeFrance />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/faq" element={<FAQ />} />

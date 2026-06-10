@@ -23,16 +23,16 @@ const blogSlugs = [
 const landingRoutes = [
   '/lp/paris',
   '/lp/hauts-de-seine',
+  '/lp/longue-distance',
   '/lp/pro',
   '/lp/particulier',
-  '/lp/demenagement-entreprise',
-  '/lp/demenagement-particulier',
-  '/lp/ile-de-france',
 ]
 
 const routes = [
   '/',
   '/ile-de-france',
+  '/versaille',
+  '/longue',
   '/demenagement-national',
   '/international',
   '/contact',

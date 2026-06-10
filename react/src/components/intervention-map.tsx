@@ -163,6 +163,27 @@ export function InterventionMapParis75() {
   );
 }
 
+/** Carte & textes Versailles (78) — page locale */
+export function InterventionMapVersaille() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Versailles (78)"
+      mapLabel="Versailles"
+      mapLat={48.8014}
+      mapLng={2.1301}
+      mapZoom={13}
+      regionTitle="Versailles"
+      regionSubtitle="Déménagement local"
+      headerDescription="Guivarche Déménagement intervient à Versailles et dans les communes voisines pour des déménagements organisés, soignés et parfaitement cadrés."
+      regionParagraphs={[
+        "Versailles présente des configurations variées : immeubles du centre-ville, quartiers résidentiels, accès étroits et contraintes de stationnement — nous les anticipons.",
+        "Nous adaptons le matériel, la logistique et les protections pour des interventions en appartement comme en maison, à Versailles et dans les Yvelines.",
+        "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l'intervention.",
+      ]}
+    />
+  );
+}
+
 /** Carte & textes Hauts-de-Seine (92) — landing Ads */
 export function InterventionMapVersailles92() {
   return (

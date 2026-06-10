@@ -117,6 +117,60 @@ def _access_options_rows(opts: Optional[dict]) -> str:
     return "".join(rows)
 
 
+def _option_text(opts: Optional[dict], key: str) -> Optional[str]:
+    if not isinstance(opts, dict):
+        return None
+    raw = opts.get(key)
+    if raw is None:
+        return None
+    s = str(raw).strip()
+    return s or None
+
+
+def _depart_postal_rows(opts_depart: Optional[dict]) -> str:
+    rows: list[str] = []
+    cp_dep = _option_text(opts_depart, "cp_depart")
+    ville_dep = _option_text(opts_depart, "ville_depart")
+
+    if cp_dep:
+        rows.append(
+            "<tr>"
+            '<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Code postal départ</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(cp_dep)}</td>'
+            "</tr>"
+        )
+    if ville_dep:
+        rows.append(
+            "<tr>"
+            '<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Ville départ</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(ville_dep)}</td>'
+            "</tr>"
+        )
+    return "".join(rows)
+
+
+def _arrivee_postal_rows(opts_arrivee: Optional[dict]) -> str:
+    rows: list[str] = []
+    cp_arr = _option_text(opts_arrivee, "cp_arrivee")
+    ville_arr = _option_text(opts_arrivee, "ville_arrivee")
+
+    if cp_arr:
+        rows.append(
+            "<tr>"
+            '<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Code postal arrivée</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(cp_arr)}</td>'
+            "</tr>"
+        )
+    if ville_arr:
+        rows.append(
+            "<tr>"
+            '<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Ville arrivée</td>'
+            f'<td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(ville_arr)}</td>'
+            "</tr>"
+        )
+    return "".join(rows)
+
+
 def _arrival_info_rows(opts: Optional[dict]) -> str:
     """Infos complémentaires saisies côté arrivée (formulaire long)."""
     if not isinstance(opts, dict):
@@ -153,8 +207,12 @@ def _plain_landing_recap(
         f"Date déménagement : {date_label}",
         "",
         f"Départ : {getattr(client, 'adresse_depart', '') or '—'}",
+        f"  Code postal : {_option_text(opts_dep, 'cp_depart') or '—'}",
+        f"  Ville : {_option_text(opts_dep, 'ville_depart') or '—'}",
         f"  Étage : {getattr(client, 'etage_depart', '') or '—'} | Ascenseur : {getattr(client, 'ascenseur_depart', '') or '—'}",
         f"Arrivée : {getattr(client, 'adresse_arrivee', '') or '—'}",
+        f"  Code postal : {_option_text(opts_arr, 'cp_arrivee') or '—'}",
+        f"  Ville : {_option_text(opts_arr, 'ville_arrivee') or '—'}",
         f"  Étage : {getattr(client, 'etage_arrivee', '') or '—'} | Ascenseur : {getattr(client, 'ascenseur_arrivee', '') or '—'}",
         "",
     ]
@@ -202,6 +260,8 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
 
     opts_depart = getattr(client, "options_depart", None) or {}
     opts_arrivee = getattr(client, "options_arrivee", None) or {}
+    depart_postal_rows = _depart_postal_rows(opts_depart)
+    arrivee_postal_rows = _arrivee_postal_rows(opts_arrivee)
     access_rows = _access_options_rows(opts_depart)
     access_section_html = ""
     if access_rows:
@@ -287,9 +347,11 @@ def send_landing_form_team_notification(client: "ClientInformation", entry_page:
                   <td colspan="2" style="padding:14px 18px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#3A2852;background:linear-gradient(90deg,#EDE8F4 0%%,#F5F0FB 70%%);border-left:4px solid #CC922F;">Adresses &amp; accès</td>
                 </tr>
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;vertical-align:top;">Départ</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(getattr(client,'adresse_depart',None))}</td></tr>
+                {depart_postal_rows}
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Étage départ</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(getattr(client,'etage_depart',None))}</td></tr>
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Ascenseur départ</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(getattr(client,'ascenseur_depart',None))}</td></tr>
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;vertical-align:top;">Arrivée</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(getattr(client,'adresse_arrivee',None))}</td></tr>
+                {arrivee_postal_rows}
                 <tr><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:12px;color:#5B4A72;font-weight:600;">Étage arrivée</td><td style="padding:12px 18px;border-bottom:1px solid #E8E0F2;font-size:14px;color:#1C3957;">{_esc(getattr(client,'etage_arrivee',None))}</td></tr>
                 <tr><td style="padding:12px 18px;font-size:12px;color:#5B4A72;font-weight:600;">Ascenseur arrivée</td><td style="padding:12px 18px;font-size:14px;color:#1C3957;">{_esc(getattr(client,'ascenseur_arrivee',None))}</td></tr>
               </table>

@@ -7,11 +7,9 @@ import type { PageMetaOptions } from "../hooks/usePageMeta";
 export const LANDING_PAGE_PATHS = [
   "/lp/paris",
   "/lp/hauts-de-seine",
+  "/lp/longue-distance",
   "/lp/pro",
   "/lp/particulier",
-  "/lp/demenagement-entreprise",
-  "/lp/demenagement-particulier",
-  "/lp/ile-de-france",
 ] as const;
 
 /** @deprecated Use LANDING_PAGE_PATHS */
@@ -109,6 +107,16 @@ export const PAGE_META = {
     "Guivarche vous accompagne en Île-de-France : Paris, petite couronne et départements limitrophes. Équipes salariées, devis sous 24 h et transport sécurisé.",
     "/ile-de-france",
   ),
+  versaille: pageMeta(
+    "Déménagement Paris Versailles : Devis Gratuit sous 24h - Guivarche",
+    "Déménagement Paris Versailles avec Guivarche : déménageur Paris Versailles, devis gratuit sous 24 h, assurance incluse et excellent rapport qualité-prix. Route Paris → Versailles maîtrisée.",
+    "/versaille",
+  ),
+  longueDistance: pageMeta(
+    "Déménagement Longue Distance : Devis Gratuit sous 24h - Guivarche",
+    "Déménagement longue distance en France avec Guivarche : transport sécurisé, protection renforcée, devis gratuit sous 24 h et suivi personnalisé de bout en bout.",
+    "/longue",
+  ),
   demenagementNational: pageMeta(
     "Déménagement National & Longue Distance - Guivarche",
     "Organisez votre déménagement longue distance en France avec Guivarche. Transport sécurisé, planification rigoureuse et suivi personnalisé de bout en bout.",
@@ -168,6 +176,11 @@ export const PAGE_META = {
     "/lp/ile-de-france",
     "Déménageur Île-de-France : Devis sous 24h - Guivarche",
     "Déménagement en Île-de-France avec Guivarche. Paris, petite couronne et départements limitrophes : devis gratuit, protection du mobilier et équipes expérimentées.",
+  ),
+  lpLongueDistance: landingPageMeta(
+    "/lp/longue-distance",
+    "Déménagement Longue Distance : Devis Gratuit sous 24h - Guivarche",
+    "Demandez votre devis de déménagement longue distance en France. Transport sécurisé, protection renforcée et équipes salariées partout en France métropolitaine.",
   ),
 } as const satisfies Record<string, PageMetaOptions>;
 
