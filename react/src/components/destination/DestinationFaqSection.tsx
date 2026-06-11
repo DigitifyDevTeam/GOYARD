@@ -62,7 +62,7 @@ export function DestinationFaqSection({
                           <Plus className="w-6 h-6 text-white" strokeWidth={2.5} />
                         )}
                       </div>
-                      <span className="flex-1 min-w-0 font-['Poppins',sans-serif] text-base sm:text-lg lg:text-[22px] font-semibold text-[#0C1E3A] leading-relaxed">
+                      <span className="flex-1 min-w-0 font-['Poppins',sans-serif] text-[17px] font-semibold text-[#0C1E3A] leading-relaxed">
                         {item.question}
                       </span>
                     </div>
@@ -87,7 +87,7 @@ export function DestinationFaqSection({
                   >
                     <div className="overflow-hidden">
                       <div className="w-full pb-4 sm:pb-6 pt-2 sm:pt-3 pl-[52px] sm:pl-[72px] pr-4 sm:pr-24 lg:pr-36">
-                        <p className="w-full font-['Inter',sans-serif] text-[#6B6B8C] leading-relaxed text-sm sm:text-base lg:text-[20px]">
+                        <p className="w-full font-['Poppins',sans-serif] font-normal text-[15px] leading-[24.5px] tracking-[0] text-[#6b6b8c]">
                           {item.answer}
                         </p>
                       </div>

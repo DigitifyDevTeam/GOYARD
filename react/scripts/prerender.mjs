@@ -31,7 +31,7 @@ const landingRoutes = [
 const routes = [
   '/',
   '/ile-de-france',
-  '/versaille',
+  '/demenagement-paris-versaille',
   '/longue',
   '/demenagement-national',
   '/international',

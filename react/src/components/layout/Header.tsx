@@ -213,7 +213,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/formules-demenagement/"
+                          href="/tarif/"
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -229,7 +229,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                           </span>
                         </a>
                         <a
-                          href="/tarif/"
+                          href="/formules-demenagement/"
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -410,7 +410,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Calculer votre volume avec notre outil IA
                   </a>
                   <a
-                    href="/formules-demenagement/"
+                    href="/tarif/"
                     onClick={() => {
                       setMobileOutilsOpen(false);
                       setMobileMenuOpen(false);
@@ -421,7 +421,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                     Tarifs
                   </a>
                   <a
-                    href="/tarif/"
+                    href="/formules-demenagement/"
                     onClick={() => {
                       setMobileOutilsOpen(false);
                       setMobileMenuOpen(false);

@@ -110,7 +110,7 @@ export const PAGE_META = {
   versaille: pageMeta(
     "Déménagement Paris Versailles : Devis Gratuit sous 24h - Guivarche",
     "Déménagement Paris Versailles avec Guivarche : déménageur Paris Versailles, devis gratuit sous 24 h, assurance incluse et excellent rapport qualité-prix. Route Paris → Versailles maîtrisée.",
-    "/versaille",
+    "/demenagement-paris-versaille",
   ),
   longueDistance: pageMeta(
     "Déménagement Longue Distance : Devis Gratuit sous 24h - Guivarche",

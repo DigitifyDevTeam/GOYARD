@@ -106,6 +106,98 @@ const VERSAILLE_OTHER_CITIES = [
   "Besançon",
 ] as const;
 
+const VERSAILLE_INTRO_TRUCK_IMAGE = "/gallery/Déménagement international.jpeg";
+
+function VersailleIntroImage() {
+  return (
+    <div className="relative h-full w-full">
+      {/* Ambient glow blobs */}
+      <div className="absolute -top-4 -right-4 h-32 w-32 rounded-full bg-[#CC922F]/20 blur-3xl" aria-hidden />
+      <div className="absolute -bottom-4 -left-4 h-32 w-32 rounded-full bg-[#1C3957]/15 blur-3xl" aria-hidden />
+
+      {/* Dotted texture accent */}
+      <div
+        className="absolute -bottom-2 -right-2 z-0 hidden sm:block"
+        aria-hidden
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(204,146,47,0.35) 2px, transparent 2px)",
+          backgroundSize: "14px 14px",
+          width: 100,
+          height: 100,
+        }}
+      />
+
+      {/* Main framed image with gradient ring */}
+      <div className="relative z-10 h-full rounded-[24px] bg-gradient-to-br from-[#CC922F] via-[#e0b15f] to-[#1C3957] p-[3px] shadow-[0_30px_70px_-15px_rgba(28,57,87,0.45)]">
+        <div className="h-full overflow-hidden rounded-[22px] bg-white">
+          <div className="relative h-full">
+            <img
+              src={VERSAILLE_INTRO_TRUCK_IMAGE}
+              alt="Camion Guivarche Déménagement — Paris Versailles"
+              className="block h-full w-full object-cover object-center transition-transform duration-700 ease-out hover:scale-105"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/75 via-[#0f172a]/10 to-transparent" />
+
+            {/* Top-left location pill */}
+            <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 shadow-lg backdrop-blur-sm">
+              <MapPin className="h-3 w-3 text-[#CC922F]" />
+              <span className="font-['Poppins',sans-serif] text-[10px] font-bold uppercase tracking-wider text-[#1C3957]">
+                Versailles 78
+              </span>
+            </div>
+
+            {/* Bottom caption */}
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <p className="font-['Poppins',sans-serif] text-base font-extrabold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                Paris → Versailles
+              </p>
+              <p className="mt-0.5 font-['Poppins',sans-serif] text-[11px] font-medium text-white/85 drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)]">
+                Équipes salariées Guivarche
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating glass stat — top right */}
+      <div className="absolute -right-3 top-1 z-20 hidden items-center gap-2 rounded-xl border border-white/60 bg-white/90 px-3 py-2 shadow-[0_12px_30px_rgba(15,23,42,0.18)] backdrop-blur-md sm:flex">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#CC922F]/12 text-[#CC922F]">
+          <Timer className="h-4 w-4" />
+        </span>
+        <div className="leading-tight">
+          <p className="font-['Poppins',sans-serif] text-sm font-extrabold text-[#1C3957]">24 h</p>
+          <p className="font-['Poppins',sans-serif] text-[10px] font-medium text-slate-500">Devis gratuit</p>
+        </div>
+      </div>
+
+      {/* Floating glass stat — bottom left */}
+      <div className="absolute -bottom-2 -left-3 z-20 hidden items-center gap-2 rounded-xl border border-white/60 bg-white/90 px-3 py-2 shadow-[0_12px_30px_rgba(15,23,42,0.18)] backdrop-blur-md sm:flex">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#1C3957]/10 text-[#1C3957]">
+          <ShieldCheck className="h-4 w-4" />
+        </span>
+        <div className="leading-tight">
+          <p className="font-['Poppins',sans-serif] text-sm font-extrabold text-[#1C3957]">100 %</p>
+          <p className="font-['Poppins',sans-serif] text-[10px] font-medium text-slate-500">Assuré &amp; sécurisé</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VersaillePrestationCard({ item }: Readonly<{ item: string }>) {
+  return (
+    <div className="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_4px_20px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-[#CC922F]/35 hover:shadow-[0_8px_30px_rgba(204,146,47,0.12)]">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#CC922F]/10 text-[#CC922F] transition-colors group-hover:bg-[#CC922F] group-hover:text-white">
+        <Check className="h-5 w-5" strokeWidth={2.5} />
+      </div>
+      <p className="font-['Poppins',sans-serif] text-sm sm:text-[15px] font-medium text-[#1C3957] leading-snug pt-1.5">
+        {item}
+      </p>
+    </div>
+  );
+}
+
 const VERSAILLE_DESTINATION_FAQ = [
   {
     question:
@@ -137,18 +229,8 @@ const VERSAILLE_DESTINATION_FAQ = [
     answer:
       "À Paris, nous anticipons le stationnement du camion avant le jour J : repérage des accès, demande d'autorisation de stationnement si nécessaire, et choix du créneau le plus favorable (tôt le matin ou en semaine). Nos déménageurs gèrent le portage depuis l'immeuble jusqu'au camion, y compris en cas d'accès étroit, de cour intérieure ou d'absence d'ascenseur.",
   },
-  {
-    question:
-      "Est-il possible de réaliser un déménagement complet de Paris à Versailles en une seule journée, y compris pour un appartement familial ou une maison ?",
-    answer:
-      "Oui, dans la majorité des cas un déménagement Paris → Versailles se réalise en une journée : chargement le matin à Paris, trajet court, puis livraison et installation à Versailles l'après-midi. Pour les volumes importants (maison 50 m³ et plus) ou les accès complexes, nous pouvons prévoir deux équipes ou étaler sur deux jours — tout est précisé dans votre devis.",
-  },
-  {
-    question:
-      "Quelle formule de déménagement — Économique, Standard ou Luxe — est la plus adaptée pour un trajet local Paris → Versailles selon mon budget et mon niveau de service ?",
-    answer:
-      "Pour un trajet local comme Paris–Versailles, la formule Standard convient à la plupart des ménages : emballage des objets fragiles, démontage-remontage des meubles et transport sécurisé. La formule Économique est adaptée si vous préparez vos cartons vous-même. La formule Luxe inclut l'emballage intégral et une prise en charge clé en main — idéale si vous manquez de temps ou déménagez avec des objets de valeur.",
-  },
+  
+
 ] as const;
 
 export default function Versaille() {
@@ -294,30 +376,43 @@ export default function Versaille() {
         </section>
 
         {/* Introduction SEO */}
-        <section className="bg-white border-b border-slate-100">
-          <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16">
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
-                Guivarche accompagne chaque semaine des familles et des professionnels sur la route{" "}
-                <strong className="font-semibold text-[#1C3957]">Paris → Versailles</strong>, l'un des trajets les plus
-                demandés en Île-de-France. À environ vingt kilomètres de la capitale, Versailles reste rapidement
-                accessible via l'A13, le boulevard périphérique ou la ligne N du RER — un atout décisif pour organiser un
-                déménagement fluide entre deux adresses exigeantes.
-              </p>
-              <p className="mt-4 font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
-                En tant que <strong className="font-semibold text-[#1C3957]">déménageur Paris Versailles</strong>, nous
-                maîtrisons les contraintes des deux extrémités : stationnement réglementé et portage en immeuble parisien
-                d'un côté, livraison dans les quartiers historiques ou résidentiels de Versailles de l'autre (Montreuil,
-                Porchefontaine, centre-ville, Chantiers…). Votre{" "}
-                <strong className="font-semibold text-[#1C3957]">déménagement entre Paris et Versailles</strong> est
-                confié à des équipes 100 % salariées, sans sous-traitance.
-              </p>
-              <p className="mt-4 font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
-                Notre <strong className="font-semibold text-[#1C3957]">entreprise de déménagement Paris Versailles</strong>{" "}
-                vous propose un devis ferme sous 24 h, une assurance incluse et des tarifs transparents. Du studio à la
-                maison familiale, nous anticipons les accès, planifions le jour J et sécurisons chaque étape jusqu'à
-                l'installation dans votre nouveau logement aux Yvelines (78).
-              </p>
+        <section className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16 bg-white border-b border-slate-100">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] xl:grid-cols-[minmax(0,1fr)_440px] lg:gap-10 xl:gap-14 lg:items-stretch">
+            <div>
+              <div className="flex flex-col gap-2">
+                <p className="font-['Poppins',sans-serif] font-semibold text-xs uppercase tracking-[0.18em] text-slate-500">
+                  Paris → Versailles
+                </p>
+                <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
+                  Votre déménageur de confiance entre Paris et les Versailles
+                </h2>
+              </div>
+              <div className="mt-4 sm:mt-5 space-y-4">
+                <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
+                  Guivarche accompagne chaque semaine des familles et des professionnels sur la route{" "}
+                  <strong className="font-semibold text-[#1C3957]">Paris → Versailles</strong>, l'un des trajets les plus
+                  demandés en Île-de-France. À environ vingt kilomètres de la capitale, Versailles reste rapidement
+                  accessible via l'A13, le boulevard périphérique ou la ligne N du RER — un atout décisif pour organiser un
+                  déménagement fluide entre deux adresses exigeantes.
+                </p>
+                <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
+                  En tant que <strong className="font-semibold text-[#1C3957]">déménageur Paris Versailles</strong>, nous
+                  maîtrisons les contraintes des deux extrémités : stationnement réglementé et portage en immeuble parisien
+                  d'un côté, livraison dans les quartiers historiques ou résidentiels de Versailles de l'autre (Montreuil,
+                  Porchefontaine, centre-ville, Chantiers…). Votre{" "}
+                  <strong className="font-semibold text-[#1C3957]">déménagement entre Paris et Versailles</strong> est
+                  confié à des équipes 100 % salariées, sans sous-traitance.
+                </p>
+                <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
+                  Notre <strong className="font-semibold text-[#1C3957]">entreprise de déménagement Paris Versailles</strong>{" "}
+                  vous propose un devis ferme sous 24 h, une assurance incluse et des tarifs transparents. Du studio à la
+                  maison familiale, nous anticipons les accès, planifions le jour J et sécurisons chaque étape jusqu'à
+                  l'installation dans votre nouveau logement aux Versailles (78).
+                </p>
+              </div>
+            </div>
+            <div className="relative mx-auto h-[300px] w-full max-w-[360px] sm:h-[340px] sm:max-w-[400px] lg:mx-0 lg:h-full lg:max-w-none">
+              <VersailleIntroImage />
             </div>
           </div>
         </section>
@@ -334,42 +429,20 @@ export default function Versaille() {
               </p>
             </div>
 
-            <div className="mt-10 sm:mt-12 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {VERSAILLE_PRESTATIONS_INCLUDED.map((item) => (
-                <div
-                  key={item}
-                  className="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_4px_20px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-[#CC922F]/35 hover:shadow-[0_8px_30px_rgba(204,146,47,0.12)]"
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#CC922F]/10 text-[#CC922F] transition-colors group-hover:bg-[#CC922F] group-hover:text-white">
-                    <Check className="h-5 w-5" strokeWidth={2.5} />
-                  </div>
-                  <p className="font-['Poppins',sans-serif] text-sm sm:text-[15px] font-medium text-[#1C3957] leading-snug pt-1.5">
-                    {item}
-                  </p>
-                </div>
-              ))}
+            <div className="mt-10 sm:mt-12 max-w-6xl mx-auto space-y-4 sm:space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                {VERSAILLE_PRESTATIONS_INCLUDED.slice(0, -3).map((item) => (
+                  <VersaillePrestationCard key={item} item={item} />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:mx-auto lg:max-w-[75%]">
+                {VERSAILLE_PRESTATIONS_INCLUDED.slice(-3).map((item) => (
+                  <VersaillePrestationCard key={item} item={item} />
+                ))}
+              </div>
             </div>
 
-            <div className="mt-8 sm:mt-10 max-w-6xl mx-auto grid sm:grid-cols-2 gap-4 sm:gap-5">
-              <div className="rounded-2xl border border-[#1C3957]/10 bg-[#1C3957] p-5 sm:p-6 text-white">
-                <p className="font-['Poppins',sans-serif] font-semibold text-sm uppercase tracking-wider text-[#CC922F]">
-                  Paris
-                </p>
-                <p className="mt-2 font-['Poppins',sans-serif] text-sm sm:text-[15px] text-white/90 leading-relaxed">
-                  Zones de stationnement, créneaux de chargement et autorisations mairie anticipées pour un départ
-                  serein depuis la capitale.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-[#CC922F]/20 bg-[#CC922F]/5 p-5 sm:p-6">
-                <p className="font-['Poppins',sans-serif] font-semibold text-sm uppercase tracking-wider text-[#CC922F]">
-                  Versailles
-                </p>
-                <p className="mt-2 font-['Poppins',sans-serif] text-sm sm:text-[15px] text-slate-700 leading-relaxed">
-                  Centre historique, rues étroites et contraintes ZFE : livraison organisée dans les Yvelines (78) avec le
-                  matériel adapté.
-                </p>
-              </div>
-            </div>
+            
           </div>
         </section>
 
@@ -410,18 +483,42 @@ export default function Versaille() {
                 title: "Livraison et installation à Versailles",
                 desc: "Vos meubles sont placés selon vos instructions.",
               },
-            ].map((x) => (
-              <div key={x.step} className="rounded-3xl border border-slate-100 bg-white shadow-[0px_10px_30px_rgba(15,23,42,0.06)] p-6">
-                <div className="flex items-center justify-between">
-                  <span className="font-['Poppins',sans-serif] font-extrabold text-[#CC922F] text-sm sm:text-base">
+            ].map((x, index) => (
+              <div
+                key={x.step}
+                className="relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-[0px_10px_30px_rgba(15,23,42,0.06)]"
+              >
+                <span
+                  className="pointer-events-none absolute -right-1 -top-2 font-['Poppins',sans-serif] text-[5.5rem] font-extrabold leading-none text-[#CC922F]/[0.07] select-none"
+                  aria-hidden
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                <div className="relative flex items-start justify-between gap-3">
+                  <span className="font-['Poppins',sans-serif] text-sm font-extrabold text-[#CC922F] sm:text-base">
                     {x.step}
                   </span>
-                  <span className="h-2 w-2 rounded-full bg-[#CC922F]" aria-hidden="true" />
+
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center">
+                    <span
+                      className="absolute inset-0 rounded-full border-2 border-dashed border-[#CC922F]/35"
+                      aria-hidden
+                    />
+                    <span
+                      className="absolute inset-1 rounded-full bg-[#CC922F]/10"
+                      aria-hidden
+                    />
+                    <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#CC922F] to-[#a67824] font-['Poppins',sans-serif] text-lg font-extrabold text-white shadow-[0_6px_18px_rgba(204,146,47,0.45)] ring-[3px] ring-white">
+                      {index + 1}
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-3 font-['Poppins',sans-serif] font-bold text-[#191919]">
+
+                <div className="relative mt-3 font-['Poppins',sans-serif] font-bold text-[#191919]">
                   {x.title}
                 </div>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                <p className="relative mt-2 text-sm leading-relaxed text-slate-600">
                   {x.desc}
                 </p>
               </div>
@@ -545,20 +642,20 @@ export default function Versaille() {
         />
 
         {/* Autres villes */}
-        <section className="bg-white border-t border-slate-100 py-14 sm:py-16 lg:py-20">
+        <section className="bg-white border-t border-slate-100 py-16 sm:py-20 lg:py-24">
           <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
-            <h2 className="font-['Poppins',sans-serif] font-bold text-[#1C3957] text-base sm:text-lg lg:text-xl text-center uppercase tracking-[0.14em] sm:tracking-[0.18em]">
+            <h2 className="font-['Poppins',sans-serif] font-bold text-[#1C3957] text-xl sm:text-2xl lg:text-3xl text-center uppercase tracking-[0.12em] sm:tracking-[0.16em]">
               Livraisons dans les autres villes de France
             </h2>
-            <div className="mt-10 sm:mt-12 max-w-5xl mx-auto text-center">
-              <p className="font-['Poppins',sans-serif] text-slate-600 text-sm sm:text-base leading-[2.2] sm:leading-[2.4]">
+            <div className="mt-12 sm:mt-14 max-w-6xl mx-auto text-center">
+              <p className="font-['Poppins',sans-serif] text-slate-600 text-base sm:text-lg leading-[2.4] sm:leading-[2.6]">
                 {VERSAILLE_OTHER_CITIES.map((city, index) => (
                   <span key={city}>
                     <Sparkles
-                      className="inline-block h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#CC922F] align-middle mx-0.5 sm:mx-1"
+                      className="inline-block h-4 w-4 sm:h-5 sm:w-5 text-[#CC922F] align-middle mx-0.5 sm:mx-1.5"
                       aria-hidden="true"
                     />
-                    <span className="inline text-slate-700 hover:text-[#1C3957] transition-colors mx-0.5 sm:mx-1">
+                    <span className="inline text-slate-700 hover:text-[#1C3957] transition-colors mx-0.5 sm:mx-1.5">
                       Déménagement Paris {city}
                     </span>
                     {index < VERSAILLE_OTHER_CITIES.length - 1 ? (

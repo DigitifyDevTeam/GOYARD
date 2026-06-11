@@ -6325,7 +6325,8 @@ function AppRoutes() {
     <Routes location={routeLocation}>
         <Route path="/" element={<HomePage />} />
         <Route path="/demenagement-ile-de-france" element={<ZoneIleDeFrance />} />
-        <Route path="/versaille" element={<Versaille />} />
+        <Route path="/versaille" element={<Navigate to="/demenagement-paris-versaille" replace />} />
+        <Route path="/demenagement-paris-versaille" element={<Versaille />} />
         <Route path="/longue" element={<LongueDistanceSeo />} />
         <Route path="/lp/paris" element={<Paris />} />
         <Route path="/lp/hauts-de-seine" element={<Seine92 />} />
