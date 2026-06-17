@@ -162,6 +162,7 @@ class ClientInformationSerializer(serializers.ModelSerializer):
             'info_complementaire',
             'volume',
             'superficie',
+            'liste_objets',
             'type_client',
             'cp_depart',
             'ville_depart',

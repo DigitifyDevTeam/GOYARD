@@ -147,6 +147,11 @@ export const PAGE_META = {
     "Déménageur à Paris : Devis Gratuit sous 24h - Guivarche",
     "Demandez votre devis de déménagement à Paris. Guivarche intervient dans tous les arrondissements avec des équipes salariées et un accompagnement sur mesure.",
   ),
+  lpParisCalculeVolume: landingPageMeta(
+    "/lp/paris/calcule-volume",
+    "Calculer mon volume — Déménagement Paris - Guivarche",
+    "Estimez le volume de votre déménagement à Paris pièce par pièce. Retournez ensuite à votre devis avec le volume calculé automatiquement.",
+  ),
   lpHautsDeSeine: landingPageMeta(
     "/lp/hauts-de-seine",
     "Déménageur Hauts-de-Seine (92) : Devis Gratuit - Guivarche",

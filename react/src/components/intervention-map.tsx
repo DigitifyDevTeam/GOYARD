@@ -163,22 +163,22 @@ export function InterventionMapParis75() {
   );
 }
 
-/** Carte & textes Versailles (78) — page locale */
+/** Carte & textes Versailles (78) — page locale Paris → Versailles */
 export function InterventionMapVersaille() {
   return (
     <InterventionMapRegion
-      sectionBadge="Versailles (78)"
+      sectionBadge="Paris → Versailles (78)"
       mapLabel="Versailles"
       mapLat={48.8014}
       mapLng={2.1301}
       mapZoom={13}
       regionTitle="Versailles"
-      regionSubtitle="Déménagement local"
-      headerDescription="Guivarche Déménagement intervient à Versailles et dans les communes voisines pour des déménagements organisés, soignés et parfaitement cadrés."
+      regionSubtitle="Déménagement Paris Versailles"
+      headerDescription="Guivarche Déménagement organise votre déménagement entre Paris et Versailles : trajet maîtrisé, équipes expérimentées et intervention dans tous les quartiers de la ville."
       regionParagraphs={[
-        "Versailles présente des configurations variées : immeubles du centre-ville, quartiers résidentiels, accès étroits et contraintes de stationnement — nous les anticipons.",
-        "Nous adaptons le matériel, la logistique et les protections pour des interventions en appartement comme en maison, à Versailles et dans les Yvelines.",
-        "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l'intervention.",
+        "Versailles présente des configurations variées : centre historique, quartiers résidentiels comme Notre-Dame, Saint-Louis, Montreuil, Clagny-Glatigny ou Porchefontaine, avec des accès parfois étroits et un stationnement limité — nous les anticipons.",
+        "Depuis Paris, nous gérons le chargement, le transport sur environ 20 km et la livraison à Versailles en adaptant le matériel, la logistique et les protections à votre logement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
       ]}
     />
   );

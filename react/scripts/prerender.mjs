@@ -22,6 +22,7 @@ const blogSlugs = [
 // /lp/* prerendered for per-page <title> and markup; still noindex (see pageMeta.ts, robots.txt)
 const landingRoutes = [
   '/lp/paris',
+  '/lp/paris/calcule-volume',
   '/lp/hauts-de-seine',
   '/lp/longue-distance',
   '/lp/pro',
@@ -31,7 +32,7 @@ const landingRoutes = [
 const routes = [
   '/',
   '/ile-de-france',
-  '/demenagement-paris-versaille',
+  '/demenagement-paris-versailles',
   '/longue',
   '/demenagement-national',
   '/international',

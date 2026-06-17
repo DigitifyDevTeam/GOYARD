@@ -36,6 +36,7 @@ _LANDING_PROJECT_KEYS = (
     ("type_client", "Type de client"),
     ("volume", "Volume (m³)"),
     ("superficie", "Superficie (m²)"),
+    ("liste_objets", "Liste objets à déménager"),
     ("info_complementaire", "Infos complémentaires"),
 )
 

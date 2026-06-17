@@ -10,8 +10,8 @@ import {
   ShieldCheck,
   Sparkles,
   Timer,
-  Truck,
 } from "lucide-react";
+import { HeroTrustCard, HeroTrustCardMobile } from "../components/HeroTrustCard";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { ContactPhoneLink } from "../components/ContactPhoneLink";
@@ -21,41 +21,42 @@ import {
   gradientCtaPrimaryClass,
 } from "../components/gradientCtaStyles";
 import GoogleReviewsSection from "@/components/GoogleReviewsSection";
+import { InterventionMapVersaille } from "../components/intervention-map";
 import { DestinationFaqSection } from "../components/destination/DestinationFaqSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 
 const VERSAILLE_PRICING_ROWS = [
-  { type: "Studio", volume: "10 – 15 m³", budget: "450 € – 850 €" },
-  { type: "T2", volume: "18 – 22 m³", budget: "700 € – 1 200 €" },
-  { type: "T3", volume: "25 – 30 m³", budget: "900 € – 1 600 €" },
-  { type: "T4 et +", volume: "35 m³ et +", budget: "1 400 € – 2 400 €" },
+  { type: "Studio", volume: "10–15 m³", budget: "450 à 800 €" },
+  { type: "T2", volume: "15–25 m³", budget: "700 à 1 200 €" },
+  { type: "T3", volume: "25–40 m³", budget: "1 100 à 1 800 €" },
+  { type: "T4+", volume: "40 m³ +", budget: "Sur devis" },
 ] as const;
 
 const VERSAILLE_PRICING_FACTORS = [
   {
-    icon: Building2,
-    label: "Étage & accès",
-    value: "Sans ascenseur",
-    desc: "Étages, cour intérieure et portage influencent le temps de manutention.",
+    icon: Cube,
+    label: "Volume",
+    value: "À transporter",
+    desc: "Le volume à déménager reste le principal levier du devis.",
   },
   {
-    icon: ArrowUpFromLine,
-    label: "Monte-meuble",
-    value: "Si nécessaire",
-    desc: "Option selon hauteur, accès et volume à monter ou descendre.",
+    icon: Building2,
+    label: "Étage & accès",
+    value: "Accessibilité",
+    desc: "Étage, ascenseur et conditions d'accès influencent la manutention.",
   },
   {
     icon: MapPin,
     label: "Distance",
     value: "Paris → Versailles",
-    desc: "Trajet d'environ 20 km : frais kilométriques modérés sur ce corridor.",
+    desc: "Distance et conditions de stationnement à Paris et à Versailles.",
   },
   {
-    icon: Cube,
-    label: "Volume",
-    value: "Au m³",
-    desc: "Le nombre de m³ à déménager reste le principal levier du devis.",
+    icon: ArrowUpFromLine,
+    label: "Monte-meuble",
+    value: "Si nécessaire",
+    desc: "Besoin de monte-meuble et prestations choisies selon votre projet.",
   },
 ] as const;
 
@@ -200,37 +201,40 @@ function VersaillePrestationCard({ item }: Readonly<{ item: string }>) {
 
 const VERSAILLE_DESTINATION_FAQ = [
   {
-    question:
-      "Combien coûte un déménagement entre Paris et Versailles, et quels facteurs influencent le prix final d'un studio, d'un appartement ou d'une maison ?",
+    question: "Combien coûte un déménagement Paris Versailles ?",
     answer:
-      "Pour un déménagement Paris → Versailles, comptez en moyenne entre 450 € et 2 400 € selon le volume (studio à maison), la formule choisie (Éco, Standard ou Luxe) et les contraintes d'accès. Le trajet étant court (environ 20 km), les frais kilométriques restent modérés : le prix dépend surtout du m³ à transporter et du temps de manutention. Guivarche établit un devis ferme et gratuit sous 24 h, sans frais cachés.",
+      "Un déménagement Paris Versailles coûte en moyenne entre 450 € et 2 400 €. Le prix dépend du volume (m³), des accès (étage, ascenseur, stationnement) et des services (emballage, monte-meuble, stockage). Le trajet court réduit les frais kilométriques. Un devis personnalisé est indispensable pour obtenir un prix exact.",
   },
   {
-    question:
-      "Combien de temps dure réellement le trajet Paris–Versailles en camion de déménagement, selon l'arrondissement de départ, l'heure de la journée et le quartier d'arrivée ?",
+    question: "Combien de temps dure un déménagement entre Paris et Versailles ?",
     answer:
-      "Le trajet entre Paris et Versailles dure en général 30 à 50 minutes en camion, selon l'arrondissement de départ, l'heure de la journée et le quartier d'arrivée (centre historique, Porchefontaine, Montreuil, etc.). Nous planifions le créneau de chargement à Paris en tenant compte des restrictions de circulation et du stationnement pour respecter votre planning.",
+      "La durée moyenne d'un déménagement Paris Versailles est de 3 à 6 heures pour un logement standard. Elle varie selon le volume à transporter, la circulation à Paris et les conditions d'accès aux logements.",
   },
   {
-    question:
-      "Avez-vous un dépôt de stockage ou une solution de garde-meubles à Versailles pour entreposer mes biens entre deux dates de déménagement ?",
+    question: "Quels quartiers de Versailles sont desservis par Guivarche ?",
     answer:
-      "Oui, Guivarche propose des solutions de garde-meubles et de stockage temporaire pour vos biens entre Paris et Versailles : box sécurisés, accès sur rendez-vous et durée flexible (quelques jours à plusieurs mois). Idéal si vos dates de sortie et d'entrée ne coïncident pas, ou si vous souhaitez déstocker progressivement dans votre nouveau logement.",
+      "Guivarche intervient dans tous les quartiers de Versailles : Notre-Dame, Saint-Louis, Montreuil, Clagny-Glatigny, Porchefontaine, ainsi que les communes voisines des Yvelines.",
   },
   {
-    question:
-      "Quels quartiers de Versailles et quelles communes voisines desservez-vous pour un déménagement depuis Paris ou depuis un autre point d'Île-de-France ?",
+    question: "Faut-il une autorisation de stationnement pour un déménagement à Paris ?",
     answer:
-      "Nous intervenons dans tous les quartiers de Versailles : centre-ville et Château, Notre-Dame, Saint-Louis, Montreuil, Porchefontaine, Chantiers, Clagny, Satory, ainsi que les communes limitrophes (Viroflay, Le Chesnay-Rocquencourt, Saint-Cyr-l'École, Buc, Guyancourt). Que vous partiez de Paris intra-muros ou d'une autre ville d'Île-de-France, nos équipes connaissent les accès et contraintes locales.",
+      "Oui. À Paris, une autorisation de stationnement est souvent obligatoire pour réserver un emplacement de camion. Elle doit être demandée à la mairie de l'arrondissement. Cette étape évite les amendes et facilite le chargement le jour du déménagement.",
   },
   {
-    question:
-      "Comment se passe concrètement le stationnement du camion et l'autorisation de chargement à Paris le jour du déménagement vers Versailles ?",
+    question: "Le déménagement Paris Versailles inclut-il un service de garde-meubles ?",
     answer:
-      "À Paris, nous anticipons le stationnement du camion avant le jour J : repérage des accès, demande d'autorisation de stationnement si nécessaire, et choix du créneau le plus favorable (tôt le matin ou en semaine). Nos déménageurs gèrent le portage depuis l'immeuble jusqu'au camion, y compris en cas d'accès étroit, de cour intérieure ou d'absence d'ascenseur.",
+      "Oui. Il est possible de stocker temporairement vos biens dans un garde-meubles sécurisé si votre logement à Versailles n'est pas encore disponible ou en cas de décalage de dates.",
   },
-  
-
+  {
+    question: "Les biens sont-ils assurés pendant le déménagement ?",
+    answer:
+      "Oui. Tous les biens transportés par Guivarche sont couverts par une assurance pendant le chargement, le transport et la livraison, selon les conditions définies dans le devis.",
+  },
+  {
+    question: "Quand réserver un déménagement Paris Versailles ?",
+    answer:
+      "Il est conseillé de réserver 3 à 6 semaines à l'avance, et jusqu'à 8 semaines en haute saison (été, fins de mois), afin de garantir disponibilité et organisation optimale.",
+  },
 ] as const;
 
 export default function Versaille() {
@@ -286,7 +290,7 @@ export default function Versaille() {
           </div>
 
           <div className="relative z-10 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-14 sm:py-16 lg:py-20">
-            <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
               <div className="relative lg:col-span-7">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold tracking-wide text-white backdrop-blur-md shadow-lg">
                   <MapPin className="h-4 w-4 text-[#CC922F]" />
@@ -296,16 +300,15 @@ export default function Versaille() {
                   Déménagement Paris Versailles
                 </h1>
                 <p className="mt-4 text-[#f1f5f9] text-base sm:text-lg leading-relaxed max-w-2xl font-medium [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_2px_12px_rgba(0,0,0,0.65)]">
-                  Devis sous 24 h, assurance incluse et tarifs transparents : un rapport qualité-prix maîtrisé pour
-                  votre déménagement entre Paris et Versailles, sans stress et sans mauvaise surprise.
+                  Un déménagement simple, rapide et sécurisé entre Paris et Versailles avec Guivarche
                 </p>
 
                 <div className="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl">
                   {[
-                    "Devis gratuit sous 24 h, sans engagement",
-                    "Assurance contractuelle incluse",
-                    "Équipes salariées Guivarche, zéro sous-traitance",
-                    "Tarifs clairs et excellent rapport qualité-prix",
+                    "Devis gratuit et rapide",
+                    "Protection optimale de vos biens",
+                    "Équipe expérimentée et organisée",
+                    "Intervention sur Paris et Versailles",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-[#F5C76E] mt-0.5 shrink-0 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
@@ -332,43 +335,12 @@ export default function Versaille() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 space-y-4">
-               
-                <div className="rounded-3xl bg-white/95 backdrop-blur-sm shadow-[0px_20px_50px_rgba(15,23,42,0.25)] border border-white/40 p-6 sm:p-7">
-                  <p className="font-['Poppins',sans-serif] font-bold text-[#191919] text-lg">
-                    Ce que vous obtenez
-                  </p>
-                  <div className="mt-4 grid gap-3">
-                    {[
-                      { icon: <Truck className="h-5 w-5" />, title: "Transport sécurisé", desc: "Camions adaptés, arrimage et protections." },
-                      { icon: <ShieldCheck className="h-5 w-5" />, title: "Assurance & sérénité", desc: "Options claires selon la valeur de vos biens." },
-                      { icon: <Timer className="h-5 w-5" />, title: "Créneaux flexibles", desc: "Interventions tôt, tard ou week-end selon dispo." },
-                    ].map((x) => (
-                      <div key={x.title} className="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50/40 p-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#CC922F]/10 text-[#CC922F]">
-                          {x.icon}
-                        </div>
-                        <div>
-                          <div className="font-['Poppins',sans-serif] font-semibold text-[#191919] text-sm">
-                            {x.title}
-                          </div>
-                          <div className="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
-                            {x.desc}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 rounded-2xl bg-[#191919] text-white p-5">
-                    <p className="font-['Poppins',sans-serif] font-semibold text-sm">
-                      Astuce Versailles
-                    </p>
-                    <p className="mt-1 text-xs sm:text-[13px] text-white/80 leading-relaxed">
-                      Centre historique, quartiers résidentiels, stationnement limité… Donnez-nous les détails et on
-                      prévoit le bon matériel (sangles, protections, monte-meubles si besoin).
-                    </p>
-                  </div>
+              <div className="lg:col-span-5 flex w-full justify-center lg:self-end">
+                <div className="hidden lg:block w-full">
+                  <HeroTrustCard />
+                </div>
+                <div className="lg:hidden w-full">
+                  <HeroTrustCardMobile />
                 </div>
               </div>
             </div>
@@ -384,30 +356,27 @@ export default function Versaille() {
                   Paris → Versailles
                 </p>
                 <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-                  Votre déménageur de confiance entre Paris et les Versailles
+                  Guivarche, votre déménageur spécialisé Paris Versailles
                 </h2>
               </div>
               <div className="mt-4 sm:mt-5 space-y-4">
                 <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
-                  Guivarche accompagne chaque semaine des familles et des professionnels sur la route{" "}
-                  <strong className="font-semibold text-[#1C3957]">Paris → Versailles</strong>, l'un des trajets les plus
-                  demandés en Île-de-France. À environ vingt kilomètres de la capitale, Versailles reste rapidement
-                  accessible via l'A13, le boulevard périphérique ou la ligne N du RER — un atout décisif pour organiser un
-                  déménagement fluide entre deux adresses exigeantes.
+                  Vous préparez un déménagement de Paris à Versailles ? Avec Guivarche, vous bénéficiez d'un accompagnement
+                  complet pour organiser un transfert fluide, maîtrisé et sans stress, quelle que soit la taille de votre
+                  logement.
                 </p>
                 <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
-                  En tant que <strong className="font-semibold text-[#1C3957]">déménageur Paris Versailles</strong>, nous
-                  maîtrisons les contraintes des deux extrémités : stationnement réglementé et portage en immeuble parisien
-                  d'un côté, livraison dans les quartiers historiques ou résidentiels de Versailles de l'autre (Montreuil,
-                  Porchefontaine, centre-ville, Chantiers…). Votre{" "}
-                  <strong className="font-semibold text-[#1C3957]">déménagement entre Paris et Versailles</strong> est
-                  confié à des équipes 100 % salariées, sans sous-traitance.
+                  Notre équipe prend en charge chaque étape : emballage, transport, manutention et installation dans votre
+                  nouveau logement à Versailles. L'objectif est simple : vous libérer de toute contrainte logistique. Un
+                  déménagement Paris Versailles demande une vraie expertise terrain. Entre les contraintes de stationnement
+                  à Paris, les immeubles parfois sans ascenseur, la circulation dense et les accès variables selon les
+                  quartiers de Versailles, une mauvaise organisation peut rapidement compliquer le projet.
                 </p>
                 <p className="font-['Poppins',sans-serif] text-slate-700 text-base sm:text-lg leading-relaxed">
-                  Notre <strong className="font-semibold text-[#1C3957]">entreprise de déménagement Paris Versailles</strong>{" "}
-                  vous propose un devis ferme sous 24 h, une assurance incluse et des tarifs transparents. Du studio à la
-                  maison familiale, nous anticipons les accès, planifions le jour J et sécurisons chaque étape jusqu'à
-                  l'installation dans votre nouveau logement aux Versailles (78).
+                  Avec Guivarche, chaque déménagement est anticipé et structuré afin d'éviter les imprévus et garantir un
+                  déroulement fluide. Nous intervenons régulièrement dans tout Paris ainsi que dans les quartiers de
+                  Versailles comme Notre-Dame, Saint-Louis, Montreuil, Clagny-Glatigny ou Porchefontaine. Vous bénéficiez
+                  d'un interlocuteur unique et d'une organisation maîtrisée du début à la fin.
                 </p>
               </div>
             </div>
@@ -447,8 +416,8 @@ export default function Versaille() {
         </section>
 
         {renderCtaBand(
-          "Prêt à déménager de Paris à Versailles ?",
-          "Obtenez votre devis gratuit sous 24 h. Équipes salariées, assurance incluse et tarifs transparents.",
+          "Devis déménagement Paris Versailles",
+          "Obtenez rapidement une estimation personnalisée et sans surprise pour votre déménagement. Guivarche vous propose un devis clair, adapté à votre besoin et accompagné par un conseiller dédié.",
         )}
 
         {/* Comment ça se passe */}
@@ -458,30 +427,30 @@ export default function Versaille() {
               Comment ça se passe
             </p>
             <h2 className="font-['Poppins',sans-serif] font-extrabold text-[#191919] text-2xl sm:text-3xl">
-              Un déroulé simple, maîtrisé, pro.
+              Comment se déroule votre déménagement ?
             </h2>
           </div>
           <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               {
                 step: "Étape 1",
-                title: "Devis en ligne ou par téléphone",
-                desc: "Gratuit, sans engagement.",
+                title: "Demande de devis",
+                desc: "Vous nous transmettez les informations essentielles : adresse, volume et date souhaitée.",
               },
               {
                 step: "Étape 2",
-                title: "Visite technique à domicile",
-                desc: "Obligatoire au-dessus d'un certain volume.",
+                title: "Préparation",
+                desc: "Nous analysons les accès et préparons les moyens logistiques adaptés à votre déménagement.",
               },
               {
                 step: "Étape 3",
-                title: "Jour J — chargement à Paris",
-                desc: "Avec l'équipe Guivarche.",
+                title: "Jour du déménagement",
+                desc: "Notre équipe assure le chargement à Paris avec protection complète de vos biens.",
               },
               {
                 step: "Étape 4",
-                title: "Livraison et installation à Versailles",
-                desc: "Vos meubles sont placés selon vos instructions.",
+                title: "Livraison à Versailles",
+                desc: "Vos meubles sont livrés et installés dans votre nouveau logement selon vos consignes.",
               },
             ].map((x, index) => (
               <div
@@ -527,23 +496,25 @@ export default function Versaille() {
         </section>
 
         {/* Fourchette tarifaire */}
-        <section className="bg-white pt-14 sm:pt-16 lg:pt-20 px-4 sm:px-6 pb-14 sm:pb-16 lg:pb-20">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10 sm:mb-12">
-              <h2 className="font-['Poppins',sans-serif] font-bold text-[#1C3957] text-2xl sm:text-3xl lg:text-4xl">
-                Prix déménagement Paris Versailles
-              </h2>
-              <p className="mt-3 font-['Poppins',sans-serif] text-slate-500 text-base sm:text-lg max-w-2xl mx-auto">
-                Fourchette indicative pour un déménagement entre Paris et Versailles — devis personnalisé sous 24 h.
-              </p>
-            </div>
+        <section className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px] py-12 sm:py-14 lg:py-16 bg-white">
+          <div className="text-center mb-10 sm:mb-12">
+            <h2 className="font-['Poppins',sans-serif] font-bold text-[#1C3957] text-2xl sm:text-3xl lg:text-4xl">
+              Prix d'un déménagement Paris Versailles
+            </h2>
+            <p className="mt-3 font-['Poppins',sans-serif] text-slate-500 text-base sm:text-lg leading-relaxed">
+              Le tarif d'un déménagement avec Guivarche dépend de plusieurs facteurs : volume à transporter, étage et
+              accessibilité, distance et conditions de stationnement, besoin de monte-meuble et prestations choisies.
+              Chaque projet étant différent, un devis personnalisé est nécessaire pour obtenir un prix précis et adapté.
+            </p>
+          </div>
 
+          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-6 sm:mb-8">
               <h3 className="font-['Poppins',sans-serif] font-semibold text-[#1C3957] text-lg sm:text-xl">
                 Facteurs influençant le prix
               </h3>
               <p className="mt-2 font-['Poppins',sans-serif] text-slate-500 text-sm sm:text-base">
-                Étage, monte-meuble, distance et volume
+                Volume, accès, distance, monte-meuble et prestations
               </p>
             </div>
 
@@ -569,10 +540,10 @@ export default function Versaille() {
 
             <div className="text-center mb-10 sm:mb-14">
               <h3 className="font-['Poppins',sans-serif] font-bold text-[#1C3957] text-2xl sm:text-3xl lg:text-4xl mb-3">
-                Indication de prix par type de logement
+                Estimation par type de logement
               </h3>
               <p className="font-['Poppins',sans-serif] text-slate-500 text-base sm:text-lg max-w-2xl mx-auto">
-                Studio, T2, T3, T4 et +
+                Logement, volume et prix indicatif
               </p>
             </div>
 
@@ -582,13 +553,13 @@ export default function Versaille() {
                   <thead>
                     <tr className="bg-[#1C3957] text-white">
                       <th className="font-['Poppins',sans-serif] font-semibold text-sm sm:text-base px-5 sm:px-8 py-4">
-                        Type de logement
+                        Logement
                       </th>
                       <th className="font-['Poppins',sans-serif] font-semibold text-sm sm:text-base px-5 sm:px-8 py-4">
-                        Volume estimé
+                        Volume
                       </th>
                       <th className="font-['Poppins',sans-serif] font-semibold text-sm sm:text-base px-5 sm:px-8 py-4">
-                        Budget moyen
+                        Prix indicatif
                       </th>
                     </tr>
                   </thead>
@@ -617,7 +588,7 @@ export default function Versaille() {
             </div>
 
             <p className="mt-8 text-center font-['Poppins',sans-serif] text-sm sm:text-base text-slate-500 italic max-w-2xl mx-auto">
-              Ces prix sont indicatifs — devis personnalisé sur demande.
+              Tarifs indicatifs pouvant varier selon les conditions d'accès et les services choisis.
             </p>
 
             <div className="text-center mt-6">
@@ -636,12 +607,19 @@ export default function Versaille() {
         <GoogleReviewsSection />
 
         <DestinationFaqSection
-          title="FAQ spécifique à la destination"
-          subtitle="Réponses ciblées sur la route Paris → Versailles : tarifs, délais, quartiers et logistique."
+          title="FAQ"
           items={VERSAILLE_DESTINATION_FAQ}
         />
 
-        {/* Autres villes */}
+        {/* Zones d'intervention */}
+        <InterventionMapVersaille />
+
+        {renderCtaBand(
+          "Demandez votre devis avec Guivarche",
+          "Pour toute destination, bénéficiez d'un accompagnement personnalisé.",
+        )}
+
+        {/* Maillage interne */}
         <section className="bg-white border-t border-slate-100 py-16 sm:py-20 lg:py-24">
           <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-[90px] xl:px-[210px]">
             <h2 className="font-['Poppins',sans-serif] font-bold text-[#1C3957] text-xl sm:text-2xl lg:text-3xl text-center uppercase tracking-[0.12em] sm:tracking-[0.16em]">
@@ -669,11 +647,6 @@ export default function Versaille() {
             </div>
           </div>
         </section>
-
-        {renderCtaBand(
-          "Prêt à déménager en toute sérénité ?",
-          "Rejoignez des milliers de clients qui ont déjà fait confiance à Guivarche. Obtenez votre devis gratuit maintenant !",
-        )}
       </main>
 
       <Footer />

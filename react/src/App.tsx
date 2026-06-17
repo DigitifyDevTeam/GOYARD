@@ -5,6 +5,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import DevisEntryTracker from "./components/DevisEntryTracker";
 import PDFReport, { type PDFReportHandles } from "./components/PDFReport";
 import { FormDataManager } from "./utils/formDataManager";
+import { cn } from "./lib/utils";
 import { apiFetch } from "./utils/clientAccess";
 import HomePage from "./pages/HomeDesigned";
 import Contact from "./pages/Contact";
@@ -30,6 +31,12 @@ import Particulier from "./pages/particulier";
 import ZoneNational from "./pages/ZoneNational";
 import ZoneInternational from "./pages/ZoneInternational";
 import NotFound from "./pages/NotFound";
+import {
+  PARIS_LP_CALCULATED_OBJECTS_KEY,
+  PARIS_LP_CALCULATED_VOLUME_KEY,
+  PARIS_LP_PATH,
+  PARIS_LP_VOLUME_CALC_PATH,
+} from "./constants/parisLp";
 import { clearDevisEntryPage, getDevisEntryPageDisplay } from "./utils/devisEntry";
 import {
   Phone,
@@ -179,15 +186,25 @@ function clampToTodayOrLater(dateStr: string): string {
   return dateStr;
 }
 
+function normalizeRoutePath(pathname: string): string {
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    return pathname.replace(/\/+$/, "");
+  }
+  return pathname;
+}
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
+  const routePath = normalizeRoutePath(location.pathname);
+  const isParisLpVolumeCalc = routePath === PARIS_LP_VOLUME_CALC_PATH;
 
   // Get current page from URL
   const getCurrentPage = () => {
-    const path = location.pathname;
+    const path = routePath;
     if (path === "/tunnel/mes-coordonnees") return "form";
     if (path === "/tunnel/choix-volume") return "methods";
+    if (path === PARIS_LP_VOLUME_CALC_PATH) return "volume";
     if (path === "/tunnel/mon-volume/liste") return "volume";
     if (path === "/tunnel/mon-volume/ai") return "volume";
     if (path === "/tunnel/mon-volume/surface") return "volume";
@@ -201,7 +218,8 @@ function AppContent() {
   };
 
   const getSelectedMethodFromUrl = () => {
-    const path = location.pathname;
+    const path = routePath;
+    if (path === PARIS_LP_VOLUME_CALC_PATH) return "list";
     if (path === "/tunnel/mon-volume/liste") return "list";
     if (path === "/tunnel/mon-volume/ai") return "photo";
     if (path === "/tunnel/mon-volume/surface") return "surface";
@@ -695,6 +713,10 @@ function AppContent() {
   };
 
   const handleBackToMethods = () => {
+    if (isParisLpVolumeCalc) {
+      navigate(PARIS_LP_PATH);
+      return;
+    }
     navigate("/tunnel/choix-volume");
   };
 
@@ -928,13 +950,6 @@ function AppContent() {
 
   // API functions for manual selection method
   const submitManualSelection = async () => {
-    // Check if client information is available
-    if (!clientId) {
-      alert('Veuillez d\'abord remplir vos informations personnelles');
-      navigate("/tunnel/mes-coordonnees");
-      return;
-    }
-
     try {
       // Prepare room selections data
       const roomSelections: Record<string, Record<string, number>> = {};
@@ -1035,13 +1050,59 @@ function AppContent() {
         });
       });
 
-      // Create the API payload
-      const payload = {
-        client_info: clientId,
+      const selectionPayload = {
         room_selections: roomSelections,
         heavy_objects: heavyObjects,
         custom_objects: customObjects,
         custom_heavy_objects: customHeavyObjectsData
+      };
+
+      if (isParisLpVolumeCalc) {
+        const response = await fetch('/api/demenagement/rooms/preview/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(selectionPayload),
+        });
+        const result = await response.json();
+
+        if (result.success && result.data?.total_volume != null) {
+          const aggregatedObjects: Record<string, number> = {};
+          Object.values(roomObjectQuantities).forEach((objects) => {
+            Object.entries(objects).forEach(([name, quantity]) => {
+              if (quantity > 0) {
+                aggregatedObjects[name] = (aggregatedObjects[name] || 0) + quantity;
+              }
+            });
+          });
+          Object.entries(specialObjectQuantities).forEach(([name, quantity]) => {
+            if (quantity > 0) {
+              aggregatedObjects[name] = (aggregatedObjects[name] || 0) + quantity;
+            }
+          });
+          const objectsList = Object.entries(aggregatedObjects)
+            .map(([name, quantity]) => `${quantity} × ${name}`)
+            .join(', ');
+
+          sessionStorage.setItem(PARIS_LP_CALCULATED_VOLUME_KEY, String(result.data.total_volume));
+          sessionStorage.setItem(PARIS_LP_CALCULATED_OBJECTS_KEY, objectsList);
+          navigate(PARIS_LP_PATH);
+        } else {
+          alert(result?.message || 'Erreur lors du calcul du volume.');
+        }
+        return;
+      }
+
+      if (!clientId) {
+        alert('Veuillez d\'abord remplir vos informations personnelles');
+        navigate("/tunnel/mes-coordonnees");
+        return;
+      }
+
+      const payload = {
+        client_info: clientId,
+        ...selectionPayload,
       };
 
       console.log('Submitting manual selection:', payload);
@@ -3572,10 +3633,10 @@ function AppContent() {
         </div>
       </header>
 
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <div className="grid lg:grid-cols-3 gap-6 lg:gap-10">
+      <div className={cn("max-w-8xl mx-auto px-4 sm:px-6 py-6 sm:py-12", isParisLpVolumeCalc && "max-w-5xl")}>
+        <div className={cn("grid lg:grid-cols-3 gap-6 lg:gap-10", isParisLpVolumeCalc && "lg:grid-cols-1")}>
           {/* Main Content */}
-          <div className="lg:col-span-2 min-w-0">
+          <div className={cn("lg:col-span-2 min-w-0", isParisLpVolumeCalc && "lg:col-span-1")}>
             <div className="bg-slate-50 rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
               {currentPage === "form" && (
                 <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
@@ -3591,6 +3652,7 @@ function AppContent() {
                 <h1 className="sr-only">Demande de devis de déménagement — Guivarche</h1>
               )}
               {/* Mobile progress */}
+              {!isParisLpVolumeCalc ? (
               <div className="lg:hidden mb-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <h2 className="text-sm font-semibold text-slate-900">Mes étapes</h2>
@@ -3629,6 +3691,13 @@ function AppContent() {
                   })}
                 </div>
               </div>
+              ) : null}
+
+              {isParisLpVolumeCalc ? (
+                <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
+                  Calculer mon volume automatiquement
+                </h1>
+              ) : null}
 
               {currentPage === "form" && (
                 <div>
@@ -4315,13 +4384,13 @@ function AppContent() {
                       className="flex items-center gap-2 bg-[#1c3957] hover:bg-[#1c3957]/90 text-white"
                     >
                       <ArrowLeft className="w-4 h-4" />
-                      RETOUR
+                      {isParisLpVolumeCalc ? "RETOUR AU DEVIS" : "RETOUR"}
                     </Button>
                     <Button
                       className="bg-[#1c3957] hover:bg-[#1c3957]/90 text-white flex-1"
                       onClick={submitManualSelection}
                     >
-                      CONTINUER →
+                      {isParisLpVolumeCalc ? "VALIDER MON VOLUME →" : "CONTINUER →"}
                     </Button>
                   </div>
                 </>
@@ -6185,6 +6254,7 @@ function AppContent() {
           </div>
 
           {/* Sidebar */}
+          {!isParisLpVolumeCalc ? (
           <div className="space-y-6 lg:space-y-12">
             {/* Mes étapes */}
             <div className="hidden lg:block bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
@@ -6255,9 +6325,11 @@ function AppContent() {
               </div>
             </div>
           </div>
+          ) : null}
         </div>
 
         {/* Footer Trust Badges */}
+        {!isParisLpVolumeCalc ? (
         <div className="mt-16 grid md:grid-cols-3 gap-8">
           <div className="flex items-center justify-center bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-center mr-4">
@@ -6287,8 +6359,10 @@ function AppContent() {
             </div>
           </div>
         </div>
+        ) : null}
 
         {/* Footer Text */}
+        {!isParisLpVolumeCalc ? (
         <div className="mt-8 text-xs text-slate-500 leading-relaxed">
           <p>
             Guivarche est une société française de services de déménagement professionnel fondée en 2018. Nous sommes
@@ -6298,6 +6372,7 @@ function AppContent() {
             à maintenir les normes les plus élevées de sécurité et de satisfaction client.
           </p>
         </div>
+        ) : null}
       </div>
     </div>
   );
@@ -6325,10 +6400,11 @@ function AppRoutes() {
     <Routes location={routeLocation}>
         <Route path="/" element={<HomePage />} />
         <Route path="/demenagement-ile-de-france" element={<ZoneIleDeFrance />} />
-        <Route path="/versaille" element={<Navigate to="/demenagement-paris-versaille" replace />} />
-        <Route path="/demenagement-paris-versaille" element={<Versaille />} />
+        <Route path="/versaille" element={<Navigate to="/demenagement-paris-versailles" replace />} />
+        <Route path="/demenagement-paris-versailles" element={<Versaille />} />
         <Route path="/longue" element={<LongueDistanceSeo />} />
         <Route path="/lp/paris" element={<Paris />} />
+        <Route path="/lp/paris/calcule-volume" element={<AppContent />} />
         <Route path="/lp/hauts-de-seine" element={<Seine92 />} />
         <Route path="/lp/longue-distance" element={<LongueDistance />} />
         <Route path="/lp/pro" element={<Pro />} />

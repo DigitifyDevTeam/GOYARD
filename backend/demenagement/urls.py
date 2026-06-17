@@ -15,6 +15,7 @@ urlpatterns = [
     path('heavy-objects/', views.get_heavy_objects, name='get_heavy_objects'),
     
     # Manual selection endpoints
+    path('rooms/preview/', views.preview_manual_volume, name='preview_manual_volume'),
     path('rooms/', views.create_manual_selection, name='create_manual_selection'),
     path('selection/manual/<int:selection_id>/', views.get_manual_selection, name='get_manual_selection'),
     path('selections/manual/', views.list_manual_selections, name='list_manual_selections'),

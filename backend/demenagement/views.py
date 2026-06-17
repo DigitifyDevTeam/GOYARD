@@ -282,6 +282,81 @@ def list_client_information(request):
 
 # ==================== MANUAL SELECTION API ====================
 
+def _aggregate_manual_selection_objects(room_selections, heavy_objects, custom_objects, custom_heavy_objects):
+    """Flatten room/heavy/custom selections into a single object counts dict."""
+    all_objects = {}
+
+    for room_objects in (room_selections or {}).values():
+        for obj_name, count in room_objects.items():
+            try:
+                qty = int(count)
+            except (TypeError, ValueError):
+                qty = 0
+            if qty > 0:
+                all_objects[obj_name] = all_objects.get(obj_name, 0) + qty
+
+    for obj_name, count in (heavy_objects or {}).items():
+        try:
+            qty = int(count)
+        except (TypeError, ValueError):
+            qty = 0
+        if qty > 0:
+            all_objects[obj_name] = all_objects.get(obj_name, 0) + qty
+
+    for obj_data in (custom_objects or {}).values():
+        if not isinstance(obj_data, dict):
+            continue
+        try:
+            qty = int(obj_data.get('quantity', 0))
+        except (TypeError, ValueError):
+            qty = 0
+        name = obj_data.get('name')
+        if qty > 0 and name:
+            all_objects[name] = all_objects.get(name, 0) + qty
+
+    for obj_data in (custom_heavy_objects or {}).values():
+        if not isinstance(obj_data, dict):
+            continue
+        try:
+            qty = int(obj_data.get('quantity', 0))
+        except (TypeError, ValueError):
+            qty = 0
+        name = obj_data.get('name')
+        if qty > 0 and name:
+            all_objects[name] = all_objects.get(name, 0) + qty
+
+    return all_objects
+
+
+@api_view(['POST'])
+def preview_manual_volume(request):
+    """
+    Calculate total volume from a manual selection payload without persisting data.
+    Used by the Paris LP standalone volume calculator (/lp/paris/calcule-volume).
+    """
+    all_objects = _aggregate_manual_selection_objects(
+        request.data.get('room_selections', {}),
+        request.data.get('heavy_objects', {}),
+        request.data.get('custom_objects', {}),
+        request.data.get('custom_heavy_objects', {}),
+    )
+
+    if not all_objects:
+        return Response({
+            'success': False,
+            'message': 'Aucun objet sélectionné',
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    volume_calc = calculate_total_volume(all_objects)
+    return Response({
+        'success': True,
+        'data': {
+            'total_volume': volume_calc['total_volume'],
+        },
+        'volume_calculation': volume_calc,
+    }, status=status.HTTP_200_OK)
+
+
 @api_view(['GET'])
 def get_room_objects(request):
     """
