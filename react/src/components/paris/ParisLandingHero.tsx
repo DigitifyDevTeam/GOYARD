@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowUpDown,
   Building2,
@@ -30,37 +30,27 @@ import {
 import { HeroTrustCard, HeroTrustCardMobile } from "../HeroTrustCard";
 import type { LandingHeroConfig, LandingHeroLocationPart } from "./landingHeroConfig";
 import {
-  PARIS_LP_CALCULATED_OBJECTS_KEY,
-  PARIS_LP_CALCULATED_VOLUME_KEY,
   PARIS_LP_FORM_DRAFT_KEY,
   PARIS_LP_VOLUME_CALC_PATH,
+  clearParisLpSession,
+  setParisLpActiveFlow,
 } from "../../constants/parisLp";
+import {
+  EMPTY_PARIS_DEVIS_FORM,
+  useOptionalParisLpFormContext,
+  type ParisCompactDevisFormState,
+} from "./ParisLpFormContext";
 
 const DEVIS_CONFIRMATION_PATH = "/tunnel/devis/confirmation";
 
 const ETAGE_OPTIONS = ["RDC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 const ASCENSEUR_OPTIONS = ["Non", "Oui 2 personnes", "Oui 4 personnes", "Oui 6 personnes"];
 
-type ParisCompactDevisFormState = {
-  nom: string;
-  tel_portable: string;
-  email: string;
-  adresse_depart: string;
-  cp_depart: string;
-  etage_depart: string;
-  ascenseur_depart: string;
-  adresse_arrivee: string;
-  cp_arrivee: string;
-  etage_arrivee: string;
-  ascenseur_arrivee: string;
-  volume: string;
-  superficie: string;
-  liste_objets: string;
-  date_demenagement: string;
-  info_complementaire: string;
-};
-
 type ParisCompactDevisFieldKey = keyof ParisCompactDevisFormState;
+
+function writeParisLpFormDraft(form: ParisCompactDevisFormState): void {
+  sessionStorage.setItem(PARIS_LP_FORM_DRAFT_KEY, JSON.stringify(form));
+}
 
 function getParisCompactDevisFieldErrors(
   form: ParisCompactDevisFormState,
@@ -90,44 +80,6 @@ function hasParisCompactDevisFieldErrors(errors: Partial<Record<ParisCompactDevi
   return Object.values(errors).some(Boolean);
 }
 
-const EMPTY_PARIS_DEVIS_FORM: ParisCompactDevisFormState = {
-  nom: "",
-  tel_portable: "",
-  email: "",
-  adresse_depart: "",
-  cp_depart: "",
-  etage_depart: "",
-  ascenseur_depart: "",
-  adresse_arrivee: "",
-  cp_arrivee: "",
-  etage_arrivee: "",
-  ascenseur_arrivee: "",
-  volume: "",
-  superficie: "",
-  liste_objets: "",
-  date_demenagement: "",
-  info_complementaire: "",
-};
-
-function readParisLpFormDraft(): ParisCompactDevisFormState {
-  try {
-    const raw = sessionStorage.getItem(PARIS_LP_FORM_DRAFT_KEY);
-    if (!raw) return { ...EMPTY_PARIS_DEVIS_FORM };
-    const parsed = JSON.parse(raw) as Partial<ParisCompactDevisFormState>;
-    return { ...EMPTY_PARIS_DEVIS_FORM, ...parsed };
-  } catch {
-    return { ...EMPTY_PARIS_DEVIS_FORM };
-  }
-}
-
-function writeParisLpFormDraft(form: ParisCompactDevisFormState): void {
-  sessionStorage.setItem(PARIS_LP_FORM_DRAFT_KEY, JSON.stringify(form));
-}
-
-function clearParisLpFormDraft(): void {
-  sessionStorage.removeItem(PARIS_LP_FORM_DRAFT_KEY);
-}
-
 const HERO_BENEFITS = [
   { icon: Users, label: "Équipe 100% salariée" },
   { icon: Tag, label: "Prix fixe garanti" },
@@ -150,13 +102,13 @@ function ParisLpHeaderMobile() {
   return (
     <header className="w-full border-b border-slate-100/80 bg-white">
       <div className="mx-auto flex h-[4.5rem] max-w-[1920px] items-center justify-between px-4">
-        <a
-          href="/"
+        <Link
+          to="/"
           className="shrink-0 rounded-lg transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2"
           aria-label="Retour à l'accueil — Guivarche Déménagement"
         >
           <img src="/logo.svg" alt="Guivarche Déménagement" className="h-11 w-auto" />
-        </a>
+        </Link>
         <a
           href={CONTACT_PHONE_HREF}
           className="inline-flex items-center gap-1.5 font-['Poppins',sans-serif] text-sm font-bold text-[#CC922F] sm:text-[15px]"
@@ -176,13 +128,13 @@ function ParisLpHeader() {
   return (
     <header className="w-full bg-white border-b border-slate-100/80">
       <div className="mx-auto flex h-[84px] max-w-[1920px] items-center justify-between px-6 xl:px-10">
-        <a
-          href="/"
+        <Link
+          to="/"
           className="shrink-0 rounded-lg transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CC922F] focus-visible:ring-offset-2"
           aria-label="Retour à l'accueil — Guivarche Déménagement"
         >
           <img src="/logo.svg" alt="Guivarche Déménagement" className="h-[4.25rem] w-auto sm:h-[4.5rem]" />
-        </a>
+        </Link>
         <a
           href={CONTACT_PHONE_HREF}
           className="group inline-flex items-center gap-2.5 font-['Poppins',sans-serif] font-bold text-[#1C3957] transition hover:text-[#CC922F]"
@@ -294,36 +246,19 @@ function ParisCompactDevisForm({
   const fieldId = (name: string) =>
     isMobile ? `${config.fieldSlug}-m-${name}` : `${config.fieldSlug}-${name}`;
   const navigate = useNavigate();
-  const [submitting, setSubmitting] = useState(false);
-  const [showErrors, setShowErrors] = useState(false);
-  const [form, setForm] = useState<ParisCompactDevisFormState>(() =>
-    showVolumeAutomaticCalc ? readParisLpFormDraft() : { ...EMPTY_PARIS_DEVIS_FORM },
-  );
+  const sharedParisForm = useOptionalParisLpFormContext();
+  const [localForm, setLocalForm] = useState<ParisCompactDevisFormState>(() => ({ ...EMPTY_PARIS_DEVIS_FORM }));
+  const [localShowErrors, setLocalShowErrors] = useState(false);
+  const [localSubmitting, setLocalSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!showVolumeAutomaticCalc) return;
-
-    const storedVolume = sessionStorage.getItem(PARIS_LP_CALCULATED_VOLUME_KEY);
-    const storedObjects = sessionStorage.getItem(PARIS_LP_CALCULATED_OBJECTS_KEY);
-    if (storedVolume || storedObjects) {
-      setForm((prev) => {
-        const next = {
-          ...prev,
-          ...(storedVolume ? { volume: storedVolume } : {}),
-          ...(storedObjects ? { liste_objets: storedObjects } : {}),
-        };
-        writeParisLpFormDraft(next);
-        return next;
-      });
-      sessionStorage.removeItem(PARIS_LP_CALCULATED_VOLUME_KEY);
-      sessionStorage.removeItem(PARIS_LP_CALCULATED_OBJECTS_KEY);
-    }
-  }, [showVolumeAutomaticCalc]);
-
-  useEffect(() => {
-    if (!showVolumeAutomaticCalc) return;
-    writeParisLpFormDraft(form);
-  }, [form, showVolumeAutomaticCalc]);
+  const usesSharedParisForm = showVolumeAutomaticCalc && sharedParisForm != null;
+  const form = usesSharedParisForm ? sharedParisForm.form : localForm;
+  const setForm = usesSharedParisForm ? sharedParisForm.setForm : setLocalForm;
+  const showErrors = usesSharedParisForm ? sharedParisForm.showErrors : localShowErrors;
+  const setShowErrors = usesSharedParisForm ? sharedParisForm.setShowErrors : setLocalShowErrors;
+  const submitting = localSubmitting;
+  const setSubmitting = setLocalSubmitting;
+  const formSessionKey = sharedParisForm?.formSessionKey ?? 0;
 
   const set =
     (field: keyof typeof form) =>
@@ -400,7 +335,7 @@ function ParisCompactDevisForm({
           FormDataManager.markFormSubmitted(undefined, data?.access_token);
         }
         if (showVolumeAutomaticCalc) {
-          clearParisLpFormDraft();
+          clearParisLpSession();
         }
         navigate(DEVIS_CONFIRMATION_PATH);
       } else {
@@ -415,6 +350,7 @@ function ParisCompactDevisForm({
 
   return (
     <form
+      key={usesSharedParisForm ? `paris-lp-form-${formSessionKey}` : undefined}
       onSubmit={handleSubmit}
       className={cn(
         "w-full bg-white",
@@ -601,6 +537,7 @@ function ParisCompactDevisForm({
             <button
               type="button"
               onClick={() => {
+                setParisLpActiveFlow();
                 writeParisLpFormDraft(form);
                 navigate(PARIS_LP_VOLUME_CALC_PATH);
               }}

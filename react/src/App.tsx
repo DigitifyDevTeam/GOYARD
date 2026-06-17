@@ -37,6 +37,9 @@ import {
   PARIS_LP_PATH,
   PARIS_LP_VOLUME_CALC_PATH,
 } from "./constants/parisLp";
+import { useParisLpSessionCleanup } from "./hooks/useParisLpSessionCleanup";
+import { ParisVolumeCalcHowItWorks } from "./components/paris/ParisVolumeCalcHowItWorks";
+import { ParisVolumeCalcSidebar } from "./components/paris/ParisVolumeCalcSidebar";
 import { clearDevisEntryPage, getDevisEntryPageDisplay } from "./utils/devisEntry";
 import {
   Phone,
@@ -362,6 +365,8 @@ function AppContent() {
   const [logementType, setLogementType] = useState<"aerien" | "normal" | "charge" | "">("");
   const [ancienneteLogement, setAncienneteLogement] = useState<"0_2" | "2_5" | "5_plus" | "">("");
   const [selectedMethod, setSelectedMethod] = useState<"list" | "photo" | "surface" | null>(getSelectedMethodFromUrl());
+  const isParisLpVolumeListPage =
+    isParisLpVolumeCalc && currentPage === "volume" && selectedMethod === "list";
   const [lastUsedMethod, setLastUsedMethod] = useState<"list" | "photo" | "surface" | null>(null);
   const currentStepNumber =
     currentPage === "form"
@@ -1703,6 +1708,29 @@ function AppContent() {
       ...prev,
       [item]: Math.max(0, (prev[item] || 0) + change),
     }));
+  };
+
+  const clearParisVolumeInventoryState = () => {
+    setRoomObjectQuantities({});
+    setCleaningQuantities({});
+    setSpecialObjectQuantities({});
+    setHasSpecialObjects(false);
+    setCustomObjectDetails({});
+    setCustomHeavyObjectDetails({});
+    setCustomHeavyObjects([]);
+  };
+
+  const wasParisCalcRef = useRef(isParisLpVolumeCalc);
+  useEffect(() => {
+    if (wasParisCalcRef.current && !isParisLpVolumeCalc) {
+      clearParisVolumeInventoryState();
+    }
+    wasParisCalcRef.current = isParisLpVolumeCalc;
+  }, [isParisLpVolumeCalc]);
+
+  const resetParisVolumeInventory = () => {
+    if (!window.confirm("Remettre à zéro tout l'inventaire ?")) return;
+    clearParisVolumeInventoryState();
   };
 
   // Function to delete custom objects
@@ -3633,10 +3661,25 @@ function AppContent() {
         </div>
       </header>
 
-      <div className={cn("max-w-8xl mx-auto px-4 sm:px-6 py-6 sm:py-12", isParisLpVolumeCalc && "max-w-5xl")}>
-        <div className={cn("grid lg:grid-cols-3 gap-6 lg:gap-10", isParisLpVolumeCalc && "lg:grid-cols-1")}>
+      <div
+        className={cn(
+          "max-w-8xl mx-auto px-4 sm:px-6 py-6 sm:py-12",
+          isParisLpVolumeListPage && "max-w-[1280px]",
+        )}
+      >
+        {isParisLpVolumeListPage ? <ParisVolumeCalcHowItWorks className="mb-8" /> : null}
+        <div
+          className={cn(
+            "grid gap-6 lg:gap-8 xl:gap-10",
+            isParisLpVolumeListPage
+              ? "lg:grid-cols-[minmax(0,1fr)_380px] xl:grid-cols-[minmax(0,1fr)_420px]"
+              : isParisLpVolumeCalc
+                ? "lg:grid-cols-1"
+                : "lg:grid-cols-3",
+          )}
+        >
           {/* Main Content */}
-          <div className={cn("lg:col-span-2 min-w-0", isParisLpVolumeCalc && "lg:col-span-1")}>
+          <div className={cn("min-w-0", !isParisLpVolumeListPage && !isParisLpVolumeCalc && "lg:col-span-2")}>
             <div className="bg-slate-50 rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
               {currentPage === "form" && (
                 <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
@@ -3693,10 +3736,13 @@ function AppContent() {
               </div>
               ) : null}
 
-              {isParisLpVolumeCalc ? (
+              {isParisLpVolumeCalc && !isParisLpVolumeListPage ? (
                 <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
                   Calculer mon volume automatiquement
                 </h1>
+              ) : null}
+              {isParisLpVolumeListPage ? (
+                <h1 className="sr-only">Calculer mon volume automatiquement</h1>
               ) : null}
 
               {currentPage === "form" && (
@@ -3899,25 +3945,26 @@ function AppContent() {
 
               {currentPage === "volume" && selectedMethod === "list" && (
                 <>
-                  {/* Sophie's Profile - Cleaning Page */}
-                  <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
-                      <ImageWithFallback
-                        src="/sophie.jpeg"
-                        alt="Sophie"
-                        className="w-full h-full object-cover"
-                        style={{ transform: 'scale(1.2)' }}
-                      />
+                  {!isParisLpVolumeListPage ? (
+                    <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
+                        <ImageWithFallback
+                          src="/sophie.jpeg"
+                          alt="Sophie"
+                          className="w-full h-full object-cover"
+                          style={{ transform: 'scale(1.2)' }}
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-lg font-semibold text-slate-900 mb-1">
+                          Sophie
+                        </p>
+                        <p className="text-primary text-sm">
+                          Parfait ! Précisez pièce par pièce les objets à déménager dont vous avez besoin.
+                        </p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-lg font-semibold text-slate-900 mb-1">
-                        Sophie
-                      </p>
-                      <p className="text-primary text-sm">
-                        Parfait ! Précisez pièce par pièce les objets à déménager dont vous avez besoin.
-                      </p>
-                    </div>
-                  </div>
+                  ) : null}
 
                   {/* Room Navigation */}
                   <div className="flex items-center justify-center mb-4 sm:mb-6 overflow-x-auto">
@@ -6254,7 +6301,14 @@ function AppContent() {
           </div>
 
           {/* Sidebar */}
-          {!isParisLpVolumeCalc ? (
+          {isParisLpVolumeListPage ? (
+            <ParisVolumeCalcSidebar
+              roomObjectQuantities={roomObjectQuantities}
+              specialObjectQuantities={specialObjectQuantities}
+              onReset={resetParisVolumeInventory}
+              className="lg:sticky lg:top-6 lg:self-start"
+            />
+          ) : !isParisLpVolumeCalc ? (
           <div className="space-y-6 lg:space-y-12">
             {/* Mes étapes */}
             <div className="hidden lg:block bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
@@ -6384,6 +6438,7 @@ function shouldUseTrailingSlash(pathname: string): boolean {
 
 function AppRoutes() {
   const location = useLocation();
+  useParisLpSessionCleanup();
   const { pathname, search, hash } = location;
 
   if (shouldUseTrailingSlash(pathname) && !pathname.endsWith("/")) {
