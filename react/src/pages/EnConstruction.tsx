@@ -2,6 +2,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 export default function EnConstruction() {
   usePageMeta(PAGE_META.enConstruction);
@@ -24,7 +25,7 @@ export default function EnConstruction() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
-              href="/tunnel/mes-coordonnees"
+              href={DEVIS_FORM_PATH}
               className="inline-flex items-center justify-center rounded-md bg-[#1c3957] px-5 py-2.5 text-sm font-['Poppins',sans-serif] font-semibold text-white hover:bg-[#2a4f6b] transition-colors"
             >
               Demander un devis

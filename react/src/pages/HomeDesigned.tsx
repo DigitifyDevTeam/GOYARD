@@ -1,5 +1,5 @@
 import svgPaths from "./svg-jmcfzlx209";
-import { Pause, Play, ShieldCheck } from "lucide-react";
+import { Clock, Pause, Play, ShieldCheck, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   useState,
@@ -36,6 +36,7 @@ import imgMidiLibrePng from "../assets/a9ebad2e02ff8cd3779f21f2156198dd44f1986d.
 import { SITE_IMAGE_ALTS } from "../seo/imageAlts";
 import { blogPosts } from "../data/blogPosts";
 import { blogArticlePath } from "../utils/paths";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 function Group721() {
   return (
@@ -253,9 +254,12 @@ function Group743() {
   return (
     <div className="absolute contents left-[calc(50%+0.5px)] top-[71px] translate-x-[-50%]">
       <Group715 />
-      <p className="absolute font-['Poppins',_sans-serif] font-[800] leading-[1.2] left-[calc(50%+0.5px)] not-italic text-[50px] text-white text-center top-[71px] translate-x-[-50%] w-[731px]">
+      <h1 className="absolute font-['Poppins',_sans-serif] font-[800] leading-[1.15] left-[calc(50%+0.5px)] not-italic text-[34px] text-white text-center top-[71px] translate-x-[-50%] w-[900px]">
+        Déménageur à Paris et en Île-de-France pour particuliers et entreprises
+      </h1>
+      <p className="absolute font-['Poppins',_sans-serif] font-[600] leading-[1.2] left-[calc(50%+0.5px)] not-italic text-[24px] text-white/90 text-center top-[165px] translate-x-[-50%] w-[731px]">
         <span className="block">Guivarche Déménagement</span>
-        <span className="block text-[28px] font-[600] text-white/90 mt-2">L'exigence des grands déménageurs</span>
+        <span className="block mt-1">L&apos;exigence des grands déménageurs</span>
       </p>
     </div>
   );
@@ -401,7 +405,6 @@ function Group744({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
 function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => void; address: string; onAddressChange: (value: string) => void }) {
   return (
     <>
-      <h1 className="sr-only">Guivarche Déménagement — L&apos;exigence des grands déménageurs</h1>
       {/* Desktop hero (>= lg) */}
       <div className="hidden lg:block h-[600px] overflow-clip relative shrink-0 desktop-canvas">
         <Group744 onGetQuote={onGetQuote} address={address} onAddressChange={onAddressChange} />
@@ -413,9 +416,12 @@ function Frame719({ onGetQuote, address, onAddressChange }: { onGetQuote: () => 
           <div className="absolute inset-0 bg-black/55" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-8 py-12 sm:py-16">
-          <p className="font-['Poppins',_sans-serif] font-[800] leading-tight text-2xl sm:text-4xl text-white mb-6 sm:mb-8 max-w-xl" aria-hidden="true">
+          <h1 className="font-['Poppins',_sans-serif] font-[800] leading-tight text-xl sm:text-2xl text-white mb-3 max-w-xl">
+            Déménageur à Paris et en Île-de-France pour particuliers et entreprises
+          </h1>
+          <p className="font-['Poppins',_sans-serif] font-[600] text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 max-w-xl">
             <span className="block">Guivarche Déménagement</span>
-            <span className="block text-lg sm:text-2xl font-[600] text-white/90 mt-2">L'exigence des grands déménageurs</span>
+            <span className="block mt-1">L&apos;exigence des grands déménageurs</span>
           </p>
           <p className="font-['Poppins',_sans-serif] font-[500] text-sm sm:text-lg text-white/80 mb-8 sm:mb-10 max-w-xl">
             Une structure solide, des équipes 100 % salariées, aucun recours à la sous-traitance et une logistique parfaitement maîtrisée pour un déménagement en toute confiance.
@@ -1682,7 +1688,7 @@ export function Frame702() {
           </HowItWorksVideoProvider>
           <div className="text-center mt-8">
             <button
-              onClick={() => window.location.href = '/tunnel/mes-coordonnees'}
+              onClick={() => { window.location.href = DEVIS_FORM_PATH; }}
               className="bg-white border-2 border-[#1c3957] text-[#1c3957] font-['Poppins',_sans-serif] font-[600] text-sm sm:text-base px-6 py-3 rounded hover:bg-[#1c3957] hover:text-white transition-colors"
             >
               Planifier mon déménagement
@@ -4544,7 +4550,7 @@ function VenteFlash() {
                 {...deal}
                 onReserve={() => {
                   sessionStorage.setItem("cameFromHome", "true");
-                  window.location.href = "/tunnel/mes-coordonnees";
+                  window.location.href = DEVIS_FORM_PATH;
                 }}
               />
             ))}
@@ -4574,6 +4580,88 @@ function VenteFlash() {
 
 const HOME_DEPARTURE_ADDRESS_KEY = "homeDepartureAddress";
 
+function HomeMovingIntroSection() {
+  const pillars = [
+    {
+      icon: Users,
+      title: "Un service complet pour particuliers et professionnels",
+      text: "Spécialiste du déménagement particulier et du déménagement professionnel, Guivarche Déménagement propose des solutions adaptées à chaque besoin : déménagement local, longue distance en France et en Europe, ainsi que des formules de déménagement groupé pour optimiser les coûts. L'entreprise met également à disposition un service de garde-meubles sécurisé pour stocker vos biens en toute sérénité, que ce soit pour une courte ou longue durée.",
+    },
+    {
+      icon: Clock,
+      title: "Une organisation fiable et un accompagnement sur mesure",
+      text: "Avec un devis gratuit sous 24h, Guivarche Déménagement s'engage à offrir une réponse rapide et transparente à chaque demande. L'objectif est de simplifier toutes les étapes du déménagement, de la préparation jusqu'à l'installation. Grâce à une organisation maîtrisée et une équipe attentive, les clients bénéficient d'un accompagnement sur mesure et d'une véritable tranquillité d'esprit, que ce soit pour un déménagement à Paris, en Île-de-France ou sur de plus longues distances.",
+    },
+  ] as const;
+
+  return (
+    <section
+      aria-labelledby="home-intro-heading"
+      className="relative w-full overflow-hidden bg-white py-14 sm:py-16 lg:py-20"
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            "radial-gradient(900px 420px at 10% 0%, rgba(204,146,47,0.10), transparent 60%), radial-gradient(700px 380px at 90% 100%, rgba(28,57,87,0.06), transparent 55%)",
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="flex justify-center">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#CC922F]/25 bg-[#CC922F]/8 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#CC922F]">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#CC922F]" aria-hidden="true" />
+              Déménageur Paris &amp; Île-de-France
+            </p>
+          </div>
+          <h2
+            id="home-intro-heading"
+            className="mt-5 font-['Poppins',sans-serif] font-bold text-[#1C3957] text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight"
+          >
+            Déménagement à Paris et en Île-de-France
+          </h2>
+          <p className="mt-5 text-slate-600 text-base sm:text-lg leading-relaxed">
+            Guivarche Déménagement accompagne les particuliers et les entreprises dans tous leurs projets de
+            déménagement à Paris et en Île-de-France. Grâce à une équipe de déménageurs salariés expérimentés, chaque
+            prestation est réalisée sans sous-traitance, garantissant un suivi rigoureux et une qualité de service
+            constante. Que ce soit pour un changement d&apos;appartement, une maison ou des locaux professionnels,
+            l&apos;entreprise assure une prise en charge complète et sécurisée de vos biens.
+          </p>
+        </div>
+
+        <div className="mt-10 sm:mt-12 grid gap-6 lg:grid-cols-2">
+          {pillars.map(({ icon: Icon, title, text }, index) => (
+            <article
+              key={title}
+              className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-gradient-to-br from-white via-slate-50/80 to-white p-6 sm:p-8 shadow-[0px_12px_40px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0px_16px_48px_rgba(15,23,42,0.10)]"
+            >
+              <div
+                className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[#CC922F]/10 blur-2xl transition-opacity group-hover:opacity-80"
+                aria-hidden="true"
+              />
+              <div className="relative">
+                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#CC922F]/12 text-[#CC922F]">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3
+                  className={`font-['Poppins',sans-serif] font-semibold text-lg sm:text-xl leading-snug ${
+                    index === 0 ? "text-[#1C3957]" : "text-[#CC922F]"
+                  }`}
+                >
+                  {title}
+                </h3>
+                <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">{text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   usePageMeta(PAGE_META.home);
 
@@ -4596,7 +4684,7 @@ export default function Home() {
     if (departureAddress.trim()) {
       sessionStorage.setItem(HOME_DEPARTURE_ADDRESS_KEY, departureAddress.trim());
     }
-    navigate("/tunnel/mes-coordonnees");
+    navigate(DEVIS_FORM_PATH);
   };
 
   const handleAddressChange = (value: string) => {
@@ -4612,7 +4700,7 @@ export default function Home() {
       <Header onGetQuote={handleGetQuote} />
       <Frame719 onGetQuote={handleGetQuote} address={departureAddress} onAddressChange={handleAddressChange} />
       <Frame720 />
-      <div className="h-8 bg-white"></div>
+      <HomeMovingIntroSection />
       <Frame23 />
       {/* test - Comment ça marche ? + videos section */}
       <HowItWorksVideoProvider>

@@ -24,7 +24,8 @@ import NotFound from "./NotFound";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { BLOG_ARTICLE_META, PAGE_META } from "../seo/pageMeta";
 import { getBlogImageAlt } from "../seo/imageAlts";
-import { blogArticlePath, withTrailingSlash } from "../utils/paths";
+import { blogArticlePath, normalizePublicPath } from "../utils/paths";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 // Article data
 const articles: Record<string, any> = {
@@ -1246,7 +1247,7 @@ export default function BlogArticle() {
         <div className="relative h-full flex items-end">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 lg:pb-16">
             <motion.button
-              onClick={() => navigate(withTrailingSlash("/blog"))}
+              onClick={() => navigate(normalizePublicPath("/blog"))}
               className="flex items-center gap-2 text-white/90 hover:text-white mb-8 group"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1501,7 +1502,7 @@ export default function BlogArticle() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate("/tunnel/mes-coordonnees")}
+                    onClick={() => navigate(DEVIS_FORM_PATH)}
                     className={`${gradientCtaPrimaryClass} gap-2`}
                   >
                     Obtenir un devis gratuit

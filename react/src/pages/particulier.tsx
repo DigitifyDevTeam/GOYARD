@@ -9,6 +9,7 @@ import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { ParisDevisTrustAside, ParisHeroServicePitch } from "./paris";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 // ─── Sections (Particulier) ─────────────────────────────────────────
 
@@ -84,7 +85,7 @@ export default function Particulier() {
 
   const primaryCta = () => {
     sessionStorage.setItem("cameFromHome", "true");
-    navigate("/tunnel/mes-coordonnees");
+    navigate(DEVIS_FORM_PATH);
   };
 
   return (

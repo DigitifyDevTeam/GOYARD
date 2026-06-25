@@ -1,6 +1,7 @@
 import { Phone, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CONTACT_PHONE_ARIA, CONTACT_PHONE_HREF } from "../constants/contactPhone";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 import { EXTERNAL_LINK_REL } from "../constants/externalLink";
 
 /** WhatsApp sticky button — unchanged; separate from the main call line */
@@ -38,7 +39,7 @@ export default function StickyContactButtons() {
       </a>
 
       <Link
-        to="/tunnel/mes-coordonnees"
+        to={DEVIS_FORM_PATH}
         className={`${buttonClassName} pointer-events-auto`}
         aria-label="Demander un devis"
       >

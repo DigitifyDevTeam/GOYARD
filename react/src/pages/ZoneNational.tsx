@@ -12,12 +12,13 @@ import { InterventionMapNational } from "../components/intervention-map";
 import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 export default function ZoneNational() {
   usePageMeta(PAGE_META.demenagementNational);
 
   const navigate = useNavigate();
-  const primaryCta = () => navigate("/tunnel/mes-coordonnees");
+  const primaryCta = () => navigate(DEVIS_FORM_PATH);
 
   return (
     <div className="min-h-screen bg-white">

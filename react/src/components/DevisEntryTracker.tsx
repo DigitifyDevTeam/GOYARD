@@ -5,13 +5,14 @@ import {
   getDevisEntryPage,
   setDevisEntryPage,
 } from "../utils/devisEntry";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
-function isTunnelPath(path: string): boolean {
-  return path === "/tunnel" || path.startsWith("/tunnel/");
+function isDevisEntryPath(path: string): boolean {
+  return path === DEVIS_FORM_PATH || path === "/tunnel" || path.startsWith("/tunnel/");
 }
 
 /**
- * Remembers the last non-tunnel URL, then when the user enters /tunnel/* copies it
+ * Remembers the last non-devis URL, then when the user enters the quote form copies it
  * as the "page d'origine" for the admin email. More reliable than comparing
  * previous route in useEffect (SPA + Strict Mode edge cases).
  */
@@ -23,7 +24,7 @@ export default function DevisEntryTracker() {
     const path = location.pathname;
     const fullPath = `${path}${location.search || ""}`;
 
-    if (!isTunnelPath(path)) {
+    if (!isDevisEntryPath(path)) {
       lastNonTunnelPathRef.current = fullPath;
       return;
     }

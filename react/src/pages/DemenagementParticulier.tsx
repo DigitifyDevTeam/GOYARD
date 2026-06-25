@@ -29,6 +29,7 @@ import {
 import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 /*
 interface StatCounterProps {
@@ -371,7 +372,7 @@ export default function particulier() {
                   size="lg" 
                   className="bg-[#CC922F] hover:bg-[#b58228] text-white font-semibold px-8 py-4 rounded-full text-lg font-['Poppins',sans-serif]"
                   onClick={() =>
-                    (window.location.href = "/tunnel/mes-coordonnees")
+                    (window.location.href = DEVIS_FORM_PATH)
                   }
                 >
                   Obtenir mon devis gratuit
@@ -546,7 +547,7 @@ export default function particulier() {
                       size="lg"
                       className={gradientCtaPrimaryButtonClass}
                       onClick={() =>
-                        (window.location.href = "/tunnel/mes-coordonnees")
+                        (window.location.href = DEVIS_FORM_PATH)
                       }
                     >
                       Demander mon devis

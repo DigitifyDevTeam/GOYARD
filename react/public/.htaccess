@@ -16,6 +16,10 @@ Options -MultiViews
     RewriteEngine On
     RewriteBase /
 
+    # SEO: canonical URLs without trailing slash (root "/" unchanged)
+    RewriteCond %{REQUEST_URI} !^/$
+    RewriteRule ^(.+)/$ /$1 [R=301,L]
+
     RewriteCond %{REQUEST_URI} ^/(api|admin|static|media)(/|$) [NC]
     RewriteRule ^(.*)$ http://127.0.0.1:8002%{REQUEST_URI} [P,L,QSA]
 

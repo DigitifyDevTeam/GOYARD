@@ -12,6 +12,7 @@ import {
   PARIS_LP_CALCULATED_OBJECTS_KEY,
   PARIS_LP_CALCULATED_VOLUME_KEY,
   PARIS_LP_FORM_DRAFT_KEY,
+  TUNNEL_DEVIS_FORM_PATH,
   clearParisLpSession,
   isParisLpActiveFlow,
 } from "../../constants/parisLp";
@@ -79,13 +80,62 @@ function writeParisLpFormDraft(form: ParisCompactDevisFormState): void {
   sessionStorage.setItem(PARIS_LP_FORM_DRAFT_KEY, JSON.stringify(form));
 }
 
+function normalizeRoutePath(pathname: string): string {
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    return pathname.replace(/\/+$/, "");
+  }
+  return pathname;
+}
+
+function readHomeDevisPrefill(): Partial<ParisCompactDevisFormState> | null {
+  const cameFromHome = sessionStorage.getItem("cameFromHome");
+  if (!cameFromHome) return null;
+
+  const firstName = sessionStorage.getItem("homeFirstName")?.trim() ?? "";
+  const lastName = sessionStorage.getItem("homeLastName")?.trim() ?? "";
+  const nom = [firstName, lastName].filter(Boolean).join(" ").trim();
+  const email = sessionStorage.getItem("homeEmail")?.trim() ?? "";
+  const tel_portable = sessionStorage.getItem("homePhone")?.trim() ?? "";
+  const date_demenagement = sessionStorage.getItem("homeMoveDate")?.trim() ?? "";
+  const adresse_depart = sessionStorage.getItem("homeDepartureAddress")?.trim() ?? "";
+
+  sessionStorage.removeItem("cameFromHome");
+  sessionStorage.removeItem("homeFirstName");
+  sessionStorage.removeItem("homeLastName");
+  sessionStorage.removeItem("homeEmail");
+  sessionStorage.removeItem("homePhone");
+  sessionStorage.removeItem("homeMoveDate");
+  sessionStorage.removeItem("homeDepartureAddress");
+
+  return {
+    ...(nom ? { nom } : {}),
+    ...(email ? { email } : {}),
+    ...(tel_portable ? { tel_portable } : {}),
+    ...(date_demenagement ? { date_demenagement } : {}),
+    ...(adresse_depart ? { adresse_depart } : {}),
+  };
+}
+
 export function ParisLpFormProvider({ children }: Readonly<{ children: ReactNode }>) {
   const location = useLocation();
+  const routePath = normalizeRoutePath(location.pathname);
   const [form, setForm] = useState<ParisCompactDevisFormState>(() => ({ ...EMPTY_PARIS_DEVIS_FORM }));
   const [showErrors, setShowErrors] = useState(false);
   const [formSessionKey, setFormSessionKey] = useState(0);
 
   useEffect(() => {
+    if (routePath === TUNNEL_DEVIS_FORM_PATH) {
+      const homePrefill = readHomeDevisPrefill();
+      if (homePrefill) {
+        const next = { ...EMPTY_PARIS_DEVIS_FORM, ...homePrefill };
+        writeParisLpFormDraft(next);
+        setForm(next);
+        setShowErrors(false);
+        setFormSessionKey((key) => key + 1);
+        return;
+      }
+    }
+
     if (!isParisLpActiveFlow()) {
       clearParisLpSession();
       setForm({ ...EMPTY_PARIS_DEVIS_FORM });
@@ -109,7 +159,7 @@ export function ParisLpFormProvider({ children }: Readonly<{ children: ReactNode
 
     if (storedVolume) sessionStorage.removeItem(PARIS_LP_CALCULATED_VOLUME_KEY);
     if (storedObjects) sessionStorage.removeItem(PARIS_LP_CALCULATED_OBJECTS_KEY);
-  }, [location.pathname]);
+  }, [location.pathname, routePath]);
 
   return (
     <ParisLpFormContext.Provider value={{ form, setForm, showErrors, setShowErrors, formSessionKey }}>

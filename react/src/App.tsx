@@ -23,19 +23,30 @@ import DemenagementParticulier from "./pages/DemenagementParticulier";
 import ZoneIleDeFrance from "./pages/ZoneIleDeFrance";
 import Paris from "./pages/paris";
 import Seine92 from "./pages/seine92";
+import DemenagementParis75 from "./pages/DemenagementParis75";
+import DemenagementHautsDeSeine92 from "./pages/DemenagementHautsDeSeine92";
+import DemenagementValDeMarne94 from "./pages/DemenagementValDeMarne94";
+import DemenagementYvelines78 from "./pages/DemenagementYvelines78";
+import DemenagementEssonne91 from "./pages/DemenagementEssonne91";
+import DemenagementSeineEtMarne77 from "./pages/DemenagementSeineEtMarne77";
+import DemenagementSeineSaintDenis93 from "./pages/DemenagementSeineSaintDenis93";
+import DemenagementValDoise95 from "./pages/DemenagementValDoise95";
 import Versaille from "./pages/versaille";
+import TunnelDevis from "./pages/TunnelDevis";
 import LongueDistance from "./pages/longue";
 import LongueDistanceSeo from "./pages/LongueDistanceSeo";
-import Pro from "./pages/pro";  
+import Pro from "./pages/pro";
 import Particulier from "./pages/particulier";
 import ZoneNational from "./pages/ZoneNational";
 import ZoneInternational from "./pages/ZoneInternational";
 import NotFound from "./pages/NotFound";
 import {
+  DEVIS_FORM_PATH,
   PARIS_LP_CALCULATED_OBJECTS_KEY,
   PARIS_LP_CALCULATED_VOLUME_KEY,
-  PARIS_LP_PATH,
   PARIS_LP_VOLUME_CALC_PATH,
+  getVolumeCalcReturnPath,
+  isCompactVolumeCalcRoute,
 } from "./constants/parisLp";
 import { useParisLpSessionCleanup } from "./hooks/useParisLpSessionCleanup";
 import { ParisVolumeCalcHowItWorks } from "./components/paris/ParisVolumeCalcHowItWorks";
@@ -171,7 +182,7 @@ import {
   VeloInterieurIcon,
 } from "./cuisineObjectIcons";
 
-/** Numéro affiché dans l’en-tête du tunnel (mes-coordonnées, devis, etc.) — lien d’appel */
+/** Numéro affiché dans l’en-tête du tunnel (confirmation devis, calcule-volume, etc.) — lien d’appel */
 const TUNNEL_SUPPORT_PHONE_HREF = "tel:+33189703324";
 const TUNNEL_SUPPORT_PHONE_DISPLAY = "+33 1 89 70 33 24";
 
@@ -196,16 +207,22 @@ function normalizeRoutePath(pathname: string): string {
   return pathname;
 }
 
+/**
+ * AppContent — active routes: /lp/paris/calcule-volume, /tunnel/devis/confirmation.
+ *
+ * @legacy-tunnel Multi-step tunnel UI below is archived (routes → /lp/paris).
+ * Restore guide: src/archive/legacy-tunnel/README.md
+ */
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
   const routePath = normalizeRoutePath(location.pathname);
-  const isParisLpVolumeCalc = routePath === PARIS_LP_VOLUME_CALC_PATH;
+  const isParisLpVolumeCalc = isCompactVolumeCalcRoute(routePath);
 
   // Get current page from URL
   const getCurrentPage = () => {
     const path = routePath;
-    if (path === "/tunnel/mes-coordonnees") return "form";
+    if (path === "/lp/paris") return "form";
     if (path === "/tunnel/choix-volume") return "methods";
     if (path === PARIS_LP_VOLUME_CALC_PATH) return "volume";
     if (path === "/tunnel/mon-volume/liste") return "volume";
@@ -273,7 +290,7 @@ function AppContent() {
 
   // Pre-fill or clear address when coming from home page (obtenir un devis gratuit)
   useEffect(() => {
-    if (location.pathname !== "/tunnel/mes-coordonnees") return;
+    if (location.pathname !== "/lp/paris") return;
     const cameFromHome = sessionStorage.getItem("cameFromHome");
     const homeAddress = sessionStorage.getItem("homeDepartureAddress");
     const homeFirstName = sessionStorage.getItem("homeFirstName");
@@ -528,6 +545,7 @@ function AppContent() {
     FormDataManager.saveFormData({ [field]: value });
   };
 
+  // @legacy-tunnel — step 1: /tunnel/mes-coordonnees (Sophie + adresse). See LegacyTunnelCoordonneesStep.tsx
   const handleSubmitForm = async () => {
     if (!formData.address.trim()) {
       alert('L\'adresse de départ est obligatoire');
@@ -600,9 +618,10 @@ function AppContent() {
   };
 
   const handleBackToForm = () => {
-    navigate("/tunnel/mes-coordonnees");
+    navigate(DEVIS_FORM_PATH);
   };
 
+  // @legacy-tunnel — step 2: method selection → /tunnel/mon-volume/*
   const handleSelectMethod = (method: "list" | "photo" | "surface") => {
     setSelectedMethod(method);
     if (method === "list") {
@@ -719,7 +738,7 @@ function AppContent() {
 
   const handleBackToMethods = () => {
     if (isParisLpVolumeCalc) {
-      navigate(PARIS_LP_PATH);
+      navigate(getVolumeCalcReturnPath(routePath));
       return;
     }
     navigate("/tunnel/choix-volume");
@@ -1092,7 +1111,7 @@ function AppContent() {
 
           sessionStorage.setItem(PARIS_LP_CALCULATED_VOLUME_KEY, String(result.data.total_volume));
           sessionStorage.setItem(PARIS_LP_CALCULATED_OBJECTS_KEY, objectsList);
-          navigate(PARIS_LP_PATH);
+          navigate(getVolumeCalcReturnPath(routePath));
         } else {
           alert(result?.message || 'Erreur lors du calcul du volume.');
         }
@@ -1101,7 +1120,7 @@ function AppContent() {
 
       if (!clientId) {
         alert('Veuillez d\'abord remplir vos informations personnelles');
-        navigate("/tunnel/mes-coordonnees");
+        navigate(DEVIS_FORM_PATH);
         return;
       }
 
@@ -2755,7 +2774,7 @@ function AppContent() {
     { date: "jeu. 04/09", price: "1631.07 €", selected: false },
   ];
 
-  // Dedicated confirmation page after sending quote
+  // Active: confirmation after Paris LP form submit
   if (currentPage === "quote-confirmation") {
     return (
       <div className="bg-slate-50 min-h-screen flex flex-col">
@@ -2813,6 +2832,7 @@ function AppContent() {
     );
   }
 
+  // @legacy-tunnel — /tunnel/devis, /tunnel/info, /tunnel/options (archived routes)
   if (
     currentPage === "quote" ||
     currentPage === "info" ||
@@ -3686,6 +3706,7 @@ function AppContent() {
                   Votre devis de déménagement
                 </h1>
               )}
+              {/* @legacy-tunnel — step 2 title: /tunnel/choix-volume */}
               {currentPage === "methods" && (
                 <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
                   Choisissez votre méthode d&apos;estimation
@@ -3745,6 +3766,7 @@ function AppContent() {
                 <h1 className="sr-only">Calculer mon volume automatiquement</h1>
               ) : null}
 
+              {/* @legacy-tunnel — step 1 UI: /tunnel/mes-coordonnees */}
               {currentPage === "form" && (
                 <div>
                   {/* Sophie's Profile */}
@@ -3832,6 +3854,7 @@ function AppContent() {
                 </div>
               )}
 
+              {/* @legacy-tunnel — step 2 UI: /tunnel/choix-volume */}
               {currentPage === "methods" && (
                 <>
                   {/* Sophie's Profile - Methods Page */}
@@ -3943,6 +3966,7 @@ function AppContent() {
                 </>
               )}
 
+              {/* Volume liste: active /lp/paris/calcule-volume; @legacy-tunnel /tunnel/mon-volume/liste */}
               {currentPage === "volume" && selectedMethod === "list" && (
                 <>
                   {!isParisLpVolumeListPage ? (
@@ -4443,6 +4467,7 @@ function AppContent() {
                 </>
               )}
 
+              {/* @legacy-tunnel — /tunnel/mon-volume/surface */}
               {currentPage === "volume" && selectedMethod === "surface" && (
                 <>
                   {/* Sophie's Profile - Surface Page */}
@@ -4784,6 +4809,7 @@ function AppContent() {
                 </>
               )}
 
+              {/* @legacy-tunnel — /tunnel/mon-volume/ai */}
               {currentPage === "volume" && selectedMethod === "photo" && (
                 <>
                   {/* AI Photo Method Interface */}
@@ -5345,6 +5371,7 @@ function AppContent() {
                 </>
               )}
 
+              {/* @legacy-tunnel — /tunnel/ai-results */}
               {currentPage === "ai-results" && (
                 <>
                   {/* AI Results Page */}
@@ -5687,6 +5714,7 @@ function AppContent() {
                 </>
               )}
 
+              {/* @legacy-tunnel — step 3: /tunnel/adresses */}
               {currentPage === "addresses" && (
                 <>
                   {/* Sophie's Profile - Addresses Page */}
@@ -6432,31 +6460,30 @@ function AppContent() {
   );
 }
 
-function shouldUseTrailingSlash(pathname: string): boolean {
-  return pathname !== "/" && !pathname.startsWith("/tunnel");
-}
-
 function AppRoutes() {
   const location = useLocation();
   useParisLpSessionCleanup();
   const { pathname, search, hash } = location;
 
-  if (shouldUseTrailingSlash(pathname) && !pathname.endsWith("/")) {
-    return <Navigate to={`${pathname}/${search}${hash}`} replace />;
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    return <Navigate to={`${pathname.replace(/\/+$/, "")}${search}${hash}`} replace />;
   }
 
-  const matchPath = pathname.endsWith("/") && pathname !== "/"
-    ? pathname.replace(/\/+$/, "")
-    : pathname;
-  const routeLocation =
-    matchPath === pathname ? location : { ...location, pathname: matchPath };
-
   return (
-    <Routes location={routeLocation}>
+    <Routes location={location}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/ile-de-france" element={<Navigate to="/demenagement-ile-de-france" replace />} />
         <Route path="/demenagement-ile-de-france" element={<ZoneIleDeFrance />} />
         <Route path="/versaille" element={<Navigate to="/demenagement-paris-versailles" replace />} />
         <Route path="/demenagement-paris-versailles" element={<Versaille />} />
+        <Route path="/demenagement-paris-75" element={<DemenagementParis75 />} />
+        <Route path="/demenagement-hauts-de-seine-92" element={<DemenagementHautsDeSeine92 />} />
+        <Route path="/demenagement-val-de-marne-94" element={<DemenagementValDeMarne94 />} />
+        <Route path="/demenagement-yvelines-78" element={<DemenagementYvelines78 />} />
+        <Route path="/demenagement-essonne-91" element={<DemenagementEssonne91 />} />
+        <Route path="/demenagement-seine-et-marne-77" element={<DemenagementSeineEtMarne77 />} />
+        <Route path="/demenagement-seine-saint-denis-93" element={<DemenagementSeineSaintDenis93 />} />
+        <Route path="/demenagement-val-doise-95" element={<DemenagementValDoise95 />} />
         <Route path="/longue" element={<LongueDistanceSeo />} />
         <Route path="/lp/paris" element={<Paris />} />
         <Route path="/lp/paris/calcule-volume" element={<AppContent />} />
@@ -6465,6 +6492,7 @@ function AppRoutes() {
         <Route path="/lp/pro" element={<Pro />} />
         <Route path="/lp/particulier" element={<Particulier />} />
         <Route path="/demenagement-national" element={<ZoneNational />} />
+        <Route path="/international" element={<Navigate to="/demenagement-international" replace />} />
         <Route path="/demenagement-international" element={<ZoneInternational />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/solution" element={<Solution />} />
@@ -6478,58 +6506,23 @@ function AppRoutes() {
         <Route path="/formules-demenagement" element={<FormulesDemenagement />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/rgpd" element={<Rgpd />} />
-        <Route path="/tunnel/mes-coordonnees" element={<AppContent />} />
-        <Route path="/tunnel/choix-volume" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/mon-volume" element={<Navigate to="/tunnel/choix-volume" replace />} />
-        <Route path="/tunnel/mon-volume/liste" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/mon-volume/ai" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/mon-volume/surface" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/ai-results" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/adresses" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/devis" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
+        {/* Tunnel devis form — compact form + volume calc list route */}
+        <Route path="/tunnel/devis" element={<TunnelDevis />} />
+        <Route path="/tunnel/mes-coordonnees" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/mon-volume/liste" element={<AppContent />} />
+        <Route path="/tunnel/choix-volume" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/mon-volume" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/mon-volume/ai" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/mon-volume/surface" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/ai-results" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/adresses" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
         <Route path="/tunnel/devis/confirmation" element={
           <RouteGuard>
             <AppContent />
           </RouteGuard>
         } />
-        <Route path="/tunnel/info" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
-        <Route path="/tunnel/options" element={
-          <RouteGuard>
-            <AppContent />
-          </RouteGuard>
-        } />
+        <Route path="/tunnel/info" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
+        <Route path="/tunnel/options" element={<Navigate to={DEVIS_FORM_PATH} replace />} />
         <Route path="*" element={<NotFound />} />
     </Routes>
   );

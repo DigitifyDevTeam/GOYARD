@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DEVIS_FORM_PATH } from "../../constants/parisLp";
 import { Menu, X, Calculator, BadgeEuro, Layers3, MapPin, Route, Globe2 } from "lucide-react";
 import { ContactPhoneLink } from "../ContactPhoneLink";
 
@@ -58,7 +59,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
     if (onGetQuote) {
       onGetQuote();
     } else {
-      navigate("/tunnel/mes-coordonnees");
+      navigate(DEVIS_FORM_PATH);
     }
   };
 
@@ -197,7 +198,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
                       </p>
                       <div className="grid grid-cols-3 gap-4">
                         <a
-                          href="/tunnel/mes-coordonnees"
+                          href={DEVIS_FORM_PATH}
                           className="group flex flex-col gap-2 rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
                         >
                           <div className="flex items-center gap-2">
@@ -399,7 +400,7 @@ export default function Header({ onGetQuote }: HeaderProps) {
               {mobileOutilsOpen && (
                 <div className="flex flex-col gap-1 pl-4">
                   <a
-                    href="/tunnel/mes-coordonnees"
+                    href={DEVIS_FORM_PATH}
                     onClick={() => {
                       setMobileOutilsOpen(false);
                       setMobileMenuOpen(false);

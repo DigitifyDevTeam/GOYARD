@@ -6,6 +6,7 @@ import createGlobe, { COBEOptions } from "cobe"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import { useNavigate } from "react-router-dom";
+import { DEVIS_FORM_PATH } from "../../constants/parisLp";
 
 export default function GlobeFeatureSection() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function GlobeFeatureSection() {
             <span className="text-gray-500 dark:text-gray-400">Votre partenaire de confiance pour un déménagement simple, rapide et sans stress partout en France.</span>
           </h2>
           <Button
-            onClick={() => navigate("/tunnel/mes-coordonnees")}
+            onClick={() => navigate(DEVIS_FORM_PATH)}
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1C3957] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#2a4f6b]"
           >
             Commencer Maintenant <ArrowRight className="h-4 w-4" />

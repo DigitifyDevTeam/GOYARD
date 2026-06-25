@@ -1,10 +1,11 @@
 import { BentoCard, BentoGrid } from "@/components/bento-grid";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 const features = [
   {
     name: "Déménagement particulier",
     description: "Accompagnement complet pour les déménagements d'appartements et de maisons, du studio à la grande villa.",
-    href: "/tunnel/mes-coordonnees",
+    href: DEVIS_FORM_PATH,
     cta: "Commencer",
     background: (
       <img
@@ -18,7 +19,7 @@ const features = [
   {
     name: "Déménagement d’entreprise",
     description: "Transfert de bureaux, de postes de travail et d’archives avec une organisation millimétrée.",
-    href: "/tunnel/mes-coordonnees",
+    href: DEVIS_FORM_PATH,
     cta: "Commencer",
     background: (
       <img
@@ -32,7 +33,7 @@ const features = [
   {
     name: "Déménagement longue distance",
     description: "Solutions optimisées pour vos déménagements partout en France et en Europe.",
-    href: "/tunnel/mes-coordonnees",
+    href: DEVIS_FORM_PATH,
     cta: "Commencer",
     background: (
       <img
@@ -46,7 +47,7 @@ const features = [
   {
     name: "Garde-meubles",
     description: "Stockage sécurisé de vos biens en box individuels, pour quelques jours ou plusieurs mois.",
-    href: "/tunnel/mes-coordonnees",
+    href: DEVIS_FORM_PATH,
     cta: "Commencer",
     background: (
       <img
@@ -61,7 +62,7 @@ const features = [
     name: "Déménagement groupé",
     description:
       "Réduisez vos coûts en partageant le même camion avec d’autres clients sur des trajets similaires.",
-    href: "/tunnel/mes-coordonnees",
+    href: DEVIS_FORM_PATH,
     cta: "Commencer",
     background: (
       <img

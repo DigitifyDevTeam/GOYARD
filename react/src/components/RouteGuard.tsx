@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { DEVIS_FORM_PATH } from '../constants/parisLp';
 import { Button } from './ui/button';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 
@@ -9,7 +10,10 @@ interface RouteGuardProps {
   redirectTo?: string;
 }
 
-// Define which routes require data completion
+/**
+ * Protected tunnel routes (legacy multi-step flow archived).
+ * Incomplete sessions redirect to DEVIS_FORM_PATH (/tunnel/devis).
+ */
 const PROTECTED_ROUTES = [
   '/tunnel/choix-volume',
   '/tunnel/mon-volume/liste',
@@ -22,8 +26,8 @@ const PROTECTED_ROUTES = [
   '/tunnel/options'
 ];
 
-// Define the first step route that must be completed
-const FIRST_STEP_ROUTE = '/tunnel/mes-coordonnees';
+/** Incomplete sessions redirect here. */
+const FIRST_STEP_ROUTE = DEVIS_FORM_PATH;
 
 export const RouteGuard: React.FC<RouteGuardProps> = ({ 
   children, 

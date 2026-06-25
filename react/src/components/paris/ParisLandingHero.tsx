@@ -35,6 +35,10 @@ import {
   clearParisLpSession,
   setParisLpActiveFlow,
 } from "../../constants/parisLp";
+
+function resolveVolumeCalcPath(config: LandingHeroConfig): string {
+  return config.volumeCalcPath?.trim() || PARIS_LP_VOLUME_CALC_PATH;
+}
 import {
   EMPTY_PARIS_DEVIS_FORM,
   useOptionalParisLpFormContext,
@@ -237,7 +241,7 @@ function HeroPriceBanner({
   );
 }
 
-function ParisCompactDevisForm({
+export function ParisCompactDevisForm({
   config,
   variant = "desktop",
 }: Readonly<{ config: LandingHeroConfig; variant?: "desktop" | "mobile" }>) {
@@ -539,7 +543,7 @@ function ParisCompactDevisForm({
               onClick={() => {
                 setParisLpActiveFlow();
                 writeParisLpFormDraft(form);
-                navigate(PARIS_LP_VOLUME_CALC_PATH);
+                navigate(resolveVolumeCalcPath(config));
               }}
               disabled={volumeKnown}
               className={cn(

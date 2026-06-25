@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Layers, Star, Check } from "lucide-react";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 const tarificationPlans = [
   {
@@ -51,7 +52,7 @@ export default function TarificationSection() {
   const navigate = useNavigate();
 
   const handleChoose = () => {
-    navigate("/tunnel/mes-coordonnees");
+    navigate(DEVIS_FORM_PATH);
   };
 
   return (

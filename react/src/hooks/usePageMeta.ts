@@ -1,7 +1,16 @@
-import { useEffect } from "react";
-import { withTrailingSlash } from "../utils/paths";
+import { useLayoutEffect } from "react";
+import { normalizePublicPath } from "../utils/paths";
 
-const SITE_ORIGIN = "https://guivarche-demenagement.fr";
+export const SITE_ORIGIN = "https://guivarche-demenagement.fr";
+
+export function canonicalUrl(canonicalPath: string): string {
+  const path = canonicalPath.startsWith("/") ? canonicalPath : `/${canonicalPath}`;
+  return `${SITE_ORIGIN}${normalizePublicPath(path)}`;
+}
+
+export function robotsContent(meta: Pick<PageMetaOptions, "robotsNoIndex">): string {
+  return meta.robotsNoIndex ? "noindex, follow" : "index, follow";
+}
 
 export type PageMetaOptions = {
   title: string;
@@ -45,30 +54,26 @@ function removeCanonical() {
   document.querySelectorAll('link[rel="canonical"]').forEach((el) => el.remove());
 }
 
-const NOINDEX_ROBOTS = "noindex, follow";
-
-export function usePageMeta({
+export function applyPageMeta({
   title,
   description,
   canonicalPath,
   robotsNoIndex,
-}: PageMetaOptions) {
-  useEffect(() => {
-    document.title = title;
-    setMetaDescription(description);
+}: PageMetaOptions): void {
+  document.title = title;
+  setMetaDescription(description);
+  setRobots(robotsContent({ robotsNoIndex }));
 
-    if (robotsNoIndex) {
-      setRobots(NOINDEX_ROBOTS);
-      removeCanonical();
-      return;
-    }
+  if (robotsNoIndex || !canonicalPath) {
+    removeCanonical();
+    return;
+  }
 
-    setRobots("index, follow");
-    if (canonicalPath) {
-      const path = canonicalPath.startsWith("/")
-        ? canonicalPath
-        : `/${canonicalPath}`;
-      setCanonical(`${SITE_ORIGIN}${withTrailingSlash(path)}`);
-    }
-  }, [title, description, canonicalPath, robotsNoIndex]);
+  setCanonical(canonicalUrl(canonicalPath));
+}
+
+export function usePageMeta(options: PageMetaOptions) {
+  useLayoutEffect(() => {
+    applyPageMeta(options);
+  }, [options.title, options.description, options.canonicalPath, options.robotsNoIndex]);
 }

@@ -5,10 +5,11 @@ import LpHero from "./components/LpHero";
 import LpTrustStrip from "./components/LpTrustStrip";
 import { useLandingMeta } from "./useLandingMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 export default function LpIleDeFrance() {
   const navigate = useNavigate();
-  const primaryCta = () => navigate("/tunnel/mes-coordonnees");
+  const primaryCta = () => navigate(DEVIS_FORM_PATH);
 
   useLandingMeta(PAGE_META.lpIleDeFrance);
 

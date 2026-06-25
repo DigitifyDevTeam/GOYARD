@@ -11,6 +11,8 @@ type InterventionMapRegionProps = Readonly<{
   headerDescription: string;
   /** Pill above the section title (default: « Zones d'intervention ») */
   sectionBadge?: string;
+  /** Main H2 above the map (default: « Nous intervenons dans votre secteur ») */
+  sectionTitle?: string;
 }>;
 
 function GoogleMap({
@@ -67,6 +69,7 @@ export function InterventionMapRegion({
   regionParagraphs,
   headerDescription,
   sectionBadge = "Zones d'intervention",
+  sectionTitle = "Nous intervenons dans votre secteur",
 }: InterventionMapRegionProps) {
   return (
     <section
@@ -85,7 +88,7 @@ export function InterventionMapRegion({
             {sectionBadge}
           </div>
           <h2 className="mb-4 text-4xl font-bold text-[#1C2E42] md:text-5xl">
-            Nous intervenons dans votre secteur
+            {sectionTitle}
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-[#1C2E42]/70">{headerDescription}</p>
         </div>
@@ -146,18 +149,19 @@ export function InterventionMapIleDeFrance() {
 export function InterventionMapParis75() {
   return (
     <InterventionMapRegion
-      sectionBadge="Paris 75"
-      mapLabel="Paris 75"
+      sectionBadge="Paris"
+      sectionTitle="Nous intervenons dans tout Paris et ses arrondissements"
+      mapLabel="Paris"
       mapLat={48.8566}
       mapLng={2.3522}
       mapZoom={11}
-      regionTitle="Paris 75"
-      regionSubtitle="Déménagement dans la capitale"
-      headerDescription="Guivarche Déménagement intervient à Paris (75) pour des déménagements organisés, soignés et parfaitement cadrés."
+      regionTitle="Paris"
+      regionSubtitle="Tous les arrondissements"
+      headerDescription="Guivarche Déménagement organise votre déménagement à Paris : trajet maîtrisé, équipes expérimentées et intervention dans tous les arrondissements de la capitale."
       regionParagraphs={[
-        "Paris offre des configurations variées : immeubles haussmanniens, cours, accès étroits et contraintes de stationnement — nous les anticipons.",
-        "Nous adaptons le matériel, la logistique et les protections pour gérer les accès, les étages et les livraisons en centre-ville.",
-        "Avec Guivarche Déménagement, vous obtenez un service transparent, ponctuel et orienté qualité, du devis à l’intervention.",
+        "Paris offre des configurations variées : immeubles haussmanniens, cours intérieures, rues étroites, accès sans ascenseur et contraintes de stationnement — nous les anticipons pour chaque arrondissement.",
+        "Du 1er au 20e arrondissement, nous adaptons le matériel, la logistique et les protections pour gérer les accès, les étages et les livraisons en centre-ville.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
       ]}
     />
   );
@@ -178,6 +182,160 @@ export function InterventionMapVersaille() {
       regionParagraphs={[
         "Versailles présente des configurations variées : centre historique, quartiers résidentiels comme Notre-Dame, Saint-Louis, Montreuil, Clagny-Glatigny ou Porchefontaine, avec des accès parfois étroits et un stationnement limité — nous les anticipons.",
         "Depuis Paris, nous gérons le chargement, le transport sur environ 20 km et la livraison à Versailles en adaptant le matériel, la logistique et les protections à votre logement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Seine-Saint-Denis (93) — page SEO locale */
+export function InterventionMapSeineSaintDenis93() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Seine-Saint-Denis (93)"
+      sectionTitle="Nous intervenons dans tout le Seine-Saint-Denis et ses communes"
+      mapLabel="Seine-Saint-Denis (93)"
+      mapLat={48.9362}
+      mapLng={2.3574}
+      mapZoom={12}
+      regionTitle="Seine-Saint-Denis (93)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Guivarche Déménagement organise votre déménagement en Seine-Saint-Denis : trajet maîtrisé, équipes expérimentées et intervention dans l'ensemble des communes du département."
+      regionParagraphs={[
+        "La Seine-Saint-Denis présente des configurations urbaines exigeantes : densité élevée, immeubles collectifs, accès restreints et trafic intense — nous les anticipons pour chaque commune.",
+        "De Saint-Denis à Montreuil, Aubervilliers, Bobigny ou Noisy-le-Grand, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Seine-et-Marne (77) — page SEO locale */
+export function InterventionMapSeineEtMarne77() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Seine-et-Marne (77)"
+      sectionTitle="Nous intervenons dans toute la Seine-et-Marne et ses communes"
+      mapLabel="Seine-et-Marne (77)"
+      mapLat={48.5393}
+      mapLng={2.6599}
+      mapZoom={10}
+      regionTitle="Seine-et-Marne (77)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Guivarche intervient dans l'ensemble des communes de Seine-et-Marne pour assurer des déménagements rapides, sécurisés et parfaitement organisés."
+      regionParagraphs={[
+        "La Seine-et-Marne, plus grand département d'Île-de-France, présente des contraintes variées : longues distances, routes départementales étroites, communes rurales et zones forestières enclavées — nous les anticipons pour chaque chantier.",
+        "De Melun à Meaux, Chelles, Torcy ou Lagny-sur-Marne, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Essonne (91) — page SEO locale */
+export function InterventionMapEssonne91() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Essonne (91)"
+      sectionTitle="Nous intervenons dans toute l'Essonne et ses communes"
+      mapLabel="Essonne (91)"
+      mapLat={48.6333}
+      mapLng={2.45}
+      mapZoom={11}
+      regionTitle="Essonne (91)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Confiez votre déménagement en Essonne à Guivarche : accompagnement personnalisé, équipes professionnelles et couverture complète de l'ensemble des communes du département pour un déménagement sans stress."
+      regionParagraphs={[
+        "L'Essonne présente des configurations variées : vastes zones pavillonnaires, grands ensembles en banlieue sud, secteurs ruraux et zones d'activités périurbaines — nous les anticipons pour chaque commune.",
+        "De Massy à Palaiseau, Évry-Courcouronnes, Orsay ou Longjumeau, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Yvelines (78) — page SEO locale */
+export function InterventionMapYvelines78() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Yvelines (78)"
+      sectionTitle="Nous intervenons dans tout le département des Yvelines et ses communes"
+      mapLabel="Yvelines (78)"
+      mapLat={48.8014}
+      mapLng={2.1301}
+      mapZoom={11}
+      regionTitle="Yvelines (78)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Guivarche Déménagement organise votre déménagement dans les Yvelines : trajet maîtrisé, équipes expérimentées et intervention dans l'ensemble des communes du département."
+      regionParagraphs={[
+        "Les Yvelines présentent des configurations variées : centres-villes historiques, quartiers résidentiels, zones pavillonnaires et accès parfois complexes — nous les anticipons pour chaque commune.",
+        "De Versailles à Saint-Germain-en-Laye, Sartrouville, Poissy ou Rambouillet, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Val-d'Oise (95) — page SEO locale */
+export function InterventionMapValDoise95() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Val-d'Oise (95)"
+      sectionTitle="Nous intervenons dans tout le Val-d'Oise et ses communes"
+      mapLabel="Val-d'Oise (95)"
+      mapLat={49.0506}
+      mapLng={2.1003}
+      mapZoom={11}
+      regionTitle="Val-d'Oise (95)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Guivarche Déménagement organise votre déménagement dans le Val-d'Oise : trajet maîtrisé, équipes expérimentées et intervention dans l'ensemble des communes du département."
+      regionParagraphs={[
+        "Le Val-d'Oise présente des configurations variées : zones urbaines denses, quartiers résidentiels en plein essor, secteurs ruraux plus isolés et accès parfois complexes — nous les anticipons pour chaque commune.",
+        "De Cergy à Argenteuil, Pontoise, Sarcelles ou Enghien-les-Bains, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Val-de-Marne (94) — page SEO locale */
+export function InterventionMapValDeMarne94() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Val-de-Marne (94)"
+      sectionTitle="Nous intervenons dans tout le Val-de-Marne et ses communes"
+      mapLabel="Val-de-Marne (94)"
+      mapLat={48.7904}
+      mapLng={2.4556}
+      mapZoom={12}
+      regionTitle="Val-de-Marne (94)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Guivarche Déménagement organise votre déménagement dans le Val-de-Marne : trajet maîtrisé, équipes expérimentées et intervention dans l'ensemble des communes du département."
+      regionParagraphs={[
+        "Le Val-de-Marne présente des configurations variées : zones urbaines denses, quartiers résidentiels, immeubles anciens et accès parfois complexes — nous les anticipons pour chaque commune.",
+        "De Créteil à Vitry-sur-Seine, Champigny-sur-Marne, Vincennes ou Maisons-Alfort, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
+        "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
+      ]}
+    />
+  );
+}
+
+/** Carte & textes Hauts-de-Seine (92) — page SEO locale */
+export function InterventionMapHautsDeSeine92() {
+  return (
+    <InterventionMapRegion
+      sectionBadge="Hauts-de-Seine (92)"
+      sectionTitle="Nous intervenons dans tout le Hauts-de-Seine et ses communes"
+      mapLabel="Hauts-de-Seine (92)"
+      mapLat={48.8924}
+      mapLng={2.2069}
+      mapZoom={12}
+      regionTitle="Hauts-de-Seine (92)"
+      regionSubtitle="Toutes les communes du département"
+      headerDescription="Guivarche Déménagement organise votre déménagement dans les Hauts-de-Seine : trajet maîtrisé, équipes expérimentées et intervention dans l'ensemble des communes du département."
+      regionParagraphs={[
+        "Les Hauts-de-Seine présentent des configurations variées : zones urbaines denses, résidences sécurisées, quartiers résidentiels et accès parfois complexes — nous les anticipons pour chaque commune.",
+        "De Boulogne-Billancourt à Nanterre, Courbevoie, Neuilly-sur-Seine ou Rueil-Malmaison, nous adaptons le matériel, la logistique et les protections selon les contraintes d'accès et de stationnement.",
         "Avec Guivarche Déménagement, vous bénéficiez d'un interlocuteur unique, d'une organisation maîtrisée du début à la fin et d'un service transparent, ponctuel et orienté qualité.",
       ]}
     />

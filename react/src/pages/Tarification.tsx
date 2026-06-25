@@ -13,6 +13,7 @@ import { Zap, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 export default function Tarification() {
   usePageMeta(PAGE_META.tarif);
@@ -63,7 +64,7 @@ export default function Tarification() {
                   <Button
                     size="lg"
                     className={gradientCtaPrimaryButtonClass}
-                    onClick={() => (window.location.href = "/tunnel/mes-coordonnees")}
+                    onClick={() => (window.location.href = DEVIS_FORM_PATH)}
                   >
                     Obtenir un devis gratuit
                     <ArrowRight className="ml-2 h-5 w-5" />

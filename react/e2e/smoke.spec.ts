@@ -53,22 +53,22 @@ test.describe('Production smoke — guivarche-demenagement.fr', () => {
     await expect(page).toHaveURL(/\/blog/);
   });
 
-  test('sticky devis button reaches quote tunnel entry', async ({ page }) => {
+  test('sticky devis button reaches quote form entry', async ({ page }) => {
     await page.goto('/');
-    const devisLink = page.locator('a[href="/tunnel/mes-coordonnees"], a[href*="mes-coordonnees"]').first();
+    const devisLink = page.locator('a[href="/tunnel/devis"], a[href*="tunnel/devis"]').first();
     await expect(devisLink).toBeVisible({ timeout: 10_000 });
     await devisLink.click();
-    await expect(page).toHaveURL(/\/tunnel\/mes-coordonnees/);
+    await expect(page).toHaveURL(/\/tunnel\/devis/);
     await expect(page.locator('body')).toContainText(/coordonn|contact|devis/i);
   });
 
-  test('quote tunnel — protected route redirects without session', async ({ page }) => {
+  test('quote form — protected tunnel route stays on tunnel devis', async ({ page }) => {
     await page.goto('/tunnel/devis');
-    await expect(page).toHaveURL(/\/tunnel\/mes-coordonnees/, { timeout: 15_000 });
+    await expect(page).toHaveURL(/\/tunnel\/devis/, { timeout: 15_000 });
   });
 
-  test('quote tunnel — coordonnées form is present', async ({ page }) => {
-    await page.goto('/tunnel/mes-coordonnees');
+  test('quote form — tunnel form is present', async ({ page }) => {
+    await page.goto('/tunnel/devis');
     await expect(page.locator('input[type="email"], input[name*="email" i]').first()).toBeVisible({
       timeout: 15_000,
     });

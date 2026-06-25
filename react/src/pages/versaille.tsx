@@ -25,6 +25,7 @@ import { InterventionMapVersaille } from "../components/intervention-map";
 import { DestinationFaqSection } from "../components/destination/DestinationFaqSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 const VERSAILLE_PRICING_ROWS = [
   { type: "Studio", volume: "10–15 m³", budget: "450 à 800 €" },
@@ -242,7 +243,7 @@ export default function Versaille() {
 
   const navigate = useNavigate();
 
-  const primaryCta = () => navigate("/tunnel/mes-coordonnees");
+  const primaryCta = () => navigate(DEVIS_FORM_PATH);
 
   const renderCtaBand = (
     title: string,

@@ -7,13 +7,14 @@ import {
 } from "@radix-ui/react-icons";
 
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+import { DEVIS_FORM_PATH, TUNNEL_VOLUME_CALC_PATH } from "../../constants/parisLp";
 
 const features = [
   {
     Icon: FileTextIcon,
     name: "Dossiers de déménagement",
     description: "Centralisez tous vos documents et devis au même endroit.",
-    href: "/tunnel/mes-coordonnees",
+    href: DEVIS_FORM_PATH,
     cta: "Préparer mon dossier",
     background: (
       <img
@@ -28,7 +29,7 @@ const features = [
     Icon: InputIcon,
     name: "Estimation du volume",
     description: "Choisissez la méthode la plus simple pour estimer votre volume.",
-    href: "/tunnel/choix-volume",
+    href: TUNNEL_VOLUME_CALC_PATH,
     cta: "Estimer mon volume",
     background: (
       <img
@@ -58,7 +59,7 @@ const features = [
     Icon: CalendarIcon,
     name: "Planification",
     description: "Choisissez la date idéale et suivez chaque étape de votre projet.",
-    href: "/tunnel/devis",
+    href: DEVIS_FORM_PATH,
     cta: "Planifier mon déménagement",
     background: (
       <img

@@ -7,6 +7,8 @@ type DestinationFaqSectionProps = Readonly<{
   subtitle?: string;
   items: readonly FaqSchemaItem[];
   className?: string;
+  /** Tighter row spacing and smaller corner arrows */
+  compact?: boolean;
 }>;
 
 /** Accordion FAQ — same visual language as /faq/, full-width for destination pages. */
@@ -15,6 +17,7 @@ export function DestinationFaqSection({
   subtitle,
   items,
   className = "",
+  compact = false,
 }: DestinationFaqSectionProps) {
   const [expandedItem, setExpandedItem] = useState(0);
 
@@ -38,8 +41,8 @@ export function DestinationFaqSection({
           ) : null}
         </div>
 
-        <div className="mt-10 sm:mt-12 w-full">
-          <div className="space-y-4">
+        <div className={`w-full ${compact ? "mt-8 sm:mt-10" : "mt-10 sm:mt-12"}`}>
+          <div className={compact ? "space-y-0.5" : "space-y-4"}>
             {items.map((item, index) => {
               const isOpen = expandedItem === index;
               return (
@@ -47,10 +50,16 @@ export function DestinationFaqSection({
                   <button
                     type="button"
                     onClick={() => toggleItem(index)}
-                    className="relative w-full py-4 sm:py-5 flex items-center text-left hover:opacity-80 transition-opacity duration-200"
+                    className={`relative w-full flex items-center text-left hover:opacity-80 transition-opacity duration-200 ${
+                      compact ? "py-2 sm:py-2.5" : "py-4 sm:py-5"
+                    }`}
                     aria-expanded={isOpen}
                   >
-                    <div className="flex w-full items-start gap-3 sm:gap-6 pr-14 sm:pr-24 lg:pr-36">
+                    <div
+                      className={`flex w-full items-start gap-3 sm:gap-6 ${
+                        compact ? "pr-10 sm:pr-14 lg:pr-20" : "pr-14 sm:pr-24 lg:pr-36"
+                      }`}
+                    >
                       <div
                         className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                           isOpen ? "bg-[#1c3957]" : "bg-[#CC922F]"
@@ -66,15 +75,23 @@ export function DestinationFaqSection({
                         {item.question}
                       </span>
                     </div>
-                    <div className="absolute top-1/2 -translate-y-1/2 right-0 sm:right-4 lg:right-8">
+                    <div
+                      className={`absolute top-1/2 -translate-y-1/2 ${
+                        compact ? "right-0 sm:right-2 lg:right-4" : "right-0 sm:right-4 lg:right-8"
+                      }`}
+                    >
                       {isOpen ? (
                         <ArrowDownLeft
-                          className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex-shrink-0 transition-all duration-300 text-[#1c3957]"
+                          className={`flex-shrink-0 transition-all duration-300 text-[#1c3957] ${
+                            compact ? "w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" : "w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16"
+                          }`}
                           strokeWidth={2.5}
                         />
                       ) : (
                         <ArrowUpRight
-                          className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex-shrink-0 transition-all duration-300 text-[#CC922F]"
+                          className={`flex-shrink-0 transition-all duration-300 text-[#CC922F] ${
+                            compact ? "w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" : "w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16"
+                          }`}
                           strokeWidth={2.5}
                         />
                       )}
@@ -86,7 +103,13 @@ export function DestinationFaqSection({
                     style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="overflow-hidden">
-                      <div className="w-full pb-4 sm:pb-6 pt-2 sm:pt-3 pl-[52px] sm:pl-[72px] pr-4 sm:pr-24 lg:pr-36">
+                      <div
+                        className={`w-full pl-[52px] sm:pl-[72px] pr-4 ${
+                          compact
+                            ? "pb-2 sm:pb-3 pt-1 sm:pt-1.5 sm:pr-14 lg:pr-20"
+                            : "pb-4 sm:pb-6 pt-2 sm:pt-3 sm:pr-24 lg:pr-36"
+                        }`}
+                      >
                         <p className="w-full font-['Poppins',sans-serif] font-normal text-[15px] leading-[24.5px] tracking-[0] text-[#6b6b8c]">
                           {item.answer}
                         </p>

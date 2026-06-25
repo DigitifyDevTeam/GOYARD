@@ -5,6 +5,8 @@ export type LandingHeroLocationPart = {
 
 export type LandingHeroConfig = {
   entryPage: string;
+  /** Where "Calculer mon volume automatiquement" navigates (defaults to Paris LP calc path). */
+  volumeCalcPath?: string;
   fieldSlug: string;
   heroLine1Prefix: string;
   heroLine1Accent: string;
@@ -23,6 +25,7 @@ export type LandingHeroConfig = {
 
 export const PARIS_LANDING_CONFIG: LandingHeroConfig = {
   entryPage: "/lp/paris",
+  volumeCalcPath: "/lp/paris/calcule-volume",
   fieldSlug: "paris",
   heroLine1Prefix: "Déménagement à ",
   heroLine1Accent: "Paris",
@@ -36,6 +39,13 @@ export const PARIS_LANDING_CONFIG: LandingHeroConfig = {
   formCtaDesktop: "Recevoir mon devis immédiatement",
   formCtaMobile: "Recevoir mon devis immédiatement",
   mobilePriceBanner: "Prix les moins chers de Paris !",
+};
+
+/** Same compact devis form as Paris LP, served at the site-wide tunnel entry. */
+export const TUNNEL_DEVIS_CONFIG: LandingHeroConfig = {
+  ...PARIS_LANDING_CONFIG,
+  entryPage: "/tunnel/devis",
+  volumeCalcPath: "/tunnel/mon-volume/liste",
 };
 
 export const HAUTS_DE_SEINE_LANDING_CONFIG: LandingHeroConfig = {

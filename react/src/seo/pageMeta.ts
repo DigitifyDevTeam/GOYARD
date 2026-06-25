@@ -105,7 +105,47 @@ export const PAGE_META = {
   ileDeFrance: pageMeta(
     "Déménageur Île-de-France : Paris & Banlieue - Guivarche",
     "Guivarche vous accompagne en Île-de-France : Paris, petite couronne et départements limitrophes. Équipes salariées, devis sous 24 h et transport sécurisé.",
-    "/ile-de-france",
+    "/demenagement-ile-de-france",
+  ),
+  demenagementParis75: pageMeta(
+    "Déménagement à Paris – Tous Arrondissements - Guivarche",
+    "Déménagez à Paris sans stress avec Guivarche. Experts du 75, nous intervenons dans les 20 arrondissements. Devis gratuit en 2 minutes, tarif dès 400 €.",
+    "/demenagement-paris-75",
+  ),
+  demenagementHautsDeSeine92: pageMeta(
+    "Déménagement Hauts-de-Seine (92) – Rapide et Soigné - Guivarche",
+    "Vous déménagez dans le 92 ? Guivarche intervient dans toutes les communes des Hauts-de-Seine. Équipe expérimentée, devis gratuit et sans engagement.",
+    "/demenagement-hauts-de-seine-92",
+  ),
+  demenagementValDeMarne94: pageMeta(
+    "Déménagement Val-de-Marne (94) – Disponible 7j/7 - Guivarche",
+    "Déménagement dans le Val-de-Marne 7j/7 avec Guivarche. De Créteil à Vincennes, nos pros gèrent tout. Devis gratuit et personnalisé sous 24h.",
+    "/demenagement-val-de-marne-94",
+  ),
+  demenagementYvelines78: pageMeta(
+    "Déménagement Yvelines (78) – Expert Local - Guivarche",
+    "Déménagez dans les Yvelines avec Guivarche. De Versailles à Rambouillet, une logistique sur mesure adaptée au territoire. Devis gratuit et immédiat.",
+    "/demenagement-yvelines-78",
+  ),
+  demenagementEssonne91: pageMeta(
+    "Déménagement Essonne (91) – On S'occupe de Tout - Guivarche",
+    "Confiez votre déménagement en Essonne à Guivarche. Particuliers et entreprises, formule clé en main, intervention partout dans le 91. Devis offert.",
+    "/demenagement-essonne-91",
+  ),
+  demenagementSeineEtMarne77: pageMeta(
+    "Déménagement Seine-et-Marne (77) – Tarif Fixe Garanti - Guivarche",
+    "Déménagement en Seine-et-Marne avec tarif fixe et zéro surprise. Guivarche couvre tout le 77, des zones rurales aux centres urbains. Devis sans engagement.",
+    "/demenagement-seine-et-marne-77",
+  ),
+  demenagementSeineSaintDenis93: pageMeta(
+    "Déménagement Seine-Saint-Denis (93) – Réservez Vite - Guivarche",
+    "Déménagez en Seine-Saint-Denis avec Guivarche. Équipe rodée aux accès complexes du 93, formules flexibles et interlocuteur dédié. Réservez aujourd'hui.",
+    "/demenagement-seine-saint-denis-93",
+  ),
+  demenagementValDoise95: pageMeta(
+    "Déménagement Val-d'Oise (95) – Rapide et Sans Stress - Guivarche",
+    "Vous déménagez dans le Val-d'Oise ? Guivarche assure une intervention rapide de Cergy à Argenteuil. Devis gratuit sous 24h, disponibilité immédiate.",
+    "/demenagement-val-doise-95",
   ),
   versaille: pageMeta(
     "Déménagement Paris Versailles : Devis Gratuit sous 24h - Guivarche",
@@ -125,7 +165,7 @@ export const PAGE_META = {
   international: pageMeta(
     "Déménagement International : Europe et Monde - Guivarche",
     "Déménagement international clé en main : emballage, logistique, formalités et coordination. Un accompagnement expert pour vos projets à l'étranger.",
-    "/international",
+    "/demenagement-international",
   ),
   formulesDemenagement: pageMeta(
     "Formules Déménagement : Éco, Standard, Luxe | Guivarche",
@@ -151,6 +191,16 @@ export const PAGE_META = {
     "/lp/paris/calcule-volume",
     "Calculer mon volume — Déménagement Paris - Guivarche",
     "Estimez le volume de votre déménagement à Paris pièce par pièce. Retournez ensuite à votre devis avec le volume calculé automatiquement.",
+  ),
+  tunnelDevis: landingPageMeta(
+    "/tunnel/devis",
+    "Devis Déménagement : Formulaire Gratuit - Guivarche",
+    "Demandez votre devis de déménagement en ligne. Formulaire complet avec estimation du volume. Réponse sous 24 h par l'équipe Guivarche.",
+  ),
+  tunnelVolumeCalc: landingPageMeta(
+    "/tunnel/mon-volume/liste",
+    "Calculer mon volume — Déménagement - Guivarche",
+    "Estimez le volume de votre déménagement pièce par pièce. Retournez ensuite à votre devis avec le volume calculé automatiquement.",
   ),
   lpHautsDeSeine: landingPageMeta(
     "/lp/hauts-de-seine",

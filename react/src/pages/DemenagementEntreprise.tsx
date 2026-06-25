@@ -31,6 +31,7 @@ import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
 import InteractiveImageBentoGallery from "@/components/bento-gallery";
 import GoogleReviewsSection from "@/components/GoogleReviewsSection";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 // ─── Professionnel Data ───────────────────────────────────────────
 
@@ -281,7 +282,7 @@ function PricingCard({
               : "bg-[#1C3957] hover:bg-[#2a4f6b] text-white"
           }`}
           onClick={() =>
-            (window.location.href = "/tunnel/mes-coordonnees")
+            (window.location.href = DEVIS_FORM_PATH)
           }
         >
           Choisir cette formule
@@ -577,7 +578,7 @@ export default function DemenagementEntreprise() {
                     <Button
                       size="lg"
                       className={gradientCtaPrimaryButtonClass}
-                      onClick={() => (window.location.href = "/tunnel/mes-coordonnees")}
+                      onClick={() => (window.location.href = DEVIS_FORM_PATH)}
                     >
                       Demander un devis
                       <ArrowRight className="ml-2 h-5 w-5" />

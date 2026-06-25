@@ -4,6 +4,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 export default function NotFound() {
   usePageMeta(PAGE_META.notFound);
@@ -60,7 +61,7 @@ export default function NotFound() {
                   </p>
                   <div className="mt-4 flex flex-col gap-3">
                     <a
-                      href="/tunnel/mes-coordonnees"
+                      href={DEVIS_FORM_PATH}
                       className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CC922F] hover:bg-[#CC922F]/90 text-white font-semibold px-4 py-3 transition-colors font-['Poppins',sans-serif]"
                     >
                       <Calculator className="w-5 h-5" />

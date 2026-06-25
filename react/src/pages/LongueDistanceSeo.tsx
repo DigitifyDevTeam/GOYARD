@@ -22,6 +22,7 @@ import GoogleReviewsSection from "@/components/GoogleReviewsSection";
 import { DestinationFaqSection } from "../components/destination/DestinationFaqSection";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 const LONGUE_DISTANCE_PRICING_ROWS = [
   { type: "Studio / Chambre", volume: "10 – 15 m³", budget: "800 € – 1 500 €" },
@@ -101,7 +102,7 @@ export default function LongueDistanceSeo() {
 
   const navigate = useNavigate();
 
-  const primaryCta = () => navigate("/tunnel/mes-coordonnees");
+  const primaryCta = () => navigate(DEVIS_FORM_PATH);
 
   return (
     <div className="min-h-screen bg-white">

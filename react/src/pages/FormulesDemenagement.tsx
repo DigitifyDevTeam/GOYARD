@@ -29,6 +29,7 @@ import {
 } from "../components/gradientCtaStyles";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { PAGE_META } from "../seo/pageMeta";
+import { DEVIS_FORM_PATH } from "../constants/parisLp";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -310,7 +311,7 @@ export default function FormulesDemenagement() {
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
                 <Button
                   className="bg-[#CC922F] hover:bg-[#b5821f] text-white font-['Poppins',sans-serif] font-semibold px-8 py-3 rounded-full text-base"
-                  onClick={() => navigate("/tunnel/mes-coordonnees")}
+                  onClick={() => navigate(DEVIS_FORM_PATH)}
                 >
                   Calculer mon volume exact
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -460,7 +461,7 @@ export default function FormulesDemenagement() {
                   <Button
                     size="lg"
                     className={gradientCtaPrimaryButtonClass}
-                    onClick={() => navigate("/tunnel/mes-coordonnees")}
+                    onClick={() => navigate(DEVIS_FORM_PATH)}
                   >
                     Demander mon devis gratuit
                     <ArrowRight className="ml-2 h-5 w-5" />
